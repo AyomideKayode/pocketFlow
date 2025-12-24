@@ -1,4 +1,5 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
+import { useUser } from "@clerk/clerk-react";
 
 interface FinancialRecord {
   id?: string;
@@ -22,6 +23,27 @@ const FinancialRecordContext = createContext<FinancialRecordContextType | undefi
 
 export const FinancialRecordsProvider = ({ children }: { children: React.ReactNode }) => {
   const [records, setRecords] = React.useState<FinancialRecord[]>([]);
+  const { user } = useUser();
+
+  const fetchRecordsByUserId = async () => {
+    if (!user) return;
+
+    try {
+      const response = await fetch(`http://localhost:3001/financial-records/getAllByUserId/${user.id}`);
+
+      if (response.ok) {
+        const records = await response.json();
+        console.log(records);
+        setRecords(records);
+      }
+    } catch (error) {
+      console.error('Error fetching records:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecordsByUserId();
+  }, [user]);
 
   const addRecord = async (record: FinancialRecord) => {
     try {
