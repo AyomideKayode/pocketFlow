@@ -1,14 +1,22 @@
+import 'dotenv/config';
 import express, { type Express } from 'express';
 import mongoose from 'mongoose';
 import financialRecordRouter from './routes/financial-records.js';
+import cors from 'cors';
 
 const app: Express = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(express.json()); // Middleware to parse JSON bodies
+app.use(cors()); // Enable CORS for all routes
 
 // Connect to MongoDB
-const mongoURI = 'mongodb+srv://ayomidekay7_db_user:j8V1GYTk1ng0NvBC@pocketflow0.a8u6lz7.mongodb.net/';
+const mongoURI = process.env.MONGODB_URI;
+
+if (!mongoURI) {
+  console.error('MONGODB_URI environment variable is required');
+  process.exit(1);
+}
 
 mongoose.connect(mongoURI)
   .then(() => {
