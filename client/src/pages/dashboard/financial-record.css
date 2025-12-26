@@ -202,6 +202,36 @@ label {
   outline: 1px solid #667eea;
 }
 
+/* Balance container styling */
+.balance-container {
+  margin: 2rem 0;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #2d2d2d 0%, #3d3d3d 100%);
+  border-radius: 12px;
+  border: 1px solid #505050;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.balance-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #e0e0e0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.balance-amount {
+  font-size: 1.8rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .dashboard-container {

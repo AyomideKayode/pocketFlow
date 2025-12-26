@@ -34,8 +34,7 @@ export const FinancialRecordForm = () => {
   };
 
   return (
-    <div className="form-container">
-      <h3>Add a New Financial Record</h3>
+    <>
       <form onSubmit={handleSubmit}>
         <div className="form-field">
           <label>Description:</label>
@@ -44,6 +43,7 @@ export const FinancialRecordForm = () => {
             required
             className="input"
             value={description}
+            placeholder="Enter description"
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
@@ -54,6 +54,7 @@ export const FinancialRecordForm = () => {
             required
             className="input"
             value={amount}
+            placeholder="Enter amount"
             onChange={(e) => setAmount(e.target.value)}
           />
         </div>
@@ -70,6 +71,7 @@ export const FinancialRecordForm = () => {
             <option value="Rent">Rent</option>
             <option value="Salary">Salary</option>
             <option value="Utilities">Utilities</option>
+            <option value="Transportation">Transportation</option>
             <option value="Entertainment">Entertainment</option>
             <option value="Other">Other</option>
           </select>
@@ -92,6 +94,6 @@ export const FinancialRecordForm = () => {
           Add Record
         </button>
       </form>
-    </div>
+    </>
   );
 }
