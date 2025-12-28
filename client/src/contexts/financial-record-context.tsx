@@ -24,11 +24,13 @@ export const FinancialRecordsProvider = ({ children }: { children: React.ReactNo
   const [records, setRecords] = React.useState<FinancialRecord[]>([]);
   const { user } = useUser();
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+
   const fetchRecordsByUserId = async () => {
     if (!user) return;
 
     try {
-      const response = await fetch(`http://localhost:3001/financial-records/getAllByUserId/${user.id}`);
+      const response = await fetch(`${API_BASE_URL}/financial-records/getAllByUserId/${user.id}`);
 
       if (response.ok) {
         const records = await response.json();
@@ -46,7 +48,7 @@ export const FinancialRecordsProvider = ({ children }: { children: React.ReactNo
 
   const addRecord = async (record: FinancialRecord) => {
     try {
-      const response = await fetch('http://localhost:3001/financial-records', {
+      const response = await fetch(`${API_BASE_URL}/financial-records`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +67,7 @@ export const FinancialRecordsProvider = ({ children }: { children: React.ReactNo
 
   const updateRecord = async (id: string, updatedRecord: Partial<FinancialRecord>) => {
     try {
-      const response = await fetch(`http://localhost:3001/financial-records/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/financial-records/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +88,7 @@ export const FinancialRecordsProvider = ({ children }: { children: React.ReactNo
 
   const deleteRecord = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:3001/financial-records/${id}`, {
+      const response = await fetch(`${API_BASE_URL}/financial-records/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {
