@@ -8,7 +8,14 @@ const app: Express = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(express.json()); // Middleware to parse JSON bodies
-app.use(cors()); // Enable CORS for all routes
+app.use(cors({
+  origin: [
+    'http://localhost:3000',
+    'http://localhost:5173', 
+    'https://pocket-flow-eta.vercel.app'
+  ],
+  credentials: true
+})); // Enable CORS for all routes
 
 // Connect to MongoDB
 const mongoURI = process.env.MONGODB_URI;
