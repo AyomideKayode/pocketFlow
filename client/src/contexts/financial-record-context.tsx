@@ -34,7 +34,7 @@ export const FinancialRecordsProvider = ({ children }: { children: React.ReactNo
 
       if (response.ok) {
         const records = await response.json();
-        console.log(records);
+        // console.log(records);
         setRecords(records);
       }
     } catch (error) {
