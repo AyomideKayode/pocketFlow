@@ -3,10 +3,23 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Dashboard } from './pages/dashboard';
 import { Auth } from './pages/auth';
 import { FinancialRecordsProvider } from './contexts/financial-record-context';
-import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
-import { dark } from '@clerk/themes'
+import { useAuth } from './contexts/auth-context';
+import { UserButton } from './components/UserButton';
+import { ProtectedRoute } from './components/ProtectedRoute';
 
 function App() {
+  const { user, loading } = useAuth();
+
+  if (loading) {
+    return (
+      <div className="app-container">
+        <div className="loading-container">
+          <h1>Loading...</h1>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Router>
       <div className='app-container'>
@@ -17,29 +30,22 @@ function App() {
             </Link>
           </div>
           <div className='navbar-content'>
-            <SignedIn>
-              <UserButton
-                // showName={true}
-                appearance={{
-                  baseTheme: dark,
-                  elements: {
-                    userButtonAvatarBox: "w-8 h-8"
-                  }
-                }}
-              />
-            </SignedIn>
-            <SignedOut>
-              <a href="/auth">Sign In</a>
-            </SignedOut>
+            {user ? (
+              <UserButton />
+            ) : (
+              <Link to="/auth">Sign In</Link>
+            )}
           </div>
         </nav>
         <Routes>
           <Route
             path='/'
             element={
-              <FinancialRecordsProvider>
-                <Dashboard />
-              </FinancialRecordsProvider>
+              <ProtectedRoute>
+                <FinancialRecordsProvider>
+                  <Dashboard />
+                </FinancialRecordsProvider>
+              </ProtectedRoute>
             }
           />
           <Route path='/auth' element={<Auth />} />

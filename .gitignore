@@ -33,3 +33,5 @@ dist-ssr
 .env.test.local
 # Ignore production config files
 .env.production.local
+# Firebase service account keys
+pocketflow-d735c-firebase-adminsdk-fbsvc-e232b39403.json

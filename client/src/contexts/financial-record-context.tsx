@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect } from 'react';
-import { useUser } from "@clerk/clerk-react";
+import { useAuth } from './auth-context';
 
 export interface FinancialRecord {
   _id?: string;
@@ -22,7 +22,7 @@ const FinancialRecordContext = createContext<FinancialRecordContextType | undefi
 
 export const FinancialRecordsProvider = ({ children }: { children: React.ReactNode }) => {
   const [records, setRecords] = React.useState<FinancialRecord[]>([]);
-  const { user } = useUser();
+  const { user } = useAuth();
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
@@ -30,7 +30,7 @@ export const FinancialRecordsProvider = ({ children }: { children: React.ReactNo
     if (!user) return;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/financial-records/getAllByUserId/${user.id}`);
+      const response = await fetch(`${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}`);
 
       if (response.ok) {
         const records = await response.json();

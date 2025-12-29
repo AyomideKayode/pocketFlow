@@ -1,11 +1,11 @@
-import { useUser } from "@clerk/clerk-react";
+import { useAuth } from "../../contexts/auth-context";
 import { FinancialRecordForm } from "./financialRecordForm";
 import { FinancialRecordList } from "./financialRecordList";
 import { useFinancialRecords } from "../../contexts/financial-record-context";
 import "./financial-record.css";
 
 export const Dashboard = () => {
-  const { user } = useUser();
+  const { user } = useAuth();
   const { records } = useFinancialRecords();
 
   // calculate total balance
@@ -13,7 +13,7 @@ export const Dashboard = () => {
 
   return (
     <div className="dashboard-container fade-in">
-      <h1>Welcome to PocketFlow, {user?.firstName}! 💰</h1>
+      <h1>Welcome to PocketFlow, {user?.displayName || user?.email?.split('@')[0]}! 💰</h1>
       <p style={{ textAlign: 'center', color: '#b0b0b0', fontSize: '1.1rem', marginBottom: '2rem' }}>
         Manage your finances with ease
       </p>
