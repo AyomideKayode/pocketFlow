@@ -12,7 +12,7 @@ app.use(cors({
   origin: [
     'http://localhost:3000',
     'http://localhost:5173', 
-    'https://pocket-flow-eta.vercel.app'
+    'https://pocket-flow-kay.vercel.app'
   ],
   credentials: true
 })); // Enable CORS for all routes
