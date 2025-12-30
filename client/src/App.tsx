@@ -12,8 +12,8 @@ function App() {
 
   if (loading) {
     return (
-      <div className="app-container">
-        <div className="loading-container">
+      <div className='app-container'>
+        <div className='loading-container'>
           <h1>Loading...</h1>
         </div>
       </div>
@@ -25,16 +25,12 @@ function App() {
       <div className='app-container'>
         <nav className='navbar'>
           <div className='navbar-brand'>
-            <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Link to='/' style={{ textDecoration: 'none', color: 'inherit' }}>
               💰 PocketFlow
             </Link>
           </div>
           <div className='navbar-content'>
-            {user ? (
-              <UserButton />
-            ) : (
-              <Link to="/auth">Sign In</Link>
-            )}
+            {user ? <UserButton /> : <Link to='/auth'>Sign In</Link>}
           </div>
         </nav>
         <Routes>

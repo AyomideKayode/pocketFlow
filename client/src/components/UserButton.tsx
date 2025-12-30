@@ -9,7 +9,10 @@ export const UserButton: React.FC = () => {
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsDropdownOpen(false);
       }
     };
@@ -34,23 +37,21 @@ export const UserButton: React.FC = () => {
   const displayName = user.displayName || user.email?.split('@')[0] || 'User';
 
   return (
-    <div className="user-button-container" ref={dropdownRef}>
-      <button 
-        className="user-button"
+    <div className='user-button-container' ref={dropdownRef}>
+      <button
+        className='user-button'
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
-        <div className="user-avatar">
-          {displayName.charAt(0).toUpperCase()}
-        </div>
-        <span className="user-name">{displayName}</span>
+        <div className='user-avatar'>{displayName.charAt(0).toUpperCase()}</div>
+        <span className='user-name'>{displayName}</span>
       </button>
-      
+
       {isDropdownOpen && (
-        <div className="user-dropdown">
-          <div className="user-info">
-            <p className="user-email">{user.email}</p>
+        <div className='user-dropdown'>
+          <div className='user-info'>
+            <p className='user-email'>{user.email}</p>
           </div>
-          <button onClick={handleLogout} className="logout-button">
+          <button onClick={handleLogout} className='logout-button'>
             Sign Out
           </button>
         </div>

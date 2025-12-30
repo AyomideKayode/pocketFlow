@@ -14,23 +14,35 @@ export interface FinancialRecord {
 interface FinancialRecordContextType {
   records: FinancialRecord[];
   addRecord: (record: FinancialRecord) => Promise<void>;
-  updateRecord: (id: string, updatedRecord: Partial<FinancialRecord>) => Promise<void>;
+  updateRecord: (
+    id: string,
+    updatedRecord: Partial<FinancialRecord>
+  ) => Promise<void>;
   deleteRecord: (id: string) => Promise<void>;
 }
 
-const FinancialRecordContext = createContext<FinancialRecordContextType | undefined>(undefined);
+const FinancialRecordContext = createContext<
+  FinancialRecordContextType | undefined
+>(undefined);
 
-export const FinancialRecordsProvider = ({ children }: { children: React.ReactNode }) => {
+export const FinancialRecordsProvider = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const [records, setRecords] = React.useState<FinancialRecord[]>([]);
   const { user } = useAuth();
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
   const fetchRecordsByUserId = async () => {
     if (!user) return;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}`);
+      const response = await fetch(
+        `${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}`
+      );
 
       if (response.ok) {
         const records = await response.json();
@@ -65,7 +77,10 @@ export const FinancialRecordsProvider = ({ children }: { children: React.ReactNo
     }
   };
 
-  const updateRecord = async (id: string, updatedRecord: Partial<FinancialRecord>) => {
+  const updateRecord = async (
+    id: string,
+    updatedRecord: Partial<FinancialRecord>
+  ) => {
     try {
       const response = await fetch(`${API_BASE_URL}/financial-records/${id}`, {
         method: 'PUT',
@@ -94,24 +109,32 @@ export const FinancialRecordsProvider = ({ children }: { children: React.ReactNo
       if (!response.ok) {
         throw new Error('Failed to delete record');
       }
-      setRecords((prevRecords) => prevRecords.filter((record) => record._id !== id));
+      setRecords((prevRecords) =>
+        prevRecords.filter((record) => record._id !== id)
+      );
     } catch (error) {
       console.error('Error deleting record:', error);
     }
   };
 
   return (
-    <FinancialRecordContext.Provider value={{ records, addRecord, updateRecord, deleteRecord }}>
+    <FinancialRecordContext.Provider
+      value={{ records, addRecord, updateRecord, deleteRecord }}
+    >
       {children}
     </FinancialRecordContext.Provider>
-  )
-}
+  );
+};
 
 export const useFinancialRecords = () => {
-  const context = useContext<FinancialRecordContextType | undefined>(FinancialRecordContext);
+  const context = useContext<FinancialRecordContextType | undefined>(
+    FinancialRecordContext
+  );
 
   if (!context) {
-    throw new Error('useFinancialRecords must be used within a FinancialRecordsProvider');
+    throw new Error(
+      'useFinancialRecords must be used within a FinancialRecordsProvider'
+    );
   }
   return context;
-}
+};

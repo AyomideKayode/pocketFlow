@@ -23,7 +23,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
       if (isSignUp) {
         // Sign up new user
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        
+
         // Update profile with display name
         if (firstName) {
           await updateProfile(userCredential.user, {
@@ -44,9 +44,9 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
   return (
     <div className="auth-container">
       <h2>{isSignUp ? 'Create Account' : 'Sign In'}</h2>
-      
+
       {error && <div className="error-message">{error}</div>}
-      
+
       <form onSubmit={handleSubmit} className="auth-form">
         {isSignUp && (
           <div className="form-field">
@@ -61,7 +61,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
             />
           </div>
         )}
-        
+
         <div className="form-field">
           <label>Email:</label>
           <input
@@ -73,7 +73,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
             placeholder="Enter your email"
           />
         </div>
-        
+
         <div className="form-field">
           <label>Password:</label>
           <input
@@ -86,12 +86,12 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
             minLength={6}
           />
         </div>
-        
+
         <button type="submit" className="button" disabled={loading}>
           {loading ? 'Loading...' : isSignUp ? 'Sign Up' : 'Sign In'}
         </button>
       </form>
-      
+
       <div className="auth-toggle">
         <p>
           {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
