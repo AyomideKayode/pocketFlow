@@ -6,6 +6,7 @@ import { FinancialRecordsProvider } from './contexts/financial-record-context';
 import { useAuth } from './contexts/auth-context';
 import { UserButton } from './components/UserButton';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import { ToastContainer } from './components/ToastContainer';
 
 function App() {
   const { user, loading } = useAuth();
@@ -46,6 +47,7 @@ function App() {
           />
           <Route path='/auth' element={<Auth />} />
         </Routes>
+        <ToastContainer />
       </div>
     </Router>
   );

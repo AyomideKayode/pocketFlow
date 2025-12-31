@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../contexts/auth-context';
+import { useToast } from '../contexts/toast-context';
 
 export const UserButton: React.FC = () => {
   const { user, logout } = useAuth();
+  const { addToast } = useToast();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -28,9 +30,11 @@ export const UserButton: React.FC = () => {
   const handleLogout = async () => {
     try {
       await logout();
+      addToast('Successfully signed out. See you soon!', 'success');
       setIsDropdownOpen(false);
     } catch (error) {
       console.error('Error logging out:', error);
+      addToast('Failed to sign out. Please try again.', 'error');
     }
   };
 
