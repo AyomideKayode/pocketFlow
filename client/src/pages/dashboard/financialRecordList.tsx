@@ -4,6 +4,7 @@ import {
   type FinancialRecord,
 } from "../../contexts/financial-record-context";
 import { useConfirmationDialog } from "../../contexts/confirmation-dialog-context";
+import { EmptyState } from "../../components/EmptyState";
 import {
   useReactTable,
   getCoreRowModel,
@@ -154,6 +155,18 @@ export const FinancialRecordList = () => {
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
+
+  // Show empty state when no records
+  if (records.length === 0) {
+    return (
+      <EmptyState
+        variant="default"
+        icon="📊"
+        title="No Financial Records Yet"
+        description="Your financial records will appear here once you add them. Start by adding your first income or expense record above."
+      />
+    );
+  }
 
   return (
     <div className="table-container">

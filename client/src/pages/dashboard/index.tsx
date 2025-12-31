@@ -2,6 +2,7 @@ import { useAuth } from '../../contexts/auth-context';
 import { FinancialRecordForm } from './financialRecordForm';
 import { FinancialRecordList } from './financialRecordList';
 import { useFinancialRecords } from '../../contexts/financial-record-context';
+import { EmptyState } from '../../components/EmptyState';
 import './financial-record.css';
 
 export const Dashboard = () => {
@@ -13,6 +14,34 @@ export const Dashboard = () => {
     (acc, record) => acc + record.amount,
     0
   );
+
+  const scrollToForm = () => {
+    const formElement = document.querySelector('.form-container');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  // Show welcome empty state for new users
+  if (records.length === 0) {
+    return (
+      <div className='dashboard-container fade-in'>
+        <EmptyState
+          variant='welcome'
+          icon='💰'
+          title={`Welcome to PocketFlow, ${user?.displayName || user?.email?.split('@')[0]
+            }!`}
+          description='Start tracking your finances by adding your first financial record. You can log income, expenses, and monitor your spending patterns all in one place.'
+          actionText='Add Your First Record'
+          onAction={scrollToForm}
+        />
+        <div className='form-container'>
+          <h2>Add New Record</h2>
+          <FinancialRecordForm />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='dashboard-container fade-in'>
