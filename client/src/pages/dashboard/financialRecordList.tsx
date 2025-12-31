@@ -3,6 +3,7 @@ import {
   useFinancialRecords,
   type FinancialRecord,
 } from "../../contexts/financial-record-context";
+import { useConfirmationDialog } from "../../contexts/confirmation-dialog-context";
 import {
   useReactTable,
   getCoreRowModel,
@@ -58,15 +59,27 @@ const EditableCell: React.FC<EditableCellProps> = ({
   );
 };
 
-const columnHelper = createColumnHelper<FinancialRecord>();
-
 export const FinancialRecordList = () => {
   const { records, updateRecord, deleteRecord } = useFinancialRecords();
+  const { showConfirmation } = useConfirmationDialog();
+
+  const handleDeleteRecord = (record: FinancialRecord) => {
+    showConfirmation({
+      title: 'Delete Financial Record',
+      message: `Are you sure you want to delete "${record.description}" with amount $${record.amount}? This action cannot be undone.`,
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      variant: 'danger',
+      onConfirm: () => deleteRecord(record._id ?? "")
+    });
+  };
 
   const updateCellRecord = (rowIndex: number, columnId: string, value: any) => {
     const id = records[rowIndex]?._id;
     updateRecord(id ?? "", { ...records[rowIndex], [columnId]: value });
   };
+
+  const columnHelper = createColumnHelper<FinancialRecord>();
 
   const columns = useMemo<ColumnDef<FinancialRecord, any>[]>(
     () => [
@@ -125,7 +138,7 @@ export const FinancialRecordList = () => {
         header: 'Delete',
         cell: ({ row }) => (
           <button
-            onClick={() => deleteRecord(row.original._id ?? "")}
+            onClick={() => handleDeleteRecord(row.original)}
             className="button-delete"
           >
             Delete
