@@ -1,20 +1,33 @@
+import { useState, useMemo } from 'react';
 import { useAuth } from '../../contexts/auth-context';
 import { FinancialRecordForm } from './financialRecordForm';
 import { FinancialRecordList } from './financialRecordList';
 import { useFinancialRecords } from '../../contexts/financial-record-context';
 import { EmptyState } from '../../components/EmptyState';
+import { IncomeExpenseChart } from '../../components/charts/IncomeExpenseChart';
+import { CategoryBreakdownChart } from '../../components/charts/CategoryBreakdownChart';
+import { DateRangeFilter } from '../../components/DateRangeFilter';
+import { filterRecordsByDateRange, getDefaultDateRange } from '../../utils/chartDataTransforms';
 import './financial-record.css';
 
 export const Dashboard = () => {
   const { user } = useAuth();
   const { records } = useFinancialRecords();
 
-  // Calculate totals using transaction types
-  const totalIncome = records
+  // Date range state for filtering
+  const [dateRange, setDateRange] = useState(getDefaultDateRange());
+
+  // Filter records based on selected date range
+  const filteredRecords = useMemo(() => {
+    return filterRecordsByDateRange(records, dateRange);
+  }, [records, dateRange]);
+
+  // Calculate totals using filtered records
+  const totalIncome = filteredRecords
     .filter(record => record.type === 'income')
     .reduce((acc, record) => acc + Math.abs(record.amount), 0);
 
-  const totalExpenses = records
+  const totalExpenses = filteredRecords
     .filter(record => record.type === 'expense')
     .reduce((acc, record) => acc + record.amount, 0);
 
@@ -85,7 +98,24 @@ export const Dashboard = () => {
             </span>
           </div>
         </div>
+        <p style={{ textAlign: 'center', color: '#b0b0b0', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+          *Based on selected time period
+        </p>
       </div>
+
+      {/* Charts Section */}
+      <div className='charts-container'>
+        <h2>Financial Analytics</h2>
+        <DateRangeFilter
+          selectedRange={dateRange}
+          onDateRangeChange={setDateRange}
+        />
+        <div className='charts-grid'>
+          <IncomeExpenseChart records={filteredRecords} />
+          <CategoryBreakdownChart records={filteredRecords} />
+        </div>
+      </div>
+
       <div className='list-container'>
         <h2>Your Financial Records</h2>
         <FinancialRecordList />

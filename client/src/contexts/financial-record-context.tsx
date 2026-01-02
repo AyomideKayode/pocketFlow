@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect } from 'react';
+import React, { createContext, useContext, useEffect, useCallback } from 'react';
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';
 
@@ -49,12 +49,17 @@ export const FinancialRecordsProvider = ({
     const isIncome = record.amount > 0;
     return {
       ...record,
+      userId: record.userId || '',
+      date: record.date || new Date(),
+      description: record.description || '',
+      category: record.category || '',
+      paymentMethod: record.paymentMethod || '',
       type: isIncome ? 'income' : 'expense',
       amount: Math.abs(record.amount), // Convert to positive
     };
   };
 
-  const fetchRecordsByUserId = async () => {
+  const fetchRecordsByUserId = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -71,11 +76,11 @@ export const FinancialRecordsProvider = ({
     } catch (error) {
       console.error('Error fetching records:', error);
     }
-  };
+  }, [user, API_BASE_URL]);
 
   useEffect(() => {
     fetchRecordsByUserId();
-  }, [user]);
+  }, [user, fetchRecordsByUserId]);
 
   const addRecord = async (record: FinancialRecord) => {
     try {
