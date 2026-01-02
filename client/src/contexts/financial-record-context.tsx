@@ -8,6 +8,7 @@ export interface FinancialRecord {
   date: Date;
   description: string;
   amount: number;
+  type: 'income' | 'expense';
   category: string;
   paymentMethod: string;
 }
@@ -38,6 +39,21 @@ export const FinancialRecordsProvider = ({
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
+  // Migration helper for legacy records without type field
+  const migrateRecord = (record: any): FinancialRecord => {
+    if (record.type && (record.type === 'income' || record.type === 'expense')) {
+      return record; // Already has valid type field
+    }
+
+    // Legacy record: determine type based on amount and set positive amount
+    const isIncome = record.amount > 0;
+    return {
+      ...record,
+      type: isIncome ? 'income' : 'expense',
+      amount: Math.abs(record.amount), // Convert to positive
+    };
+  };
+
   const fetchRecordsByUserId = async () => {
     if (!user) return;
 
@@ -47,9 +63,10 @@ export const FinancialRecordsProvider = ({
       );
 
       if (response.ok) {
-        const records = await response.json();
-        // console.log(records);
-        setRecords(records);
+        const rawRecords = await response.json();
+        // Migrate legacy records and ensure type field exists
+        const migratedRecords = rawRecords.map(migrateRecord);
+        setRecords(migratedRecords);
       }
     } catch (error) {
       console.error('Error fetching records:', error);

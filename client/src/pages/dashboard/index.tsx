@@ -9,11 +9,16 @@ export const Dashboard = () => {
   const { user } = useAuth();
   const { records } = useFinancialRecords();
 
-  // calculate total balance
-  const totalMonthlyBalance = records.reduce(
-    (acc, record) => acc + record.amount,
-    0
-  );
+  // Calculate totals using transaction types
+  const totalIncome = records
+    .filter(record => record.type === 'income')
+    .reduce((acc, record) => acc + Math.abs(record.amount), 0);
+
+  const totalExpenses = records
+    .filter(record => record.type === 'expense')
+    .reduce((acc, record) => acc + record.amount, 0);
+
+  const totalMonthlyBalance = totalIncome - totalExpenses;
 
   const scrollToForm = () => {
     const formElement = document.querySelector('.form-container');
@@ -64,10 +69,22 @@ export const Dashboard = () => {
         <FinancialRecordForm />
       </div>
       <div className='balance-container'>
-        <span className='balance-title'>Total Monthly Balance:</span>
-        <span className='balance-amount'>
-          ${totalMonthlyBalance.toFixed(2)}
-        </span>
+        <div className='balance-summary'>
+          <div className='balance-item income'>
+            <span className='balance-label'>💰 Total Income:</span>
+            <span className='balance-value income'>${totalIncome.toFixed(2)}</span>
+          </div>
+          <div className='balance-item expense'>
+            <span className='balance-label'>💸 Total Expenses:</span>
+            <span className='balance-value expense'>${totalExpenses.toFixed(2)}</span>
+          </div>
+          <div className='balance-item total'>
+            <span className='balance-title'>Net Balance:</span>
+            <span className={`balance-amount ${totalMonthlyBalance >= 0 ? 'positive' : 'negative'}`}>
+              ${totalMonthlyBalance.toFixed(2)}
+            </span>
+          </div>
+        </div>
       </div>
       <div className='list-container'>
         <h2>Your Financial Records</h2>

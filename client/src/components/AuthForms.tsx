@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { useToast } from '../contexts/toast-context';
 
@@ -66,6 +66,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
   const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>({ score: 0, feedback: '', suggestions: [], color: '#6b7280' });
+  const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   // Real-time password strength calculation
   useEffect(() => {
@@ -179,6 +180,99 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
       setLoading(false);
     }
   };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setError('Please enter your email address');
+      addToast('Please enter your email address', 'error');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      addToast('Password reset email sent! Check your inbox and follow the instructions.', 'success', { duration: 6000 });
+      setIsForgotPassword(false);
+      setEmail('');
+    } catch (error: any) {
+      let errorMessage = error.message;
+
+      if (error.code === 'auth/user-not-found') {
+        errorMessage = 'No account found with this email address';
+      } else if (error.code === 'auth/invalid-email') {
+        errorMessage = 'Invalid email address';
+      } else if (error.code === 'auth/too-many-requests') {
+        errorMessage = 'Too many requests. Please try again later';
+      }
+
+      setError(errorMessage);
+      addToast(errorMessage, 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBackToSignIn = () => {
+    setIsForgotPassword(false);
+    setError('');
+    setEmail('');
+  };
+
+  // Forgot Password UI
+  if (isForgotPassword) {
+    return (
+      <div className="auth-container">
+        <h2>Reset Your Password</h2>
+
+        <p className="forgot-password-description">
+          Enter your email address and we'll send you a link to reset your password.
+        </p>
+
+        {error && <div className="error-message">{error}</div>}
+
+        <form onSubmit={(e) => { e.preventDefault(); handleForgotPassword(); }} className="auth-form">
+          <div className="form-field">
+            <label>Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setError('');
+              }}
+              required
+              className="input"
+              placeholder="Enter your email"
+              disabled={loading}
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="button"
+            disabled={loading || !email}
+          >
+            {loading ? (
+              <span className="loading-text">
+                <span className="spinner"></span>
+                Sending Reset Email...
+              </span>
+            ) : (
+              'Send Reset Email'
+            )}
+          </button>
+        </form>
+
+        <div className="auth-toggle">
+          <button type="button" onClick={handleBackToSignIn} className="auth-link">
+            ← Back to Sign In
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="auth-container">
@@ -328,6 +422,18 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
             {isSignUp ? 'Sign In' : 'Sign Up'}
           </button>
         </p>
+
+        {!isSignUp && (
+          <p className="forgot-password-link">
+            <button
+              type="button"
+              onClick={() => setIsForgotPassword(true)}
+              className="auth-link"
+            >
+              Forgot your password?
+            </button>
+          </p>
+        )}
       </div>
     </div>
   );

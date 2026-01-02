@@ -7,6 +7,7 @@ export const FinancialRecordForm = () => {
   const [amount, setAmount] = useState<string>('');
   const [category, setCategory] = useState<string>('');
   const [paymentMethod, setPaymentMethod] = useState<string>('');
+  const [type, setType] = useState<'income' | 'expense'>('expense');
   const { addRecord } = useFinancialRecords();
 
   const { user } = useAuth();
@@ -15,11 +16,19 @@ export const FinancialRecordForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
 
+    // Validate amount is positive
+    const amountValue = parseFloat(amount);
+    if (isNaN(amountValue) || amountValue <= 0) {
+      alert('Please enter a valid positive amount');
+      return;
+    }
+
     const newRecord = {
       userId: user?.uid ?? '',
       date: new Date(),
       description: description,
-      amount: parseFloat(amount),
+      amount: amountValue,
+      type: type,
       category: category,
       paymentMethod: paymentMethod,
     };
@@ -30,11 +39,32 @@ export const FinancialRecordForm = () => {
     setAmount('');
     setCategory('');
     setPaymentMethod('');
+    setType('expense');
   };
 
   return (
     <>
       <form onSubmit={handleSubmit}>
+        <div className='form-field'>
+          <label>Transaction Type:</label>
+          <div className='transaction-type-toggle'>
+            <div
+              className={`type-option income ${type === 'income' ? 'selected' : ''}`}
+              onClick={() => setType('income')}
+            >
+              <div className="type-icon">💰</div>
+              <div className="type-label">Income</div>
+            </div>
+            <div
+              className={`type-option expense ${type === 'expense' ? 'selected' : ''}`}
+              onClick={() => setType('expense')}
+            >
+              <div className="type-icon">💸</div>
+              <div className="type-label">Expense</div>
+            </div>
+          </div>
+        </div>
+
         <div className='form-field'>
           <label>Description:</label>
           <input
@@ -53,7 +83,7 @@ export const FinancialRecordForm = () => {
             required
             className='input'
             value={amount}
-            placeholder='Enter amount'
+            placeholder='Enter amount (positive number)'
             onChange={(e) => setAmount(e.target.value)}
           />
         </div>

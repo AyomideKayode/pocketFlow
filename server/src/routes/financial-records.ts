@@ -16,18 +16,35 @@ router.get('/getAllByUserId/:userId', async (req: Request, res: Response) => {
     }
     res.status(200).json(records);
   } catch (error) {
+    console.error('Error fetching records:', error);
     res.status(500).send(error);
   }
 });
 
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const newRecordBody = req.body;
-    const newRecord = new FinancialRecordModel(newRecordBody);
+    const { userId, date, description, amount, type, category, paymentMethod } = req.body;
+    
+    // Validate required fields
+    if (!type || !['income', 'expense'].includes(type)) {
+      return res.status(400).json({ error: 'Valid type (income/expense) is required' });
+    }
+
+    const newRecord = new FinancialRecordModel({
+      userId,
+      date: date || new Date(),
+      description,
+      amount: Math.abs(amount), // Always store positive amounts
+      type, // Make sure this is included
+      category,
+      paymentMethod,
+    });
+
     const savedRecord = await newRecord.save();
     res.status(201).json(savedRecord);
   } catch (error) {
-    res.status(500).send(error);
+    console.error('Error saving record:', error);
+    res.status(500).json({ error: 'Failed to create record' });
   }
 });
 
