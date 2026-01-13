@@ -174,7 +174,7 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 
 ## Planned Phases & Next Steps
 
-### **Phase 3: Trend Analysis & Advanced Reporting**
+### **Phase 2C: Trend Analysis & Advanced Reporting**
 
 - **Features:**
   - Line charts for income/expense trends over time
@@ -302,7 +302,7 @@ interface FinancialRecord {
 ### **Key Environment Variables**
 
 - **Client:**
-  - `VITE_API_BASE_URL` - Backend API URL (default: http://localhost:3001)
+  - `VITE_API_BASE_URL` - Backend API URL (default: `http://localhost:3001`)
   - `VITE_FIREBASE_*` - Firebase configuration keys
 - **Server:**
   - `MONGODB_URI` - MongoDB connection string
@@ -321,4 +321,88 @@ interface FinancialRecord {
 
 ---
 
-_Last updated: January 2, 2026 | Current Phase: 2B (Complete) | Next Phase: 3 (Trend Analysis & Advanced Reporting)_
+- _Last updated: January 2, 2026 | Current Phase: 2B (Complete) | Next Phase: 2C (Trend Analysis & Advanced Reporting)_
+- _Last updated: January 13, 2026 | Current Phase: 2C (Trend Analysis & Secure Export prototype) | Next Phase: 3 (Trend Analysis & Advanced Reporting)_
+
+---
+
+### **Phase 2C: Trend Analysis & Export (Prototype)** ✅ COMPLETED (prototype)
+
+- **Features implemented in prototype:**
+
+  - Trend line chart for income & expenses (`client/src/components/charts/TrendLineChart.tsx`) showing monthly trends.
+  - Client-side CSV export button that downloads filtered records (`client/src/utils/exportUtils.ts`, wired in dashboard).
+  - Secure server-side CSV export prototype: `GET /reports/export` implemented in `server/src/routes/reports.ts`. The route verifies Firebase ID tokens (via `server/src/lib/firebaseAdmin.ts`) and streams CSV results from MongoDB using a Mongoose cursor to avoid high memory usage.
+  - Documentation for the server export added to `server/README.md` describing behavior, trade-offs, and testing recommendations.
+  - Cleanups: temporary debug token logging removed; duplicate route code resolved; client and server TypeScript builds validated.
+
+- **What's been validated:**
+
+  - Client builds and Vite dev server run successfully; charts and client CSV export function in the dashboard.
+  - Server compiles (`tsc`) and runs; Firebase Admin initializes when a valid `FIREBASE_SERVICE_ACCOUNT_PATH` or JSON is provided.
+  - The server export prototype requires a Firebase ID token in `Authorization: Bearer <ID_TOKEN>` and streams CSV for requested date ranges.
+
+- **Prototype caveats & reasons it's not production-ready yet:**
+  - The server export is synchronous and may block for very large exports — consider background jobs for large datasets.
+  - Tests and CI coverage for the export route and aggregation helpers were not added yet (deferred to Phase 3 as requested).
+  - Service account credentials must be provided securely (do not commit JSON to repo). CI/deployment secrets need configuration.
+
+## Phase 3: Trend Analysis & Advanced Reporting (Detailed Plan)
+
+Phase 3 will focus on hardening trend analysis, delivering production-ready export/reporting, and integrating additional auth provider options (Google OAuth) so users have flexible sign-in methods.
+
+Key goals:
+
+- Integrate Google OAuth provider alongside existing Email/Password sign-in (Firebase Authentication providers). Ensure smooth account linking and migration for existing users.
+- Harden trend analytics with configurable granularity (daily/weekly/monthly), smoothing options, and multi-series comparisons (categories vs. totals).
+- Make server export production-ready:
+  - Move large exports to asynchronous background jobs (e.g., queue + worker), store CSV output temporarily, and provide time-limited download links.
+  - Add rate limiting, request quotas, and monitoring for export endpoints.
+  - Add CSV format versioning and optional export schemas (transactions only, aggregated summaries, category breakdowns).
+- Add comprehensive tests:
+  - Unit tests for aggregation utilities (date bucketing, grouping, totals).
+  - Integration tests for the export route using mongodb-memory-server and mocked Firebase Admin verification.
+  - E2E tests for the client flow (optional, via a test Firebase project or mocks).
+- UX & admin improvements:
+  - Dashboard UI for report generation (date range, granularity, export type), progress indicator for async exports, and notifications when exports are ready.
+  - Admin endpoints and metrics for export usage and failures.
+
+Implementation tasks (rough order):
+
+1. Add Google OAuth provider in `client/src/lib/firebase.ts` + update `auth-context.tsx` to handle provider sign-in flows and account linking.
+2. Implement background export job system (choose lightweight queue: BullMQ / Bee-Queue / simple worker process) and endpoints to create export jobs and retrieve results.
+3. Create and run unit + integration tests for aggregation and export functionality; wire tests into CI.
+4. Implement server-side rate-limiting and export quotas; add monitoring/alerting hooks.
+5. Expand dashboard with export management UI and progress tracking.
+6. Prepare deployment checklist: secure service account handling, CI secrets, and migration notes.
+
+Acceptance criteria for Phase 3:
+
+- Google OAuth sign-in + account linking works for new and existing users without data loss.
+- Export flows for large datasets operate asynchronously, with secure, time-limited downloadable artifacts and telemetry for success/failure rates.
+- Aggregation utilities have unit tests with >90% coverage for core behaviors (bucketing, totals).
+
+---
+
+## Short-term Roadmap Additions (requested)
+
+### Phase 3: OAuth Integration
+
+- Google Sign-In (most popular)
+- GitHub Sign-In (developer-friendly)
+- Social auth buttons
+
+### Phase 4: Server-Side Security
+
+- Firebase Admin SDK integration
+- Token verification middleware
+- Secure API endpoints
+- User authorization checks
+
+### Phase 5: Advanced Features
+
+- User profile management
+- Data export/import
+- Advanced analytics (consider Firebase Analytics for telemetry)
+
+---

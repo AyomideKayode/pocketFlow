@@ -7,7 +7,12 @@ import { EmptyState } from '../../components/EmptyState';
 import { IncomeExpenseChart } from '../../components/charts/IncomeExpenseChart';
 import { CategoryBreakdownChart } from '../../components/charts/CategoryBreakdownChart';
 import { DateRangeFilter } from '../../components/DateRangeFilter';
-import { filterRecordsByDateRange, getDefaultDateRange } from '../../utils/chartDataTransforms';
+import { TrendLineChart } from '../../components/charts/TrendLineChart';
+import { exportRecordsToCSV } from '../../utils/exportUtils';
+import {
+  filterRecordsByDateRange,
+  getDefaultDateRange,
+} from '../../utils/chartDataTransforms';
 import './financial-record.css';
 
 export const Dashboard = () => {
@@ -24,11 +29,11 @@ export const Dashboard = () => {
 
   // Calculate totals using filtered records
   const totalIncome = filteredRecords
-    .filter(record => record.type === 'income')
+    .filter((record) => record.type === 'income')
     .reduce((acc, record) => acc + Math.abs(record.amount), 0);
 
   const totalExpenses = filteredRecords
-    .filter(record => record.type === 'expense')
+    .filter((record) => record.type === 'expense')
     .reduce((acc, record) => acc + record.amount, 0);
 
   const totalMonthlyBalance = totalIncome - totalExpenses;
@@ -85,20 +90,34 @@ export const Dashboard = () => {
         <div className='balance-summary'>
           <div className='balance-item income'>
             <span className='balance-label'>💰 Total Income:</span>
-            <span className='balance-value income'>${totalIncome.toFixed(2)}</span>
+            <span className='balance-value income'>
+              ${totalIncome.toFixed(2)}
+            </span>
           </div>
           <div className='balance-item expense'>
             <span className='balance-label'>💸 Total Expenses:</span>
-            <span className='balance-value expense'>${totalExpenses.toFixed(2)}</span>
+            <span className='balance-value expense'>
+              ${totalExpenses.toFixed(2)}
+            </span>
           </div>
           <div className='balance-item total'>
             <span className='balance-title'>Net Balance:</span>
-            <span className={`balance-amount ${totalMonthlyBalance >= 0 ? 'positive' : 'negative'}`}>
+            <span
+              className={`balance-amount ${totalMonthlyBalance >= 0 ? 'positive' : 'negative'
+                }`}
+            >
               ${totalMonthlyBalance.toFixed(2)}
             </span>
           </div>
         </div>
-        <p style={{ textAlign: 'center', color: '#b0b0b0', fontSize: '0.9rem', marginTop: '0.5rem' }}>
+        <p
+          style={{
+            textAlign: 'center',
+            color: '#b0b0b0',
+            fontSize: '0.9rem',
+            marginTop: '0.5rem',
+          }}
+        >
           *Based on selected time period
         </p>
       </div>
@@ -106,13 +125,38 @@ export const Dashboard = () => {
       {/* Charts Section */}
       <div className='charts-container'>
         <h2>Financial Analytics</h2>
-        <DateRangeFilter
-          selectedRange={dateRange}
-          onDateRangeChange={setDateRange}
-        />
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: '1rem',
+            flexWrap: 'wrap',
+          }}
+        >
+          <DateRangeFilter
+            selectedRange={dateRange}
+            onDateRangeChange={setDateRange}
+          />
+          <div
+            style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}
+          >
+            <button
+              className='preset-btn'
+              onClick={() => exportRecordsToCSV(filteredRecords)}
+            >
+              Export CSV
+            </button>
+          </div>
+        </div>
+
         <div className='charts-grid'>
           <IncomeExpenseChart records={filteredRecords} />
           <CategoryBreakdownChart records={filteredRecords} />
+        </div>
+
+        <div style={{ marginTop: '1.5rem' }}>
+          <TrendLineChart records={filteredRecords} />
         </div>
       </div>
 
