@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../lib/firebase';
 import { useToast } from '../contexts/toast-context';
+import { useAuth } from '../contexts/auth-context';
 
 interface AuthFormsProps {
   isSignUp: boolean;
@@ -279,6 +280,30 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
       <h2>{isSignUp ? 'Create Account' : 'Sign In'}</h2>
 
       {error && <div className="error-message">{error}</div>}
+
+      {/* Google sign-in button */}
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
+        <button
+          type="button"
+          className="button google-btn"
+          onClick={async () => {
+            setLoading(true);
+            try {
+              const { signInWithGoogle } = await import('../lib/firebase');
+              await signInWithGoogle();
+              addToast('Signed in with Google', 'success');
+            } catch (err: any) {
+              console.error('Google sign-in error', err);
+              addToast(err?.message || 'Google sign-in failed', 'error');
+            } finally {
+              setLoading(false);
+            }
+          }}
+          disabled={loading}
+        >
+          Continue with Google
+        </button>
+      </div>
 
       <form onSubmit={handleSubmit} className="auth-form">
         {isSignUp && (

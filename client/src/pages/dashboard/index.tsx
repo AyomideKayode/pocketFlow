@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useAuth } from '../../contexts/auth-context';
+import { useToast } from '../../contexts/toast-context';
 import { FinancialRecordForm } from './financialRecordForm';
 import { FinancialRecordList } from './financialRecordList';
 import { useFinancialRecords } from '../../contexts/financial-record-context';
@@ -68,10 +69,31 @@ export const Dashboard = () => {
 
   return (
     <div className='dashboard-container fade-in'>
-      <h1>
-        Welcome to PocketFlow, {user?.displayName || user?.email?.split('@')[0]}
-        ! 💰
-      </h1>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h1>
+          Welcome to PocketFlow, {user?.displayName || user?.email?.split('@')[0]}! 💰
+        </h1>
+        <div>
+          {user && (
+            <button
+              className='preset-btn'
+              onClick={async () => {
+                try {
+                  const { linkGoogleAccount } = await import('../../lib/firebase');
+                  await linkGoogleAccount();
+                  // show toast
+                  const { useToast: _u } = await import('../../contexts/toast-context');
+                } catch (err) {
+                  console.error('Link Google failed', err);
+                  alert('Link Google failed: ' + (err as any)?.message || err);
+                }
+              }}
+            >
+              Link Google Account
+            </button>
+          )}
+        </div>
+      </div>
       <p
         style={{
           textAlign: 'center',
