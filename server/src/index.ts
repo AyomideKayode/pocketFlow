@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express, { type Express } from 'express';
 import mongoose from 'mongoose';
 import financialRecordRouter from './routes/financial-records.js';
+import reportsRouter from './routes/reports.js';
 import cors from 'cors';
 
 const app: Express = express();
@@ -34,8 +35,9 @@ mongoose.connect(mongoURI)
   });
 
 app.use('/financial-records', financialRecordRouter);
+app.use('/reports', reportsRouter);
 
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is up: ${PORT}`);
 });

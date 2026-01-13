@@ -305,6 +305,28 @@ html {
   color: #5a67d8;
 }
 
+/* Forgot Password Specific Styles */
+.forgot-password-description {
+  color: #b0b0b0;
+  text-align: center;
+  margin: 0 0 2rem 0;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.forgot-password-link {
+  margin-top: 1rem;
+}
+
+.forgot-password-link .auth-link {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.forgot-password-link .auth-link:hover {
+  opacity: 1;
+}
+
 .error-message {
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid #ef4444;
