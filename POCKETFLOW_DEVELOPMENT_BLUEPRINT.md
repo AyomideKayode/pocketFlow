@@ -174,16 +174,36 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 
 ## Planned Phases & Next Steps
 
-### **Phase 6: Quality Assurance & CI/CD (Current Priority)**
+### **Phase 6: Quality Assurance & CI/CD** ✅ COMPLETED (Foundation)
 
 - **Features:**
-  - Comprehensive Unit and Integration Testing (Vitest)
-  - End-to-End Testing (Playwright)
-  - CI/CD Pipelines (GitHub Actions)
-- **Implementation Plan:**
-  - Install and configure Vitest for Client and Server
-  - Set up Playwright for critical user flows
-  - Create GitHub Actions workflows for automated testing on PRs
+
+  - **Testing Infrastructure:**
+    - **Client-Side:** Vitest + React Testing Library configured with jsdom environment.
+    - **Server-Side:** Vitest + Supertest for API integration testing.
+    - **End-to-End (E2E):** Playwright setup for critical user flow verification (Auth redirects).
+  - **CI/CD Pipeline:**
+    - GitHub Actions workflow (`.github/workflows/ci.yml`) created.
+    - Automates linting, building, and testing for both client and server on every push/PR.
+  - **Frontend Polish:**
+    - Refined Navbar logic to hide redundant "Sign In" button on Auth page.
+    - Enhanced Financial Record Form with split Income/Expense category lists.
+
+- **Implementation Details:**
+
+  - **Refactoring for Testability:**
+    - Separated Server app logic (`server/src/app.ts`) from entry point (`server/src/index.ts`) to allow supertest integration without port conflicts.
+  - **Configuration:**
+    - `client/vite.config.ts` updated to support test environment.
+    - `playwright.config.ts` added for headless browser testing.
+
+- **Challenges Encountered & Solutions:**
+  - **Challenge:** Configuring Vite/Vitest for a React + TypeScript project.
+  - **Solution:** Added specific `test` configuration in `vite.config.ts` and created a `setup.ts` file for global test environments (jsdom).
+  - **Challenge:** Testing Express API without starting the server.
+  - **Solution:** Refactored `index.ts` to export the `app` instance, allowing Supertest to wrap it dynamically.
+
+---
 
 ### **Phase 2C: Trend Analysis & Advanced Reporting (Completion)**
 
@@ -323,6 +343,7 @@ interface FinancialRecord {
 - _Last updated: January 2, 2026 | Current Phase: 2B (Complete) | Next Phase: 2C (Trend Analysis & Advanced Reporting)_
 - _Last updated: January 13, 2026 | Current Phase: 2C (Trend Analysis & Secure Export prototype) | Next Phase: 3 (Trend Analysis & Advanced Reporting)_
 - _Last updated: January 14, 2026 | Current Phase: Refactoring & QA | Next Phase: 6 (Testing & CI/CD)_
+- _Last updated: January 20, 2026 | Current Phase: 6 (QA & CI/CD Foundation Established) | Next Phase: 2C (Trend Analysis & Advanced Reporting - Completion)_
 
 ---
 

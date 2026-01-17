@@ -10,5 +10,5 @@ test('redirects to auth if not logged in', async ({ page }) => {
   // Should redirect to /auth
   await expect(page).toHaveURL(/.*\/auth/);
   // Check for the "Sign In" text on the button or header
-  await expect(page.getByRole('button', { name: 'Sign In' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Sign In', exact: true })).toBeVisible();
 });
