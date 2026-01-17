@@ -37,7 +37,7 @@ const Toast: React.FC<ToastProps> = ({ toast }) => {
     )}>
       <div className="flex items-center gap-3">
         <div className={cn("flex h-8 w-8 items-center justify-center rounded-full bg-slate-950/50")}>
-           {icons[toast.type]}
+          {icons[toast.type]}
         </div>
         <p className="text-sm font-medium text-slate-200">{toast.message}</p>
       </div>
@@ -55,7 +55,7 @@ export const ToastContainer: React.FC = () => {
   const { toasts } = useToast();
 
   return (
-    <div className="fixed top-4 right-4 z-[100] flex w-full max-w-sm flex-col gap-2 pointer-events-none">
+    <div className="fixed top-4 right-4 z-100 flex w-full max-w-sm flex-col gap-2 pointer-events-none">
       <div className="pointer-events-auto flex flex-col gap-2">
         {toasts.map((toast) => (
           <Toast key={toast.id} toast={toast} />

@@ -19,7 +19,9 @@ const COLORS = {
   expense: '#f43f5e', // rose-500
 };
 
-export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ records }) => {
+export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({
+  records,
+}) => {
   const totalIncome = records
     .filter((record) => record.type === 'income')
     .reduce((acc, record) => acc + Math.abs(record.amount), 0);
@@ -34,37 +36,39 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({ records 
   ].filter((item) => item.value > 0);
 
   return (
-    <ChartContainer title="Income vs Expenses">
+    <ChartContainer title='Income vs Expenses'>
       {data.length > 0 ? (
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveContainer width='100%' height='100%'>
           <PieChart>
             <Pie
               data={data}
-              cx="50%"
-              cy="50%"
+              cx='50%'
+              cy='50%'
               innerRadius={60}
               outerRadius={80}
               paddingAngle={5}
-              dataKey="value"
+              dataKey='value'
             >
               {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} stroke="none" />
+                <Cell key={`cell-${index}`} fill={entry.color} stroke='none' />
               ))}
             </Pie>
             <Tooltip
-              contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', color: '#f1f5f9' }}
+              contentStyle={{
+                backgroundColor: '#0f172a',
+                borderColor: '#1e293b',
+                color: '#f1f5f9',
+              }}
               itemStyle={{ color: '#f1f5f9' }}
-              formatter={(value: number | undefined) => value != null ? `$${value.toFixed(2)}` : ''}
+              formatter={(value: number | undefined) =>
+                value != null ? `$${value.toFixed(2)}` : ''
+              }
             />
-            <Legend
-               verticalAlign="bottom"
-               height={36}
-               iconType="circle"
-            />
+            <Legend verticalAlign='bottom' height={36} iconType='circle' />
           </PieChart>
         </ResponsiveContainer>
       ) : (
-        <div className="flex h-full flex-col items-center justify-center text-slate-500">
+        <div className='flex h-full flex-col items-center justify-center text-slate-500'>
           <p>No data available</p>
         </div>
       )}

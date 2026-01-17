@@ -85,22 +85,20 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
           <button
             key={preset.label}
             onClick={() => handlePresetClick(preset)}
-            className={`rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
-              selectedRange.label === preset.label
+            className={`rounded-md px-3 py-1.5 text-sm font-medium transition-all ${selectedRange.label === preset.label
                 ? 'bg-slate-700 text-white shadow-sm'
                 : 'text-slate-400 hover:text-slate-200'
-            }`}
+              }`}
           >
             {preset.label}
           </button>
         ))}
         <button
           onClick={() => setShowCustom(!showCustom)}
-          className={`relative flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
-            showCustom || selectedRange.label === 'Custom Range'
+          className={`relative flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium transition-all ${showCustom || selectedRange.label === 'Custom Range'
               ? 'bg-slate-700 text-white shadow-sm'
               : 'text-slate-400 hover:text-slate-200'
-          }`}
+            }`}
         >
           <Calendar className="h-4 w-4" />
           <span>Custom</span>

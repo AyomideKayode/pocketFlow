@@ -7,7 +7,7 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Legend
+  Legend,
 } from 'recharts';
 import { ChartContainer } from './ChartContainer';
 import { type FinancialRecord } from '../../contexts/financial-record-context';
@@ -16,7 +16,9 @@ interface CategoryBreakdownChartProps {
   records: FinancialRecord[];
 }
 
-export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({ records }) => {
+export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({
+  records,
+}) => {
   const categoryData = records.reduce(
     (acc: Record<string, { income: number; expense: number }>, record) => {
       if (!acc[record.category]) {
@@ -29,7 +31,7 @@ export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({ 
       }
       return acc;
     },
-    {}
+    {},
   );
 
   const data = Object.entries(categoryData)
@@ -38,35 +40,64 @@ export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({ 
       income: amounts.income,
       expense: amounts.expense,
     }))
-    .sort((a, b) => (b.income + b.expense) - (a.income + a.expense))
+    .sort((a, b) => b.income + b.expense - (a.income + a.expense))
     .slice(0, 6); // Limit to top 6 categories for cleaner UI
 
   return (
-    <ChartContainer title="Spending by Category">
+    <ChartContainer title='Spending by Category'>
       {data.length > 0 ? (
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} layout="vertical" margin={{ top: 5, right: 30, left: 40, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" horizontal={false} />
-            <XAxis type="number" stroke="#64748b" fontSize={12} tickFormatter={(val) => `$${val}`} />
+        <ResponsiveContainer width='100%' height='100%'>
+          <BarChart
+            data={data}
+            layout='vertical'
+            margin={{ top: 5, right: 30, left: 40, bottom: 5 }}
+          >
+            <CartesianGrid
+              strokeDasharray='3 3'
+              stroke='#1e293b'
+              horizontal={false}
+            />
+            <XAxis
+              type='number'
+              stroke='#64748b'
+              fontSize={12}
+              tickFormatter={(val) => `$${val}`}
+            />
             <YAxis
-              dataKey="category"
-              type="category"
-              stroke="#64748b"
+              dataKey='category'
+              type='category'
+              stroke='#64748b'
               fontSize={12}
               width={80}
               tickLine={false}
             />
             <Tooltip
               cursor={{ fill: '#1e293b', opacity: 0.5 }}
-              contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', color: '#f1f5f9' }}
+              contentStyle={{
+                backgroundColor: '#0f172a',
+                borderColor: '#1e293b',
+                color: '#f1f5f9',
+              }}
             />
             <Legend />
-            <Bar dataKey="income" name="Income" fill="#10b981" radius={[0, 4, 4, 0]} barSize={20} />
-            <Bar dataKey="expense" name="Expense" fill="#f43f5e" radius={[0, 4, 4, 0]} barSize={20} />
+            <Bar
+              dataKey='income'
+              name='Income'
+              fill='#10b981'
+              radius={[0, 4, 4, 0]}
+              barSize={20}
+            />
+            <Bar
+              dataKey='expense'
+              name='Expense'
+              fill='#f43f5e'
+              radius={[0, 4, 4, 0]}
+              barSize={20}
+            />
           </BarChart>
         </ResponsiveContainer>
       ) : (
-        <div className="flex h-full flex-col items-center justify-center text-slate-500">
+        <div className='flex h-full flex-col items-center justify-center text-slate-500'>
           <p>No data available</p>
         </div>
       )}

@@ -16,9 +16,9 @@ def verify_auth_page(page: Page):
     print(f"Body HTML: {body_html[:500]}...")
 
     if page.url.rstrip('/') == "http://localhost:5173":
-         expect(page.get_by_text("Dashboard")).to_be_visible(timeout=5000)
+        expect(page.get_by_text("Dashboard")).to_be_visible(timeout=5000)
     else:
-         expect(page.get_by_role("heading", name="Welcome back")).to_be_visible(timeout=5000)
+        expect(page.get_by_role("heading", name="Welcome back")).to_be_visible(timeout=5000)
 
     page.screenshot(path="verification/auth_page.png")
 

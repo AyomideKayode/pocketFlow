@@ -473,7 +473,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
 
         <button
           type="submit"
-          className="w-full rounded-md bg-gradient-to-r from-emerald-500 to-emerald-600 px-4 py-2 text-sm font-medium text-white hover:from-emerald-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 disabled:opacity-50 transition-all shadow-lg shadow-emerald-900/20"
+          className="w-full rounded-md bg-linear-to-r from-emerald-500 to-emerald-600 px-4 py-2 text-sm font-medium text-white hover:from-emerald-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 disabled:opacity-50 transition-all shadow-lg shadow-emerald-900/20"
           disabled={loading || Object.keys(fieldErrors).length > 0}
         >
           {loading ? (

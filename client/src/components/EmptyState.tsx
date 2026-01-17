@@ -27,7 +27,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   return (
     <div className="flex flex-col items-center justify-center p-12 text-center animate-in fade-in zoom-in duration-500">
       <div className={`mb-6 text-6xl animate-bounce-slow ${variantColors[variant]}`}>
-         {icon}
+        {icon}
       </div>
 
       <h3 className="mb-2 text-xl font-bold text-white md:text-2xl">{title}</h3>
