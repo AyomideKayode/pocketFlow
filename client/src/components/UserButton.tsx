@@ -48,7 +48,11 @@ export const UserButton: React.FC = () => {
     } catch (err: unknown) {
       console.error('Error linking Google account:', err);
       const error = err as { code?: string; message?: string };
-      if (error.code === 'auth/credential-already-in-use') {
+      if (error.code === 'auth/popup-closed-by-user') {
+        addToast('Linking was cancelled.', 'error');
+      } else if (error.code === 'auth/popup-blocked') {
+        addToast('Popup was blocked. Please allow popups and try again.', 'error');
+      } else if (error.code === 'auth/credential-already-in-use') {
         addToast('This Google account is already linked to another user.', 'error');
       } else {
         addToast('Failed to link Google account.', 'error');
