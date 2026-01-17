@@ -174,16 +174,26 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 
 ## Planned Phases & Next Steps
 
-### **Phase 2C: Trend Analysis & Advanced Reporting**
+### **Phase 6: Quality Assurance & CI/CD (Current Priority)**
 
 - **Features:**
-  - Line charts for income/expense trends over time
-  - Monthly/quarterly/yearly summaries
-  - Export data (CSV, PDF)
+  - Comprehensive Unit and Integration Testing (Vitest)
+  - End-to-End Testing (Playwright)
+  - CI/CD Pipelines (GitHub Actions)
 - **Implementation Plan:**
-  - Extend chart utilities for time series
-  - Add export endpoints to backend
-  - UI for report generation and download
+  - Install and configure Vitest for Client and Server
+  - Set up Playwright for critical user flows
+  - Create GitHub Actions workflows for automated testing on PRs
+
+### **Phase 2C: Trend Analysis & Advanced Reporting (Completion)**
+
+- **Features:**
+  - Harden trend analysis (currently prototype)
+  - Production-ready export background jobs
+  - Advanced filtering
+- **Implementation Plan:**
+  - Refine chart components
+  - Implement job queue for exports
 
 ### **Phase 4: Budgeting & Goals**
 
@@ -206,17 +216,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
   - Dynamic imports for chart modules
   - Analyze and optimize MongoDB queries
   - Lighthouse audits and improvements
-
-### **Phase 6: Production Readiness & QA**
-
-- **Features:**
-  - End-to-end and unit testing
-  - Accessibility and mobile UX polish
-  - Deployment scripts and monitoring
-- **Implementation Plan:**
-  - Add Jest/React Testing Library tests
-  - Manual and automated accessibility checks
-  - Vercel/Netlify deployment, error monitoring
 
 ---
 
@@ -323,6 +322,7 @@ interface FinancialRecord {
 
 - _Last updated: January 2, 2026 | Current Phase: 2B (Complete) | Next Phase: 2C (Trend Analysis & Advanced Reporting)_
 - _Last updated: January 13, 2026 | Current Phase: 2C (Trend Analysis & Secure Export prototype) | Next Phase: 3 (Trend Analysis & Advanced Reporting)_
+- _Last updated: January 14, 2026 | Current Phase: Refactoring & QA | Next Phase: 6 (Testing & CI/CD)_
 
 ---
 

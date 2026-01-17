@@ -1,22 +1,7 @@
-import 'dotenv/config';
-import express, { type Express } from 'express';
 import mongoose from 'mongoose';
-import financialRecordRouter from './routes/financial-records.js';
-import reportsRouter from './routes/reports.js';
-import cors from 'cors';
+import app from './app.js';
 
-const app: Express = express();
 const PORT = process.env.PORT || 3001;
-
-app.use(express.json()); // Middleware to parse JSON bodies
-app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5173', 
-    'https://pocket-flow-kay.vercel.app'
-  ],
-  credentials: true
-})); // Enable CORS for all routes
 
 // Connect to MongoDB
 const mongoURI = process.env.MONGODB_URI;
@@ -28,16 +13,11 @@ if (!mongoURI) {
 
 mongoose.connect(mongoURI)
   .then(() => {
-    console.log('Connected to MongoDB')
+    console.log('Connected to MongoDB');
+    app.listen(PORT, () => {
+      console.log(`Server is up: ${PORT}`);
+    });
   })
   .catch((error) => {
     console.error('Error connecting to MongoDB:', error);
   });
-
-app.use('/financial-records', financialRecordRouter);
-app.use('/reports', reportsRouter);
-
-// Start the server
-app.listen(PORT, () => {
-  console.log(`Server is up: ${PORT}`);
-});

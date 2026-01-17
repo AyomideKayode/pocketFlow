@@ -1,9 +1,36 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/auth-context';
 import { useFinancialRecords } from '../../contexts/financial-record-context';
 import { DollarSign, Tag, CreditCard, FileText } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+
+const INCOME_CATEGORIES = [
+  'Salary',
+  'Freelance',
+  'Investments',
+  'Crypto',
+  'Dividends',
+  'Rental Income',
+  'Side Hustle',
+  'Gifts',
+  'Other',
+];
+
+const EXPENSE_CATEGORIES = [
+  'Rent/Housing',
+  'Groceries',
+  'Utilities',
+  'Transportation',
+  'Entertainment',
+  'Dining Out',
+  'Health',
+  'Insurance',
+  'Shopping',
+  'Debt',
+  'Education',
+  'Other',
+];
 
 function cn(...inputs: (string | undefined | null | false)[]) {
   return twMerge(clsx(inputs));
@@ -23,6 +50,11 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
   const [type, setType] = useState<'income' | 'expense'>('expense');
   const { addRecord } = useFinancialRecords();
   const { user } = useAuth();
+
+  // Reset category when type changes to avoid invalid categories for the type
+  useEffect(() => {
+    setCategory('');
+  }, [type]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -116,13 +148,13 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
               <option value='' disabled>
                 Select Category
               </option>
-              <option value='Food'>Food</option>
-              <option value='Rent'>Rent</option>
-              <option value='Salary'>Salary</option>
-              <option value='Utilities'>Utilities</option>
-              <option value='Transportation'>Transportation</option>
-              <option value='Entertainment'>Entertainment</option>
-              <option value='Other'>Other</option>
+              {(type === 'income' ? INCOME_CATEGORIES : EXPENSE_CATEGORIES).map(
+                (cat) => (
+                  <option key={cat} value={cat}>
+                    {cat}
+                  </option>
+                ),
+              )}
             </select>
           </div>
         </div>

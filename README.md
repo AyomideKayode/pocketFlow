@@ -146,9 +146,9 @@ PocketFlow is being built in distinct phases to ensure stability and code qualit
 
 ### 🔮 Future Direction
 
+- **Phase 6: Quality Assurance (Current Priority)**: Comprehensive Unit and E2E testing (Vitest + Playwright) and CI/CD pipelines.
 - **Phase 4: Budgeting & Goals**: Set monthly limits and savings targets.
 - **Phase 5: Performance**: Code splitting, lazy loading, and query optimization.
-- **Phase 6: Quality Assurance**: Comprehensive Unit and E2E testing (Vitest + Playwright) and CI/CD pipelines.
 
 For a detailed history of the development process, challenges, and architectural decisions, see the [Development Blueprint](./POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
 

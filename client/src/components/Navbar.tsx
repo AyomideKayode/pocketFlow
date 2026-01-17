@@ -1,10 +1,12 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/auth-context';
 import { UserButton } from './UserButton';
 import { Wallet } from 'lucide-react';
 
 export const Navbar = () => {
   const { user } = useAuth();
+  const location = useLocation();
+  const isAuthPage = location.pathname === '/auth';
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur supports-backdrop-filter:bg-slate-950/60">
@@ -23,12 +25,14 @@ export const Navbar = () => {
           {user ? (
             <UserButton />
           ) : (
-            <Link
-              to="/auth"
-              className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 transition-colors shadow-sm shadow-emerald-900/20"
-            >
-              Sign In
-            </Link>
+            !isAuthPage && (
+              <Link
+                to="/auth"
+                className="rounded-md bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 transition-colors shadow-sm shadow-emerald-900/20"
+              >
+                Sign In
+              </Link>
+            )
           )}
         </div>
       </div>
