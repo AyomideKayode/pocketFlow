@@ -17,25 +17,32 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   icon = '💰',
   variant = 'default',
 }) => {
+  const variantColors = {
+    default: 'text-emerald-500',
+    welcome: 'text-indigo-500',
+    search: 'text-slate-500',
+    error: 'text-rose-500',
+  };
+
   return (
-    <div className={`empty-state empty-state-${variant}`}>
-      <div className='empty-state-content'>
-        <div className='empty-state-icon'>{icon}</div>
-
-        <h3 className='empty-state-title'>{title}</h3>
-
-        <p className='empty-state-description'>{description}</p>
-
-        {actionText && onAction && (
-          <button
-            className='empty-state-action button'
-            onClick={onAction}
-            type='button'
-          >
-            {actionText}
-          </button>
-        )}
+    <div className="flex flex-col items-center justify-center p-12 text-center animate-in fade-in zoom-in duration-500">
+      <div className={`mb-6 text-6xl animate-bounce-slow ${variantColors[variant]}`}>
+         {icon}
       </div>
+
+      <h3 className="mb-2 text-xl font-bold text-white md:text-2xl">{title}</h3>
+
+      <p className="mb-8 max-w-md text-slate-400 text-sm md:text-base">{description}</p>
+
+      {actionText && onAction && (
+        <button
+          className="rounded-lg bg-emerald-600 px-6 py-3 font-semibold text-white transition-all hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-900/20 active:scale-95"
+          onClick={onAction}
+          type='button'
+        >
+          {actionText}
+        </button>
+      )}
     </div>
   );
 };

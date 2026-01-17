@@ -1,7 +1,7 @@
 import React from 'react';
 import {
-  LineChart,
-  Line,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   Tooltip,
@@ -19,8 +19,6 @@ interface TrendLineChartProps {
 
 export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
   const monthly = groupRecordsByMonth(records);
-
-  // Recharts expects array of objects with consistent keys
   const data = monthly.map((m) => ({
     month: m.month,
     income: Number(m.income.toFixed(2)),
@@ -28,39 +26,59 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
   }));
 
   return (
-    <ChartContainer title='Income & Expenses Over Time'>
-      <div style={{ width: '100%', height: 280 }}>
-        <ResponsiveContainer>
-          <LineChart
-            data={data}
-            margin={{ top: 10, right: 20, left: 0, bottom: 0 }}
-          >
-            <CartesianGrid strokeDasharray='3 3' stroke='#2b2b2b' />
-            <XAxis dataKey='month' stroke='#b0b0b0' />
-            <YAxis stroke='#b0b0b0' />
-            <Tooltip
-              formatter={(value: any) =>
-                value != null ? `$${Number(value).toFixed(2)}` : ''
-              }
-            />
-            <Legend />
-            <Line
-              type='monotone'
-              dataKey='income'
-              stroke='#22c55e'
-              strokeWidth={2}
-              dot={{ r: 3 }}
-            />
-            <Line
-              type='monotone'
-              dataKey='expense'
-              stroke='#ef4444'
-              strokeWidth={2}
-              dot={{ r: 3 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </div>
+    <ChartContainer title="Financial Trends">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart data={data} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+          <defs>
+            <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+            </linearGradient>
+            <linearGradient id="colorExpense" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.3} />
+              <stop offset="95%" stopColor="#f43f5e" stopOpacity={0} />
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} />
+          <XAxis
+            dataKey="month"
+            stroke="#64748b"
+            fontSize={12}
+            tickLine={false}
+            axisLine={false}
+          />
+          <YAxis
+            stroke="#64748b"
+            fontSize={12}
+            tickLine={false}
+            axisLine={false}
+            tickFormatter={(value) => `$${value}`}
+          />
+          <Tooltip
+            contentStyle={{ backgroundColor: '#0f172a', borderColor: '#1e293b', color: '#f1f5f9' }}
+            itemStyle={{ color: '#f1f5f9' }}
+          />
+          <Legend wrapperStyle={{ paddingTop: '20px' }} />
+          <Area
+            type="monotone"
+            dataKey="income"
+            stroke="#10b981"
+            fillOpacity={1}
+            fill="url(#colorIncome)"
+            name="Income"
+            strokeWidth={2}
+          />
+          <Area
+            type="monotone"
+            dataKey="expense"
+            stroke="#f43f5e"
+            fillOpacity={1}
+            fill="url(#colorExpense)"
+            name="Expenses"
+            strokeWidth={2}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
     </ChartContainer>
   );
 };
