@@ -1,69 +1,103 @@
-# React + TypeScript + Vite
+# PocketFlow Client 🎨
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The frontend application for PocketFlow, built with **React 19** and **TypeScript**, powered by **Vite**.
 
-Currently, two official plugins are available:
+## 🏗️ Architecture & Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The application follows a modular structure focusing on feature-based organization and shared utilities.
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+client/src/
+├── assets/         # Static assets (images, global styles)
+├── components/     # Reusable UI components
+│   ├── charts/     # Recharts visualizations (Pie, Bar, Line)
+│   └── ...
+├── contexts/       # React Context Providers
+│   ├── auth-context.tsx            # Firebase Auth state
+│   ├── financial-record-context.tsx # Data fetching & state
+│   └── toast-context.tsx           # Notification system
+├── lib/            # External library configurations (Firebase)
+├── pages/          # Route components
+│   ├── auth/       # Login/Register pages
+│   └── dashboard/  # Main application view
+├── utils/          # Helper functions
+│   ├── chartDataTransforms.ts # Data aggregation logic
+│   └── exportUtils.ts         # CSV export logic
+└── App.tsx         # Main router and layout
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🔑 Key Features & Implementation
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Authentication
+Managed via `auth-context.tsx` using Firebase Authentication.
+*   **Providers**: Email/Password, Google OAuth.
+*   **Persistence**: Handled automatically by Firebase SDK.
+*   **Protection**: `ProtectedRoute` wrapper ensures only authenticated users access the dashboard.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Dashboard & State
+Financial records are managed in `financial-record-context.tsx`.
+*   **Fetching**: Loads records associated with the logged-in User ID.
+*   **Updates**: Optimistic UI updates for adding/deleting records.
+*   **Validation**: Frontend typing ensures `income` or `expense` categorization.
+
+### Analytics
+Built with **Recharts**.
+*   **IncomeExpenseChart**: Pie chart for quick balance overview.
+*   **CategoryBreakdownChart**: Bar chart for spending habits.
+*   **TrendLineChart**: Line chart for historical data analysis.
+*   **Date Filtering**: All charts respond to the global date range filter.
+
+---
+
+## ⚙️ Configuration
+
+### Environment Variables
+Create a `.env` file in the `client/` directory with your Firebase configuration and Backend URL.
+
+```properties
+# Backend Connection
+VITE_API_BASE_URL=http://localhost:3001
+
+# Firebase Configuration
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_bucket.appspot.com
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
 ```
+
+### ESLint Configuration
+This project uses extended ESLint rules for type-aware linting.
+*   **Standard**: `tseslint.configs.recommended`
+*   **Strict**: `tseslint.configs.strictTypeChecked` (Optional, can be enabled in `eslint.config.js`)
+
+---
+
+## 📜 Available Scripts
+
+Run these commands from the `client/` directory:
+
+*   **`npm run dev`**: Starts the development server with HMR (Hot Module Replacement).
+*   **`npm run build`**: Compiles the TypeScript code and builds the production-ready bundle.
+*   **`npm run lint`**: Runs ESLint to catch code quality issues.
+*   **`npm run preview`**: Locally previews the production build.
+
+---
+
+## 🎨 Styling
+
+*   **CSS Modules**: Used for component-specific styles (e.g., `financial-record.css`).
+*   **Global Styles**: `App.css` and `index.css` define the dark theme variables and base typography.
+*   **Theme**: Dark mode by default (`#1a1a1a` background).
+
+---
+
+## 📦 Dependencies
+
+Major libraries used:
+*   `react`, `react-dom` (v19)
+*   `react-router-dom` (Routing)
+*   `firebase` (Auth)
+*   `recharts` (Visualization)
+*   `@tanstack/react-table` (Data Grids - *Future implementation*)
