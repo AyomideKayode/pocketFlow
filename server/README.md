@@ -1,50 +1,105 @@
-# pocketFlow — Server README
+# PocketFlow Server 🛡️
 
-This document describes the server-side CSV export feature that was prototyped during Phase 2C, why it was added, and considerations for a future production-ready implementation.
+The backend API for PocketFlow, built with **Node.js**, **Express**, and **MongoDB**. It handles data persistence, authentication verification, and report generation.
 
-## What the server export does (prototype)
+## 🏗️ Architecture & Structure
 
-- Endpoint: `GET /reports/export`
-- Authentication: requires a Firebase ID token in the `Authorization: Bearer <ID_TOKEN>` header; tokens are verified with the Firebase Admin SDK.
-- Query parameters supported: `start` (YYYY-MM-DD), `end` (YYYY-MM-DD), and `granularity` (optional: `daily|weekly|monthly`).
-- Behavior: verifies the token, finds the authenticated user's financial records in MongoDB, applies optional date filters, aggregates by the requested granularity (if provided), and streams a CSV response with appropriate `Content-Type` and `Content-Disposition` headers.
-- Implementation note: the prototype uses a Mongoose cursor to stream rows rather than loading the entire result set into memory.
+The server is organized into routes, schemas, and libraries.
 
-## Why server-side export can be useful
+```
+server/src/
+├── lib/
+│   └── firebaseAdmin.ts    # Firebase Admin SDK initialization
+├── routes/
+│   ├── financial-records.ts # CRUD operations for records
+│   └── reports.ts          # Aggregation and export endpoints
+├── schema/
+│   └── financial-records.ts # Mongoose model definition
+└── index.ts                # App entry point (CORS, DB connect)
+```
 
-- Security: the server verifies ID tokens and queries records by the authenticated user server-side — reduces risk of exposing other users' data compared with unauthenticated endpoints.
-- Scalability: streaming via a cursor reduces memory usage for large datasets compared to building a complete CSV in memory on the client or server.
-- Consistency: server-side aggregation ensures all clients receive consistent data formatting and reduces client-side CPU/logic for heavy aggregations.
+## 🔌 API Endpoints
 
-## Trade-offs & considerations before production
+### Financial Records (`/financial-records`)
 
-- Authentication: the server requires a Firebase service account (private key) to verify ID tokens. Do not commit service account JSON to the repo; provide it via secure environment variables (`FIREBASE_SERVICE_ACCOUNT_PATH` or `FIREBASE_SERVICE_ACCOUNT_JSON`) in CI/CD.
-- Rate limiting & abuse: implement rate limiting or require additional authorization (e.g., user roles, OTP) if exports are heavy or sensitive.
-- Privacy & compliance: exporting full financial records may require logging, user consent, or data retention policies depending on jurisdiction.
-- Pagination and partial exports: allow chunked exports or background export jobs for very large datasets; consider producing a time-limited pre-signed download link instead of synchronous streaming.
-- CSV format and encoding: support UTF-8 with BOM for compatibility, and document column schema/versioning for downstream consumers.
-- Monitoring: capture telemetry (export requests, sizes, durations) and error handling for long-running exports.
+*   `GET /getAllByUserId/:userId`: Retrieve all records for a specific user.
+*   `POST /`: Create a new financial record.
+    *   **Body**: `{ userId, date, description, amount, type, category, paymentMethod }`
+    *   **Validation**: `type` must be `'income'` or `'expense'`. `amount` is stored as positive.
+*   `PUT /:id`: Update an existing record.
+*   `DELETE /:id`: Delete a record.
 
-## Testing strategy (high level)
+### Reports (`/reports`)
 
-- Unit tests: test the aggregation helpers (date bucketing, totals, CSV row formatting) in isolation using deterministic sample records.
-- Integration tests: spin up a test instance of the server with an in-memory MongoDB (or a test database) and a mocked Firebase Admin (or use short-lived test tokens). Verify that `GET /reports/export` returns expected CSV content, correct headers, and status codes for valid/invalid tokens.
-- E2E tests: simulate a real client flow (sign in, create records, request export) to validate auth and end-to-end behaviour.
+*   `GET /export`: Stream a CSV export of user records.
+    *   **Auth**: Requires `Authorization: Bearer <ID_TOKEN>`.
+    *   **Query Params**: `start`, `end`, `granularity`.
 
-## Next steps to harden this feature
+---
 
-1. Add comprehensive unit and integration tests (see testing strategy)
-2. Add CI job to run typecheck, lint, and tests on branches/PRs
-3. Move export to background job if dataset sizes or export durations become large
-4. Add server-side rate limiting and request quotas
-5. Add monitoring and error alerts for export failures
+## 💾 Data Model
 
-## Where to look in the codebase
+**FinancialRecord Schema** (MongoDB)
 
-- Route implementation: `server/src/routes/reports.ts`
-- Firebase Admin helper: `server/src/lib/firebaseAdmin.ts`
-- Database models: `server/src/schema/financial-records.ts`
+```typescript
+interface FinancialRecord {
+  userId: string;         // Firebase UID
+  date: Date;
+  description: string;
+  amount: number;         // Always positive
+  type: 'income' | 'expense';
+  category: string;
+  paymentMethod: string;
+}
+```
 
-## Decision guidance
+---
 
-If you expect users to frequently export small-to-medium datasets, a secure synchronous streaming endpoint is acceptable. If exports are large, sensitive, or shared, prefer an asynchronous export job with background processing and secure, time-limited download links.
+## ⚙️ Configuration
+
+### Environment Variables
+Create a `.env` file in the `server/` directory.
+
+```properties
+# Database
+MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/pocketflow
+
+# Server Port
+PORT=3001
+
+# Firebase Admin SDK (Required for reports/auth verification)
+FIREBASE_SERVICE_ACCOUNT_PATH=./path/to/serviceAccountKey.json
+```
+
+**Note**: `FIREBASE_SERVICE_ACCOUNT_PATH` should point to your Firebase Service Account JSON file. Do not commit this file to version control.
+
+---
+
+## 📤 Server-Side Export (Feature Deep Dive)
+
+This section describes the CSV export feature prototyped during Phase 2C.
+
+### What it does
+*   **Endpoint**: `GET /reports/export`
+*   **Authentication**: Verifies Firebase ID token via Admin SDK.
+*   **Behavior**: Streams a CSV response using a Mongoose cursor to avoid loading large datasets into memory.
+
+### Why Server-Side?
+*   **Security**: Verifies tokens and queries strictly by authenticated user ID.
+*   **Scalability**: Streaming reduces memory footprint compared to client-side generation.
+*   **Consistency**: Centralized formatting logic.
+
+### Production Considerations
+*   **Rate Limiting**: Should be added to prevent abuse.
+*   **Background Jobs**: For extremely large datasets, consider moving to an async job queue (e.g., BullMQ) instead of synchronous streaming.
+*   **Service Account**: Ensure credentials are managed securely in production (e.g., via Secret Manager or strict env vars).
+
+---
+
+## 🧪 Testing Strategy (Planned)
+
+*   **Unit Tests**: Test aggregation helpers (date bucketing, totals).
+*   **Integration Tests**: Use in-memory MongoDB to test API endpoints.
+*   **E2E Tests**: Validate full user flows.
+
+See the root `README.md` for the full development roadmap.
