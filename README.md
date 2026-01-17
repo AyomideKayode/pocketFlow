@@ -143,12 +143,13 @@ PocketFlow is being built in distinct phases to ensure stability and code qualit
 - **Phase 2B: Visualization**: Added Recharts for spending breakdowns and date range filtering.
 - **Phase 2C: Reporting**: Implemented CSV exports and Trend Analysis charts.
 - **Phase 3: OAuth Integration**: Added Google Sign-In and account linking capabilities.
+- **Phase 6: Quality Assurance**: Established Testing Infrastructure (Vitest, Playwright) and CI/CD Pipelines (GitHub Actions).
 
 ### 🔮 Future Direction
 
+- **Phase 2C: Reporting (Completion)**: Finalize advanced reporting features and automated exports.
 - **Phase 4: Budgeting & Goals**: Set monthly limits and savings targets.
 - **Phase 5: Performance**: Code splitting, lazy loading, and query optimization.
-- **Phase 6: Quality Assurance**: Comprehensive Unit and E2E testing (Vitest + Playwright) and CI/CD pipelines.
 
 For a detailed history of the development process, challenges, and architectural decisions, see the [Development Blueprint](./POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
 
