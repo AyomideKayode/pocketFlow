@@ -6,7 +6,7 @@ The frontend application for PocketFlow, built with **React 19** and **TypeScrip
 
 The application follows a modular structure focusing on feature-based organization and shared utilities.
 
-```
+```sh
 client/src/
 ├── assets/         # Static assets (images, global styles)
 ├── components/     # Reusable UI components
@@ -29,29 +29,36 @@ client/src/
 ## 🔑 Key Features & Implementation
 
 ### Authentication
+
 Managed via `auth-context.tsx` using Firebase Authentication.
-*   **Providers**: Email/Password, Google OAuth.
-*   **Persistence**: Handled automatically by Firebase SDK.
-*   **Protection**: `ProtectedRoute` wrapper ensures only authenticated users access the dashboard.
+
+- **Providers**: Email/Password, Google OAuth.
+- **Persistence**: Handled automatically by Firebase SDK.
+- **Protection**: `ProtectedRoute` wrapper ensures only authenticated users access the dashboard.
 
 ### Dashboard & State
+
 Financial records are managed in `financial-record-context.tsx`.
-*   **Fetching**: Loads records associated with the logged-in User ID.
-*   **Updates**: Optimistic UI updates for adding/deleting records.
-*   **Validation**: Frontend typing ensures `income` or `expense` categorization.
+
+- **Fetching**: Loads records associated with the logged-in User ID.
+- **Updates**: Optimistic UI updates for adding/deleting records.
+- **Validation**: Frontend typing ensures `income` or `expense` categorization.
 
 ### Analytics
+
 Built with **Recharts**.
-*   **IncomeExpenseChart**: Pie chart for quick balance overview.
-*   **CategoryBreakdownChart**: Bar chart for spending habits.
-*   **TrendLineChart**: Line chart for historical data analysis.
-*   **Date Filtering**: All charts respond to the global date range filter.
+
+- **IncomeExpenseChart**: Pie chart for quick balance overview.
+- **CategoryBreakdownChart**: Bar chart for spending habits.
+- **TrendLineChart**: Line chart for historical data analysis.
+- **Date Filtering**: All charts respond to the global date range filter.
 
 ---
 
 ## ⚙️ Configuration
 
 ### Environment Variables
+
 Create a `.env` file in the `client/` directory with your Firebase configuration and Backend URL.
 
 ```properties
@@ -68,9 +75,11 @@ VITE_FIREBASE_APP_ID=your_app_id
 ```
 
 ### ESLint Configuration
+
 This project uses extended ESLint rules for type-aware linting.
-*   **Standard**: `tseslint.configs.recommended`
-*   **Strict**: `tseslint.configs.strictTypeChecked` (Optional, can be enabled in `eslint.config.js`)
+
+- **Standard**: `tseslint.configs.recommended`
+- **Strict**: `tseslint.configs.strictTypeChecked` (Optional, can be enabled in `eslint.config.js`)
 
 ---
 
@@ -78,26 +87,27 @@ This project uses extended ESLint rules for type-aware linting.
 
 Run these commands from the `client/` directory:
 
-*   **`npm run dev`**: Starts the development server with HMR (Hot Module Replacement).
-*   **`npm run build`**: Compiles the TypeScript code and builds the production-ready bundle.
-*   **`npm run lint`**: Runs ESLint to catch code quality issues.
-*   **`npm run preview`**: Locally previews the production build.
+- **`npm run dev`**: Starts the development server with HMR (Hot Module Replacement).
+- **`npm run build`**: Compiles the TypeScript code and builds the production-ready bundle.
+- **`npm run lint`**: Runs ESLint to catch code quality issues.
+- **`npm run preview`**: Locally previews the production build.
 
 ---
 
 ## 🎨 Styling
 
-*   **CSS Modules**: Used for component-specific styles (e.g., `financial-record.css`).
-*   **Global Styles**: `App.css` and `index.css` define the dark theme variables and base typography.
-*   **Theme**: Dark mode by default (`#1a1a1a` background).
+- **CSS Modules**: Used for component-specific styles (e.g., `financial-record.css`).
+- **Global Styles**: `App.css` and `index.css` define the dark theme variables and base typography.
+- **Theme**: Dark mode by default (`#1a1a1a` background).
 
 ---
 
 ## 📦 Dependencies
 
 Major libraries used:
-*   `react`, `react-dom` (v19)
-*   `react-router-dom` (Routing)
-*   `firebase` (Auth)
-*   `recharts` (Visualization)
-*   `@tanstack/react-table` (Data Grids - *Future implementation*)
+
+- `react`, `react-dom` (v19)
+- `react-router-dom` (Routing)
+- `firebase` (Auth)
+- `recharts` (Visualization)
+- `@tanstack/react-table` (Data Grids - _Future implementation_)
