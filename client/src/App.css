@@ -120,6 +120,51 @@ html {
   box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
 }
 
+.sign-in-container .google-button {
+  background: #ffffff;
+  color: #3c4043;
+  border: 1px solid #dadce0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0 0 1.5rem 0;
+}
+
+.sign-in-container .google-button:hover {
+  background-color: #f7f8f8;
+  box-shadow: 0 1px 3px rgba(60, 64, 67, 0.3);
+  transform: translateY(-1px);
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #a0a0a0;
+  font-size: 14px;
+  font-weight: 500;
+  width: 100%;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #505050;
+}
+
+.auth-divider::before {
+  margin-right: 1em;
+}
+
+.auth-divider::after {
+  margin-left: 1em;
+}
+
 /* Custom Authentication Form Styling */
 .auth-container {
   min-width: 600px;
