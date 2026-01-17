@@ -3,9 +3,10 @@ import { useAuth } from '../contexts/auth-context';
 import { useToast } from '../contexts/toast-context';
 
 export const UserButton: React.FC = () => {
-  const { user, logout } = useAuth();
+  const { user, logout, linkGoogleAccount } = useAuth();
   const { addToast } = useToast();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLinking, setIsLinking] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
@@ -38,7 +39,29 @@ export const UserButton: React.FC = () => {
     }
   };
 
+  const handleLinkGoogle = async () => {
+    setIsLinking(true);
+    try {
+      await linkGoogleAccount();
+      addToast('Google account linked successfully!', 'success');
+      setIsDropdownOpen(false);
+    } catch (err: unknown) {
+      console.error('Error linking Google account:', err);
+      const error = err as { code?: string; message?: string };
+      if (error.code === 'auth/credential-already-in-use') {
+        addToast('This Google account is already linked to another user.', 'error');
+      } else {
+        addToast('Failed to link Google account.', 'error');
+      }
+    } finally {
+      setIsLinking(false);
+    }
+  };
+
   const displayName = user.displayName || user.email?.split('@')[0] || 'User';
+  const isGoogleLinked = user.providerData.some(
+    (provider) => provider.providerId === 'google.com'
+  );
 
   return (
     <div className='user-button-container' ref={dropdownRef}>
@@ -55,6 +78,17 @@ export const UserButton: React.FC = () => {
           <div className='user-info'>
             <p className='user-email'>{user.email}</p>
           </div>
+
+          {!isGoogleLinked && (
+            <button
+              onClick={handleLinkGoogle}
+              className='link-button'
+              disabled={isLinking}
+            >
+              {isLinking ? 'Linking...' : 'Link Google Account'}
+            </button>
+          )}
+
           <button onClick={handleLogout} className='logout-button'>
             Sign Out
           </button>

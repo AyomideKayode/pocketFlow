@@ -1,5 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getAuth, GoogleAuthProvider } from 'firebase/auth';
+import { getAuth, GoogleAuthProvider, linkWithPopup } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore'; // Optional for future features
 
 const firebaseConfig = {
@@ -28,4 +28,11 @@ export const getIdToken = async (): Promise<string | null> => {
   const user = auth.currentUser;
   if (!user) return null;
   return await user.getIdToken();
+};
+
+// Link current signed-in user with Google provider
+export const linkGoogleAccount = async () => {
+  const user = auth.currentUser;
+  if (!user) throw new Error('No authenticated user to link');
+  return linkWithPopup(user, googleProvider);
 };

@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail, signInWithPopup } from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  sendPasswordResetEmail,
+  signInWithPopup,
+} from 'firebase/auth';
 import { auth, googleProvider } from '../lib/firebase';
 import { useToast } from '../contexts/toast-context';
 
@@ -56,15 +62,39 @@ const getPasswordStrength = (password: string): PasswordStrength => {
 };
 
 const GoogleIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 18 18" xmlns="http://www.w3.org/2000/svg">
-    <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4" fillRule="evenodd"/>
-    <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.716H1.957v2.332A8.997 8.997 0 0 0 9 18z" fill="#34A853" fillRule="evenodd"/>
-    <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H1.957A8.996 8.996 0 0 0 0 9c0 1.452.448 2.797 1.237 3.922l2.727-2.213z" fill="#FBBC05" fillRule="evenodd"/>
-    <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 1.957 4.958L4.684 7.27C5.392 5.138 7.376 3.58 9 3.58z" fill="#EA4335" fillRule="evenodd"/>
+  <svg
+    width='18'
+    height='18'
+    viewBox='0 0 18 18'
+    xmlns='http://www.w3.org/2000/svg'
+  >
+    <path
+      d='M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z'
+      fill='#4285F4'
+      fillRule='evenodd'
+    />
+    <path
+      d='M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.716H1.957v2.332A8.997 8.997 0 0 0 9 18z'
+      fill='#34A853'
+      fillRule='evenodd'
+    />
+    <path
+      d='M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H1.957A8.996 8.996 0 0 0 0 9c0 1.452.448 2.797 1.237 3.922l2.727-2.213z'
+      fill='#FBBC05'
+      fillRule='evenodd'
+    />
+    <path
+      d='M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 1.957 4.958L4.684 7.27C5.392 5.138 7.376 3.58 9 3.58z'
+      fill='#EA4335'
+      fillRule='evenodd'
+    />
   </svg>
 );
 
-export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) => {
+export const AuthForms: React.FC<AuthFormsProps> = ({
+  isSignUp,
+  onToggleMode,
+}) => {
   const { addToast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -74,7 +104,12 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
-  const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>({ score: 0, feedback: '', suggestions: [], color: '#6b7280' });
+  const [passwordStrength, setPasswordStrength] = useState<PasswordStrength>({
+    score: 0,
+    feedback: '',
+    suggestions: [],
+    color: '#6b7280',
+  });
   const [isForgotPassword, setIsForgotPassword] = useState(false);
 
   // Real-time password strength calculation
@@ -150,20 +185,30 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
     try {
       if (isSignUp) {
         // Sign up new user
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password,
+        );
 
         // Update profile with display name
         if (firstName || lastName) {
           await updateProfile(userCredential.user, {
-            displayName: `${firstName} ${lastName}`.trim()
+            displayName: `${firstName} ${lastName}`.trim(),
           });
         }
 
-        addToast('Account created successfully! Welcome to PocketFlow!', 'success');
+        addToast(
+          'Account created successfully! Welcome to PocketFlow!',
+          'success',
+        );
       } else {
         // Sign in existing user
         await signInWithEmailAndPassword(auth, email, password);
-        addToast(`Welcome back${firstName ? `, ${firstName}` : ''}!`, 'success');
+        addToast(
+          `Welcome back${firstName ? `, ${firstName}` : ''}!`,
+          'success',
+        );
       }
     } catch (err: unknown) {
       const error = err as { code?: string; message?: string };
@@ -207,8 +252,11 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
 
       if (error.code === 'auth/popup-closed-by-user') {
         errorMessage = 'Sign in was cancelled';
-      } else if (error.code === 'auth/account-exists-with-different-credential') {
-        errorMessage = 'An account already exists with the same email address but different sign-in credentials';
+      } else if (
+        error.code === 'auth/account-exists-with-different-credential'
+      ) {
+        errorMessage =
+          'An account already exists with the same email address but different sign-in credentials';
       }
 
       setError(errorMessage);
@@ -230,7 +278,11 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
 
     try {
       await sendPasswordResetEmail(auth, email);
-      addToast('Password reset email sent! Check your inbox and follow the instructions.', 'success', { duration: 6000 });
+      addToast(
+        'Password reset email sent! Check your inbox and follow the instructions.',
+        'success',
+        { duration: 6000 },
+      );
       setIsForgotPassword(false);
       setEmail('');
     } catch (err: unknown) {
@@ -261,40 +313,43 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
   // Forgot Password UI
   if (isForgotPassword) {
     return (
-      <div className="auth-container">
+      <div className='auth-container'>
         <h2>Reset Your Password</h2>
 
-        <p className="forgot-password-description">
-          Enter your email address and we'll send you a link to reset your password.
+        <p className='forgot-password-description'>
+          Enter your email address and we'll send you a link to reset your
+          password.
         </p>
 
-        {error && <div className="error-message">{error}</div>}
+        {error && <div className='error-message'>{error}</div>}
 
-        <form onSubmit={(e) => { e.preventDefault(); handleForgotPassword(); }} className="auth-form">
-          <div className="form-field">
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleForgotPassword();
+          }}
+          className='auth-form'
+        >
+          <div className='form-field'>
             <label>Email:</label>
             <input
-              type="email"
+              type='email'
               value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
                 setError('');
               }}
               required
-              className="input"
-              placeholder="Enter your email"
+              className='input'
+              placeholder='Enter your email'
               disabled={loading}
             />
           </div>
 
-          <button
-            type="submit"
-            className="button"
-            disabled={loading || !email}
-          >
+          <button type='submit' className='button' disabled={loading || !email}>
             {loading ? (
-              <span className="loading-text">
-                <span className="spinner"></span>
+              <span className='loading-text'>
+                <span className='spinner'></span>
                 Sending Reset Email...
               </span>
             ) : (
@@ -303,8 +358,12 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
           </button>
         </form>
 
-        <div className="auth-toggle">
-          <button type="button" onClick={handleBackToSignIn} className="auth-link">
+        <div className='auth-toggle'>
+          <button
+            type='button'
+            onClick={handleBackToSignIn}
+            className='auth-link'
+          >
             ← Back to Sign In
           </button>
         </div>
@@ -313,14 +372,14 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
   }
 
   return (
-    <div className="auth-container">
-      <h2>{isSignUp ? 'Create Account' : 'Sign In'}</h2>
+    <div className='auth-container'>
+      <h2>{isSignUp ? 'Create An Account' : 'Choose Sign In Method'}</h2>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && <div className='error-message'>{error}</div>}
 
       <button
-        type="button"
-        className="google-button"
+        type='button'
+        className='google-button'
         onClick={handleGoogleSignIn}
         disabled={loading}
       >
@@ -328,17 +387,17 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
         <span>Sign in with Google</span>
       </button>
 
-      <div className="auth-divider">
+      <div className='auth-divider'>
         <span>OR</span>
       </div>
 
-      <form onSubmit={handleSubmit} className="auth-form">
+      <form onSubmit={handleSubmit} className='auth-form'>
         {isSignUp && (
-          <div className="form-row">
-            <div className="form-field form-field-half">
+          <div className='form-row'>
+            <div className='form-field form-field-half'>
               <label>First Name:</label>
               <input
-                type="text"
+                type='text'
                 value={firstName}
                 onChange={(e) => {
                   setFirstName(e.target.value);
@@ -346,14 +405,16 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
                 }}
                 required
                 className={`input ${fieldErrors.firstName ? 'input-error' : ''}`}
-                placeholder="Enter your first name"
+                placeholder='Enter your first name'
               />
-              {fieldErrors.firstName && <div className="field-error">{fieldErrors.firstName}</div>}
+              {fieldErrors.firstName && (
+                <div className='field-error'>{fieldErrors.firstName}</div>
+              )}
             </div>
-            <div className="form-field form-field-half">
+            <div className='form-field form-field-half'>
               <label>Last Name:</label>
               <input
-                type="text"
+                type='text'
                 value={lastName}
                 onChange={(e) => {
                   setLastName(e.target.value);
@@ -361,17 +422,19 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
                 }}
                 required
                 className={`input ${fieldErrors.lastName ? 'input-error' : ''}`}
-                placeholder="Enter your last name"
+                placeholder='Enter your last name'
               />
-              {fieldErrors.lastName && <div className="field-error">{fieldErrors.lastName}</div>}
+              {fieldErrors.lastName && (
+                <div className='field-error'>{fieldErrors.lastName}</div>
+              )}
             </div>
           </div>
         )}
 
-        <div className="form-field">
+        <div className='form-field'>
           <label>Email:</label>
           <input
-            type="email"
+            type='email'
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
@@ -379,16 +442,18 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
             }}
             required
             className={`input ${fieldErrors.email ? 'input-error' : ''}`}
-            placeholder="Enter your email"
+            placeholder='Enter your email'
           />
-          {fieldErrors.email && <div className="field-error">{fieldErrors.email}</div>}
+          {fieldErrors.email && (
+            <div className='field-error'>{fieldErrors.email}</div>
+          )}
         </div>
 
-        <div className="form-row">
-          <div className="form-field form-field-half">
+        <div className='form-row'>
+          <div className='form-field form-field-half'>
             <label>Password:</label>
             <input
-              type="password"
+              type='password'
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -396,33 +461,40 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
               }}
               required
               className={`input ${fieldErrors.password ? 'input-error' : ''}`}
-              placeholder="Enter your password"
+              placeholder='Enter your password'
               minLength={6}
             />
-            {fieldErrors.password && <div className="field-error">{fieldErrors.password}</div>}
+            {fieldErrors.password && (
+              <div className='field-error'>{fieldErrors.password}</div>
+            )}
 
             {isSignUp && password && (
-              <div className="password-strength">
-                <div className="strength-meter">
+              <div className='password-strength'>
+                <div className='strength-meter'>
                   <div
-                    className="strength-bar"
+                    className='strength-bar'
                     style={{
                       width: `${(passwordStrength.score / 5) * 100}%`,
-                      backgroundColor: passwordStrength.color
+                      backgroundColor: passwordStrength.color,
                     }}
                   ></div>
                 </div>
-                <div className="strength-feedback">
-                  <span className="strength-text" style={{ color: passwordStrength.color }}>
+                <div className='strength-feedback'>
+                  <span
+                    className='strength-text'
+                    style={{ color: passwordStrength.color }}
+                  >
                     {passwordStrength.feedback}
                   </span>
                   {passwordStrength.suggestions.length > 0 && (
-                    <div className="strength-suggestions">
-                      <span className="suggestions-label">To strengthen:</span>
+                    <div className='strength-suggestions'>
+                      <span className='suggestions-label'>To strengthen:</span>
                       <ul>
-                        {passwordStrength.suggestions.map((suggestion, index) => (
-                          <li key={index}>{suggestion}</li>
-                        ))}
+                        {passwordStrength.suggestions.map(
+                          (suggestion, index) => (
+                            <li key={index}>{suggestion}</li>
+                          ),
+                        )}
                       </ul>
                     </div>
                   )}
@@ -432,10 +504,10 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
           </div>
 
           {isSignUp && (
-            <div className="form-field form-field-half">
+            <div className='form-field form-field-half'>
               <label>Confirm Password:</label>
               <input
-                type="password"
+                type='password'
                 value={confirmPassword}
                 onChange={(e) => {
                   setConfirmPassword(e.target.value);
@@ -443,44 +515,48 @@ export const AuthForms: React.FC<AuthFormsProps> = ({ isSignUp, onToggleMode }) 
                 }}
                 required
                 className={`input ${fieldErrors.confirmPassword ? 'input-error' : ''}`}
-                placeholder="Confirm your password"
+                placeholder='Confirm your password'
                 minLength={6}
               />
-              {fieldErrors.confirmPassword && <div className="field-error">{fieldErrors.confirmPassword}</div>}
+              {fieldErrors.confirmPassword && (
+                <div className='field-error'>{fieldErrors.confirmPassword}</div>
+              )}
             </div>
           )}
         </div>
 
         <button
-          type="submit"
-          className="button"
+          type='submit'
+          className='button'
           disabled={loading || Object.keys(fieldErrors).length > 0}
         >
           {loading ? (
-            <span className="loading-text">
-              <span className="spinner"></span>
+            <span className='loading-text'>
+              <span className='spinner'></span>
               {isSignUp ? 'Creating Account...' : 'Signing In...'}
             </span>
+          ) : isSignUp ? (
+            'Sign Up'
           ) : (
-            isSignUp ? 'Sign Up' : 'Sign In'
+            'Sign In'
           )}
         </button>
       </form>
 
-      <div className="auth-toggle">
+      <div className='auth-toggle'>
         <p>
           {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
-          <button type="button" onClick={onToggleMode} className="auth-link">
+          <button type='button' onClick={onToggleMode} className='auth-link'>
             {isSignUp ? 'Sign In' : 'Sign Up'}
           </button>
         </p>
 
         {!isSignUp && (
-          <p className="forgot-password-link">
+          <p className='forgot-password-link'>
             <button
-              type="button"
+              type='button'
               onClick={() => setIsForgotPassword(true)}
-              className="auth-link"
+              className='auth-link'
             >
               Forgot your password?
             </button>
