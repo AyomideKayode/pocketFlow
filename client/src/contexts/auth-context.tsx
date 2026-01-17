@@ -7,12 +7,14 @@ interface AuthContextType {
   user: User | null;
   loading: boolean;
   logout: () => Promise<void>;
+  linkGoogleAccount: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
-  logout: async () => {},
+  logout: async () => { },
+  linkGoogleAccount: async () => { },
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -40,10 +42,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const linkGoogleAccount = async () => {
+    try {
+      await (await import('../lib/firebase')).linkGoogleAccount();
+    } catch (err) {
+      console.error('Link Google account failed', err);
+      throw err;
+    }
+  };
+
   const value = {
     user,
     loading,
     logout,
+    linkGoogleAccount,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
