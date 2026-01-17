@@ -13,21 +13,18 @@ import {
   filterRecordsByDateRange,
   getDefaultDateRange,
 } from '../../utils/chartDataTransforms';
-import './financial-record.css';
+import { TrendingUp, TrendingDown, DollarSign, Download, Plus } from 'lucide-react';
 
 export const Dashboard = () => {
   const { user } = useAuth();
   const { records } = useFinancialRecords();
-
-  // Date range state for filtering
   const [dateRange, setDateRange] = useState(getDefaultDateRange());
+  const [showAddForm, setShowAddForm] = useState(false);
 
-  // Filter records based on selected date range
   const filteredRecords = useMemo(() => {
     return filterRecordsByDateRange(records, dateRange);
   }, [records, dateRange]);
 
-  // Calculate totals using filtered records
   const totalIncome = filteredRecords
     .filter((record) => record.type === 'income')
     .reduce((acc, record) => acc + Math.abs(record.amount), 0);
@@ -38,132 +35,134 @@ export const Dashboard = () => {
 
   const totalMonthlyBalance = totalIncome - totalExpenses;
 
-  const scrollToForm = () => {
-    const formElement = document.querySelector('.form-container');
-    if (formElement) {
-      formElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  // Show welcome empty state for new users
+  // Initial Empty State for new users
   if (records.length === 0) {
     return (
-      <div className='dashboard-container fade-in'>
+      <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center">
         <EmptyState
           variant='welcome'
           icon='💰'
-          title={`Welcome to PocketFlow, ${user?.displayName || user?.email?.split('@')[0]
-            }!`}
+          title={`Welcome to PocketFlow, ${user?.displayName || user?.email?.split('@')[0]}!`}
           description='Start tracking your finances by adding your first financial record. You can log income, expenses, and monitor your spending patterns all in one place.'
           actionText='Add Your First Record'
-          onAction={scrollToForm}
+          onAction={() => setShowAddForm(true)}
         />
-        <div className='form-container'>
-          <h2>Add New Record</h2>
-          <FinancialRecordForm />
-        </div>
+        {showAddForm && (
+           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+              <div className="w-full max-w-lg rounded-xl border border-slate-800 bg-slate-900 p-6 shadow-2xl">
+                  <div className="mb-4 flex items-center justify-between">
+                     <h2 className="text-xl font-bold text-white">Add New Record</h2>
+                     <button onClick={() => setShowAddForm(false)} className="text-slate-400 hover:text-white">✕</button>
+                  </div>
+                  <FinancialRecordForm onSuccess={() => setShowAddForm(false)} />
+              </div>
+           </div>
+        )}
       </div>
     );
   }
 
   return (
-    <div className='dashboard-container fade-in'>
-      <h1>
-        Welcome to PocketFlow, {user?.displayName || user?.email?.split('@')[0]}
-        ! 💰
-      </h1>
-      <p
-        style={{
-          textAlign: 'center',
-          color: '#b0b0b0',
-          fontSize: '1.1rem',
-          marginBottom: '2rem',
-        }}
-      >
-        Manage your finances with ease
-      </p>
-      <div className='form-container'>
-        <h2>Add New Record</h2>
-        <FinancialRecordForm />
-      </div>
-      <div className='balance-container'>
-        <div className='balance-summary'>
-          <div className='balance-item income'>
-            <span className='balance-label'>💰 Total Income:</span>
-            <span className='balance-value income'>
-              ${totalIncome.toFixed(2)}
-            </span>
-          </div>
-          <div className='balance-item expense'>
-            <span className='balance-label'>💸 Total Expenses:</span>
-            <span className='balance-value expense'>
-              ${totalExpenses.toFixed(2)}
-            </span>
-          </div>
-          <div className='balance-item total'>
-            <span className='balance-title'>Net Balance:</span>
-            <span
-              className={`balance-amount ${totalMonthlyBalance >= 0 ? 'positive' : 'negative'
-                }`}
-            >
-              ${totalMonthlyBalance.toFixed(2)}
-            </span>
-          </div>
-        </div>
-        <p
-          style={{
-            textAlign: 'center',
-            color: '#b0b0b0',
-            fontSize: '0.9rem',
-            marginTop: '0.5rem',
-          }}
-        >
-          *Based on selected time period
-        </p>
-      </div>
+    <div className="space-y-8 animate-in fade-in duration-500">
+        {/* Header Section */}
+        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+           <div>
+              <h1 className="text-2xl font-bold tracking-tight text-white">Dashboard</h1>
+              <p className="text-slate-400">Overview of your financial health</p>
+           </div>
 
-      {/* Charts Section */}
-      <div className='charts-container'>
-        <h2>Financial Analytics</h2>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            gap: '1rem',
-            flexWrap: 'wrap',
-          }}
-        >
-          <DateRangeFilter
-            selectedRange={dateRange}
-            onDateRangeChange={setDateRange}
-          />
-          <div
-            style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}
-          >
-            <button
-              className='preset-btn'
-              onClick={() => exportRecordsToCSV(filteredRecords)}
-            >
-              Export CSV
-            </button>
-          </div>
+           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+              <DateRangeFilter selectedRange={dateRange} onDateRangeChange={setDateRange} />
+              <button
+                onClick={() => exportRecordsToCSV(filteredRecords)}
+                className="flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white"
+              >
+                <Download className="h-4 w-4" />
+                Export
+              </button>
+           </div>
         </div>
 
-        <div className='charts-grid'>
-          <IncomeExpenseChart records={filteredRecords} />
-          <CategoryBreakdownChart records={filteredRecords} />
+        {/* Stats Grid */}
+        <div className="grid gap-4 md:grid-cols-3">
+            <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 shadow-sm backdrop-blur-sm">
+               <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/10">
+                     <TrendingUp className="h-6 w-6 text-emerald-500" />
+                  </div>
+                  <div>
+                     <p className="text-sm font-medium text-slate-400">Total Income</p>
+                     <p className="text-2xl font-bold text-emerald-500">${totalIncome.toFixed(2)}</p>
+                  </div>
+               </div>
+            </div>
+
+            <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 shadow-sm backdrop-blur-sm">
+               <div className="flex items-center gap-4">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-rose-500/10">
+                     <TrendingDown className="h-6 w-6 text-rose-500" />
+                  </div>
+                  <div>
+                     <p className="text-sm font-medium text-slate-400">Total Expenses</p>
+                     <p className="text-2xl font-bold text-rose-500">${totalExpenses.toFixed(2)}</p>
+                  </div>
+               </div>
+            </div>
+
+            <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 shadow-sm backdrop-blur-sm">
+               <div className="flex items-center gap-4">
+                  <div className={`flex h-12 w-12 items-center justify-center rounded-full ${totalMonthlyBalance >= 0 ? 'bg-indigo-500/10' : 'bg-orange-500/10'}`}>
+                     <DollarSign className={`h-6 w-6 ${totalMonthlyBalance >= 0 ? 'text-indigo-500' : 'text-orange-500'}`} />
+                  </div>
+                  <div>
+                     <p className="text-sm font-medium text-slate-400">Net Balance</p>
+                     <p className={`text-2xl font-bold ${totalMonthlyBalance >= 0 ? 'text-indigo-500' : 'text-orange-500'}`}>
+                        ${totalMonthlyBalance.toFixed(2)}
+                     </p>
+                  </div>
+               </div>
+            </div>
         </div>
 
-        <div style={{ marginTop: '1.5rem' }}>
-          <TrendLineChart records={filteredRecords} />
+        {/* Charts Section */}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 h-auto">
+           <div className="lg:col-span-4 h-full">
+              <TrendLineChart records={filteredRecords} />
+           </div>
+           <div className="lg:col-span-3 h-full">
+              <IncomeExpenseChart records={filteredRecords} />
+           </div>
         </div>
-      </div>
 
-      <div className='list-container'>
-        <h2>Your Financial Records</h2>
-        <FinancialRecordList />
-      </div>
+        <div className="grid gap-4 md:grid-cols-1">
+            <CategoryBreakdownChart records={filteredRecords} />
+        </div>
+
+        {/* Transactions Section */}
+        <div className="space-y-4 pt-4">
+           <div className="flex items-center justify-between">
+              <h2 className="text-xl font-semibold text-white">Recent Transactions</h2>
+              <button
+                 onClick={() => setShowAddForm(!showAddForm)}
+                 className="flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 transition-colors shadow-lg shadow-emerald-900/20"
+              >
+                 <Plus className="h-4 w-4" />
+                 Add Transaction
+              </button>
+           </div>
+
+           {showAddForm && (
+              <div className="rounded-xl border border-slate-800 bg-slate-900/50 p-6 animate-in slide-in-from-top-4 backdrop-blur-sm">
+                  <div className="mb-4 flex items-center justify-between">
+                     <h3 className="text-lg font-medium text-white">Add New Record</h3>
+                     <button onClick={() => setShowAddForm(false)} className="text-slate-400 hover:text-white">Close</button>
+                  </div>
+                  <FinancialRecordForm onSuccess={() => setShowAddForm(false)} />
+              </div>
+           )}
+
+           <FinancialRecordList />
+        </div>
     </div>
   );
 };
