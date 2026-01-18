@@ -12,7 +12,7 @@ const verifyAuth = async (req: Request, res: Response, next: NextFunction) => {
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ message: 'Authorization token required' });
     }
-    const idToken = authHeader.split(' ')[1];
+    const idToken = authHeader.split(' ')[1] || '';
     const decoded = await verifyIdToken(idToken);
     (req as any).user = decoded;
     next();
@@ -70,9 +70,9 @@ router.get('/export/:id/download', async (req: Request, res: Response) => {
     let idToken = '';
     const authHeader = req.headers.authorization;
     if (authHeader && authHeader.startsWith('Bearer ')) {
-      idToken = authHeader.split(' ')[1];
+      idToken = authHeader.split(' ')[1] || '';
     } else if (req.query.token) {
-        idToken = req.query.token as string;
+        idToken = (req.query.token as string) || '';
     }
 
     if (!idToken) return res.status(401).json({ message: 'Token required' });

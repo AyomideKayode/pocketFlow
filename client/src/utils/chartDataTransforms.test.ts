@@ -17,7 +17,7 @@ describe('Chart Data Transforms', () => {
     {
       _id: '2',
       userId: 'user1',
-      date: new Date('2024-01-01T15:00:00Z'), // Same day
+      date: new Date('2024-01-01T12:00:00Z'), // Same day (safer for timezones)
       description: 'Item 2',
       amount: 50,
       category: 'Salary',

@@ -56,7 +56,10 @@ export const groupRecordsByDay = (records: FinancialRecord[]) => {
 
   records.forEach((record) => {
     const d = new Date(record.date);
-    const dateKey = d.toISOString().split('T')[0]; // YYYY-MM-DD
+    const dateKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
+      2,
+      '0'
+    )}-${String(d.getDate()).padStart(2, '0')}`; // Local YYYY-MM-DD
     const label = d.toLocaleDateString('default', { month: 'short', day: 'numeric' });
 
     if (!dailyData[dateKey]) {
@@ -88,8 +91,13 @@ export const groupRecordsByWeek = (records: FinancialRecord[]) => {
     monday.setDate(diff);
     monday.setHours(0,0,0,0);
 
-    const dateKey = monday.toISOString().split('T')[0];
-    const label = `Week of ${monday.toLocaleDateString('default', { month: 'short', day: 'numeric' })}`;
+    const dateKey = `${monday.getFullYear()}-${String(
+      monday.getMonth() + 1
+    ).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
+    const label = `Week of ${monday.toLocaleDateString('default', {
+      month: 'short',
+      day: 'numeric',
+    })}`;
 
     if (!weeklyData[dateKey]) {
       weeklyData[dateKey] = { income: 0, expense: 0, label, date: dateKey };
