@@ -8,7 +8,7 @@ import { IncomeExpenseChart } from '../../components/charts/IncomeExpenseChart';
 import { CategoryBreakdownChart } from '../../components/charts/CategoryBreakdownChart';
 import { DateRangeFilter } from '../../components/DateRangeFilter';
 import { TrendLineChart } from '../../components/charts/TrendLineChart';
-import { exportRecordsToCSV } from '../../utils/exportUtils';
+import { requestServerExport, checkExportStatus, downloadExport } from '../../utils/exportUtils';
 import {
    filterRecordsByDateRange,
    getDefaultDateRange,
@@ -19,13 +19,17 @@ import {
    DollarSign,
    Download,
    Plus,
+   Loader2,
 } from 'lucide-react';
+import { useToast } from '../../contexts/toast-context';
 
 export const Dashboard = () => {
    const { user } = useAuth();
    const { records } = useFinancialRecords();
    const [dateRange, setDateRange] = useState(getDefaultDateRange());
    const [showAddForm, setShowAddForm] = useState(false);
+   const [isExporting, setIsExporting] = useState(false);
+   const { addToast } = useToast();
 
    const filteredRecords = useMemo(() => {
       return filterRecordsByDateRange(records, dateRange);
@@ -40,6 +44,35 @@ export const Dashboard = () => {
       .reduce((acc, record) => acc + record.amount, 0);
 
    const totalMonthlyBalance = totalIncome - totalExpenses;
+
+   const handleExport = async () => {
+      try {
+         setIsExporting(true);
+         addToast('Starting export...', 'info');
+
+         const { jobId } = await requestServerExport(dateRange.startDate, dateRange.endDate);
+
+         // Poll
+         let status = 'pending';
+         while (status === 'pending' || status === 'processing') {
+            await new Promise((r) => setTimeout(r, 2000)); // wait 2s
+            const job = await checkExportStatus(jobId);
+            status = job.status;
+            if (status === 'failed') throw new Error(job.error || 'Export failed');
+         }
+
+         if (status === 'completed') {
+            addToast('Export completed! Downloading...', 'success');
+            await downloadExport(jobId);
+         }
+      } catch (err: unknown) {
+         console.error(err);
+         const errorMessage = err instanceof Error ? err.message : 'Failed to export';
+         addToast(errorMessage, 'error');
+      } finally {
+         setIsExporting(false);
+      }
+   };
 
    // Initial Empty State for new users
    if (records.length === 0) {
@@ -90,11 +123,16 @@ export const Dashboard = () => {
                   onDateRangeChange={setDateRange}
                />
                <button
-                  onClick={() => exportRecordsToCSV(filteredRecords)}
-                  className='flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white'
+                  onClick={handleExport}
+                  disabled={isExporting}
+                  className='flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed'
                >
-                  <Download className='h-4 w-4' />
-                  Export
+                  {isExporting ? (
+                     <Loader2 className='h-4 w-4 animate-spin' />
+                  ) : (
+                     <Download className='h-4 w-4' />
+                  )}
+                  {isExporting ? 'Exporting...' : 'Export'}
                </button>
             </div>
          </div>

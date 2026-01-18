@@ -4,17 +4,20 @@ interface ChartContainerProps {
   title: string;
   children: React.ReactNode;
   className?: string;
+  action?: React.ReactNode;
 }
 
 export const ChartContainer: React.FC<ChartContainerProps> = ({
   title,
   children,
   className = '',
+  action,
 }) => {
   return (
     <div className={`rounded-xl border border-slate-800 bg-slate-900/50 p-6 shadow-sm backdrop-blur-sm h-full flex flex-col ${className}`}>
-      <div className="mb-6">
+      <div className="mb-6 flex items-center justify-between">
         <h3 className="text-lg font-semibold text-slate-100">{title}</h3>
+        {action && <div>{action}</div>}
       </div>
       <div className="flex-1 w-full min-h-75">{children}</div>
     </div>

@@ -1,99 +1,98 @@
 import express from 'express';
-import type { Request, Response } from 'express';
-import FinancialRecordModel from '../schema/financial-records.js';
+import type { Request, Response, NextFunction } from 'express';
+import ExportJobModel from '../schema/export-job.js';
 import { verifyIdToken } from '../lib/firebaseAdmin.js';
 
 const router = express.Router();
 
-// GET /reports/export?start=ISO&end=ISO&format=csv
-router.get('/export', async (req: Request, res: Response) => {
+// Middleware to verify auth
+const verifyAuth = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return res.status(401).json({ message: 'Authorization token required' });
     }
+    const idToken = authHeader.split(' ')[1];
+    const decoded = await verifyIdToken(idToken);
+    (req as any).user = decoded;
+    next();
+  } catch (err) {
+    console.error('Auth error:', err);
+    res.status(401).json({ message: 'Invalid ID token' });
+  }
+};
 
-    const idToken = authHeader.split(' ')[1] as string;
-    let decoded: any;
-    try {
-      decoded = await verifyIdToken(idToken);
-    } catch (err) {
-      console.error('Invalid ID token:', err);
-      return res.status(401).json({ message: 'Invalid ID token' });
-    }
+router.post('/export', verifyAuth, async (req: Request, res: Response) => {
+  try {
+    const uid = (req as any).user.uid;
+    const { start, end } = req.body;
 
-    const uid = decoded?.uid as string;
-    if (!uid) {
-      return res.status(400).json({ message: 'Invalid token payload' });
-    }
+    const job = new ExportJobModel({
+      userId: uid,
+      status: 'pending',
+      query: {
+        start: start ? new Date(start) : undefined,
+        end: end ? new Date(end) : undefined,
+      },
+    });
 
-    const { start, end, format } = req.query as {
-      start?: string;
-      end?: string;
-      format?: string;
-    };
-
-    const query: any = { userId: uid };
-    if (start || end) {
-      query.date = {} as any;
-      if (start) query.date.$gte = new Date(String(start));
-      if (end) query.date.$lte = new Date(String(end));
-    }
-
-    // Only CSV supported for now
-    const outFormat = (format || 'csv').toLowerCase();
-    if (outFormat !== 'csv') {
-      return res
-        .status(400)
-        .json({ message: 'Only csv format is supported at this time' });
-    }
-
-    const filename = `pocketflow_${uid}_${start || 'all'}_${end || 'all'}.csv`;
-    res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
-
-    // CSV header
-    const headers = [
-      'date',
-      'description',
-      'amount',
-      'type',
-      'category',
-      'paymentMethod',
-      'userId',
-    ];
-    res.write(headers.join(',') + '\n');
-
-    // Use cursor to stream results
-    const cursor = FinancialRecordModel.find(query).sort({ date: 1 }).cursor();
-
-    for await (const doc of cursor) {
-      const fields = [
-        new Date(doc.date).toISOString(),
-        (doc.description || '').replace(/\n/g, ' ').replace(/"/g, '""'),
-        String(doc.amount),
-        doc.type,
-        doc.category || '',
-        doc.paymentMethod || '',
-        doc.userId || '',
-      ];
-
-      const line = fields.map((f) => `"${f}"`).join(',') + '\n';
-      // If client disconnected, stop
-      if (!res.writableEnded) {
-        const ok = res.write(line);
-        if (!ok) {
-          // backpressure - wait for drain
-          await new Promise((resolve) => res.once('drain', resolve));
-        }
-      } else break;
-    }
-
-    res.end();
+    await job.save();
+    res.json({ jobId: job._id, status: job.status });
   } catch (error) {
-    console.error('Error exporting records:', error);
-    if (!res.headersSent)
-      res.status(500).json({ error: 'Failed to export records' });
+    console.error('Create export job error:', error);
+    res.status(500).json({ message: 'Failed to create export job' });
+  }
+});
+
+router.get('/export/:id', verifyAuth, async (req: Request, res: Response) => {
+  try {
+    const uid = (req as any).user.uid;
+    const job = await ExportJobModel.findOne({ _id: req.params.id, userId: uid });
+
+    if (!job) {
+      return res.status(404).json({ message: 'Job not found' });
+    }
+
+    res.json({
+      id: job._id,
+      status: job.status,
+      createdAt: job.createdAt,
+      completedAt: job.completedAt,
+      error: job.error
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching job' });
+  }
+});
+
+router.get('/export/:id/download', async (req: Request, res: Response) => {
+  try {
+    let idToken = '';
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      idToken = authHeader.split(' ')[1];
+    } else if (req.query.token) {
+        idToken = req.query.token as string;
+    }
+
+    if (!idToken) return res.status(401).json({ message: 'Token required' });
+
+    const decoded = await verifyIdToken(idToken);
+    const uid = decoded.uid;
+
+    const job = await ExportJobModel.findOne({ _id: req.params.id, userId: uid });
+    if (!job || job.status !== 'completed' || !job.data) {
+       return res.status(404).json({ message: 'File not found or not ready' });
+    }
+
+    const filename = `pocketflow_export_${job.completedAt?.toISOString().split('T')[0] ?? 'data'}.csv`;
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.send(job.data);
+
+  } catch (error) {
+    console.error('Download error:', error);
+    res.status(500).json({ message: 'Download failed' });
   }
 });
 

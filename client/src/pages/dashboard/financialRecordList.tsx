@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect, useCallback } from 'react';
 import {
   useFinancialRecords,
   type FinancialRecord,
@@ -14,12 +14,16 @@ import {
 import { Trash2 } from 'lucide-react';
 import { clsx } from 'clsx';
 
+type CellValue = string | number | Date;
+
 interface EditableCellProps {
-  getValue: () => any;
+  getValue: () => CellValue;
   row: { index: number; original: FinancialRecord };
   column: { id: string };
-  updateRecord: (rowIndex: number, columnId: string, value: any) => void;
+  updateRecord: (rowIndex: number, columnId: string, value: CellValue) => void;
   editable: boolean;
+  renderItem?: (value: CellValue) => React.ReactNode;
+  type?: 'text' | 'number';
 }
 
 const EditableCell: React.FC<EditableCellProps> = ({
@@ -28,14 +32,32 @@ const EditableCell: React.FC<EditableCellProps> = ({
   column,
   updateRecord,
   editable,
+  renderItem,
+  type = 'text',
 }) => {
   const initialValue = getValue();
   const [isEditing, setIsEditing] = useState(false);
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState<CellValue>(initialValue);
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
 
   const onBlur = () => {
     setIsEditing(false);
-    updateRecord(row.index, column.id, value);
+    let finalValue = value;
+    if (type === 'number') {
+      finalValue = parseFloat(String(value));
+      if (isNaN(finalValue)) {
+        finalValue = initialValue as number;
+      } else {
+        finalValue = Math.abs(finalValue);
+      }
+    }
+
+    if (finalValue !== initialValue) {
+      updateRecord(row.index, column.id, finalValue);
+    }
   };
 
   const onKeyDown = (e: React.KeyboardEvent) => {
@@ -47,7 +69,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   if (!editable) {
     return (
       <span className='text-slate-300'>
-        {value instanceof Date ? value.toLocaleDateString() : value}
+        {value instanceof Date ? value.toLocaleDateString() : String(value)}
       </span>
     );
   }
@@ -62,25 +84,30 @@ const EditableCell: React.FC<EditableCellProps> = ({
     >
       {isEditing ? (
         <input
-          value={value}
+          value={value instanceof Date ? value.toISOString().split('T')[0] : String(value)}
           onChange={(e) => setValue(e.target.value)}
           autoFocus
           onBlur={onBlur}
           onKeyDown={onKeyDown}
+          type={type}
           className='w-full bg-transparent p-0 text-sm text-white focus:outline-none'
         />
+      ) : renderItem ? (
+        renderItem(value)
       ) : (
-        <span className='text-slate-300'>{value}</span>
+        <span className='text-slate-300'>{String(value)}</span>
       )}
     </div>
   );
 };
 
+const columnHelper = createColumnHelper<FinancialRecord>();
+
 export const FinancialRecordList = () => {
   const { records, updateRecord, deleteRecord } = useFinancialRecords();
   const { showConfirmation } = useConfirmationDialog();
 
-  const handleDeleteRecord = (record: FinancialRecord) => {
+  const handleDeleteRecord = useCallback((record: FinancialRecord) => {
     showConfirmation({
       title: 'Delete Transaction',
       message: `Are you sure you want to delete "${record.description}"?`,
@@ -89,16 +116,14 @@ export const FinancialRecordList = () => {
       variant: 'danger',
       onConfirm: () => deleteRecord(record._id ?? ''),
     });
-  };
+  }, [showConfirmation, deleteRecord]);
 
-  const updateCellRecord = (rowIndex: number, columnId: string, value: any) => {
+  const updateCellRecord = useCallback((rowIndex: number, columnId: string, value: CellValue) => {
     const id = records[rowIndex]?._id;
     updateRecord(id ?? '', { ...records[rowIndex], [columnId]: value });
-  };
+  }, [records, updateRecord]);
 
-  const columnHelper = createColumnHelper<FinancialRecord>();
-
-  const columns = useMemo<ColumnDef<FinancialRecord, any>[]>(
+  const columns = useMemo<ColumnDef<FinancialRecord, CellValue>[]>(
     () => [
       columnHelper.accessor('description', {
         header: 'Description',
@@ -112,39 +137,62 @@ export const FinancialRecordList = () => {
       }),
       columnHelper.accessor('amount', {
         header: 'Amount',
-        cell: (props) => {
-          const val = props.getValue();
-          const type = props.row.original.type;
-          return (
-            <div
-              className={clsx(
-                'font-medium',
-                type === 'income' ? 'text-emerald-500' : 'text-rose-500',
-              )}
-            >
-              {type === 'income' ? '+' : '-'}${Math.abs(val).toFixed(2)}
-            </div>
-          );
-        },
+        cell: (props) => (
+          <EditableCell
+            {...props}
+            updateRecord={updateCellRecord}
+            editable={true}
+            type='number'
+            renderItem={(val) => {
+              const numVal = Number(val);
+              const type = props.row.original.type;
+              return (
+                <div
+                  className={clsx(
+                    'font-medium',
+                    type === 'income' ? 'text-emerald-500' : 'text-rose-500',
+                  )}
+                >
+                  {type === 'income' ? '+' : '-'}${Math.abs(numVal).toFixed(2)}
+                </div>
+              );
+            }}
+          />
+        ),
       }),
       columnHelper.accessor('category', {
         header: 'Category',
         cell: (props) => (
-          <span className='inline-flex items-center rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-medium text-slate-300'>
-            {props.getValue()}
-          </span>
+          <EditableCell
+            {...props}
+            updateRecord={updateCellRecord}
+            editable={true}
+            renderItem={(val) => (
+              <span className='inline-flex items-center rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-medium text-slate-300'>
+                {String(val)}
+              </span>
+            )}
+          />
         ),
       }),
       columnHelper.accessor('paymentMethod', {
         header: 'Method',
         cell: (props) => (
-          <span className='text-xs text-slate-500'>{props.getValue()}</span>
+          <EditableCell
+            {...props}
+            updateRecord={updateCellRecord}
+            editable={true}
+            renderItem={(val) => (
+              <span className='text-xs text-slate-500'>{String(val)}</span>
+            )}
+          />
         ),
       }),
       columnHelper.accessor('date', {
         header: 'Date',
         cell: (props) => {
-          const date = new Date(props.getValue());
+          const val = props.getValue();
+          const date = val instanceof Date ? val : new Date(val as string | number);
           return (
             <span className='text-xs text-slate-400'>
               {date.toLocaleDateString()}
@@ -166,7 +214,7 @@ export const FinancialRecordList = () => {
         ),
       }),
     ],
-    [records],
+    [updateCellRecord, handleDeleteRecord],
   );
 
   const table = useReactTable({
