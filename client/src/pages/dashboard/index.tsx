@@ -8,7 +8,11 @@ import { IncomeExpenseChart } from '../../components/charts/IncomeExpenseChart';
 import { CategoryBreakdownChart } from '../../components/charts/CategoryBreakdownChart';
 import { DateRangeFilter } from '../../components/DateRangeFilter';
 import { TrendLineChart } from '../../components/charts/TrendLineChart';
-import { requestServerExport, checkExportStatus, downloadExport } from '../../utils/exportUtils';
+import {
+   requestServerExport,
+   checkExportStatus,
+   downloadExport,
+} from '../../utils/exportUtils';
 import {
    filterRecordsByDateRange,
    getDefaultDateRange,
@@ -50,7 +54,10 @@ export const Dashboard = () => {
          setIsExporting(true);
          addToast('Starting export...', 'info');
 
-         const { jobId } = await requestServerExport(dateRange.startDate, dateRange.endDate);
+         const { jobId } = await requestServerExport(
+            dateRange.startDate,
+            dateRange.endDate,
+         );
 
          // Poll
          let status = 'pending';
@@ -67,7 +74,8 @@ export const Dashboard = () => {
          }
       } catch (err: unknown) {
          console.error(err);
-         const errorMessage = err instanceof Error ? err.message : 'Failed to export';
+         const errorMessage =
+            err instanceof Error ? err.message : 'Failed to export';
          addToast(errorMessage, 'error');
       } finally {
          setIsExporting(false);

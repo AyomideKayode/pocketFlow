@@ -10,7 +10,7 @@ const initFirebaseAdmin = () => {
     process.env.FIREBASE_SERVICE_ACCOUNT_PATH ||
     path.join(
       process.cwd(),
-      'pocketflow-d735c-firebase-adminsdk-fbsvc-e232b39403.json'
+      'pocketflow-d735c-firebase-adminsdk-fbsvc-e232b39403.json',
     );
 
   let credential;
@@ -24,7 +24,7 @@ const initFirebaseAdmin = () => {
       credential = admin.credential.cert(parsed as admin.ServiceAccount);
     } else {
       console.warn(
-        'Firebase service account not found; Firebase Admin will not be initialized.'
+        'Firebase service account not found; Firebase Admin will not be initialized.',
       );
     }
   } catch (err) {
@@ -43,7 +43,7 @@ const initFirebaseAdmin = () => {
 initFirebaseAdmin();
 
 export const verifyIdToken = async (
-  idToken: string
+  idToken: string,
 ): Promise<admin.auth.DecodedIdToken> => {
   if (!admin.apps.length) {
     throw new Error('Firebase Admin not initialized');

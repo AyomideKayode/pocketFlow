@@ -47,7 +47,6 @@ export const processExportJob = async (jobId: string) => {
     job.status = 'completed';
     job.completedAt = new Date();
     await job.save();
-
   } catch (error: any) {
     console.error(`Export job ${jobId} failed:`, error);
     job.status = 'failed';
@@ -60,7 +59,9 @@ export const startExportWorker = () => {
   console.log('Starting export worker...');
   setInterval(async () => {
     try {
-      const job = await ExportJobModel.findOne({ status: 'pending' }).sort({ createdAt: 1 });
+      const job = await ExportJobModel.findOne({ status: 'pending' }).sort({
+        createdAt: 1,
+      });
       if (job && job._id) {
         await processExportJob(job._id.toString());
       }

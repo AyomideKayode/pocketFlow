@@ -15,7 +15,7 @@ interface ToastContextType {
   addToast: (
     message: string,
     type: ToastType,
-    options?: { duration?: number; persistent?: boolean }
+    options?: { duration?: number; persistent?: boolean },
   ) => void;
   removeToast: (id: string) => void;
   clearAllToasts: () => void;
@@ -42,7 +42,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
     (
       message: string,
       type: ToastType,
-      options?: { duration?: number; persistent?: boolean }
+      options?: { duration?: number; persistent?: boolean },
     ) => {
       const id = Math.random().toString(36).substr(2, 9);
       const toast: Toast = {
@@ -62,7 +62,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
         }, toast.duration);
       }
     },
-    []
+    [],
   );
 
   const removeToast = useCallback((id: string) => {

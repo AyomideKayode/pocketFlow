@@ -25,18 +25,22 @@ export const EmptyState: React.FC<EmptyStateProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-12 text-center animate-in fade-in zoom-in duration-500">
-      <div className={`mb-6 text-6xl animate-bounce-slow ${variantColors[variant]}`}>
+    <div className='flex flex-col items-center justify-center p-12 text-center animate-in fade-in zoom-in duration-500'>
+      <div
+        className={`mb-6 text-6xl animate-bounce-slow ${variantColors[variant]}`}
+      >
         {icon}
       </div>
 
-      <h3 className="mb-2 text-xl font-bold text-white md:text-2xl">{title}</h3>
+      <h3 className='mb-2 text-xl font-bold text-white md:text-2xl'>{title}</h3>
 
-      <p className="mb-8 max-w-md text-slate-400 text-sm md:text-base">{description}</p>
+      <p className='mb-8 max-w-md text-slate-400 text-sm md:text-base'>
+        {description}
+      </p>
 
       {actionText && onAction && (
         <button
-          className="rounded-lg bg-emerald-600 px-6 py-3 font-semibold text-white transition-all hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-900/20 active:scale-95"
+          className='rounded-lg bg-emerald-600 px-6 py-3 font-semibold text-white transition-all hover:bg-emerald-500 hover:shadow-lg hover:shadow-emerald-900/20 active:scale-95'
           onClick={onAction}
           type='button'
         >

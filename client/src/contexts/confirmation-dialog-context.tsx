@@ -115,11 +115,11 @@ export const ConfirmationDialogProvider: React.FC<
                 className={cn(
                   'rounded-lg px-4 py-2 text-sm font-medium text-white transition-colors shadow-lg',
                   state.data.variant === 'danger' &&
-                  'bg-rose-600 hover:bg-rose-500 shadow-rose-900/20',
+                    'bg-rose-600 hover:bg-rose-500 shadow-rose-900/20',
                   state.data.variant === 'warning' &&
-                  'bg-amber-600 hover:bg-amber-500 shadow-amber-900/20',
+                    'bg-amber-600 hover:bg-amber-500 shadow-amber-900/20',
                   (!state.data.variant || state.data.variant === 'info') &&
-                  'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-900/20',
+                    'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-900/20',
                 )}
                 onClick={handleConfirm}
                 type='button'

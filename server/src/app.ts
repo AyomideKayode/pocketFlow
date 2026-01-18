@@ -7,14 +7,16 @@ import cors from 'cors';
 const app: Express = express();
 
 app.use(express.json());
-app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'http://localhost:5173',
-    'https://pocket-flow-kay.vercel.app'
-  ],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:5173',
+      'https://pocket-flow-kay.vercel.app',
+    ],
+    credentials: true,
+  }),
+);
 
 app.get('/health', (req, res) => {
   res.status(200).send('OK');

@@ -3,7 +3,7 @@ import type { DateRange } from '../components/DateRangeFilter';
 
 export const filterRecordsByDateRange = (
   records: FinancialRecord[],
-  dateRange: DateRange
+  dateRange: DateRange,
 ): FinancialRecord[] => {
   return records.filter((record) => {
     const recordDate = new Date(record.date);
@@ -32,7 +32,7 @@ export const groupRecordsByCategory = (records: FinancialRecord[]) => {
 
       return acc;
     },
-    {}
+    {},
   );
 };
 
@@ -58,9 +58,12 @@ export const groupRecordsByDay = (records: FinancialRecord[]) => {
     const d = new Date(record.date);
     const dateKey = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
       2,
-      '0'
+      '0',
     )}-${String(d.getDate()).padStart(2, '0')}`; // Local YYYY-MM-DD
-    const label = d.toLocaleDateString('default', { month: 'short', day: 'numeric' });
+    const label = d.toLocaleDateString('default', {
+      month: 'short',
+      day: 'numeric',
+    });
 
     if (!dailyData[dateKey]) {
       dailyData[dateKey] = { income: 0, expense: 0, label, date: dateKey };
@@ -89,10 +92,10 @@ export const groupRecordsByWeek = (records: FinancialRecord[]) => {
     const diff = d.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is sunday
     const monday = new Date(d);
     monday.setDate(diff);
-    monday.setHours(0,0,0,0);
+    monday.setHours(0, 0, 0, 0);
 
     const dateKey = `${monday.getFullYear()}-${String(
-      monday.getMonth() + 1
+      monday.getMonth() + 1,
     ).padStart(2, '0')}-${String(monday.getDate()).padStart(2, '0')}`;
     const label = `Week of ${monday.toLocaleDateString('default', {
       month: 'short',
@@ -141,6 +144,6 @@ export const groupRecordsByMonth = (records: FinancialRecord[]) => {
   });
 
   return Object.values(monthlyData).sort((a, b) =>
-    a.date.localeCompare(b.date)
+    a.date.localeCompare(b.date),
   );
 };

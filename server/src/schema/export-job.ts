@@ -20,7 +20,7 @@ const exportJobSchema = new mongoose.Schema<ExportJob>({
     type: String,
     required: true,
     enum: ['pending', 'processing', 'completed', 'failed'],
-    default: 'pending'
+    default: 'pending',
   },
   createdAt: { type: Date, default: Date.now },
   completedAt: { type: Date },
@@ -28,8 +28,8 @@ const exportJobSchema = new mongoose.Schema<ExportJob>({
   data: { type: String },
   query: {
     start: Date,
-    end: Date
-  }
+    end: Date,
+  },
 });
 
 const ExportJobModel = mongoose.model<ExportJob>('ExportJob', exportJobSchema);

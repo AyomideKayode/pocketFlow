@@ -84,7 +84,11 @@ const EditableCell: React.FC<EditableCellProps> = ({
     >
       {isEditing ? (
         <input
-          value={value instanceof Date ? value.toISOString().split('T')[0] : String(value)}
+          value={
+            value instanceof Date
+              ? value.toISOString().split('T')[0]
+              : String(value)
+          }
           onChange={(e) => setValue(e.target.value)}
           autoFocus
           onBlur={onBlur}
@@ -107,21 +111,27 @@ export const FinancialRecordList = () => {
   const { records, updateRecord, deleteRecord } = useFinancialRecords();
   const { showConfirmation } = useConfirmationDialog();
 
-  const handleDeleteRecord = useCallback((record: FinancialRecord) => {
-    showConfirmation({
-      title: 'Delete Transaction',
-      message: `Are you sure you want to delete "${record.description}"?`,
-      confirmText: 'Delete',
-      cancelText: 'Cancel',
-      variant: 'danger',
-      onConfirm: () => deleteRecord(record._id ?? ''),
-    });
-  }, [showConfirmation, deleteRecord]);
+  const handleDeleteRecord = useCallback(
+    (record: FinancialRecord) => {
+      showConfirmation({
+        title: 'Delete Transaction',
+        message: `Are you sure you want to delete "${record.description}"?`,
+        confirmText: 'Delete',
+        cancelText: 'Cancel',
+        variant: 'danger',
+        onConfirm: () => deleteRecord(record._id ?? ''),
+      });
+    },
+    [showConfirmation, deleteRecord],
+  );
 
-  const updateCellRecord = useCallback((rowIndex: number, columnId: string, value: CellValue) => {
-    const id = records[rowIndex]?._id;
-    updateRecord(id ?? '', { ...records[rowIndex], [columnId]: value });
-  }, [records, updateRecord]);
+  const updateCellRecord = useCallback(
+    (rowIndex: number, columnId: string, value: CellValue) => {
+      const id = records[rowIndex]?._id;
+      updateRecord(id ?? '', { ...records[rowIndex], [columnId]: value });
+    },
+    [records, updateRecord],
+  );
 
   const columns = useMemo<ColumnDef<FinancialRecord, any>[]>(
     () => [
@@ -192,7 +202,8 @@ export const FinancialRecordList = () => {
         header: 'Date',
         cell: (props) => {
           const val = props.getValue();
-          const date = val instanceof Date ? val : new Date(val as string | number);
+          const date =
+            val instanceof Date ? val : new Date(val as string | number);
           return (
             <span className='text-xs text-slate-400'>
               {date.toLocaleDateString()}

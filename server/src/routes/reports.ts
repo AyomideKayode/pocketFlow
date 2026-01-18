@@ -47,7 +47,10 @@ router.post('/export', verifyAuth, async (req: Request, res: Response) => {
 router.get('/export/:id', verifyAuth, async (req: Request, res: Response) => {
   try {
     const uid = (req as any).user.uid;
-    const job = await ExportJobModel.findOne({ _id: req.params.id, userId: uid });
+    const job = await ExportJobModel.findOne({
+      _id: req.params.id,
+      userId: uid,
+    });
 
     if (!job) {
       return res.status(404).json({ message: 'Job not found' });
@@ -58,7 +61,7 @@ router.get('/export/:id', verifyAuth, async (req: Request, res: Response) => {
       status: job.status,
       createdAt: job.createdAt,
       completedAt: job.completedAt,
-      error: job.error
+      error: job.error,
     });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching job' });
@@ -72,7 +75,7 @@ router.get('/export/:id/download', async (req: Request, res: Response) => {
     if (authHeader && authHeader.startsWith('Bearer ')) {
       idToken = authHeader.split(' ')[1] || '';
     } else if (req.query.token) {
-        idToken = (req.query.token as string) || '';
+      idToken = (req.query.token as string) || '';
     }
 
     if (!idToken) return res.status(401).json({ message: 'Token required' });
@@ -80,16 +83,18 @@ router.get('/export/:id/download', async (req: Request, res: Response) => {
     const decoded = await verifyIdToken(idToken);
     const uid = decoded.uid;
 
-    const job = await ExportJobModel.findOne({ _id: req.params.id, userId: uid });
+    const job = await ExportJobModel.findOne({
+      _id: req.params.id,
+      userId: uid,
+    });
     if (!job || job.status !== 'completed' || !job.data) {
-       return res.status(404).json({ message: 'File not found or not ready' });
+      return res.status(404).json({ message: 'File not found or not ready' });
     }
 
     const filename = `pocketflow_export_${job.completedAt?.toISOString().split('T')[0] ?? 'data'}.csv`;
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
     res.send(job.data);
-
   } catch (error) {
     console.error('Download error:', error);
     res.status(500).json({ message: 'Download failed' });

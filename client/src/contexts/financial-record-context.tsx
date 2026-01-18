@@ -1,4 +1,9 @@
-import React, { createContext, useContext, useEffect, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useCallback,
+} from 'react';
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';
 
@@ -18,7 +23,7 @@ interface FinancialRecordContextType {
   addRecord: (record: FinancialRecord) => Promise<void>;
   updateRecord: (
     id: string,
-    updatedRecord: Partial<FinancialRecord>
+    updatedRecord: Partial<FinancialRecord>,
   ) => Promise<void>;
   deleteRecord: (id: string) => Promise<void>;
 }
@@ -41,7 +46,10 @@ export const FinancialRecordsProvider = ({
 
   // Migration helper for legacy records without type field
   const migrateRecord = (record: any): FinancialRecord => {
-    if (record.type && (record.type === 'income' || record.type === 'expense')) {
+    if (
+      record.type &&
+      (record.type === 'income' || record.type === 'expense')
+    ) {
       return record; // Already has valid type field
     }
 
@@ -64,7 +72,7 @@ export const FinancialRecordsProvider = ({
 
     try {
       const response = await fetch(
-        `${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}`
+        `${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}`,
       );
 
       if (response.ok) {
@@ -105,7 +113,7 @@ export const FinancialRecordsProvider = ({
 
   const updateRecord = async (
     id: string,
-    updatedRecord: Partial<FinancialRecord>
+    updatedRecord: Partial<FinancialRecord>,
   ) => {
     try {
       const response = await fetch(`${API_BASE_URL}/financial-records/${id}`, {
@@ -120,7 +128,7 @@ export const FinancialRecordsProvider = ({
       }
       const updated = await response.json();
       setRecords((prevRecords) =>
-        prevRecords.map((record) => (record._id === id ? updated : record))
+        prevRecords.map((record) => (record._id === id ? updated : record)),
       );
       addToast('Financial record updated successfully!', 'success');
     } catch (error) {
@@ -138,7 +146,7 @@ export const FinancialRecordsProvider = ({
         throw new Error('Failed to delete record');
       }
       setRecords((prevRecords) =>
-        prevRecords.filter((record) => record._id !== id)
+        prevRecords.filter((record) => record._id !== id),
       );
       addToast('Financial record deleted successfully!', 'success');
     } catch (error) {
@@ -158,12 +166,12 @@ export const FinancialRecordsProvider = ({
 
 export const useFinancialRecords = () => {
   const context = useContext<FinancialRecordContextType | undefined>(
-    FinancialRecordContext
+    FinancialRecordContext,
   );
 
   if (!context) {
     throw new Error(
-      'useFinancialRecords must be used within a FinancialRecordsProvider'
+      'useFinancialRecords must be used within a FinancialRecordsProvider',
     );
   }
   return context;

@@ -12,12 +12,13 @@ if (!mongoURI) {
   process.exit(1);
 }
 
-mongoose.connect(mongoURI)
+mongoose
+  .connect(mongoURI)
   .then(() => {
     console.log('Connected to MongoDB');
     startExportWorker();
     app.listen(PORT, () => {
-      console.log(`Server is up: ${PORT}`);
+      console.log(`Server is up💸: ${PORT}`);
     });
   })
   .catch((error) => {

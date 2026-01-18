@@ -58,9 +58,15 @@ export const UserButton: React.FC = () => {
       if (error.code === 'auth/popup-closed-by-user') {
         addToast('Linking was cancelled.', 'error');
       } else if (error.code === 'auth/popup-blocked') {
-        addToast('Popup was blocked. Please allow popups and try again.', 'error');
+        addToast(
+          'Popup was blocked. Please allow popups and try again.',
+          'error',
+        );
       } else if (error.code === 'auth/credential-already-in-use') {
-        addToast('This Google account is already linked to another user.', 'error');
+        addToast(
+          'This Google account is already linked to another user.',
+          'error',
+        );
       } else {
         addToast('Failed to link Google account.', 'error');
       }
@@ -71,45 +77,52 @@ export const UserButton: React.FC = () => {
 
   const displayName = user.displayName || user.email?.split('@')[0] || 'User';
   const isGoogleLinked = user.providerData.some(
-    (provider) => provider.providerId === 'google.com'
+    (provider) => provider.providerId === 'google.com',
   );
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div className='relative' ref={dropdownRef}>
       <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        className="flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800/50 py-1.5 pl-1.5 pr-3 text-sm font-medium text-slate-200 transition-colors hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+        className='flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800/50 py-1.5 pl-1.5 pr-3 text-sm font-medium text-slate-200 transition-colors hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50'
       >
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-linear-to-br from-emerald-500 to-emerald-600 text-xs font-bold text-white shadow-sm">
+        <div className='flex h-7 w-7 items-center justify-center rounded-full bg-linear-to-br from-emerald-500 to-emerald-600 text-xs font-bold text-white shadow-sm'>
           {displayName.charAt(0).toUpperCase()}
         </div>
-        <span className="max-w-25 truncate md:max-w-37.5">{displayName}</span>
-        <ChevronDown className={cn("h-4 w-4 text-slate-400 transition-transform duration-200", isDropdownOpen && "rotate-180")} />
+        <span className='max-w-25 truncate md:max-w-37.5'>{displayName}</span>
+        <ChevronDown
+          className={cn(
+            'h-4 w-4 text-slate-400 transition-transform duration-200',
+            isDropdownOpen && 'rotate-180',
+          )}
+        />
       </button>
 
       {isDropdownOpen && (
-        <div className="absolute right-0 mt-2 w-56 origin-top-right rounded-lg border border-slate-700 bg-slate-900 p-1 shadow-xl ring-1 ring-black/5 z-50">
-          <div className="px-3 py-2 border-b border-slate-800 mb-1">
-            <p className="text-xs font-medium text-slate-400">Signed in as</p>
-            <p className="truncate text-sm font-semibold text-slate-200">{user.email}</p>
+        <div className='absolute right-0 mt-2 w-56 origin-top-right rounded-lg border border-slate-700 bg-slate-900 p-1 shadow-xl ring-1 ring-black/5 z-50'>
+          <div className='px-3 py-2 border-b border-slate-800 mb-1'>
+            <p className='text-xs font-medium text-slate-400'>Signed in as</p>
+            <p className='truncate text-sm font-semibold text-slate-200'>
+              {user.email}
+            </p>
           </div>
 
           {!isGoogleLinked && (
             <button
               onClick={handleLinkGoogle}
               disabled={isLinking}
-              className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white disabled:opacity-50"
+              className='flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white disabled:opacity-50'
             >
-              <LinkIcon className="h-4 w-4" />
+              <LinkIcon className='h-4 w-4' />
               {isLinking ? 'Linking...' : 'Link Google Account'}
             </button>
           )}
 
           <button
             onClick={handleLogout}
-            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-rose-400 hover:bg-rose-950/30 hover:text-rose-300"
+            className='flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-rose-400 hover:bg-rose-950/30 hover:text-rose-300'
           >
-            <LogOut className="h-4 w-4" />
+            <LogOut className='h-4 w-4' />
             Sign Out
           </button>
         </div>

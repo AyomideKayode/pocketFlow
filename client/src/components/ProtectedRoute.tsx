@@ -12,17 +12,17 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   if (loading) {
     return (
-      <div className="flex min-h-[50vh] w-full items-center justify-center">
-        <div className="flex flex-col items-center gap-4">
-          <Loader2 className="h-8 w-8 animate-spin text-emerald-500" />
-          <p className="text-slate-400">Loading...</p>
+      <div className='flex min-h-[50vh] w-full items-center justify-center'>
+        <div className='flex flex-col items-center gap-4'>
+          <Loader2 className='h-8 w-8 animate-spin text-emerald-500' />
+          <p className='text-slate-400'>Loading...</p>
         </div>
       </div>
     );
   }
 
   if (!user) {
-    return <Navigate to="/auth" />;
+    return <Navigate to='/auth' />;
   }
 
   return <>{children}</>;

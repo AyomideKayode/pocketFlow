@@ -3,7 +3,7 @@ import { getIdToken } from '../lib/firebase';
 
 export const exportRecordsToCSV = (
   records: FinancialRecord[],
-  filename = 'pocketflow_records.csv'
+  filename = 'pocketflow_records.csv',
 ) => {
   if (!records || records.length === 0) return;
 
@@ -28,7 +28,7 @@ export const exportRecordsToCSV = (
 
   const csvContent = [headers, ...rows]
     .map((r) =>
-      r.map((field) => `"${String(field).replace(/"/g, '""')}"`).join(',')
+      r.map((field) => `"${String(field).replace(/"/g, '""')}"`).join(','),
     )
     .join('\n');
 
@@ -47,17 +47,20 @@ export const requestServerExport = async (startDate: Date, endDate: Date) => {
   const token = await getIdToken();
   if (!token) throw new Error('Not authenticated');
 
-  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/reports/export`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
+  const response = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}/reports/export`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        start: startDate.toISOString(),
+        end: endDate.toISOString(),
+      }),
     },
-    body: JSON.stringify({
-      start: startDate.toISOString(),
-      end: endDate.toISOString()
-    })
-  });
+  );
 
   if (!response.ok) throw new Error('Export request failed');
   return response.json(); // { jobId, status }
@@ -67,11 +70,14 @@ export const checkExportStatus = async (jobId: string) => {
   const token = await getIdToken();
   if (!token) throw new Error('Not authenticated');
 
-  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/reports/export/${jobId}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
+  const response = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}/reports/export/${jobId}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
 
   if (!response.ok) throw new Error('Status check failed');
   return response.json(); // { status, ... }
@@ -81,11 +87,14 @@ export const downloadExport = async (jobId: string) => {
   const token = await getIdToken();
   if (!token) throw new Error('Not authenticated');
 
-  const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/reports/export/${jobId}/download`, {
-    headers: {
-      'Authorization': `Bearer ${token}`
-    }
-  });
+  const response = await fetch(
+    `${import.meta.env.VITE_API_BASE_URL}/reports/export/${jobId}/download`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
 
   if (!response.ok) throw new Error('Download failed');
 

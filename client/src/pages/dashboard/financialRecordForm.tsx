@@ -6,30 +6,64 @@ import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
 const INCOME_CATEGORIES = [
+  // Active income
   'Salary',
-  'Freelance',
-  'Investments',
-  'Crypto',
+  'Bonus',
+  'Freelance / Contract',
+  'Business Income',
+  // Portfolio income
   'Dividends',
+  'Capital Gains',
+  'Interest',
+  // Digital economy
+  'Creator Payouts (YouTube, TikTok, X)',
+  'Affiliate Income',
+  // Passive income
   'Rental Income',
-  'Side Hustle',
+  'Royalties',
+  // Irregular
   'Gifts',
+  'Refunds',
   'Other',
 ];
 
+
 const EXPENSE_CATEGORIES = [
-  'Rent/Housing',
-  'Groceries',
+  // Housing
+  'Rent / Mortgage',
   'Utilities',
-  'Transportation',
-  'Entertainment',
+  'Maintenance',
+  // Food
+  'Groceries',
   'Dining Out',
-  'Health',
+  'Coffee & Snacks',
+  // Transport
+  'Fuel',
+  'Public Transport',
+  'Ride Hailing',
+  'Car Maintenance',
+  // Health
+  'Medical',
+  'Pharmacy',
+  'Fitness',
+  // Finance
+  'Debt Repayment',
+  'Bank Fees',
   'Insurance',
+  // Lifestyle
+  'Entertainment',
+  'Subscriptions',
   'Shopping',
-  'Debt',
+  'Personal Care',
+  // Growth
   'Education',
-  'Other',
+  'Books & Courses',
+  // Travel
+  'Flights',
+  'Accommodation',
+  // Other
+  'Gifts & Donations',
+  'Miscellaneous',
 ];
 
 function cn(...inputs: (string | undefined | null | false)[]) {

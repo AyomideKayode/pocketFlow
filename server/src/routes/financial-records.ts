@@ -12,7 +12,9 @@ router.get('/getAllByUserId/:userId', async (req: Request, res: Response) => {
     }
     const records = await FinancialRecordModel.find({ userId });
     if (records.length === 0) {
-      return res.status(404).json({ message: 'No records found for this user.' });
+      return res
+        .status(404)
+        .json({ message: 'No records found for this user.' });
     }
     res.status(200).json(records);
   } catch (error) {
@@ -23,11 +25,14 @@ router.get('/getAllByUserId/:userId', async (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
   try {
-    const { userId, date, description, amount, type, category, paymentMethod } = req.body;
-    
+    const { userId, date, description, amount, type, category, paymentMethod } =
+      req.body;
+
     // Validate required fields
     if (!type || !['income', 'expense'].includes(type)) {
-      return res.status(400).json({ error: 'Valid type (income/expense) is required' });
+      return res
+        .status(400)
+        .json({ error: 'Valid type (income/expense) is required' });
     }
 
     const newRecord = new FinancialRecordModel({
@@ -52,7 +57,11 @@ router.put('/:id', async (req: Request, res: Response) => {
   try {
     const recordId = req.params.id;
     const updateBody = req.body;
-    const updatedRecord = await FinancialRecordModel.findByIdAndUpdate(recordId, updateBody, { new: true });
+    const updatedRecord = await FinancialRecordModel.findByIdAndUpdate(
+      recordId,
+      updateBody,
+      { new: true },
+    );
     if (!updatedRecord) {
       return res.status(404).json({ message: 'Record not found.' });
     }
@@ -65,7 +74,8 @@ router.put('/:id', async (req: Request, res: Response) => {
 router.delete('/:id', async (req: Request, res: Response) => {
   try {
     const recordId = req.params.id;
-    const deletedRecord = await FinancialRecordModel.findByIdAndDelete(recordId);
+    const deletedRecord =
+      await FinancialRecordModel.findByIdAndDelete(recordId);
     if (!deletedRecord) {
       return res.status(404).json({ message: 'Record not found.' });
     }
