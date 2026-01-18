@@ -38,6 +38,7 @@
     "skipLibCheck": true,
   },
   "exclude": [
+    "dist",
     "**/*.test.ts",
     "**/*.spec.ts",
     "**/tests/**"
