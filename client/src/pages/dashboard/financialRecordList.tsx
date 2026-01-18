@@ -123,7 +123,7 @@ export const FinancialRecordList = () => {
     updateRecord(id ?? '', { ...records[rowIndex], [columnId]: value });
   }, [records, updateRecord]);
 
-  const columns = useMemo<ColumnDef<FinancialRecord, CellValue>[]>(
+  const columns = useMemo<ColumnDef<FinancialRecord, any>[]>(
     () => [
       columnHelper.accessor('description', {
         header: 'Description',
