@@ -344,39 +344,54 @@ interface FinancialRecord {
 - _Last updated: January 13, 2026 | Current Phase: 2C (Trend Analysis & Secure Export prototype) | Next Phase: 3 (Trend Analysis & Advanced Reporting)_
 - _Last updated: January 14, 2026 | Current Phase: Refactoring & QA | Next Phase: 6 (Testing & CI/CD)_
 - _Last updated: January 20, 2026 | Current Phase: 6 (QA & CI/CD Foundation Established) | Next Phase: 2C (Trend Analysis & Advanced Reporting - Completion)_
+- _Last updated: January 20, 2026 | Current Phase: 2C (Trend Analysis & Advanced Reporting - Completed) | Next Phase: 4 (Budgeting & Goals)_
 
 ---
 
-### **Phase 2C: Trend Analysis & Export (Prototype)** ✅ COMPLETED (prototype)
+### **Phase 2C: Trend Analysis & Advanced Reporting** ✅ COMPLETED
 
-- **Features implemented in prototype:**
+- **Features:**
 
-  - Trend line chart for income & expenses (`client/src/components/charts/TrendLineChart.tsx`) showing monthly trends.
-  - Client-side CSV export button that downloads filtered records (`client/src/utils/exportUtils.ts`, wired in dashboard).
-  - Secure server-side CSV export prototype: `GET /reports/export` implemented in `server/src/routes/reports.ts`. The route verifies Firebase ID tokens (via `server/src/lib/firebaseAdmin.ts`) and streams CSV results from MongoDB using a Mongoose cursor to avoid high memory usage.
-  - Documentation for the server export added to `server/README.md` describing behavior, trade-offs, and testing recommendations.
-  - Cleanups: temporary debug token logging removed; duplicate route code resolved; client and server TypeScript builds validated.
+  - **Advanced Trend Analysis:**
+    - Interactive Trend Line Chart with configurable granularity (Day, Week, Month).
+    - Smooth curve interpolation ('monotone') for better visual trend identification.
+    - Local timezone support ensures data aligns with user's wall-clock time (fixed critical timezone bugs).
+  - **Frontend Polish & UX Enhancements:**
+    - **Typography:** Integrated 'DM Sans' (Body), 'JetBrains Mono' (Code), and 'Space Mono' (Accents) via Tailwind CSS v4.
+    - **Inline Editing:** Financial Record List now supports direct editing of Description, Amount, Category, and Payment Method cells.
+    - **Visual Refinements:** Enhanced table layouts, status badges, and consistent dark theme styling.
+  - **Data Export:**
+    - Secure, streaming server-side CSV export implemented.
+    - Client-side export backup.
+  - **Infrastructure:**
+    - Server development runtime switched to `tsx` for Node 22 compatibility.
+    - Robust timezone handling in chart data transformations.
+
+- **Implementation Details:**
+
+  - **Chart Logic:**
+    - `client/src/utils/chartDataTransforms.ts` refactored to use local date components for grouping keys.
+    - Prevents date shifting issues for users in non-UTC timezones.
+  - **Editable Table:**
+    - Implemented optimistic UI updates for instant feedback during inline edits.
+    - Validation ensures data integrity before backend sync.
+  - **Server Compatibility:**
+    - Replaced `ts-node` with `tsx` in `server/nodemon.json` to fix startup crashes on modern Node versions.
 
 - **What's been validated:**
-
-  - Client builds and Vite dev server run successfully; charts and client CSV export function in the dashboard.
-  - Server compiles (`tsc`) and runs; Firebase Admin initializes when a valid `FIREBASE_SERVICE_ACCOUNT_PATH` or JSON is provided.
-  - The server export prototype requires a Firebase ID token in `Authorization: Bearer <ID_TOKEN>` and streams CSV for requested date ranges.
-
-- **Prototype caveats & reasons it's not production-ready yet:**
-  - The server export is synchronous and may block for very large exports — consider background jobs for large datasets.
-  - Tests and CI coverage for the export route and aggregation helpers were not added yet (deferred to Phase 3 as requested).
-  - Service account credentials must be provided securely (do not commit JSON to repo). CI/deployment secrets need configuration.
+  - Chart grouping logic verified with timezone-aware unit tests (`chartDataTransforms.test.ts`).
+  - Server startup and build processes confirmed working with new runtime configuration.
+  - End-to-end export flows tested locally.
 
 ## Phase 3: Trend Analysis & Advanced Reporting (Detailed Plan)
 
-Phase 3 will focus on hardening trend analysis, delivering production-ready export/reporting, and integrating additional auth provider options (Google OAuth) so users have flexible sign-in methods.
+Phase 3 goals were largely absorbed into Phase 2C or completed alongside OAuth integration. Remaining work shifts towards automated background jobs for large-scale exports and further OAuth refinements.
 
 Key goals:
 
-- Integrate Google OAuth provider alongside existing Email/Password sign-in (Firebase Authentication providers). Ensure smooth account linking and migration for existing users.
-- Harden trend analytics with configurable granularity (daily/weekly/monthly), smoothing options, and multi-series comparisons (categories vs. totals).
-- Make server export production-ready:
+- **(Completed)** Integrate Google OAuth provider alongside existing Email/Password sign-in.
+- **(Completed)** Harden trend analytics with configurable granularity.
+- **(Pending)** Make server export asynchronous for massive datasets:
   - Move large exports to asynchronous background jobs (e.g., queue + worker), store CSV output temporarily, and provide time-limited download links.
   - Add rate limiting, request quotas, and monitoring for export endpoints.
   - Add CSV format versioning and optional export schemas (transactions only, aggregated summaries, category breakdowns).
