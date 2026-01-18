@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   AreaChart,
   Area,
@@ -11,22 +11,66 @@ import {
 } from 'recharts';
 import { ChartContainer } from './ChartContainer';
 import type { FinancialRecord } from '../../contexts/financial-record-context';
-import { groupRecordsByMonth } from '../../utils/chartDataTransforms';
+import {
+  groupRecordsByMonth,
+  groupRecordsByWeek,
+  groupRecordsByDay,
+} from '../../utils/chartDataTransforms';
+import { clsx } from 'clsx';
 
 interface TrendLineChartProps {
   records: FinancialRecord[];
 }
 
+type Granularity = 'day' | 'week' | 'month';
+
 export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
-  const monthly = groupRecordsByMonth(records);
-  const data = monthly.map((m) => ({
-    month: m.month,
-    income: Number(m.income.toFixed(2)),
-    expense: Number(m.expense.toFixed(2)),
-  }));
+  const [granularity, setGranularity] = useState<Granularity>('month');
+
+  const data = useMemo(() => {
+    let grouped;
+    switch (granularity) {
+      case 'day':
+        grouped = groupRecordsByDay(records);
+        break;
+      case 'week':
+        grouped = groupRecordsByWeek(records);
+        break;
+      case 'month':
+      default:
+        grouped = groupRecordsByMonth(records);
+        break;
+    }
+    return grouped.map((m) => ({
+      label: m.label,
+      date: m.date,
+      income: Number(m.income.toFixed(2)),
+      expense: Number(m.expense.toFixed(2)),
+    }));
+  }, [records, granularity]);
 
   return (
-    <ChartContainer title='Financial Trends'>
+    <ChartContainer
+      title='Financial Trends'
+      action={
+        <div className='flex bg-slate-800 rounded-lg p-1 text-xs font-medium border border-slate-700'>
+          {(['day', 'week', 'month'] as const).map((g) => (
+            <button
+              key={g}
+              onClick={() => setGranularity(g)}
+              className={clsx(
+                'px-3 py-1 rounded-md transition-all capitalize',
+                granularity === g
+                  ? 'bg-emerald-600 text-white shadow-sm'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50',
+              )}
+            >
+              {g}
+            </button>
+          ))}
+        </div>
+      }
+    >
       <ResponsiveContainer width='100%' height='100%'>
         <AreaChart
           data={data}
@@ -48,7 +92,7 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
             vertical={false}
           />
           <XAxis
-            dataKey='month'
+            dataKey='label'
             stroke='#64748b'
             fontSize={12}
             tickLine={false}
@@ -66,8 +110,10 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
               backgroundColor: '#0f172a',
               borderColor: '#1e293b',
               color: '#f1f5f9',
+              borderRadius: '8px',
             }}
             itemStyle={{ color: '#f1f5f9' }}
+            labelStyle={{ color: '#94a3b8', marginBottom: '0.5rem' }}
           />
           <Legend wrapperStyle={{ paddingTop: '20px' }} />
           <Area

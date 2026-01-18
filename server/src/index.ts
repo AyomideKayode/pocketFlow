@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import app from './app.js';
+import { startExportWorker } from './services/exportService.js';
 
 const PORT = process.env.PORT || 3001;
 
@@ -14,6 +15,7 @@ if (!mongoURI) {
 mongoose.connect(mongoURI)
   .then(() => {
     console.log('Connected to MongoDB');
+    startExportWorker();
     app.listen(PORT, () => {
       console.log(`Server is up: ${PORT}`);
     });
