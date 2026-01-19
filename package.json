@@ -1,4 +1,10 @@
 {
+  "scripts": {
+    "test": "npm run test --prefix client && npm run test --prefix server && npx playwright test",
+    "test:client": "npm run test --prefix client",
+    "test:server": "npm run test --prefix server",
+    "test:e2e": "npx playwright test"
+  },
   "devDependencies": {
     "@playwright/test": "^1.57.0"
   }
