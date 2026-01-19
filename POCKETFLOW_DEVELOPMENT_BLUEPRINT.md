@@ -340,12 +340,15 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 - **Charts:** Recharts library (300KB, justified by features)
 - **Styling:** CSS modules + global CSS with dark theme
 - **Bundle:** 867KB (warning acknowledged, optimization deferred to Phase 5)
+- **Testing:** Vitest + React Testing Library (Unit/Integration), Playwright (E2E)
+- **Analytics:** Vercel Analytics (Privacy-friendly web analytics)
 
 ### **Backend Stack**
 
 - **Framework:** Express.js with TypeScript
 - **Runtime:** Node.js with ESM modules
 - **Database:** MongoDB Atlas with Mongoose ODM
+- **Background Jobs:** MongoDB-backed Queue (for CSV exports)
 - **API Style:** RESTful JSON endpoints
 - **Port:** 3001 (development)
 - **Development:** Nodemon with ts-node/esm loader
@@ -392,6 +395,7 @@ interface FinancialRecord {
 - _Last updated: January 14, 2026 | Current Phase: Refactoring & QA | Next Phase: 6 (Testing & CI/CD)_
 - _Last updated: January 16, 2026 | Current Phase: 6 (QA & CI/CD Foundation Established) | Next Phase: 2C (Trend Analysis & Advanced Reporting - Completion)_
 - _Last updated: January 18, 2026 | Current Phase: 2C (Trend Analysis & Advanced Reporting - Completed) | Next Phase: 4 (Budgeting & Goals)_
+- _Last updated: January 19, 2026 | Current Phase: Optimization Sprint (UX & Stability) | Next Phase: 4 (Budgeting & Goals)_
 
 ---
 
