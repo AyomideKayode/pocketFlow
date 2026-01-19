@@ -95,6 +95,7 @@ router.get('/export/:id/download', async (req: Request, res: Response) => {
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
     res.send(job.data);
+    // console.log('Downloading file:', filename);
   } catch (error) {
     console.error('Download error:', error);
     res.status(500).json({ message: 'Download failed' });
