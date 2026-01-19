@@ -11,11 +11,20 @@ export const filterRecordsByDateRange = (
   });
 };
 
-export const getDefaultDateRange = (): DateRange => ({
-  startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), // Last 30 days
-  endDate: new Date(),
-  label: 'Last 30 Days',
-});
+export const getDefaultDateRange = (): DateRange => {
+  const endDate = new Date();
+  endDate.setHours(23, 59, 59, 999);
+
+  const startDate = new Date();
+  startDate.setDate(startDate.getDate() - 30);
+  startDate.setHours(0, 0, 0, 0);
+
+  return {
+    startDate,
+    endDate,
+    label: 'Last 30 Days',
+  };
+};
 
 export const groupRecordsByCategory = (records: FinancialRecord[]) => {
   return records.reduce(

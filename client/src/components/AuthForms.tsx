@@ -8,7 +8,15 @@ import {
 } from 'firebase/auth';
 import { auth, googleProvider } from '../lib/firebase';
 import { useToast } from '../contexts/toast-context';
-import { Mail, Lock, Loader2, AlertCircle, ArrowLeft } from 'lucide-react';
+import {
+  Mail,
+  Lock,
+  Loader2,
+  AlertCircle,
+  ArrowLeft,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -118,6 +126,8 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
     color: 'bg-slate-600',
   });
   const [isForgotPassword, setIsForgotPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Real-time password strength calculation
   useEffect(() => {
@@ -475,9 +485,10 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
           <div className='relative'>
             <Lock className='absolute left-3 top-3 h-4 w-4 text-slate-500' />
             <input
-              type='password'
+              type={showPassword ? 'text' : 'password'}
               className={cn(
                 inputClasses,
+                'pr-10',
                 fieldErrors.password && errorInputClasses,
               )}
               placeholder='••••••••'
@@ -489,6 +500,17 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
               required
               minLength={6}
             />
+            <button
+              type='button'
+              onClick={() => setShowPassword(!showPassword)}
+              className='absolute right-3 top-2.5 text-slate-500 hover:text-slate-300 focus:outline-none'
+            >
+              {showPassword ? (
+                <EyeOff className='h-5 w-5' />
+              ) : (
+                <Eye className='h-5 w-5' />
+              )}
+            </button>
           </div>
           {isSignUp && password && (
             <div className='space-y-1'>
@@ -521,9 +543,10 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
             <div className='relative'>
               <Lock className='absolute left-3 top-3 h-4 w-4 text-slate-500' />
               <input
-                type='password'
+                type={showConfirmPassword ? 'text' : 'password'}
                 className={cn(
                   inputClasses,
+                  'pr-10',
                   fieldErrors.confirmPassword && errorInputClasses,
                 )}
                 placeholder='••••••••'
@@ -534,6 +557,17 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
                 }}
                 required
               />
+              <button
+                type='button'
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className='absolute right-3 top-2.5 text-slate-500 hover:text-slate-300 focus:outline-none'
+              >
+                {showConfirmPassword ? (
+                  <EyeOff className='h-5 w-5' />
+                ) : (
+                  <Eye className='h-5 w-5' />
+                )}
+              </button>
             </div>
             {fieldErrors.confirmPassword && (
               <p className='text-xs text-rose-500'>

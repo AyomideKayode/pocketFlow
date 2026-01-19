@@ -240,6 +240,26 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 
 ---
 
+### **Optimization Sprint: UX & Stability** ✅ COMPLETED
+
+- **Features:**
+  - **Production Favicon:** Designed and implemented a custom wallet SVG favicon in Emerald-500.
+  - **Dashboard Synchronization:** Fixed a stale data issue where new records were excluded from charts until refresh (updated date range logic to be end-of-day inclusive).
+  - **Layout Fixes:** Resolved chart container warnings by enforcing stable minimum heights.
+  - **Auth UX:** Added password visibility toggles (Eye/EyeOff) for better usability during sign-up/sign-in.
+  - **Feedback Channel:** Added a "Report Bug" icon in the navbar to facilitate direct user feedback.
+
+- **Implementation Details:**
+  - **Date Logic:** Updated `getDefaultDateRange` and `DateRangeFilter` to use inclusive end-of-day timestamps (`23:59:59.999`).
+  - **Components:** Integrated Lucide icons (`Eye`, `EyeOff`, `Bug`) into existing UI components.
+  - **Styling:** Tailwind-based updates for responsive chart containers.
+
+- **Key Learnings:**
+  - **Date Intervals:** "Last 30 days" must include the *full* current day to feel "real-time" to users.
+  - **Chart Responsiveness:** Recharts requires explicit parent dimensions to avoid layout warnings during initial render.
+
+---
+
 ## Planned Phases & Next Steps
 
 ### **Phase 4: Budgeting & Goals**
