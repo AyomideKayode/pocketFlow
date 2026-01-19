@@ -240,6 +240,26 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 
 ---
 
+### **Optimization Sprint: UX & Stability** ✅ COMPLETED
+
+- **Features:**
+  - **Production Favicon:** Designed and implemented a custom wallet SVG favicon in Emerald-500.
+  - **Dashboard Synchronization:** Fixed a stale data issue where new records were excluded from charts until refresh (updated date range logic to be end-of-day inclusive).
+  - **Layout Fixes:** Resolved chart container warnings by enforcing stable minimum heights.
+  - **Auth UX:** Added password visibility toggles (Eye/EyeOff) for better usability during sign-up/sign-in.
+  - **Feedback Channel:** Added a "Report Bug" icon in the navbar to facilitate direct user feedback.
+
+- **Implementation Details:**
+  - **Date Logic:** Updated `getDefaultDateRange` and `DateRangeFilter` to use inclusive end-of-day timestamps (`23:59:59.999`).
+  - **Components:** Integrated Lucide icons (`Eye`, `EyeOff`, `Bug`) into existing UI components.
+  - **Styling:** Tailwind-based updates for responsive chart containers.
+
+- **Key Learnings:**
+  - **Date Intervals:** "Last 30 days" must include the *full* current day to feel "real-time" to users.
+  - **Chart Responsiveness:** Recharts requires explicit parent dimensions to avoid layout warnings during initial render.
+
+---
+
 ## Planned Phases & Next Steps
 
 ### **Phase 4: Budgeting & Goals**
@@ -320,12 +340,15 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 - **Charts:** Recharts library (300KB, justified by features)
 - **Styling:** CSS modules + global CSS with dark theme
 - **Bundle:** 867KB (warning acknowledged, optimization deferred to Phase 5)
+- **Testing:** Vitest + React Testing Library (Unit/Integration), Playwright (E2E)
+- **Analytics:** Vercel Analytics (Privacy-friendly web analytics)
 
 ### **Backend Stack**
 
 - **Framework:** Express.js with TypeScript
 - **Runtime:** Node.js with ESM modules
 - **Database:** MongoDB Atlas with Mongoose ODM
+- **Background Jobs:** MongoDB-backed Queue (for CSV exports)
 - **API Style:** RESTful JSON endpoints
 - **Port:** 3001 (development)
 - **Development:** Nodemon with ts-node/esm loader
@@ -372,6 +395,7 @@ interface FinancialRecord {
 - _Last updated: January 14, 2026 | Current Phase: Refactoring & QA | Next Phase: 6 (Testing & CI/CD)_
 - _Last updated: January 16, 2026 | Current Phase: 6 (QA & CI/CD Foundation Established) | Next Phase: 2C (Trend Analysis & Advanced Reporting - Completion)_
 - _Last updated: January 18, 2026 | Current Phase: 2C (Trend Analysis & Advanced Reporting - Completed) | Next Phase: 4 (Budgeting & Goals)_
+- _Last updated: January 19, 2026 | Current Phase: Optimization Sprint (UX & Stability) | Next Phase: 4 (Budgeting & Goals)_
 
 ---
 

@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/auth-context';
 import { UserButton } from './UserButton';
-import { Wallet } from 'lucide-react';
+import { Wallet, Bug } from 'lucide-react';
 
 export const Navbar = () => {
   const { user } = useAuth();
@@ -22,6 +22,13 @@ export const Navbar = () => {
           </Link>
         </div>
         <div className='flex items-center gap-4'>
+          <a
+            href='mailto:ayomidekay7@gmail.com?subject=PocketFlow Feedback'
+            className='text-slate-400 hover:text-emerald-500 transition-colors'
+            title='Report Bug / Feedback'
+          >
+            <Bug className='h-5 w-5' />
+          </a>
           {user ? (
             <UserButton />
           ) : (

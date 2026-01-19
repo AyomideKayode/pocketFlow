@@ -23,35 +23,44 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
   const presetRanges = [
     {
       label: 'Last 7 Days',
-      getValue: () => ({
-        startDate: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
-        endDate: new Date(),
-        label: 'Last 7 Days',
-      }),
+      getValue: () => {
+        const end = new Date();
+        end.setHours(23, 59, 59, 999);
+        const start = new Date();
+        start.setDate(start.getDate() - 7);
+        start.setHours(0, 0, 0, 0);
+        return { startDate: start, endDate: end, label: 'Last 7 Days' };
+      },
     },
     {
       label: 'Last 30 Days',
-      getValue: () => ({
-        startDate: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
-        endDate: new Date(),
-        label: 'Last 30 Days',
-      }),
+      getValue: () => {
+        const end = new Date();
+        end.setHours(23, 59, 59, 999);
+        const start = new Date();
+        start.setDate(start.getDate() - 30);
+        start.setHours(0, 0, 0, 0);
+        return { startDate: start, endDate: end, label: 'Last 30 Days' };
+      },
     },
     {
       label: 'This Year',
-      getValue: () => ({
-        startDate: new Date(new Date().getFullYear(), 0, 1),
-        endDate: new Date(),
-        label: 'This Year',
-      }),
+      getValue: () => {
+        const end = new Date();
+        end.setHours(23, 59, 59, 999);
+        const start = new Date(new Date().getFullYear(), 0, 1);
+        start.setHours(0, 0, 0, 0);
+        return { startDate: start, endDate: end, label: 'This Year' };
+      },
     },
     {
       label: 'All Time',
-      getValue: () => ({
-        startDate: new Date(2020, 0, 1),
-        endDate: new Date(),
-        label: 'All Time',
-      }),
+      getValue: () => {
+        const end = new Date();
+        end.setHours(23, 59, 59, 999);
+        const start = new Date(2020, 0, 1);
+        return { startDate: start, endDate: end, label: 'All Time' };
+      },
     },
   ];
 
@@ -64,8 +73,9 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
   const handleCustomSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (customStart && customEnd) {
-      const startDate = new Date(customStart);
-      const endDate = new Date(customEnd);
+      // Use local time for start/end of selected days
+      const startDate = new Date(`${customStart}T00:00:00`);
+      const endDate = new Date(`${customEnd}T23:59:59.999`);
 
       if (startDate <= endDate) {
         onDateRangeChange({

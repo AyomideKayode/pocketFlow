@@ -5,6 +5,7 @@ import App from './App.tsx';
 import { AuthProvider } from './contexts/auth-context';
 import { ToastProvider } from './contexts/toast-context';
 import { ConfirmationDialogProvider } from './contexts/confirmation-dialog-context';
+import { Analytics } from '@vercel/analytics/react';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')!).render(
       <ToastProvider>
         <ConfirmationDialogProvider>
           <App />
+          <Analytics />
         </ConfirmationDialogProvider>
       </ToastProvider>
     </AuthProvider>
