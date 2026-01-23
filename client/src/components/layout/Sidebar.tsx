@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -24,11 +24,19 @@ interface SidebarProps {
 export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, isMobile }) => {
   const location = useLocation();
 
+  const previousPathname = useRef(location.pathname);
+
   // Close sidebar on route change if mobile
   useEffect(() => {
-    if (isMobile && isOpen) {
+    if (
+      isMobile &&
+      isOpen &&
+      previousPathname.current !== location.pathname
+    ) {
       onClose();
     }
+
+    previousPathname.current = location.pathname;
   }, [location.pathname, isMobile, isOpen, onClose]);
 
   const navItems = [
@@ -39,23 +47,19 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, isMobile }) =
   ];
 
   const sidebarClasses = cn(
-    'fixed inset-y-0 left-0 z-[100] flex w-64 flex-col border-r border-slate-800 bg-slate-950 transition-transform duration-300 ease-in-out',
+    'fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-slate-800 bg-slate-950 transition-transform duration-300 ease-in-out',
     // Desktop: transform based on isOpen
     !isMobile && (isOpen ? 'translate-x-0' : '-translate-x-full'),
     // Mobile: transform based on isOpen (overlay)
     isMobile && (isOpen ? 'translate-x-0' : '-translate-x-full'),
     // Position adjustments
     !isMobile && 'pt-16' // Space for navbar on desktop if sidebar is below it.
-    // Wait, usually sidebar is below navbar OR navbar is full width.
-    // If navbar is full width, sidebar is below.
-    // User said: "Top Navigation Bar... Add a sidebar toggle icon".
-    // Usually implies Navbar is on top, Sidebar is below.
   );
 
   // If mobile, we need an overlay
   const overlay = isMobile && isOpen && (
     <div
-      className="fixed inset-0 z-[90] bg-black/50 backdrop-blur-sm transition-opacity"
+      className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm transition-opacity"
       onClick={onClose}
     />
   );
