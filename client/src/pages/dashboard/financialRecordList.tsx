@@ -156,7 +156,8 @@ export const FinancialRecordList = ({ limit }: FinancialRecordListProps) => {
     [displayRecords, updateRecord],
   );
 
-  const columns = useMemo<ColumnDef<FinancialRecord, unknown>[]>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const columns = useMemo<ColumnDef<FinancialRecord, any>[]>(
     () => [
       columnHelper.accessor('description', {
         header: 'Description',
