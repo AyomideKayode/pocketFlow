@@ -107,9 +107,28 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 const columnHelper = createColumnHelper<FinancialRecord>();
 
-export const FinancialRecordList = () => {
+interface FinancialRecordListProps {
+  limit?: number;
+}
+
+export const FinancialRecordList = ({ limit }: FinancialRecordListProps) => {
   const { records, updateRecord, deleteRecord } = useFinancialRecords();
   const { showConfirmation } = useConfirmationDialog();
+
+  const displayRecords = useMemo(() => {
+    // Sort by date descending
+    const sorted = [...records].sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return dateB - dateA;
+    });
+
+    // Limit if needed
+    if (limit && limit > 0) {
+      return sorted.slice(0, limit);
+    }
+    return sorted;
+  }, [records, limit]);
 
   const handleDeleteRecord = useCallback(
     (record: FinancialRecord) => {
@@ -127,12 +146,17 @@ export const FinancialRecordList = () => {
 
   const updateCellRecord = useCallback(
     (rowIndex: number, columnId: string, value: CellValue) => {
-      const id = records[rowIndex]?._id;
-      updateRecord(id ?? '', { ...records[rowIndex], [columnId]: value });
+      // Use displayRecords to get the correct record based on current view
+      const record = displayRecords[rowIndex];
+      if (!record) return;
+
+      const id = record._id;
+      updateRecord(id ?? '', { ...record, [columnId]: value });
     },
-    [records, updateRecord],
+    [displayRecords, updateRecord],
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const columns = useMemo<ColumnDef<FinancialRecord, any>[]>(
     () => [
       columnHelper.accessor('description', {
@@ -229,7 +253,7 @@ export const FinancialRecordList = () => {
   );
 
   const table = useReactTable({
-    data: records,
+    data: displayRecords,
     columns,
     getCoreRowModel: getCoreRowModel(),
   });
