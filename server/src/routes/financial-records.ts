@@ -1,6 +1,7 @@
 import express from 'express';
 import type { Request, Response } from 'express';
 import FinancialRecordModel from '../schema/financial-records.js';
+import { checkAndNotifyBudgetExceeded } from '../services/budget.service.js';
 
 const router = express.Router();
 
@@ -46,6 +47,15 @@ router.post('/', async (req: Request, res: Response) => {
     });
 
     const savedRecord = await newRecord.save();
+
+    // Check budget if it's an expense
+    if (type === 'expense') {
+        // Run asynchronously to not block response
+        checkAndNotifyBudgetExceeded(userId, category, savedRecord.date).catch(err =>
+            console.error('Error checking budget:', err)
+        );
+    }
+
     res.status(201).json(savedRecord);
   } catch (error) {
     console.error('Error saving record:', error);

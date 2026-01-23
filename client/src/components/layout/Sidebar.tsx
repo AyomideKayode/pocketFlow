@@ -39,7 +39,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, isMobile }) =
   ];
 
   const sidebarClasses = cn(
-    'fixed inset-y-0 left-0 z-40 flex w-64 flex-col border-r border-slate-800 bg-slate-950 transition-transform duration-300 ease-in-out',
+    'fixed inset-y-0 left-0 z-[100] flex w-64 flex-col border-r border-slate-800 bg-slate-950 transition-transform duration-300 ease-in-out',
     // Desktop: transform based on isOpen
     !isMobile && (isOpen ? 'translate-x-0' : '-translate-x-full'),
     // Mobile: transform based on isOpen (overlay)
@@ -55,7 +55,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, isMobile }) =
   // If mobile, we need an overlay
   const overlay = isMobile && isOpen && (
     <div
-      className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm transition-opacity"
+      className="fixed inset-0 z-[90] bg-black/50 backdrop-blur-sm transition-opacity"
       onClick={onClose}
     />
   );
