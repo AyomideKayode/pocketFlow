@@ -14,7 +14,7 @@ export const Transactions = () => {
             Transactions
           </h1>
           <p className='text-slate-400'>
-            Manage your financial records
+            Manage your financial records. Track income and expenses easily.
           </p>
         </div>
         <button

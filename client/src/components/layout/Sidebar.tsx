@@ -97,10 +97,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, isMobile }) =
         </div>
 
         <div className="border-t border-slate-800 p-4">
-           {/* User Profile Section pinned to bottom */}
-           <div className="flex items-center justify-between">
-              <UserButton />
-           </div>
+          {/* User Profile Section pinned to bottom */}
+          <div className="flex items-center justify-between">
+            <UserButton />
+          </div>
         </div>
       </aside>
     </>

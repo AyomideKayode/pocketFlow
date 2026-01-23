@@ -106,7 +106,8 @@ export const Dashboard = () => {
                <h1 className='text-2xl font-bold tracking-tight text-white'>
                   Dashboard
                </h1>
-               <p className='text-slate-400'>Overview of your financial health</p>
+               <p className='text-slate-400'>Welcome back!</p>
+               <p className='text-slate-400'>Here's an overview of your financial health.</p>
             </div>
 
             <div className='flex flex-col gap-2 sm:flex-row sm:items-center'>
