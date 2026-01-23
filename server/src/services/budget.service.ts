@@ -41,7 +41,7 @@ export const getBudgetsWithProgress = async (userId: string, period: string) => 
         ...budget.toObject(),
         spent,
         remaining: budget.amount - spent,
-        percent: Math.min((spent / budget.amount) * 100, 100),
+        percent: (spent / budget.amount) * 100,
       };
     }),
   );

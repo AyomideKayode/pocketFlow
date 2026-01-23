@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useBudgets, Budget } from '../../contexts/budget-context';
+import { useBudgets, type Budget } from '../../contexts/budget-context';
 import { Plus, Trash2, Edit2, AlertTriangle, X, DollarSign, PieChart } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';

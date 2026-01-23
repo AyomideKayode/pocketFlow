@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useGoals, Goal } from '../../contexts/goal-context';
+import { useGoals, type Goal } from '../../contexts/goal-context';
 import { Plus, Trash2, Edit2, Target, X, DollarSign, Calendar } from 'lucide-react';
 
 // Reuse categories for linking
