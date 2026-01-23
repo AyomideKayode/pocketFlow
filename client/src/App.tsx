@@ -1,11 +1,15 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Dashboard } from './pages/dashboard';
 import { Auth } from './pages/auth';
+import { Transactions } from './pages/transactions';
+import { Budgets } from './pages/budgets';
+import { Goals } from './pages/goals';
 import { FinancialRecordsProvider } from './contexts/financial-record-context';
 import { useAuth } from './contexts/auth-context';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { ToastContainer } from './components/ToastContainer';
 import { Navbar } from './components/Navbar';
+import { DashboardLayout } from './components/layout/DashboardLayout';
 import { Loader2 } from 'lucide-react';
 
 function App() {
@@ -25,22 +29,35 @@ function App() {
   return (
     <Router>
       <div className='flex min-h-screen w-full flex-col bg-slate-950 text-slate-50 font-sans antialiased'>
-        <Navbar />
-        <main className='flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
-          <Routes>
-            <Route
-              path='/'
-              element={
-                <ProtectedRoute>
-                  <FinancialRecordsProvider>
-                    <Dashboard />
-                  </FinancialRecordsProvider>
-                </ProtectedRoute>
-              }
-            />
-            <Route path='/auth' element={<Auth />} />
-          </Routes>
-        </main>
+        <Routes>
+          <Route
+            element={
+              <ProtectedRoute>
+                <FinancialRecordsProvider>
+                  <DashboardLayout />
+                </FinancialRecordsProvider>
+              </ProtectedRoute>
+            }
+          >
+            <Route path='/' element={<Navigate to='/dashboard' replace />} />
+            <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/transactions' element={<Transactions />} />
+            <Route path='/budgets' element={<Budgets />} />
+            <Route path='/goals' element={<Goals />} />
+          </Route>
+
+          <Route
+            path='/auth'
+            element={
+              <>
+                <Navbar />
+                <main className='flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
+                  <Auth />
+                </main>
+              </>
+            }
+          />
+        </Routes>
         <ToastContainer />
       </div>
     </Router>

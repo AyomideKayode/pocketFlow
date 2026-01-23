@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useAuth } from '../../contexts/auth-context';
-import { FinancialRecordForm } from './financialRecordForm';
+import { useNavigate } from 'react-router-dom';
 import { FinancialRecordList } from './financialRecordList';
 import { useFinancialRecords } from '../../contexts/financial-record-context';
 import { EmptyState } from '../../components/EmptyState';
@@ -31,9 +31,9 @@ export const Dashboard = () => {
    const { user } = useAuth();
    const { records } = useFinancialRecords();
    const [dateRange, setDateRange] = useState(getDefaultDateRange());
-   const [showAddForm, setShowAddForm] = useState(false);
    const [isExporting, setIsExporting] = useState(false);
    const { addToast } = useToast();
+   const navigate = useNavigate();
 
    const filteredRecords = useMemo(() => {
       return filterRecordsByDateRange(records, dateRange);
@@ -92,24 +92,8 @@ export const Dashboard = () => {
                title={`Welcome to PocketFlow, ${user?.displayName || user?.email?.split('@')[0]}!`}
                description='Start tracking your finances by adding your first financial record. You can log income, expenses, and monitor your spending patterns all in one place.'
                actionText='Add Your First Record'
-               onAction={() => setShowAddForm(true)}
+               onAction={() => navigate('/transactions')}
             />
-            {showAddForm && (
-               <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4'>
-                  <div className='w-full max-w-lg rounded-xl border border-slate-800 bg-slate-900 p-6 shadow-2xl'>
-                     <div className='mb-4 flex items-center justify-between'>
-                        <h2 className='text-xl font-bold text-white'>Add New Record</h2>
-                        <button
-                           onClick={() => setShowAddForm(false)}
-                           className='text-slate-400 hover:text-white'
-                        >
-                           ✕
-                        </button>
-                     </div>
-                     <FinancialRecordForm onSuccess={() => setShowAddForm(false)} />
-                  </div>
-               </div>
-            )}
          </div>
       );
    }
@@ -219,7 +203,7 @@ export const Dashboard = () => {
                   Recent Transactions
                </h2>
                <button
-                  onClick={() => setShowAddForm(!showAddForm)}
+                  onClick={() => navigate('/transactions')}
                   className='flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 transition-colors shadow-lg shadow-emerald-900/20'
                >
                   <Plus className='h-4 w-4' />
@@ -227,22 +211,7 @@ export const Dashboard = () => {
                </button>
             </div>
 
-            {showAddForm && (
-               <div className='rounded-xl border border-slate-800 bg-slate-900/50 p-6 animate-in slide-in-from-top-4 backdrop-blur-sm'>
-                  <div className='mb-4 flex items-center justify-between'>
-                     <h3 className='text-lg font-medium text-white'>Add New Record</h3>
-                     <button
-                        onClick={() => setShowAddForm(false)}
-                        className='text-slate-400 hover:text-white'
-                     >
-                        Close
-                     </button>
-                  </div>
-                  <FinancialRecordForm onSuccess={() => setShowAddForm(false)} />
-               </div>
-            )}
-
-            <FinancialRecordList />
+            <FinancialRecordList limit={5} />
          </div>
       </div>
    );
