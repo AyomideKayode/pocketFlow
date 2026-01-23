@@ -10,7 +10,7 @@ const initFirebaseAdmin = () => {
     process.env.FIREBASE_SERVICE_ACCOUNT_PATH ||
     path.join(
       process.cwd(),
-      'pocketflow-d735c-firebase-adminsdk-fbsvc-e232b39403.json',
+      'pocketflow-d735c-firebase-adminsdk-fbsvc-f03bf1f4b7.json',
     );
 
   let credential;
@@ -34,7 +34,7 @@ const initFirebaseAdmin = () => {
 
   if (credential) {
     admin.initializeApp({ credential });
-    console.log('Initialized Firebase Admin SDK');
+    console.log('Initialized Firebase Admin SDK🔥');
   }
 
   return admin;

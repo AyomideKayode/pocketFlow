@@ -11,7 +11,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 ### **Phase 1: Core UI & Authentication** ✅ COMPLETED
 
 - **Features:**
-
   - Complete Firebase authentication (sign up, login, forgot password with recovery emails)
   - Toast notification system for all user feedback
   - Empty state components with contextual messaging
@@ -21,7 +20,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
   - User personalization (display name and email integration)
 
 - **Implementation Details:**
-
   - **Frontend Stack:** React 19, TypeScript, Vite with hot reload
   - **Authentication:** Firebase SDK with auth-context.tsx for state management
   - **UI Components:** EmptyState component with variants (welcome, no-data, error)
@@ -34,7 +32,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
     - `client/src/components/ProtectedRoute.tsx` - Route protection
 
 - **Key Decisions:**
-
   - Firebase auth chosen for security and ease of implementation
   - Context API for state management to avoid prop drilling
   - Dark theme for visual consistency and modern appeal
@@ -52,14 +49,12 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 ### **Phase 2A: Data Model & Critical Bug Resolution** ✅ COMPLETED
 
 - **Features:**
-
   - Enhanced financial record model with required `type` enum field (`income` | `expense`)
   - Complete backend validation for all record fields
   - Frontend migration logic for legacy records without type field
   - Accurate income/expense calculations and categorization
 
 - **Implementation Details:**
-
   - **Backend Updates:**
     - Updated Mongoose schema with type enum validation
     - Express POST route with explicit field destructuring
@@ -76,7 +71,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
     - Existing records migrated or filtered appropriately
 
 - **Critical Bug Investigation (5+ Hour Debug Session):**
-
   - **Symptom:** All expense entries displayed as income in charts and calculations
   - **Initial Investigation:** Checked frontend calculations, chart components, data types
   - **Root Cause Discovery:** Frontend was connecting to production MongoDB server during development
@@ -102,7 +96,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 ### **Phase 2B: Dashboard Visualization & Time-Based Filtering** ✅ COMPLETED
 
 - **Features:**
-
   - **Step 1: Chart Implementation**
     - Interactive pie chart: Income vs Expense breakdown with percentages
     - Interactive bar chart: Spending analysis by category
@@ -115,7 +108,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
     - Visual indicator showing current selected period
 
 - **Implementation Details:**
-
   - **Chart Components:**
     - `client/src/components/charts/ChartContainer.tsx` - Reusable wrapper
     - `client/src/components/charts/IncomeExpenseChart.tsx` - Pie chart using Recharts
@@ -139,7 +131,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
     - All charts update when date range changes
 
 - **UI/UX Details:**
-
   - **CSS Classes:** `.date-range-filter`, `.preset-btn`, `.preset-btn.active`, `.custom-date-form`
   - **Styling:**
     - Inactive buttons: Gray background (#3d3d3d) with border
@@ -152,7 +143,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
     - Background: Dark (#2d2d2d, #353535)
 
 - **Technical Challenges & Solutions:**
-
   - **Challenge:** TypeScript strictness with Recharts props
     - **Solution:** Properly typed Recharts components with generic types
   - **Challenge:** Bundle size warning (867KB gzipped 266KB)
@@ -175,7 +165,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 ### **Phase 2C: Trend Analysis & Advanced Reporting** ✅ COMPLETED
 
 - **Features:**
-
   - **Advanced Trend Analysis:**
     - Interactive Trend Line Chart with configurable granularity (Day, Week, Month).
     - Smooth curve interpolation ('monotone') for better visual trend identification.
@@ -192,7 +181,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
     - Robust timezone handling in chart data transformations.
 
 - **Implementation Details:**
-
   - **Chart Logic:**
     - `client/src/utils/chartDataTransforms.ts` refactored to use local date components for grouping keys.
     - Prevents date shifting issues for users in non-UTC timezones.
@@ -212,7 +200,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 ### **Phase 6: Quality Assurance & CI/CD** ✅ COMPLETED (Foundation)
 
 - **Features:**
-
   - **Testing Infrastructure:**
     - **Client-Side:** Vitest + React Testing Library configured with jsdom environment.
     - **Server-Side:** Vitest + Supertest for API integration testing.
@@ -225,7 +212,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
     - Enhanced Financial Record Form with split Income/Expense category lists.
 
 - **Implementation Details:**
-
   - **Refactoring for Testability:**
     - Separated Server app logic (`server/src/app.ts`) from entry point (`server/src/index.ts`) to allow supertest integration without port conflicts.
   - **Configuration:**
@@ -255,7 +241,7 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
   - **Styling:** Tailwind-based updates for responsive chart containers.
 
 - **Key Learnings:**
-  - **Date Intervals:** "Last 30 days" must include the *full* current day to feel "real-time" to users.
+  - **Date Intervals:** "Last 30 days" must include the _full_ current day to feel "real-time" to users.
   - **Chart Responsiveness:** Recharts requires explicit parent dimensions to avoid layout warnings during initial render.
 
 ---
