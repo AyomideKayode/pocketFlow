@@ -5,6 +5,8 @@ import { Transactions } from './pages/transactions';
 import { Budgets } from './pages/budgets';
 import { Goals } from './pages/goals';
 import { FinancialRecordsProvider } from './contexts/financial-record-context';
+import { BudgetsProvider } from './contexts/budget-context';
+import { GoalsProvider } from './contexts/goal-context';
 import { useAuth } from './contexts/auth-context';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import { ToastContainer } from './components/ToastContainer';
@@ -34,7 +36,11 @@ function App() {
             element={
               <ProtectedRoute>
                 <FinancialRecordsProvider>
-                  <DashboardLayout />
+                  <BudgetsProvider>
+                    <GoalsProvider>
+                      <DashboardLayout />
+                    </GoalsProvider>
+                  </BudgetsProvider>
                 </FinancialRecordsProvider>
               </ProtectedRoute>
             }
