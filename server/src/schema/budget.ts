@@ -27,6 +27,9 @@ const budgetSchema = new mongoose.Schema<Budget>(
 // Compound index to ensure one budget per category per period for a user
 budgetSchema.index({ userId: 1, category: 1, period: 1 }, { unique: true });
 
+// Index for efficient querying of all budgets for a user in a specific period
+budgetSchema.index({ userId: 1, period: 1 });
+
 const BudgetModel = mongoose.model<Budget>('Budget', budgetSchema);
 
 export default BudgetModel;

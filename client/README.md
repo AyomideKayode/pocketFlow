@@ -15,6 +15,8 @@ client/src/
 ├── contexts/       # React Context Providers
 │   ├── auth-context.tsx            # Firebase Auth state
 │   ├── financial-record-context.tsx # Data fetching & state
+│   ├── budget-context.tsx          # Budget management
+│   ├── goal-context.tsx            # Financial goals
 │   └── toast-context.tsx           # Notification system
 ├── lib/            # External library configurations (Firebase)
 ├── pages/          # Route components
@@ -43,6 +45,7 @@ Financial records are managed in `financial-record-context.tsx`.
 - **Fetching**: Loads records associated with the logged-in User ID.
 - **Updates**: Optimistic UI updates for adding/deleting records.
 - **Validation**: Frontend typing ensures `income` or `expense` categorization.
+- **Performance**: Charts are lazy-loaded via `React.lazy` and `Suspense` to optimize initial load time.
 
 ### Analytics
 
@@ -110,4 +113,4 @@ Major libraries used:
 - `react-router-dom` (Routing)
 - `firebase` (Auth)
 - `recharts` (Visualization)
-- `@tanstack/react-table` (Data Grids - _Future implementation_)
+- `lucide-react` (Icons)
