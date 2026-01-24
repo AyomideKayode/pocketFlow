@@ -35,13 +35,13 @@ function App() {
           <Route
             element={
               <ProtectedRoute>
-                <FinancialRecordsProvider>
-                  <BudgetsProvider>
+                <BudgetsProvider>
+                  <FinancialRecordsProvider>
                     <GoalsProvider>
                       <DashboardLayout />
                     </GoalsProvider>
-                  </BudgetsProvider>
-                </FinancialRecordsProvider>
+                  </FinancialRecordsProvider>
+                </BudgetsProvider>
               </ProtectedRoute>
             }
           >
