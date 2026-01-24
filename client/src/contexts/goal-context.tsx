@@ -32,13 +32,13 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
   const fetchGoals = useCallback(async () => {
     if (!user) return;
     try {
-        const response = await fetch(`${API_BASE_URL}/goals/${user.uid}`);
-        if (response.ok) {
-            const data = await response.json();
-            setGoals(data);
-        }
+      const response = await fetch(`${API_BASE_URL}/goals/${user.uid}`);
+      if (response.ok) {
+        const data = await response.json();
+        setGoals(data);
+      }
     } catch (error) {
-        console.error('Error fetching goals:', error);
+      console.error('Error fetching goals:', error);
     }
   }, [user, API_BASE_URL]);
 

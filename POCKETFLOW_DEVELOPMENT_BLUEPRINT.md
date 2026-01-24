@@ -280,29 +280,64 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 
 ---
 
+### **Phase 4: Budgeting & Goals** ✅ COMPLETED
+
+- **Features:**
+  - Monthly budgets per category
+  - Budget progress calculation and visual indicators
+  - Budget exceedance alerts (single notification per period)
+  - Savings and financial goal tracking
+
+- **Implementation Details:**
+  - New Mongoose models for budgets/goals
+  - Budgets and goals backed by dedicated Mongoose schemas
+  - Budget progress derived from financial records (no duplicated state)
+  - Notification logic is idempotent using a persisted notified flag
+  - Client-side contexts manage synchronization and UI consistency
+
+---
+
+### **Optimization Sprint #2: Layout Stability & Context Refactor** ✅ COMPLETED
+
+After pulling the changes made in Phase 4 Budget & Goals features implementation, I carried out tests and made the following changes and modifications:
+
+- **✅ UI/Layout Stabilization**
+  - Resolved sidebar overlapping navbar on desktop and not showing on mobile.
+  - Clarify layout ownership between navbar & sidebar.
+  - Corrected user profile dropdown behavior (opening upward for accessibility and viewport safety).
+
+- **✅ Context Refactor (Budgets)**
+  - Centralized budget recalculation via `fetchBudgets()` to eliminate stale UI state and refresh dependency after budget creation.
+  - Enforced provider hierarchy to guarantee `BudgetContext` availability for dependent contexts (e.g. Financial Records).
+
+- **✅ Budget Notification State**
+  - Introduced `notified` state on Budget schema.
+  - Implemented idempotent `checkAndNotifyBudgetExceeded` to prevent duplicate alerts on repeated threshold violations.
+
+  _Note: Advanced budget behaviors (e.g. reset semantics, multi-threshold alerts) are intentionally deferred to avoid over-engineering at this stage._
+
+---
+
 ## Planned Phases & Next Steps
 
-### **Phase 4: Budgeting & Goals**
+### **Phase 5: Performance, Optimization & Hardening (Next)**
 
-- **Features:**
-  - Set monthly budgets per category
-  - Visual progress bars and alerts
-  - Goal tracking (e.g., savings targets)
+- **Primary Focus (Features):**
+  - Frontend performance improvements
+  - Backend query efficiency
+  - System robustness and observability
+
 - **Implementation Plan:**
-  - New Mongoose models for budgets/goals
-  - Context and UI for budget management
-  - Notification system for budget overruns
+  - Code splitting and lazy loading for charts and heavy UI components
+  - MongoDB query and aggregation optimization
+  - Lighthouse audits and targeted UX/performance fixes
 
-### **Phase 5: Performance & Optimization**
-
-- **Features:**
-  - Bundle/code splitting for faster loads
-  - Lazy loading of charts and heavy components
-  - Backend query optimization
-- **Implementation Plan:**
-  - Dynamic imports for chart modules
-  - Analyze and optimize MongoDB queries
-  - Lighthouse audits and improvements
+- **Optional Enhancements (Non-blocking):**
+  - Budget warning thresholds (e.g. 80% usage)
+  - Budget notification reset when spending returns below limit (re-notification support)
+  - Budget checks on transaction update/delete
+  - Consolidation of budget aggregation into a single MongoDB pipeline
+  - Server-side tests for budget progress and notification logic
 
 ---
 
@@ -339,6 +374,28 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
   - Document why bundle is large: Recharts + React + Firebase
   - Plan optimization (code splitting, lazy load) for Phase 5, not Phase 2
 
+### **From Phase 4 (Budgets, Contexts & State Coordination)**
+
+- **Derived State Must Have a Single Source of Truth**
+  - Budget progress should always be recalculated from financial records.
+  - Centralizing recalculation (`fetchBudgets`) prevents stale UI and refresh-dependent bugs.
+
+- **Context Dependency Order Is Architecture, Not Implementation Detail**
+  - Hooks that depend on other contexts must enforce provider hierarchy.
+  - Runtime guardrails (`useX must be used within XProvider`) surfaced integration issues early and prevented silent failures.
+
+- **Idempotency Is Essential for Side Effects**
+  - Notifications must be stateful to avoid repeated alerts.
+  - Persisting notification state (`notified`) enables deterministic, spam-free behavior.
+
+- **Fixing “Small UI Bugs” Often Reveals Deeper Ownership Problems**
+  - Sidebar/navbar overlap exposed unclear layout ownership.
+  - Explicit layout boundaries simplify responsive behavior and future changes.
+
+- **Observing System Behavior Beats Guessing**
+  - Server logs confirmed notification logic correctness.
+  - Real user flows (create → update → delete → recreate) revealed missing policy decisions rather than bugs.
+
 ### **General Resilience Strategies**
 
 - **Documentation is Key:** This blueprint saved hours by providing context when bugs appeared
@@ -346,6 +403,15 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 - **Logging at Boundaries:** API request/response logging caught the production server issue
 - **Progressive Enhancement:** Each phase builds on solid foundation from previous phase
 - **User Feedback Loops:** Empty states, toasts, and clear error messages prevent user confusion
+- **Avoid Premature Generalization**
+  - Single-threshold budget alerts solved the immediate problem cleanly.
+  - Multi-threshold systems and reset policies were deferred intentionally.
+- **Every Phase Should Leave the System More Predictable**
+  - Deterministic behavior > feature completeness.
+  - Clear invariants reduce future cognitive load.
+- **Handoffs Require Narrative, Not Just Code**
+  - README updates prevent context loss and duplicated effort.
+  - Explicit “why this is deferred” notes are as important as implementation details.
 
 ---
 
@@ -417,6 +483,7 @@ interface FinancialRecord {
 - _Last updated: January 18, 2026 | Current Phase: 2C (Trend Analysis & Advanced Reporting - Completed) | Next Phase: 4 (Budgeting & Goals)_
 - _Last updated: January 19, 2026 | Current Phase: Optimization Sprint (UX & Stability) | Next Phase: 4 (Budgeting & Goals)_
 - _Last updated: January 23, 2026 | Current Phase: Phase 4 Preparation (Sidebar Navigation) | Next Phase: 4 (Budgeting & Goals)_
+- _Last updated: January 24, 2026 | Current Phase: Phase 4 (Budgeting & Goals) | Next Phase: 5 Performance, Optimization & Hardening_
 
 ---
 
