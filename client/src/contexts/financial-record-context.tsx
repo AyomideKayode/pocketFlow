@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';
+import { useBudgets } from './budget-context';
 
 export interface FinancialRecord {
   _id?: string;
@@ -40,6 +41,7 @@ export const FinancialRecordsProvider = ({
   const [records, setRecords] = React.useState<FinancialRecord[]>([]);
   const { user } = useAuth();
   const { addToast } = useToast();
+  const { fetchBudgets } = useBudgets();
 
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
@@ -104,6 +106,8 @@ export const FinancialRecordsProvider = ({
       }
       const savedRecord = await response.json();
       setRecords((prevRecords) => [...prevRecords, savedRecord]);
+
+      await fetchBudgets();
       addToast('Financial record added successfully!', 'success');
     } catch (error) {
       console.error('Error adding record:', error);
@@ -130,6 +134,8 @@ export const FinancialRecordsProvider = ({
       setRecords((prevRecords) =>
         prevRecords.map((record) => (record._id === id ? updated : record)),
       );
+
+      await fetchBudgets();
       addToast('Financial record updated successfully!', 'success');
     } catch (error) {
       console.error('Error updating record:', error);
@@ -148,6 +154,8 @@ export const FinancialRecordsProvider = ({
       setRecords((prevRecords) =>
         prevRecords.filter((record) => record._id !== id),
       );
+
+      await fetchBudgets();
       addToast('Financial record deleted successfully!', 'success');
     } catch (error) {
       console.error('Error deleting record:', error);
