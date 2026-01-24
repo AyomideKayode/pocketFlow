@@ -5,6 +5,7 @@ export interface Budget {
   category: string;
   amount: number;
   period: string; // Format: YYYY-MM
+  notified?: boolean;
 }
 
 const budgetSchema = new mongoose.Schema<Budget>(
@@ -13,6 +14,10 @@ const budgetSchema = new mongoose.Schema<Budget>(
     category: { type: String, required: true },
     amount: { type: Number, required: true },
     period: { type: String, required: true },
+    notified: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,
