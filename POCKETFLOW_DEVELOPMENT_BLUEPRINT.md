@@ -297,121 +297,40 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 
 ---
 
-### **Optimization Sprint #2: Layout Stability & Context Refactor** ✅ COMPLETED
+### **Phase 5: Performance, Optimization & Hardening** ✅ COMPLETED
 
-After pulling the changes made in Phase 4 Budget & Goals features implementation, I carried out tests and made the following changes and modifications:
+- **Features:**
+  - **Frontend Performance:**
+    - Implemented code splitting for Recharts components (`React.lazy` + `Suspense`).
+    - Added loading skeletons for charts to improve perceived performance.
+  - **Backend Query Efficiency:**
+    - Added compound indexes to `FinancialRecord` (`userId` + `date`) and `Budget` (`userId` + `period`) schemas.
+    - Optimized budget aggregation to use a single MongoDB aggregation pipeline per period instead of N queries.
+  - **System Robustness:**
+    - **Smart Notifications:** Implemented budget notification resets. If spending drops below the limit (e.g., deleted record), the notification flag resets, allowing future alerts.
+    - **Continuous Checking:** Budget checks now run on record updates (`PUT`) and deletions (`DELETE`), not just creation.
+    - **Observability:** Added structured `[BUDGET]` logging for better tracking of alert lifecycles.
 
-- **✅ UI/Layout Stabilization**
-  - Resolved sidebar overlapping navbar on desktop and not showing on mobile.
-  - Clarify layout ownership between navbar & sidebar.
-  - Corrected user profile dropdown behavior (opening upward for accessibility and viewport safety).
+- **Implementation Details:**
+  - **Provider Hierarchy:** Strictly enforced `BudgetsProvider` wrapping `FinancialRecordsProvider` to ensure context dependencies are met.
+  - **Service Refactoring:** `budget.service.ts` refactored to use `Map` for O(1) budget-to-expense matching.
+  - **Idempotency:** Budget notifications remain idempotent but are now state-aware (can toggle true/false).
 
-- **✅ Context Refactor (Budgets)**
-  - Centralized budget recalculation via `fetchBudgets()` to eliminate stale UI state and refresh dependency after budget creation.
-  - Enforced provider hierarchy to guarantee `BudgetContext` availability for dependent contexts (e.g. Financial Records).
-
-- **✅ Budget Notification State**
-  - Introduced `notified` state on Budget schema.
-  - Implemented idempotent `checkAndNotifyBudgetExceeded` to prevent duplicate alerts on repeated threshold violations.
-
-  _Note: Advanced budget behaviors (e.g. reset semantics, multi-threshold alerts) are intentionally deferred to avoid over-engineering at this stage._
+- **Key Learnings:**
+  - **Aggregation vs. Iteration:** Moving aggregation logic to the database layer significantly reduces application-level looping and memory usage.
+  - **Staleness:** Relying on checks only at creation time leaves gaps; handling updates/deletes is crucial for a "live" budget system.
 
 ---
 
 ## Planned Phases & Next Steps
 
-### **Phase 5: Performance, Optimization & Hardening (Next)**
+### **Phase 7: Advanced Features (Roadmap)**
 
-- **Primary Focus (Features):**
-  - Frontend performance improvements
-  - Backend query efficiency
-  - System robustness and observability
-
-- **Implementation Plan:**
-  - Code splitting and lazy loading for charts and heavy UI components
-  - MongoDB query and aggregation optimization
-  - Lighthouse audits and targeted UX/performance fixes
-
-- **Optional Enhancements (Non-blocking):**
-  - Budget warning thresholds (e.g. 80% usage)
-  - Budget notification reset when spending returns below limit (re-notification support)
-  - Budget checks on transaction update/delete
-  - Consolidation of budget aggregation into a single MongoDB pipeline
-  - Server-side tests for budget progress and notification logic
-
----
-
-## Key Lessons & Resilience Strategies
-
-### **From Phase 1 (Authentication)**
-
-- Firebase integration is powerful but requires careful state management
-- Context API is suitable for app-wide state (auth, toasts) but consider Redux for complex scenarios
-- Empty states significantly improve UX for new users
-
-### **From Phase 2A (Critical Bug Resolution)**
-
-- **Environment Management:** CRITICAL - Always verify .env/.env.local precedence and double-check which server you're connecting to
-  - Use logging to confirm API endpoints: `console.log('API_URL:', import.meta.env.VITE_API_BASE_URL)`
-  - Test with `fetch('/financial-records', {headers: {'X-Debug': 'true'}})`
-- **Explicit Validation:** Backend must validate ALL fields - never trust client-side validation alone
-  - Use explicit destructuring: `const { userId, date, description, amount, category, paymentMethod, type } = req.body`
-  - Validate types: `if (!['income', 'expense'].includes(type)) throw new Error(...)`
-  - Ensure positive amounts: `const amount = Math.abs(parseFloat(req.body.amount))`
-- **Data Model Clarity:** Use enums and TypeScript interfaces to prevent ambiguity
-  - Define record interface early: `type TransactionType = 'income' | 'expense'`
-  - Update schema BEFORE writing migrations
-
-### **From Phase 2B (Chart Implementation)**
-
-- **Third-party Library Strictness:** TypeScript strict mode catches Recharts prop mismatches
-  - Test component interfaces early: `ReactElement<IncomeExpenseChartProps>`
-  - Use proper typing with Recharts components
-- **Performance with Data Transformations:** Memoization is essential
-  - Use `useMemo` for expensive calculations: `useMemo(() => filterRecordsByDateRange(...), [records, dateRange])`
-  - Don't re-calculate if inputs haven't changed
-- **Bundle Size Awareness:** Accept that some features have unavoidable bundle cost
-  - Document why bundle is large: Recharts + React + Firebase
-  - Plan optimization (code splitting, lazy load) for Phase 5, not Phase 2
-
-### **From Phase 4 (Budgets, Contexts & State Coordination)**
-
-- **Derived State Must Have a Single Source of Truth**
-  - Budget progress should always be recalculated from financial records.
-  - Centralizing recalculation (`fetchBudgets`) prevents stale UI and refresh-dependent bugs.
-
-- **Context Dependency Order Is Architecture, Not Implementation Detail**
-  - Hooks that depend on other contexts must enforce provider hierarchy.
-  - Runtime guardrails (`useX must be used within XProvider`) surfaced integration issues early and prevented silent failures.
-
-- **Idempotency Is Essential for Side Effects**
-  - Notifications must be stateful to avoid repeated alerts.
-  - Persisting notification state (`notified`) enables deterministic, spam-free behavior.
-
-- **Fixing “Small UI Bugs” Often Reveals Deeper Ownership Problems**
-  - Sidebar/navbar overlap exposed unclear layout ownership.
-  - Explicit layout boundaries simplify responsive behavior and future changes.
-
-- **Observing System Behavior Beats Guessing**
-  - Server logs confirmed notification logic correctness.
-  - Real user flows (create → update → delete → recreate) revealed missing policy decisions rather than bugs.
-
-### **General Resilience Strategies**
-
-- **Documentation is Key:** This blueprint saved hours by providing context when bugs appeared
-- **Commit Messages Matter:** Detailed commits (like Phase 2B commit) provide forensic trail
-- **Logging at Boundaries:** API request/response logging caught the production server issue
-- **Progressive Enhancement:** Each phase builds on solid foundation from previous phase
-- **User Feedback Loops:** Empty states, toasts, and clear error messages prevent user confusion
-- **Avoid Premature Generalization**
-  - Single-threshold budget alerts solved the immediate problem cleanly.
-  - Multi-threshold systems and reset policies were deferred intentionally.
-- **Every Phase Should Leave the System More Predictable**
-  - Deterministic behavior > feature completeness.
-  - Clear invariants reduce future cognitive load.
-- **Handoffs Require Narrative, Not Just Code**
-  - README updates prevent context loss and duplicated effort.
-  - Explicit “why this is deferred” notes are as important as implementation details.
+- **Potential Features:**
+  - User profile management
+  - Data import (CSV/Bank)
+  - Advanced analytics telemetry
+  - Google/Social OAuth integration
 
 ---
 
@@ -421,11 +340,11 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 - **Framework:** React 19 with TypeScript (~5.8.3)
 - **Build Tool:** Vite with hot reload
-- **State Management:** React Context (auth, financial records, toasts)
+- **State Management:** React Context (auth, financial records, toasts, budgets)
 - **Authentication:** Firebase SDK with custom auth context
-- **Charts:** Recharts library (300KB, justified by features)
+- **Charts:** Recharts library (Lazy loaded)
 - **Styling:** CSS modules + global CSS with dark theme
-- **Bundle:** 867KB (warning acknowledged, optimization deferred to Phase 5)
+- **Bundle:** Optimized via code splitting
 - **Testing:** Vitest + React Testing Library (Unit/Integration), Playwright (E2E)
 - **Analytics:** Vercel Analytics (Privacy-friendly web analytics)
 
@@ -433,7 +352,7 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 - **Framework:** Express.js with TypeScript
 - **Runtime:** Node.js with ESM modules
-- **Database:** MongoDB Atlas with Mongoose ODM
+- **Database:** MongoDB Atlas with Mongoose ODM (Indexed)
 - **Background Jobs:** MongoDB-backed Queue (for CSV exports)
 - **API Style:** RESTful JSON endpoints
 - **Port:** 3001 (development)
@@ -462,67 +381,5 @@ interface FinancialRecord {
 - **Server:**
   - `MONGODB_URI` - MongoDB connection string
   - `PORT` - Server port (default: 3001)
-
----
-
-## How to Use This Blueprint
-
-- **When stuck:** Review the phase breakdown and implementation notes for context. Check the "Challenges Encountered & Solutions" section.
-- **When onboarding:** New contributors should read phases 1-2B to understand current architecture.
-- **When planning:** Use the "Planned Phases" to prioritize next work and estimate scope.
-- **When debugging:** Check the "Key Lessons" section - Phase 2A debug story is highly relevant to environment issues.
-- **When implementing:** Follow the TypeScript and validation patterns established in earlier phases.
-- **When optimizing:** Refer to Phase 5 & 6 planning for performance and deployment guidance.
-
----
-
-- _Last updated: January 2, 2026 | Current Phase: 2B (Complete) | Next Phase: 2C (Trend Analysis & Advanced Reporting)_
-- _Last updated: January 13, 2026 | Current Phase: 2C (Trend Analysis & Secure Export prototype) | Next Phase: 3 (Trend Analysis & Advanced Reporting)_
-- _Last updated: January 14, 2026 | Current Phase: Refactoring & QA | Next Phase: 6 (Testing & CI/CD)_
-- _Last updated: January 16, 2026 | Current Phase: 6 (QA & CI/CD Foundation Established) | Next Phase: 2C (Trend Analysis & Advanced Reporting - Completion)_
-- _Last updated: January 18, 2026 | Current Phase: 2C (Trend Analysis & Advanced Reporting - Completed) | Next Phase: 4 (Budgeting & Goals)_
-- _Last updated: January 19, 2026 | Current Phase: Optimization Sprint (UX & Stability) | Next Phase: 4 (Budgeting & Goals)_
-- _Last updated: January 23, 2026 | Current Phase: Phase 4 Preparation (Sidebar Navigation) | Next Phase: 4 (Budgeting & Goals)_
-- _Last updated: January 24, 2026 | Current Phase: Phase 4 (Budgeting & Goals) | Next Phase: 5 Performance, Optimization & Hardening_
-
----
-
-Implementation tasks (rough order):
-
-1. Add Google OAuth provider in `client/src/lib/firebase.ts` + update `auth-context.tsx` to handle provider sign-in flows and account linking.
-2. Implement background export job system (choose lightweight queue: BullMQ / Bee-Queue / simple worker process) and endpoints to create export jobs and retrieve results.
-3. Create and run unit + integration tests for aggregation and export functionality; wire tests into CI.
-4. Implement server-side rate-limiting and export quotas; add monitoring/alerting hooks.
-5. Expand dashboard with export management UI and progress tracking.
-6. Prepare deployment checklist: secure service account handling, CI secrets, and migration notes.
-
-Acceptance criteria for Phase 3:
-
-- Google OAuth sign-in + account linking works for new and existing users without data loss.
-- Export flows for large datasets operate asynchronously, with secure, time-limited downloadable artifacts and telemetry for success/failure rates.
-- Aggregation utilities have unit tests with >90% coverage for core behaviors (bucketing, totals).
-
----
-
-## Short-term Roadmap Additions (requested)
-
-### Phase 3: OAuth Integration
-
-- Google Sign-In (most popular)
-- GitHub Sign-In (developer-friendly)
-- Social auth buttons
-
-### Phase 4: Server-Side Security
-
-- Firebase Admin SDK integration
-- Token verification middleware
-- Secure API endpoints
-- User authorization checks
-
-### Phase 5: Advanced Features
-
-- User profile management
-- Data export/import
-- Advanced analytics (consider Firebase Analytics for telemetry)
 
 ---

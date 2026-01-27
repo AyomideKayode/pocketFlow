@@ -25,6 +25,11 @@ const financialRecordSchema = new mongoose.Schema<FinancialRecord>(
   },
 );
 
+// Index for efficient querying by user and sorting by date
+financialRecordSchema.index({ userId: 1, date: -1 });
+// Index for category filtering/aggregation per user
+financialRecordSchema.index({ userId: 1, category: 1 });
+
 const FinancialRecordModel = mongoose.model<FinancialRecord>(
   'FinancialRecord',
   financialRecordSchema,

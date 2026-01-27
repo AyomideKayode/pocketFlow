@@ -13,6 +13,10 @@
   - **Income vs. Expense**: Visual breakdown using Pie charts.
   - **Category Analysis**: Spending habits categorized by type.
   - **Trend Analysis**: Track financial activity over time.
+- **Budgeting & Goals**:
+    - Set monthly spending limits per category.
+    - Track progress towards savings goals.
+    - Receive smart alerts when budgets are exceeded.
 - **Data Management**:
   - Add, edit, and delete financial records.
   - **CSV Export**: Download your financial data for external analysis (Client & Server-side support).
@@ -29,13 +33,13 @@
 - **Build Tool**: [Vite](https://vitejs.dev/)
 - **State Management**: React Context API
 - **Styling**: CSS Modules, Dark Theme
-- **Charts**: [Recharts](https://recharts.org/)
+- **Charts**: [Recharts](https://recharts.org/) (Lazy loaded)
 
 ### Backend (Server)
 
 - **Runtime**: [Node.js](https://nodejs.org/)
 - **Framework**: [Express.js](https://expressjs.com/)
-- **Database**: [MongoDB](https://www.mongodb.com/) (with Mongoose ODM)
+- **Database**: [MongoDB](https://www.mongodb.com/) (with Mongoose ODM & Indexing)
 - **Authentication**: Firebase Admin SDK
 
 ---
@@ -145,11 +149,12 @@ PocketFlow is being built in distinct phases to ensure stability and code qualit
 - **Phase 3: OAuth Integration**: Added Google Sign-In and account linking capabilities.
 - **Phase 6: Quality Assurance**: Established Testing Infrastructure (Vitest, Playwright) and CI/CD Pipelines (GitHub Actions).
 - **Optimization Sprint**: UX/UI refinements including production favicon, dashboard state synchronization, password visibility toggles, and feedback channels.
+- **Phase 4: Budgeting & Goals**: Set monthly limits, savings targets, and added smart notifications.
+- **Phase 5: Performance & Optimization**: Implemented lazy loading, database indexing, and robust budget logic.
 
 ### 🔮 Future Direction
 
-- **Phase 4: Budgeting & Goals**: Set monthly limits and savings targets.
-- **Phase 5: Performance**: Code splitting, lazy loading, and query optimization.
+- **Phase 7: Advanced Features**: User profiles, data imports, and telemetry.
 
 For a detailed history of the development process, challenges, and architectural decisions, see the [Development Blueprint](./POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
 

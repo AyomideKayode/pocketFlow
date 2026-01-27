@@ -11,6 +11,13 @@ const { mockSave, mockFind, mockFindByIdAndUpdate, mockFindByIdAndDelete } = vi.
   };
 });
 
+// Mock the Budget Service
+vi.mock('./services/budget.service.js', () => {
+  return {
+    checkAndNotifyBudgetExceeded: vi.fn().mockResolvedValue(undefined),
+  };
+});
+
 // Mock the Mongoose Model Class
 vi.mock('./schema/financial-records.js', () => {
   return {
@@ -22,6 +29,7 @@ vi.mock('./schema/financial-records.js', () => {
       static find = mockFind;
       static findByIdAndUpdate = mockFindByIdAndUpdate;
       static findByIdAndDelete = mockFindByIdAndDelete;
+      static findById = vi.fn(); // Added for PUT check
     },
   };
 });

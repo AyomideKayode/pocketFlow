@@ -20,34 +20,40 @@ export const getBudgetsWithProgress = async (
   const startDate = new Date(year, month - 1, 1);
   const endDate = new Date(year, month, 0, 23, 59, 59, 999);
 
-  const results = await Promise.all(
-    budgets.map(async (budget) => {
-      const result = await FinancialRecordModel.aggregate([
-        {
-          $match: {
-            userId,
-            category: budget.category,
-            date: { $gte: startDate, $lte: endDate },
-            type: 'expense', // Budgets usually track expenses
-          },
-        },
-        {
-          $group: {
-            _id: null,
-            totalSpent: { $sum: '$amount' },
-          },
-        },
-      ]);
+  // OPTIMIZATION: Single aggregation query for all categories
+  const expenseAggregation = await FinancialRecordModel.aggregate([
+    {
+      $match: {
+        userId,
+        date: { $gte: startDate, $lte: endDate },
+        type: 'expense', // Budgets usually track expenses
+      },
+    },
+    {
+      $group: {
+        _id: '$category',
+        totalSpent: { $sum: '$amount' },
+      },
+    },
+  ]);
 
-      const spent = result[0]?.totalSpent || 0;
-      return {
-        ...budget.toObject(),
-        spent,
-        remaining: budget.amount - spent,
-        percent: (spent / budget.amount) * 100,
-      };
-    }),
-  );
+  // Create a map for O(1) lookup: category -> totalSpent
+  const expenseMap = new Map<string, number>();
+  expenseAggregation.forEach((item) => {
+    if (item._id) {
+      expenseMap.set(item._id, item.totalSpent);
+    }
+  });
+
+  const results = budgets.map((budget) => {
+    const spent = expenseMap.get(budget.category) || 0;
+    return {
+      ...budget.toObject(),
+      spent,
+      remaining: budget.amount - spent,
+      percent: (spent / budget.amount) * 100,
+    };
+  });
 
   return results;
 };
@@ -68,23 +74,43 @@ export const deleteBudget = async (id: string) => {
 export const checkAndNotifyBudgetExceeded = async (
   userId: string,
   category: string,
-  date: Date,
+  date: Date | string,
 ) => {
-  const period = date.toISOString().slice(0, 7);
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
+  // Ensure valid date
+  if (isNaN(dateObj.getTime())) {
+    console.error(`[BUDGET] Invalid date passed to check: ${date}`);
+    return;
+  }
+
+  const period = dateObj.toISOString().slice(0, 7); // YYYY-MM
   const budgets = await getBudgetsWithProgress(userId, period);
   const budget = budgets.find((b) => b.category === category);
 
   if (!budget) return;
 
-  if (budget.spent > budget.amount && !budget.notified) {
-    console.log(
-      `[ALERT] Budget Exceeded for User ${userId}: ${category} (${budget.spent}/${budget.amount})`,
-    );
-    
-    await BudgetModel.findByIdAndUpdate(budget._id, {
-      notified: true,
-    });
-    // Mock Email Notification || Future: email / push / webhook
-    console.log(`[EMAIL SERVICE] Sending email to user... (Simulated)`);
+  if (budget.spent > budget.amount) {
+    if (!budget.notified) {
+      console.log(
+        `[BUDGET] ALERT: Budget Exceeded for User ${userId}: ${category} (${budget.spent.toFixed(2)}/${budget.amount.toFixed(2)})`,
+      );
+
+      await BudgetModel.findByIdAndUpdate(budget._id, {
+        notified: true,
+      });
+      // Mock Email Notification || Future: email / push / webhook
+      console.log(`[BUDGET] [EMAIL SERVICE] Sending alert to user... (Simulated)`);
+    }
+  } else {
+    // RESET LOGIC: If spending is back under limit (e.g. after deleting a record), reset notified flag
+    if (budget.notified) {
+      console.log(
+        `[BUDGET] INFO: Spending back within limits for User ${userId}: ${category} (${budget.spent.toFixed(2)}/${budget.amount.toFixed(2)})`,
+      );
+
+      await BudgetModel.findByIdAndUpdate(budget._id, {
+        notified: false,
+      });
+    }
   }
 };
