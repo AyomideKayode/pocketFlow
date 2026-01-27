@@ -14,9 +14,9 @@
   - **Category Analysis**: Spending habits categorized by type.
   - **Trend Analysis**: Track financial activity over time.
 - **Budgeting & Goals**:
-    - Set monthly spending limits per category.
-    - Track progress towards savings goals.
-    - Receive smart alerts when budgets are exceeded.
+  - Set monthly spending limits per category.
+  - Track progress towards savings goals.
+  - Receive smart alerts when budgets are exceeded.
 - **Data Management**:
   - Add, edit, and delete financial records.
   - **CSV Export**: Download your financial data for external analysis (Client & Server-side support).

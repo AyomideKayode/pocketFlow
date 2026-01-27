@@ -51,11 +51,9 @@ router.post('/', async (req: Request, res: Response) => {
     // Check budget if it's an expense
     if (type === 'expense') {
       // Run asynchronously to not block response
-      checkAndNotifyBudgetExceeded(
-        userId,
-        category,
-        savedRecord.date,
-      ).catch((err) => console.error('Error checking budget:', err));
+      checkAndNotifyBudgetExceeded(userId, category, savedRecord.date).catch(
+        (err) => console.error('Error checking budget:', err),
+      );
     }
 
     res.status(201).json(savedRecord);
@@ -83,7 +81,7 @@ router.put('/:id', async (req: Request, res: Response) => {
     );
 
     if (!updatedRecord) {
-        return res.status(404).json({ message: 'Record not found.' });
+      return res.status(404).json({ message: 'Record not found.' });
     }
 
     res.status(200).json(updatedRecord);
@@ -102,7 +100,8 @@ router.put('/:id', async (req: Request, res: Response) => {
 
         // 2. If category or date changed, check the old state too (to potentially reset notifications)
         // If it was an expense and (category changed OR date changed OR type changed to income)
-        const categoryChanged = originalRecord.category !== updatedRecord.category;
+        const categoryChanged =
+          originalRecord.category !== updatedRecord.category;
         const dateChanged =
           originalRecord.date.toISOString().slice(0, 7) !==
           updatedRecord.date.toISOString().slice(0, 7); // Only period change matters for budget
@@ -112,17 +111,16 @@ router.put('/:id', async (req: Request, res: Response) => {
           originalRecord.type === 'expense' &&
           (categoryChanged || dateChanged || typeChanged)
         ) {
-           await checkAndNotifyBudgetExceeded(
-             originalRecord.userId,
-             originalRecord.category,
-             originalRecord.date,
-           );
+          await checkAndNotifyBudgetExceeded(
+            originalRecord.userId,
+            originalRecord.category,
+            originalRecord.date,
+          );
         }
       } catch (err) {
         console.error('[BUDGET] Error checking budget on update:', err);
       }
     })();
-
   } catch (error) {
     res.status(500).send(error);
   }
@@ -140,13 +138,14 @@ router.delete('/:id', async (req: Request, res: Response) => {
 
     // Budget Check (Async)
     if (deletedRecord.type === 'expense') {
-        checkAndNotifyBudgetExceeded(
-            deletedRecord.userId,
-            deletedRecord.category,
-            deletedRecord.date
-        ).catch(err => console.error('[BUDGET] Error checking budget on delete:', err));
+      checkAndNotifyBudgetExceeded(
+        deletedRecord.userId,
+        deletedRecord.category,
+        deletedRecord.date,
+      ).catch((err) =>
+        console.error('[BUDGET] Error checking budget on delete:', err),
+      );
     }
-
   } catch (error) {
     res.status(500).send(error);
   }

@@ -109,13 +109,16 @@ FIREBASE_SERVICE_ACCOUNT_PATH=./path/to/serviceAccountKey.json
 ## 🧠 Core Logic Features
 
 ### Smart Budget Notifications
+
 The server implements logic to track budget adherence dynamically:
+
 - **Checks**: Runs on Record Create, Update, and Delete.
 - **Alerts**: Marks a budget as `notified=true` when spending exceeds the limit.
 - **Resets**: Automatically resets `notified=false` if spending drops back below the limit (e.g., after deleting a record).
 - **Optimization**: Uses optimized MongoDB aggregation pipelines to calculate spending totals efficiently.
 
 ### Server-Side Export
+
 - **Endpoint**: `GET /reports/export`
 - **Authentication**: Verifies Firebase ID token via Admin SDK.
 - **Behavior**: Streams a CSV response using a Mongoose cursor to avoid loading large datasets into memory.
