@@ -15,6 +15,7 @@ export interface Goal {
 
 interface GoalContextType {
   goals: Goal[];
+  loading: boolean;
   addGoal: (goal: Goal) => Promise<void>;
   updateGoal: (id: string, goal: Partial<Goal>) => Promise<void>;
   deleteGoal: (id: string) => Promise<void>;
@@ -24,13 +25,15 @@ const GoalContext = createContext<GoalContextType | undefined>(undefined);
 
 export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
   const [goals, setGoals] = useState<Goal[]>([]);
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { addToast } = useToast();
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
-  const fetchGoals = useCallback(async () => {
+  const fetchGoals = useCallback(async (showLoading = false) => {
     if (!user) return;
+    if (showLoading) setLoading(true);
     try {
       const response = await fetch(`${API_BASE_URL}/goals/${user.uid}`);
       if (response.ok) {
@@ -39,11 +42,13 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
       }
     } catch (error) {
       console.error('Error fetching goals:', error);
+    } finally {
+      if (showLoading) setLoading(false);
     }
   }, [user, API_BASE_URL]);
 
   useEffect(() => {
-    fetchGoals();
+    fetchGoals(true);
   }, [user, fetchGoals]);
 
   const addGoal = async (goal: Goal) => {
@@ -96,7 +101,7 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <GoalContext.Provider value={{ goals, addGoal, updateGoal, deleteGoal }}>
+    <GoalContext.Provider value={{ goals, loading, addGoal, updateGoal, deleteGoal }}>
       {children}
     </GoalContext.Provider>
   );

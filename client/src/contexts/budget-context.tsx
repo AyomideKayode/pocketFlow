@@ -21,7 +21,8 @@ export interface Budget {
 
 interface BudgetContextType {
   budgets: Budget[];
-  fetchBudgets: (period?: string) => Promise<void>;
+  loading: boolean;
+  fetchBudgets: (period?: string, showLoading?: boolean) => Promise<void>;
   addBudget: (budget: Budget) => Promise<void>;
   updateBudget: (id: string, budget: Partial<Budget>) => Promise<void>;
   deleteBudget: (id: string) => Promise<void>;
@@ -35,6 +36,7 @@ export const BudgetsProvider = ({
   children: React.ReactNode;
 }) => {
   const [budgets, setBudgets] = useState<Budget[]>([]);
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { addToast } = useToast();
 
@@ -42,8 +44,9 @@ export const BudgetsProvider = ({
     import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
   const fetchBudgets = useCallback(
-    async (period?: string) => {
+    async (period?: string, showLoading = false) => {
       if (!user) return;
+      if (showLoading) setLoading(true);
       try {
         const query = period ? `?period=${period}` : '';
         const response = await fetch(
@@ -55,13 +58,15 @@ export const BudgetsProvider = ({
         }
       } catch (error) {
         console.error('Error fetching budgets:', error);
+      } finally {
+        if (showLoading) setLoading(false);
       }
     },
     [user, API_BASE_URL],
   );
 
   useEffect(() => {
-    fetchBudgets();
+    fetchBudgets(undefined, true);
   }, [user, fetchBudgets]);
 
   const addBudget = async (budget: Budget) => {
@@ -120,7 +125,7 @@ export const BudgetsProvider = ({
 
   return (
     <BudgetContext.Provider
-      value={{ budgets, fetchBudgets, addBudget, updateBudget, deleteBudget }}
+      value={{ budgets, loading, fetchBudgets, addBudget, updateBudget, deleteBudget }}
     >
       {children}
     </BudgetContext.Provider>
