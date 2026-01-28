@@ -16,7 +16,10 @@
 - **Budgeting & Goals**:
   - Set monthly spending limits per category.
   - Track progress towards savings goals.
-  - Receive smart alerts when budgets are exceeded.
+  - **Smart Alerts**: Receive notifications when approaching (80%) or exceeding (100%) budgets.
+- **Personalization**:
+  - **Currency Support**: Choose your preferred currency (USD, EUR, GBP, etc.) with automatic locale formatting.
+  - **User Profile**: Custom display name and avatar management.
 - **Data Management**:
   - Add, edit, and delete financial records.
   - **CSV Export**: Download your financial data for external analysis (Client & Server-side support).
@@ -33,6 +36,7 @@
 - **Build Tool**: [Vite](https://vitejs.dev/)
 - **State Management**: React Context API
 - **Styling**: CSS Modules, Dark Theme
+- **Formatting**: `Intl.NumberFormat` for currency/dates
 - **Charts**: [Recharts](https://recharts.org/) (Lazy loaded)
 
 ### Backend (Server)
@@ -151,10 +155,12 @@ PocketFlow is being built in distinct phases to ensure stability and code qualit
 - **Optimization Sprint**: UX/UI refinements including production favicon, dashboard state synchronization, password visibility toggles, and feedback channels.
 - **Phase 4: Budgeting & Goals**: Set monthly limits, savings targets, and added smart notifications.
 - **Phase 5: Performance & Optimization**: Implemented lazy loading, database indexing, and robust budget logic.
+- **Phase 7: Advanced Features & Personalization**: Added User Profiles, Global Currency Support, and Multi-threshold Budget Notifications.
 
 ### 🔮 Future Direction
 
-- **Phase 7: Advanced Features**: User profiles, data imports, and telemetry.
+- **Phase 8: Data Import & Integrations**: CSV/Bank imports, Telemetry.
+- **Phase 9: Cloud Media**: Cloudinary integration for robust avatar hosting and Email services.
 
 For a detailed history of the development process, challenges, and architectural decisions, see the [Development Blueprint](./POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
 
