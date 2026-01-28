@@ -402,6 +402,24 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
     - Google / Social OAuth integration
     - Unified identity model across providers
 
+### **Phase 9: Cloud Media & Advanced Communication (Future)**
+
+- **Primary Focus:**
+  - Robust media handling (Avatars)
+  - Production-grade notifications (Email)
+
+- **Feature Areas**
+  - 1.**Cloudinary Integration**
+    - Replace direct URL storage for avatars with Cloudinary upload/hosting.
+    - separation of concerns: Firebase (Auth) vs. Cloudinary (Media).
+    - Image optimization and transformation on the fly.
+  - 2.**Email Notification Service**
+    - Integrate SendGrid or AWS SES for reliable email delivery.
+    - Transactional emails for:
+      - Budget alerts (80% / 100% threshold crossed)
+      - Weekly/Monthly financial summaries
+      - Goal achievement congratulations
+
 ---
 
 ## Technical Architecture Summary
