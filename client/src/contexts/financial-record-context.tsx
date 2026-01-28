@@ -71,27 +71,30 @@ export const FinancialRecordsProvider = ({
     };
   };
 
-  const fetchRecordsByUserId = useCallback(async (showLoading = false) => {
-    if (!user) return;
+  const fetchRecordsByUserId = useCallback(
+    async (showLoading = false) => {
+      if (!user) return;
 
-    if (showLoading) setLoading(true);
-    try {
-      const response = await fetch(
-        `${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}`,
-      );
+      if (showLoading) setLoading(true);
+      try {
+        const response = await fetch(
+          `${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}`,
+        );
 
-      if (response.ok) {
-        const rawRecords = await response.json();
-        // Migrate legacy records and ensure type field exists
-        const migratedRecords = rawRecords.map(migrateRecord);
-        setRecords(migratedRecords);
+        if (response.ok) {
+          const rawRecords = await response.json();
+          // Migrate legacy records and ensure type field exists
+          const migratedRecords = rawRecords.map(migrateRecord);
+          setRecords(migratedRecords);
+        }
+      } catch (error) {
+        console.error('Error fetching records:', error);
+      } finally {
+        if (showLoading) setLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching records:', error);
-    } finally {
-      if (showLoading) setLoading(false);
-    }
-  }, [user, API_BASE_URL]);
+    },
+    [user, API_BASE_URL],
+  );
 
   useEffect(() => {
     fetchRecordsByUserId(true);

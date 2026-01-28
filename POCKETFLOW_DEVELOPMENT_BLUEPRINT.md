@@ -297,6 +297,27 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 
 ---
 
+### **Optimization Sprint #2: Layout Stability & Context Refactor** ✅ COMPLETED
+
+After pulling the changes made in Phase 4 Budget & Goals features implementation, I carried out tests and made the following changes and modifications:
+
+- **✅ UI/Layout Stabilization**
+  - Resolved sidebar overlapping navbar on desktop and not showing on mobile.
+  - Clarify layout ownership between navbar & sidebar.
+  - Corrected user profile dropdown behavior (opening upward for accessibility and viewport safety).
+
+- **✅ Context Refactor (Budgets)**
+  - Centralized budget recalculation via `fetchBudgets()` to eliminate stale UI state and refresh dependency after budget creation.
+  - Enforced provider hierarchy to guarantee `BudgetContext` availability for dependent contexts (e.g. Financial Records).
+
+- **✅ Budget Notification State**
+  - Introduced `notified` state on Budget schema.
+  - Implemented idempotent `checkAndNotifyBudgetExceeded` to prevent duplicate alerts on repeated threshold violations.
+
+  _Note: Advanced budget behaviors (e.g. reset semantics, multi-threshold alerts) are intentionally deferred to avoid over-engineering at this stage._
+
+---
+
 ### **Phase 5: Performance, Optimization & Hardening** ✅ COMPLETED
 
 - **Features:**
@@ -324,13 +345,62 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 
 ## Planned Phases & Next Steps
 
-### **Phase 7: Advanced Features (Roadmap)**
+### **Phase 7: Advanced Features & Product Maturity (Roadmap)**
 
-- **Potential Features:**
-  - User profile management
+- **Primary Focus:**
+  - User-level personalization
+  - Advanced notifications & communication
   - Data import (CSV/Bank)
-  - Advanced analytics telemetry
-  - Google/Social OAuth integration
+  - Product telemetry and insight
+
+- **Feature Areas**
+  - 1.**User Profile & Preferences**
+    - User profile management (name, avatar, preferences)
+    - Currency preference (explicit user selection)
+    - Optional locale/timezone preference (future-proofing)
+    - Persisted user settings (DB-backed, not localStorage-only)
+      _Rationale: This provides a durable home for currency, notification preferences, and future personalization without leaking concerns into business logic._
+  - 2.**Budget Notifications & Communication**
+    - Notification channels:
+      - In-app toast notifications (non-blocking)
+      - Optional email notifications (future-ready, disabled by default)
+    - Notification rules:
+      - Budget warning thresholds (e.g. 80%, 100%)
+      - Notifications triggered on:
+        - Transaction create
+        - Transaction update
+        - Transaction delete
+        - Budget limit update
+      - Notifications are idempotent per threshold crossing
+      - Notification state resets when spending drops below threshold
+    - UX constraints:
+      - Budget alerts must not suppress CRUD success toasts
+      - Alerts are informational, not modal or blocking
+  - 3.**Currency & Localization Handling**
+    - Replace hardcoded $ with a currency-aware formatter
+    - Currency derived from:
+      - User-selected preference (primary)
+      - Optional locale-based default (fallback only)
+    - Support symbols not available in icon libraries (e.g. ₦, ₵, ₹)
+    - Normalize currency handling across:
+      - Budget display
+      - Transactions
+      - Analytics and summaries
+  - 4.**Data Import**
+    - CSV import for transactions
+    - Bank import (exploratory / future phase)
+    - Validation & preview before persistence
+  - 5.**Analytics & Telemetry**
+    - Advanced analytics telemetry
+      - Firebase Analytics (consideration)
+      - Vercel Analytics (already in use)
+    - Event tracking for:
+      - Budget threshold crossings
+      - Feature usage (imports, edits, deletes)
+      - Performance signals (slow loads, errors)
+  - 6.**Authentication Enhancements**
+    - Google / Social OAuth integration
+    - Unified identity model across providers
 
 ---
 
@@ -381,5 +451,105 @@ interface FinancialRecord {
 - **Server:**
   - `MONGODB_URI` - MongoDB connection string
   - `PORT` - Server port (default: 3001)
+
+---
+
+## Key Lessons & Resilience Strategies
+
+### **From Phase 1 (Authentication)**
+
+- Firebase integration is powerful but requires careful state management
+- Context API is suitable for app-wide state (auth, toasts) but consider Redux for complex scenarios
+- Empty states significantly improve UX for new users
+
+### **From Phase 2A (Critical Bug Resolution)**
+
+- **Environment Management:** CRITICAL - Always verify .env/.env.local precedence and double-check which server you're connecting to
+  - Use logging to confirm API endpoints: `console.log('API_URL:', import.meta.env.VITE_API_BASE_URL)`
+  - Test with `fetch('/financial-records', {headers: {'X-Debug': 'true'}})`
+- **Explicit Validation:** Backend must validate ALL fields - never trust client-side validation alone
+  - Use explicit destructuring: `const { userId, date, description, amount, category, paymentMethod, type } = req.body`
+  - Validate types: `if (!['income', 'expense'].includes(type)) throw new Error(...)`
+  - Ensure positive amounts: `const amount = Math.abs(parseFloat(req.body.amount))`
+- **Data Model Clarity:** Use enums and TypeScript interfaces to prevent ambiguity
+  - Define record interface early: `type TransactionType = 'income' | 'expense'`
+  - Update schema BEFORE writing migrations
+
+### **From Phase 2B (Chart Implementation)**
+
+- **Third-party Library Strictness:** TypeScript strict mode catches Recharts prop mismatches
+  - Test component interfaces early: `ReactElement<IncomeExpenseChartProps>`
+  - Use proper typing with Recharts components
+- **Performance with Data Transformations:** Memoization is essential
+  - Use `useMemo` for expensive calculations: `useMemo(() => filterRecordsByDateRange(...), [records, dateRange])`
+  - Don't re-calculate if inputs haven't changed
+- **Bundle Size Awareness:** Accept that some features have unavoidable bundle cost
+  - Document why bundle is large: Recharts + React + Firebase
+  - Plan optimization (code splitting, lazy load) for Phase 5, not Phase 2
+
+### **From Phase 4 (Budgets, Contexts & State Coordination)**
+
+- **Derived State Must Have a Single Source of Truth**
+  - Budget progress should always be recalculated from financial records.
+  - Centralizing recalculation (`fetchBudgets`) prevents stale UI and refresh-dependent bugs.
+
+- **Context Dependency Order Is Architecture, Not Implementation Detail**
+  - Hooks that depend on other contexts must enforce provider hierarchy.
+  - Runtime guardrails (`useX must be used within XProvider`) surfaced integration issues early and prevented silent failures.
+
+- **Idempotency Is Essential for Side Effects**
+  - Notifications must be stateful to avoid repeated alerts.
+  - Persisting notification state (`notified`) enables deterministic, spam-free behavior.
+
+- **Fixing “Small UI Bugs” Often Reveals Deeper Ownership Problems**
+  - Sidebar/navbar overlap exposed unclear layout ownership.
+  - Explicit layout boundaries simplify responsive behavior and future changes.
+
+- **Observing System Behavior Beats Guessing**
+  - Server logs confirmed notification logic correctness.
+  - Real user flows (create → update → delete → recreate) revealed missing policy decisions rather than bugs.
+
+### **General Resilience Strategies**
+
+- **Documentation is Key:** This blueprint saved hours by providing context when bugs appeared
+- **Commit Messages Matter:** Detailed commits (like Phase 2B commit) provide forensic trail
+- **Logging at Boundaries:** API request/response logging caught the production server issue
+- **Progressive Enhancement:** Each phase builds on solid foundation from previous phase
+- **User Feedback Loops:** Empty states, toasts, and clear error messages prevent user confusion
+- **Avoid Premature Generalization**
+  - Single-threshold budget alerts solved the immediate problem cleanly.
+  - Multi-threshold systems and reset policies were deferred intentionally.
+- **Every Phase Should Leave the System More Predictable**
+  - Deterministic behavior > feature completeness.
+  - Clear invariants reduce future cognitive load.
+- **Handoffs Require Narrative, Not Just Code**
+  - Deterministic behavior > feature completeness.
+  - Clear invariants reduce future cognitive load.
+- **Handoffs Require Narrative, Not Just Code**
+  - README updates prevent context loss and duplicated effort.
+  - Explicit “why this is deferred” notes are as important as implementation details.
+
+---
+
+## How to Use This Blueprint
+
+- **When stuck:** Review the phase breakdown and implementation notes for context. Check the "Challenges Encountered & Solutions" section.
+- **When onboarding:** New contributors should read phases 1-2B to understand current architecture.
+- **When planning:** Use the "Planned Phases" to prioritize next work and estimate scope.
+- **When debugging:** Check the "Key Lessons" section - Phase 2A debug story is highly relevant to environment issues.
+- **When implementing:** Follow the TypeScript and validation patterns established in earlier phases.
+- **When optimizing:** Refer to Phase 5 & 6 planning for performance and deployment guidance.
+
+---
+
+- _Last updated: January 2, 2026 | Current Phase: 2B (Complete) | Next Phase: 2C (Trend Analysis & Advanced Reporting)_
+- _Last updated: January 13, 2026 | Current Phase: 2C (Trend Analysis & Secure Export prototype) | Next Phase: 3 (Trend Analysis & Advanced Reporting)_
+- _Last updated: January 14, 2026 | Current Phase: Refactoring & QA | Next Phase: 6 (Testing & CI/CD)_
+- _Last updated: January 16, 2026 | Current Phase: 6 (QA & CI/CD Foundation Established) | Next Phase: 2C (Trend Analysis & Advanced Reporting - Completion)_
+- _Last updated: January 18, 2026 | Current Phase: 2C (Trend Analysis & Advanced Reporting - Completed) | Next Phase: 4 (Budgeting & Goals)_
+- _Last updated: January 19, 2026 | Current Phase: Optimization Sprint (UX & Stability) | Next Phase: 4 (Budgeting & Goals)_
+- _Last updated: January 23, 2026 | Current Phase: Phase 4 Preparation (Sidebar Navigation) | Next Phase: 4 (Budgeting & Goals)_
+- _Last updated: January 24, 2026 | Current Phase: Phase 4 (Budgeting & Goals) | Next Phase: 5 Performance, Optimization & Hardening_
+- _Last updated: January 26, 2026 | Current Phase: Phase 5 Performance, Optimization & Hardening | Next Phase: 7 Advanced Features (Roadmap)_
 
 ---

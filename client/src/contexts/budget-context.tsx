@@ -125,7 +125,14 @@ export const BudgetsProvider = ({
 
   return (
     <BudgetContext.Provider
-      value={{ budgets, loading, fetchBudgets, addBudget, updateBudget, deleteBudget }}
+      value={{
+        budgets,
+        loading,
+        fetchBudgets,
+        addBudget,
+        updateBudget,
+        deleteBudget,
+      }}
     >
       {children}
     </BudgetContext.Provider>

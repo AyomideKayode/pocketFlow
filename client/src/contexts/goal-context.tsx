@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useEffect, useCallback, useState } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useCallback,
+  useState,
+} from 'react';
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';
 
@@ -29,23 +35,27 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
   const { user } = useAuth();
   const { addToast } = useToast();
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
-  const fetchGoals = useCallback(async (showLoading = false) => {
-    if (!user) return;
-    if (showLoading) setLoading(true);
-    try {
-      const response = await fetch(`${API_BASE_URL}/goals/${user.uid}`);
-      if (response.ok) {
-        const data = await response.json();
-        setGoals(data);
+  const fetchGoals = useCallback(
+    async (showLoading = false) => {
+      if (!user) return;
+      if (showLoading) setLoading(true);
+      try {
+        const response = await fetch(`${API_BASE_URL}/goals/${user.uid}`);
+        if (response.ok) {
+          const data = await response.json();
+          setGoals(data);
+        }
+      } catch (error) {
+        console.error('Error fetching goals:', error);
+      } finally {
+        if (showLoading) setLoading(false);
       }
-    } catch (error) {
-      console.error('Error fetching goals:', error);
-    } finally {
-      if (showLoading) setLoading(false);
-    }
-  }, [user, API_BASE_URL]);
+    },
+    [user, API_BASE_URL],
+  );
 
   useEffect(() => {
     fetchGoals(true);
@@ -61,7 +71,7 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
       });
       if (!response.ok) throw new Error('Failed to add goal');
       const saved = await response.json();
-      setGoals(prev => [...prev, saved]);
+      setGoals((prev) => [...prev, saved]);
       addToast('Goal created successfully!', 'success');
       fetchGoals(); // Re-fetch to get calculations if needed
     } catch (error) {
@@ -90,9 +100,11 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
 
   const deleteGoal = async (id: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/goals/${id}`, { method: 'DELETE' });
+      const response = await fetch(`${API_BASE_URL}/goals/${id}`, {
+        method: 'DELETE',
+      });
       if (!response.ok) throw new Error('Failed to delete goal');
-      setGoals(prev => prev.filter(g => g._id !== id));
+      setGoals((prev) => prev.filter((g) => g._id !== id));
       addToast('Goal deleted successfully!', 'success');
     } catch (error) {
       console.error('Error deleting goal:', error);
@@ -101,7 +113,9 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <GoalContext.Provider value={{ goals, loading, addGoal, updateGoal, deleteGoal }}>
+    <GoalContext.Provider
+      value={{ goals, loading, addGoal, updateGoal, deleteGoal }}
+    >
       {children}
     </GoalContext.Provider>
   );

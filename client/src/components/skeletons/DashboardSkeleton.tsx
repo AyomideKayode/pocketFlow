@@ -46,7 +46,7 @@ export const DashboardSkeleton = () => {
         <div className='lg:col-span-3 h-[400px] rounded-xl border border-slate-800 bg-slate-900/50 p-6'>
           <div className='h-6 w-48 mb-4 rounded bg-slate-800 animate-pulse' />
           <div className='flex items-center justify-center h-[300px]'>
-             <div className='h-48 w-48 rounded-full bg-slate-800/50 animate-pulse' />
+            <div className='h-48 w-48 rounded-full bg-slate-800/50 animate-pulse' />
           </div>
         </div>
       </div>
@@ -68,23 +68,26 @@ export const DashboardSkeleton = () => {
 
         {/* Transaction List Skeleton */}
         <div className='rounded-xl border border-slate-800 bg-slate-900/50 overflow-hidden'>
-             {/* Table Header */}
-             <div className='h-12 bg-slate-800/50 border-b border-slate-800 flex items-center px-4 gap-4'>
-                 <div className='h-4 w-1/4 bg-slate-800 animate-pulse rounded' />
-                 <div className='h-4 w-1/4 bg-slate-800 animate-pulse rounded' />
-                 <div className='h-4 w-1/4 bg-slate-800 animate-pulse rounded' />
-                 <div className='h-4 w-1/4 bg-slate-800 animate-pulse rounded' />
-             </div>
+          {/* Table Header */}
+          <div className='h-12 bg-slate-800/50 border-b border-slate-800 flex items-center px-4 gap-4'>
+            <div className='h-4 w-1/4 bg-slate-800 animate-pulse rounded' />
+            <div className='h-4 w-1/4 bg-slate-800 animate-pulse rounded' />
+            <div className='h-4 w-1/4 bg-slate-800 animate-pulse rounded' />
+            <div className='h-4 w-1/4 bg-slate-800 animate-pulse rounded' />
+          </div>
 
-             {/* Table Rows */}
-             {[1, 2, 3, 4, 5].map((i) => (
-                 <div key={i} className='h-16 border-b border-slate-800 last:border-0 flex items-center px-4 gap-4'>
-                     <div className='h-4 w-1/4 bg-slate-800/50 animate-pulse rounded' />
-                     <div className='h-4 w-1/4 bg-slate-800/50 animate-pulse rounded' />
-                     <div className='h-4 w-1/4 bg-slate-800/50 animate-pulse rounded' />
-                     <div className='h-4 w-1/4 bg-slate-800/50 animate-pulse rounded' />
-                 </div>
-             ))}
+          {/* Table Rows */}
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div
+              key={i}
+              className='h-16 border-b border-slate-800 last:border-0 flex items-center px-4 gap-4'
+            >
+              <div className='h-4 w-1/4 bg-slate-800/50 animate-pulse rounded' />
+              <div className='h-4 w-1/4 bg-slate-800/50 animate-pulse rounded' />
+              <div className='h-4 w-1/4 bg-slate-800/50 animate-pulse rounded' />
+              <div className='h-4 w-1/4 bg-slate-800/50 animate-pulse rounded' />
+            </div>
+          ))}
         </div>
       </div>
     </div>
