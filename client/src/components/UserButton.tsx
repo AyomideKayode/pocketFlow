@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/auth-context';
 import { useToast } from '../contexts/toast-context';
-import { LogOut, Link as LinkIcon, ChevronDown } from 'lucide-react';
+import { LogOut, Link as LinkIcon, ChevronDown, Settings as SettingsIcon } from 'lucide-react';
+import {  } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -117,6 +119,17 @@ export const UserButton: React.FC = () => {
               {isLinking ? 'Linking...' : 'Link Google Account'}
             </button>
           )}
+
+          <Link
+            to="/settings"
+            onClick={() => setIsDropdownOpen(false)}
+            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white"
+          >
+            <SettingsIcon className="h-4 w-4" />
+            Settings
+          </Link>
+
+          <div className="my-1 border-t border-slate-800" />
 
           <button
             onClick={handleLogout}

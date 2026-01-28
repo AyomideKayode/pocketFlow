@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+} from 'react';
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';
 import { getIdToken } from '../lib/firebase';
@@ -19,9 +26,13 @@ interface UserProfileContextType {
   refreshProfile: () => Promise<void>;
 }
 
-const UserProfileContext = createContext<UserProfileContextType | undefined>(undefined);
+const UserProfileContext = createContext<UserProfileContextType | undefined>(
+  undefined,
+);
 
-export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { user } = useAuth();
   const { addToast } = useToast();
   const [profile, setProfile] = useState<UserProfile | null>(null);
@@ -30,7 +41,8 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
   // Request tracking to prevent race conditions
   const requestIdRef = useRef(0);
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
   const fetchProfile = useCallback(async () => {
     if (!user) {
@@ -44,9 +56,12 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
     try {
       const token = await getIdToken();
+      if (!token) {
+        throw new Error('Not authenticated');
+      }
       const response = await fetch(`${API_BASE_URL}/user-profile/${user.uid}`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -58,10 +73,10 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
         } else if (response.status === 404) {
           // Profile doesn't exist yet, treat as default
           setProfile({
-              userId: user.uid,
-              currency: 'USD',
-              displayName: user.displayName || undefined,
-              photoURL: user.photoURL || undefined,
+            userId: user.uid,
+            currency: 'USD',
+            displayName: user.displayName || undefined,
+            photoURL: user.photoURL || undefined,
           });
         } else {
           console.error('Failed to fetch user profile');
@@ -87,11 +102,14 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
 
     try {
       const token = await getIdToken();
+      if (!token) {
+        throw new Error('Not authenticated');
+      }
       const response = await fetch(`${API_BASE_URL}/user-profile/${user.uid}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });
