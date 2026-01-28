@@ -4,6 +4,7 @@ import { Auth } from './pages/auth';
 import { Transactions } from './pages/transactions';
 import { Budgets } from './pages/budgets';
 import { Goals } from './pages/goals';
+import { Settings } from './pages/settings';
 import { FinancialRecordsProvider } from './contexts/financial-record-context';
 import { BudgetsProvider } from './contexts/budget-context';
 import { GoalsProvider } from './contexts/goal-context';
@@ -50,6 +51,7 @@ function App() {
             <Route path='/transactions' element={<Transactions />} />
             <Route path='/budgets' element={<Budgets />} />
             <Route path='/goals' element={<Goals />} />
+            <Route path='/settings' element={<Settings />} />
           </Route>
 
           <Route
