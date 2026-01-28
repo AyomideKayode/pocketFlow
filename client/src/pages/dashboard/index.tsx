@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FinancialRecordList } from './financialRecordList';
 import { useFinancialRecords } from '../../contexts/financial-record-context';
 import { EmptyState } from '../../components/EmptyState';
+import { DashboardSkeleton } from '../../components/skeletons/DashboardSkeleton';
 import { DateRangeFilter } from '../../components/DateRangeFilter';
 import {
   requestServerExport,
@@ -43,7 +44,7 @@ const CategoryBreakdownChart = lazy(() =>
 
 export const Dashboard = () => {
   const { user } = useAuth();
-  const { records } = useFinancialRecords();
+  const { records, loading } = useFinancialRecords();
   const [dateRange, setDateRange] = useState(getDefaultDateRange());
   const [isExporting, setIsExporting] = useState(false);
   const { addToast } = useToast();
@@ -96,8 +97,12 @@ export const Dashboard = () => {
     }
   };
 
+  if (loading) {
+    return <DashboardSkeleton />;
+  }
+
   // Initial Empty State for new users
-  if (records.length === 0) {
+  if (!loading && records.length === 0) {
     return (
       <div className='flex min-h-[calc(100vh-4rem)] items-center justify-center'>
         <EmptyState

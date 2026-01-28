@@ -21,6 +21,7 @@ export interface FinancialRecord {
 
 interface FinancialRecordContextType {
   records: FinancialRecord[];
+  loading: boolean;
   addRecord: (record: FinancialRecord) => Promise<void>;
   updateRecord: (
     id: string,
@@ -39,6 +40,7 @@ export const FinancialRecordsProvider = ({
   children: React.ReactNode;
 }) => {
   const [records, setRecords] = React.useState<FinancialRecord[]>([]);
+  const [loading, setLoading] = React.useState(true);
   const { user } = useAuth();
   const { addToast } = useToast();
   const { fetchBudgets } = useBudgets();
@@ -69,9 +71,10 @@ export const FinancialRecordsProvider = ({
     };
   };
 
-  const fetchRecordsByUserId = useCallback(async () => {
+  const fetchRecordsByUserId = useCallback(async (showLoading = false) => {
     if (!user) return;
 
+    if (showLoading) setLoading(true);
     try {
       const response = await fetch(
         `${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}`,
@@ -85,11 +88,13 @@ export const FinancialRecordsProvider = ({
       }
     } catch (error) {
       console.error('Error fetching records:', error);
+    } finally {
+      if (showLoading) setLoading(false);
     }
   }, [user, API_BASE_URL]);
 
   useEffect(() => {
-    fetchRecordsByUserId();
+    fetchRecordsByUserId(true);
   }, [user, fetchRecordsByUserId]);
 
   const addRecord = async (record: FinancialRecord) => {
@@ -165,7 +170,7 @@ export const FinancialRecordsProvider = ({
 
   return (
     <FinancialRecordContext.Provider
-      value={{ records, addRecord, updateRecord, deleteRecord }}
+      value={{ records, loading, addRecord, updateRecord, deleteRecord }}
     >
       {children}
     </FinancialRecordContext.Provider>
