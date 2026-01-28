@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';
+import { getIdToken } from '../lib/firebase';
 
 export interface UserProfile {
   userId: string;
@@ -26,6 +27,9 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  // Request tracking to prevent race conditions
+  const requestIdRef = useRef(0);
+
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
   const fetchProfile = useCallback(async () => {
@@ -35,26 +39,42 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
       return;
     }
 
+    setLoading(true);
+    const currentRequestId = ++requestIdRef.current;
+
     try {
-      const response = await fetch(`${API_BASE_URL}/user-profile/${user.uid}`);
-      if (response.ok) {
-        const data = await response.json();
-        setProfile(data);
-      } else if (response.status === 404) {
-        // Profile doesn't exist yet, we can treat it as default
-        setProfile({
-            userId: user.uid,
-            currency: 'USD',
-            displayName: user.displayName || undefined,
-            photoURL: user.photoURL || undefined,
-        });
-      } else {
-        console.error('Failed to fetch user profile');
+      const token = await getIdToken();
+      const response = await fetch(`${API_BASE_URL}/user-profile/${user.uid}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      // Only update state if this is still the latest request
+      if (currentRequestId === requestIdRef.current) {
+        if (response.ok) {
+          const data = await response.json();
+          setProfile(data);
+        } else if (response.status === 404) {
+          // Profile doesn't exist yet, treat as default
+          setProfile({
+              userId: user.uid,
+              currency: 'USD',
+              displayName: user.displayName || undefined,
+              photoURL: user.photoURL || undefined,
+          });
+        } else {
+          console.error('Failed to fetch user profile');
+        }
       }
     } catch (error) {
-      console.error('Error fetching user profile:', error);
+      if (currentRequestId === requestIdRef.current) {
+        console.error('Error fetching user profile:', error);
+      }
     } finally {
-      setLoading(false);
+      if (currentRequestId === requestIdRef.current) {
+        setLoading(false);
+      }
     }
   }, [user, API_BASE_URL]);
 
@@ -66,10 +86,12 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
     if (!user) return;
 
     try {
+      const token = await getIdToken();
       const response = await fetch(`${API_BASE_URL}/user-profile/${user.uid}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
         },
         body: JSON.stringify(data),
       });

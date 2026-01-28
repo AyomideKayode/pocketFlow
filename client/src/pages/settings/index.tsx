@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useUserProfile } from '../../contexts/user-profile-context';
-import { useToast } from '../../contexts/toast-context';
 import { Save, Loader2, User, CreditCard, Link as LinkIcon } from 'lucide-react';
 
 export const Settings = () => {
   const { profile, updateProfile, loading: profileLoading } = useUserProfile();
-  const { addToast } = useToast();
 
   const [displayName, setDisplayName] = useState('');
   const [currency, setCurrency] = useState('USD');
