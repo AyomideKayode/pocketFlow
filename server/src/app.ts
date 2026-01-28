@@ -4,6 +4,7 @@ import financialRecordRouter from './routes/financial-records.js';
 import reportsRouter from './routes/reports.js';
 import budgetRouter from './routes/budget.js';
 import goalRouter from './routes/goal.js';
+import userProfileRouter from './routes/user-profile.js';
 import cors from 'cors';
 
 const app: Express = express();
@@ -28,5 +29,6 @@ app.use('/financial-records', financialRecordRouter);
 app.use('/reports', reportsRouter);
 app.use('/budgets', budgetRouter);
 app.use('/goals', goalRouter);
+app.use('/user-profile', userProfileRouter);
 
 export default app;
