@@ -62,6 +62,7 @@ router.get('/export/:id', verifyAuth, async (req: Request, res: Response) => {
       createdAt: job.createdAt,
       completedAt: job.completedAt,
       error: job.error,
+      recordCount: job.recordCount, // Added recordCount
     });
   } catch (error) {
     res.status(500).json({ message: 'Error fetching job' });

@@ -8,6 +8,7 @@ export interface ExportJob {
   completedAt?: Date;
   error?: string;
   data?: string; // CSV content
+  recordCount?: number;
   query?: {
     start?: Date;
     end?: Date;
@@ -26,6 +27,7 @@ const exportJobSchema = new mongoose.Schema<ExportJob>({
   completedAt: { type: Date },
   error: { type: String },
   data: { type: String },
+  recordCount: { type: Number },
   query: {
     start: Date,
     end: Date,

@@ -7,6 +7,8 @@ import React, {
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';
 import { useBudgets } from './budget-context';
+import { useUserProfile } from './user-profile-context';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 export interface FinancialRecord {
   _id?: string;
@@ -45,6 +47,8 @@ export const FinancialRecordsProvider = ({
   const { user } = useAuth();
   const { addToast } = useToast();
   const { fetchBudgets } = useBudgets();
+  const { profile, updateProfile } = useUserProfile();
+  const { trackEvent } = useAnalytics();
 
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
@@ -118,6 +122,12 @@ export const FinancialRecordsProvider = ({
 
       await fetchBudgets();
       addToast('Financial record added successfully!', 'success');
+
+      // Analytics: Check for first transaction
+      if (profile && !profile.hasCreatedFirstTransaction) {
+        trackEvent('first_transaction_created');
+        updateProfile({ hasCreatedFirstTransaction: true }, true);
+      }
     } catch (error) {
       console.error('Error adding record:', error);
       addToast('Failed to add financial record. Please try again.', 'error');
@@ -150,6 +160,12 @@ export const FinancialRecordsProvider = ({
 
       await fetchBudgets();
       addToast(`${savedRecords.length} records imported successfully!`, 'success');
+
+       // Analytics: Check for first transaction
+       if (profile && !profile.hasCreatedFirstTransaction) {
+        trackEvent('first_transaction_created');
+        updateProfile({ hasCreatedFirstTransaction: true }, true);
+      }
     } catch (error) {
       console.error('Error importing records:', error);
       addToast('Failed to import records. Please try again.', 'error');
