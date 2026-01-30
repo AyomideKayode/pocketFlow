@@ -25,7 +25,6 @@ export const processExportJob = async (jobId: string) => {
       'type',
       'category',
       'paymentMethod',
-      'userId',
     ];
 
     let csv = headers.join(',') + '\n';
@@ -38,7 +37,6 @@ export const processExportJob = async (jobId: string) => {
         doc.type,
         doc.category || '',
         doc.paymentMethod || '',
-        doc.userId || '',
       ];
       csv += fields.map((f) => `"${f}"`).join(',') + '\n';
     }

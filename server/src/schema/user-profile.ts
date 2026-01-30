@@ -5,6 +5,7 @@ interface UserProfile {
   displayName?: string;
   currency: string;
   photoURL?: string;
+  lastTrackedMonth?: string;
 }
 
 const userProfileSchema = new mongoose.Schema<UserProfile>(
@@ -13,6 +14,7 @@ const userProfileSchema = new mongoose.Schema<UserProfile>(
     displayName: { type: String },
     currency: { type: String, required: true, default: 'USD' },
     photoURL: { type: String },
+    lastTrackedMonth: { type: String }, // Format: YYYY-MM
   },
   {
     timestamps: true,

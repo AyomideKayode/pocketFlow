@@ -4,9 +4,11 @@ import React, {
   useEffect,
   useCallback,
   useState,
+  useRef,
 } from 'react';
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 export interface Budget {
   _id?: string;
@@ -39,6 +41,8 @@ export const BudgetsProvider = ({
   const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { addToast } = useToast();
+  const { trackEvent } = useAnalytics();
+  const loggedThresholdsRef = useRef(new Set<string>());
 
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
@@ -53,8 +57,30 @@ export const BudgetsProvider = ({
           `${API_BASE_URL}/budgets/${user.uid}${query}`,
         );
         if (response.ok) {
-          const data = await response.json();
+          const data: Budget[] = await response.json();
           setBudgets(data);
+
+          // Check thresholds
+          data.forEach((budget) => {
+            if (!budget._id || typeof budget.percent !== 'number') return;
+
+            const checkAndLog = (threshold: number) => {
+              const key = `${budget._id}-${threshold}`;
+              if (budget.percent! >= threshold && !loggedThresholdsRef.current.has(key)) {
+                trackEvent('budget_threshold_crossed', {
+                  budget_id: budget._id,
+                  category: budget.category,
+                  threshold,
+                  amount_spent: budget.spent,
+                  budget_limit: budget.amount,
+                });
+                loggedThresholdsRef.current.add(key);
+              }
+            };
+
+            checkAndLog(100);
+            checkAndLog(80);
+          });
         }
       } catch (error) {
         console.error('Error fetching budgets:', error);
@@ -62,7 +88,7 @@ export const BudgetsProvider = ({
         if (showLoading) setLoading(false);
       }
     },
-    [user, API_BASE_URL],
+    [user, API_BASE_URL, trackEvent],
   );
 
   useEffect(() => {

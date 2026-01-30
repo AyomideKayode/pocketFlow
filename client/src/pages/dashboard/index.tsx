@@ -23,8 +23,10 @@ import {
   Download,
   Plus,
   Loader2,
+  Upload,
 } from 'lucide-react';
 import { useToast } from '../../contexts/toast-context';
+import { CsvImportModal } from '../../components/CsvImportModal';
 
 // Lazy load chart components for performance
 const TrendLineChart = lazy(() =>
@@ -49,6 +51,7 @@ export const Dashboard = () => {
   const { format } = useCurrencyFormatter();
   const [dateRange, setDateRange] = useState(getDefaultDateRange());
   const [isExporting, setIsExporting] = useState(false);
+  const [showImportModal, setShowImportModal] = useState(false);
   const { addToast } = useToast();
   const navigate = useNavigate();
 
@@ -148,6 +151,13 @@ export const Dashboard = () => {
             onDateRangeChange={setDateRange}
           />
           <button
+            onClick={() => setShowImportModal(true)}
+            className='flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white'
+          >
+            <Upload className='h-4 w-4' />
+            Import
+          </button>
+          <button
             onClick={handleExport}
             disabled={isExporting}
             className='flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed'
@@ -161,6 +171,11 @@ export const Dashboard = () => {
           </button>
         </div>
       </div>
+
+      <CsvImportModal
+        isOpen={showImportModal}
+        onClose={() => setShowImportModal(false)}
+      />
 
       {/* Stats Grid */}
       <div className='grid gap-4 md:grid-cols-3'>

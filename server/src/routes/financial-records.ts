@@ -63,6 +63,70 @@ router.post('/', async (req: Request, res: Response) => {
   }
 });
 
+router.post('/bulk', async (req: Request, res: Response) => {
+  try {
+    const { userId, records } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ message: 'User ID is required.' });
+    }
+
+    if (!Array.isArray(records) || records.length === 0) {
+      return res.status(400).json({ message: 'No records provided' });
+    }
+
+    // Prepare records
+    const validRecords = records.map((r: any) => {
+      if (!r.type || !['income', 'expense'].includes(r.type)) {
+        throw new Error('Invalid record type');
+      }
+      return {
+        userId,
+        date: r.date ? new Date(r.date) : new Date(),
+        description: r.description,
+        amount: Math.abs(r.amount),
+        type: r.type,
+        category: r.category,
+        paymentMethod: r.paymentMethod,
+      };
+    });
+
+    // Insert
+    const inserted = await FinancialRecordModel.insertMany(validRecords);
+
+    // Budget checks (Async)
+    (async () => {
+      try {
+        // Group by category+period to minimize calls
+        const checksMap = new Map<string, Date>();
+        inserted.forEach((r) => {
+          if (r.type === 'expense') {
+            const period = r.date.toISOString().slice(0, 7);
+            const key = `${r.category}|${period}`;
+            if (!checksMap.has(key)) {
+              checksMap.set(key, r.date);
+            }
+          }
+        });
+
+        for (const [key, date] of checksMap) {
+          const [category] = key.split('|');
+          if (category) {
+            await checkAndNotifyBudgetExceeded(userId, category, date);
+          }
+        }
+      } catch (err) {
+        console.error('Bulk budget check error', err);
+      }
+    })();
+
+    res.status(201).json(inserted);
+  } catch (error) {
+    console.error('Bulk import error:', error);
+    res.status(500).json({ message: 'Failed to import records' });
+  }
+});
+
 router.put('/:id', async (req: Request, res: Response) => {
   try {
     const recordId = req.params.id;
