@@ -100,6 +100,11 @@ PORT=3001
 
 # Firebase Admin SDK (Required for reports/auth verification)
 FIREBASE_SERVICE_ACCOUNT_PATH=./path/to/serviceAccountKey.json
+
+# Cloudinary (Required for profile image uploads)
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 **Note**: `FIREBASE_SERVICE_ACCOUNT_PATH` should point to your Firebase Service Account JSON file. Do not commit this file to version control.

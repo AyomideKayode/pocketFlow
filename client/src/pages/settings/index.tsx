@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useUserProfile } from '../../contexts/user-profile-context';
+import { getIdToken } from '../../lib/firebase';
 import {
   Save,
   Loader2,
   User,
   CreditCard,
   Link as LinkIcon,
+  Camera,
 } from 'lucide-react';
 
 export const Settings = () => {
@@ -15,6 +17,8 @@ export const Settings = () => {
   const [currency, setCurrency] = useState('USD');
   const [photoURL, setPhotoURL] = useState('');
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (profile) {
@@ -24,8 +28,81 @@ export const Settings = () => {
     }
   }, [profile]);
 
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate size (5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('File size must be less than 5MB');
+      return;
+    }
+
+    // Validate type
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      alert('Only JPG, PNG, and WebP formats are allowed');
+      return;
+    }
+
+    setUploading(true);
+    try {
+      const token = await getIdToken();
+      if (!token) throw new Error('Not authenticated');
+
+      const API_BASE_URL =
+        import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+
+      // 1. Get signature
+      const signResponse = await fetch(
+        `${API_BASE_URL}/cloudinary/sign-profile-upload`,
+        {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      if (!signResponse.ok) throw new Error('Failed to get upload signature');
+      const { signature, timestamp, cloudName, apiKey, public_id, folder } =
+        await signResponse.json();
+
+      // 2. Upload to Cloudinary
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('api_key', apiKey);
+      formData.append('timestamp', timestamp.toString());
+      formData.append('signature', signature);
+      formData.append('folder', folder);
+      formData.append('public_id', public_id);
+
+      const uploadResponse = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        },
+      );
+
+      if (!uploadResponse.ok) {
+        const errorData = await uploadResponse.json();
+        throw new Error(errorData.error?.message || 'Failed to upload image');
+      }
+      const uploadData = await uploadResponse.json();
+
+      // 3. Update Profile
+      await updateProfile({ photoURL: uploadData.secure_url });
+      setPhotoURL(uploadData.secure_url);
+    } catch (error) {
+      console.error('Upload error:', error);
+      alert('Failed to upload image. Please try again.');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (uploading) return;
     setSaving(true);
     try {
       await updateProfile({
@@ -93,7 +170,28 @@ export const Settings = () => {
                       {displayName ? displayName[0].toUpperCase() : '?'}
                     </div>
                   )}
+                  {uploading && (
+                    <div className='absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm'>
+                      <Loader2 className='h-8 w-8 animate-spin text-white' />
+                    </div>
+                  )}
                 </div>
+                <input
+                  type='file'
+                  ref={fileInputRef}
+                  className='hidden'
+                  accept='image/jpeg,image/png,image/webp'
+                  onChange={handleFileChange}
+                />
+                <button
+                  type='button'
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={uploading}
+                  className='flex items-center gap-2 rounded-full bg-slate-800 px-4 py-2 text-xs font-medium text-slate-300 hover:bg-slate-700 hover:text-white transition-colors disabled:opacity-50'
+                >
+                  <Camera className='h-3 w-3' />
+                  Change Photo
+                </button>
               </div>
 
               {/* Profile Form */}
@@ -126,7 +224,7 @@ export const Settings = () => {
                     />
                   </div>
                   <p className='text-xs text-slate-500'>
-                    Provide a direct link to an image.
+                    Provide a direct link to an image or upload one above.
                   </p>
                 </div>
               </form>
@@ -176,7 +274,7 @@ export const Settings = () => {
           <div className='flex justify-end'>
             <button
               onClick={handleSubmit}
-              disabled={saving}
+              disabled={saving || uploading}
               className='flex items-center gap-2 rounded-lg bg-emerald-600 px-6 py-2.5 font-medium text-white shadow-lg shadow-emerald-900/20 transition-all hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed'
             >
               {saving ? (

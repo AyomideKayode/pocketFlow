@@ -343,6 +343,28 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ---
 
+### **Phase 8: Cloud Media Integration** ✅ COMPLETED
+
+- **Features:**
+  - **Direct-to-Cloud Uploads:** Implemented signed uploads to Cloudinary for user profile photos.
+  - **Secure Signature Generation:** Backend endpoint generates cryptographic signatures, ensuring only authenticated users can upload.
+  - **User Experience:** Integrated file selection UI with loading states and instant profile updates.
+
+- **Implementation Details:**
+  - **Architecture:**
+    - Client requests signature -> Backend verifies auth & signs params -> Client uploads to Cloudinary -> Client updates DB with URL.
+    - Prevents file handling on the backend server (saving bandwidth and complexity).
+  - **Security:**
+    - `POST /cloudinary/sign-profile-upload` protected by Firebase Auth.
+    - Signatures include `timestamp`, `folder`, and `public_id` (derived from userId) to enforce file location and overwrites.
+    - Frontend validates file types (JPG, PNG, WebP) and size (< 5MB).
+
+- **Key Learnings:**
+  - **Signed Uploads:** Using signed uploads is superior to unsigned for security, as it prevents open public upload access.
+  - **State Management:** Immediate local state update after successful upload makes the UI feel snappier than waiting for a full profile refetch.
+
+---
+
 ## Planned Phases & Next Steps
 
 ### **Phase 7: Advanced Features & Product Maturity (Roadmap)**
@@ -576,5 +598,6 @@ interface FinancialRecord {
 - _Last updated: January 24, 2026 | Current Phase: Phase 4 (Budgeting & Goals) | Next Phase: 5 Performance, Optimization & Hardening_
 - _Last updated: January 26, 2026 | Current Phase: Phase 5 Performance, Optimization & Hardening | Next Phase: 7 Advanced Features (Roadmap)_
 - _Last updated: January 29, 2026 | Current Phase: Phase 7 Advanced Features & Product Maturity (Roadmap) | Next Phase: 8 Cloud Media & Advanced Communication_
+- _Last updated: February 01, 2026 | Current Phase: Phase 8 Cloud Media | Next Phase: 9 Data Import_
 
 ---
