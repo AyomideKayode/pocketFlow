@@ -1,9 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/auth-context';
+import { useUserProfile } from '../contexts/user-profile-context';
 import { useToast } from '../contexts/toast-context';
-import { LogOut, Link as LinkIcon, ChevronDown, Settings as SettingsIcon } from 'lucide-react';
-import {  } from 'lucide-react';
+import {
+  LogOut,
+  Link as LinkIcon,
+  ChevronDown,
+  Settings as SettingsIcon,
+} from 'lucide-react';
+import {} from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -13,6 +19,7 @@ function cn(...inputs: (string | undefined | null | false)[]) {
 
 export const UserButton: React.FC = () => {
   const { user, logout, linkGoogleAccount } = useAuth();
+  const { profile } = useUserProfile();
   const { addToast } = useToast();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLinking, setIsLinking] = useState(false);
@@ -77,7 +84,11 @@ export const UserButton: React.FC = () => {
     }
   };
 
-  const displayName = user.displayName || user.email?.split('@')[0] || 'User';
+  const displayName =
+    profile?.displayName ||
+    user.displayName ||
+    user.email?.split('@')[0] ||
+    'User';
   const isGoogleLinked = user.providerData.some(
     (provider) => provider.providerId === 'google.com',
   );
@@ -121,15 +132,15 @@ export const UserButton: React.FC = () => {
           )}
 
           <Link
-            to="/settings"
+            to='/settings'
             onClick={() => setIsDropdownOpen(false)}
-            className="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white"
+            className='flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white'
           >
-            <SettingsIcon className="h-4 w-4" />
+            <SettingsIcon className='h-4 w-4' />
             Settings
           </Link>
 
-          <div className="my-1 border-t border-slate-800" />
+          <div className='my-1 border-t border-slate-800' />
 
           <button
             onClick={handleLogout}

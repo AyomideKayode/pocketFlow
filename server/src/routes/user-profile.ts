@@ -28,7 +28,9 @@ router.get('/:userId', verifyAuth, async (req: Request, res: Response) => {
     const authenticatedUserId = (req as any).user.uid;
 
     if (userId !== authenticatedUserId) {
-      return res.status(403).json({ message: 'Forbidden access to user profile' });
+      return res
+        .status(403)
+        .json({ message: 'Forbidden access to user profile' });
     }
 
     const profile = await UserProfileModel.findOne({ userId });
@@ -50,7 +52,9 @@ router.put('/:userId', verifyAuth, async (req: Request, res: Response) => {
     const authenticatedUserId = (req as any).user.uid;
 
     if (userId !== authenticatedUserId) {
-      return res.status(403).json({ message: 'Forbidden access to user profile' });
+      return res
+        .status(403)
+        .json({ message: 'Forbidden access to user profile' });
     }
 
     // Only allow specific fields to be updated
@@ -62,9 +66,9 @@ router.put('/:userId', verifyAuth, async (req: Request, res: Response) => {
         userId, // Ensure userId is set on create
         displayName,
         currency,
-        photoURL
+        photoURL,
       },
-      { new: true, upsert: true, setDefaultsOnInsert: true }
+      { new: true, upsert: true, setDefaultsOnInsert: true },
     );
 
     res.status(200).json(updatedProfile);

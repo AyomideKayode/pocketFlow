@@ -350,8 +350,6 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 - **Primary Focus:**
   - User-level personalization
   - Advanced notifications & communication
-  - Data import (CSV/Bank)
-  - Product telemetry and insight
 
 - **Feature Areas**
   - 1.**User Profile & Preferences**
@@ -386,23 +384,8 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
       - Budget display
       - Transactions
       - Analytics and summaries
-  - 4.**Data Import**
-    - CSV import for transactions
-    - Bank import (exploratory / future phase)
-    - Validation & preview before persistence
-  - 5.**Analytics & Telemetry**
-    - Advanced analytics telemetry
-      - Firebase Analytics (consideration)
-      - Vercel Analytics (already in use)
-    - Event tracking for:
-      - Budget threshold crossings
-      - Feature usage (imports, edits, deletes)
-      - Performance signals (slow loads, errors)
-  - 6.**Authentication Enhancements**
-    - Google / Social OAuth integration
-    - Unified identity model across providers
 
-### **Phase 9: Cloud Media & Advanced Communication (Future)**
+### **Phase 8: Cloud Media & Advanced Communication (Future)**
 
 - **Primary Focus:**
   - Robust media handling (Avatars)
@@ -419,6 +402,29 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
       - Budget alerts (80% / 100% threshold crossed)
       - Weekly/Monthly financial summaries
       - Goal achievement congratulations
+
+### **Phase 9: Data Import & Integrations**
+
+- **Primary Focus:**
+  - Data import (CSV/Bank)
+  - Product telemetry and insight
+
+- **Feature Areas**
+  - 1.**Data Import**
+    - CSV import for transactions
+    - Bank import (exploratory / future phase)
+    - Validation & preview before persistence
+  - 2.**Analytics & Telemetry**
+    - Advanced analytics telemetry
+      - Firebase Analytics (consideration)
+      - Vercel Analytics (already in use)
+    - Event tracking for:
+      - Budget threshold crossings
+      - Feature usage (imports, edits, deletes)
+      - Performance signals (slow loads, errors)
+  - 3.**Authentication Enhancements**
+    - Google / Social OAuth integration
+    - Unified identity model across providers
 
 ---
 
@@ -569,5 +575,6 @@ interface FinancialRecord {
 - _Last updated: January 23, 2026 | Current Phase: Phase 4 Preparation (Sidebar Navigation) | Next Phase: 4 (Budgeting & Goals)_
 - _Last updated: January 24, 2026 | Current Phase: Phase 4 (Budgeting & Goals) | Next Phase: 5 Performance, Optimization & Hardening_
 - _Last updated: January 26, 2026 | Current Phase: Phase 5 Performance, Optimization & Hardening | Next Phase: 7 Advanced Features (Roadmap)_
+- _Last updated: January 29, 2026 | Current Phase: Phase 7 Advanced Features & Product Maturity (Roadmap) | Next Phase: 8 Cloud Media & Advanced Communication_
 
 ---

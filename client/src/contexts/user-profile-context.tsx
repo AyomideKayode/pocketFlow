@@ -75,8 +75,8 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({
           setProfile({
             userId: user.uid,
             currency: 'USD',
-            displayName: user.displayName || undefined,
-            photoURL: user.photoURL || undefined,
+            displayName: user.displayName ?? undefined,
+            photoURL: user.photoURL ?? undefined,
           });
         } else {
           console.error('Failed to fetch user profile');

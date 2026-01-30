@@ -159,8 +159,8 @@ PocketFlow is being built in distinct phases to ensure stability and code qualit
 
 ### 🔮 Future Direction
 
-- **Phase 8: Data Import & Integrations**: CSV/Bank imports, Telemetry.
-- **Phase 9: Cloud Media**: Cloudinary integration for robust avatar hosting and Email services.
+- **Phase 8: Cloud Media**: Cloudinary integration for robust avatar hosting and Email services.
+- **Phase 9: Data Import & Integrations**: CSV/Bank imports, Telemetry.
 
 For a detailed history of the development process, challenges, and architectural decisions, see the [Development Blueprint](./POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
 
