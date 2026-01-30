@@ -175,14 +175,14 @@ export const Budgets = () => {
               <div className='space-y-2'>
                 <label className='text-xs font-medium text-slate-400'>Monthly Limit</label>
                 <div className='relative'>
-                  <span className='absolute left-3 top-2 flex h-5 w-5 items-center justify-center text-sm font-bold text-slate-500'>
+                  <span className='absolute left-3 top-2 inline-flex min-w-[2.5ch] items-center justify-center text-sm font-bold text-slate-500'>
                     {currencySymbol}
                   </span>
                   <input
                     type='number'
                     required
                     min="1"
-                    className='w-full rounded-lg border border-slate-700 bg-slate-950 pl-9 pr-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50'
+                    className='w-full rounded-lg border border-slate-700 bg-slate-950 pl-12 pr-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50'
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder='500.00'
