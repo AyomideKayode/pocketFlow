@@ -99,8 +99,19 @@ export const UserButton: React.FC = () => {
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         className='flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800/50 py-1.5 pl-1.5 pr-3 text-sm font-medium text-slate-200 transition-colors hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50'
       >
-        <div className='flex h-7 w-7 items-center justify-center rounded-full bg-linear-to-br from-emerald-500 to-emerald-600 text-xs font-bold text-white shadow-sm'>
-          {displayName.charAt(0).toUpperCase()}
+        <div className='relative h-7 w-7 rounded-full overflow-hidden shadow-sm'>
+          {profile?.photoURL ? (
+            <img
+              src={profile.photoURL}
+              alt={displayName}
+              className='h-full w-full object-cover'
+              referrerPolicy='no-referrer'
+            />
+          ) : (
+            <div className='flex h-full w-full items-center justify-center rounded-full bg-linear-to-br from-emerald-500 to-emerald-600 text-xs font-bold text-white'>
+              {displayName.charAt(0).toUpperCase()}
+            </div>
+          )}
         </div>
         <span className='max-w-25 truncate md:max-w-37.5'>{displayName}</span>
         <ChevronDown
