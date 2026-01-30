@@ -132,7 +132,9 @@ export const BudgetsProvider = ({
       // Analytics: Check for first budget
       if (profile && !profile.hasCreatedFirstBudget) {
         trackEvent('first_budget_created');
-        updateProfile({ hasCreatedFirstBudget: true }, true);
+        void updateProfile({ hasCreatedFirstBudget: true }, true).catch((err) => {
+          console.error('Failed to persist first budget flag', err);
+        });
       }
 
     } catch (err: unknown) {
