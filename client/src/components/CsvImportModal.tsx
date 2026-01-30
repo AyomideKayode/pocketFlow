@@ -60,10 +60,9 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({ isOpen, onClose 
 
     // Validate Amount
     const amountNum = parseFloat(amountStr);
-    if (amountStr === undefined || isNaN(amountNum)) {
+    if (amountStr === undefined || isNaN(amountNum) || amountNum === 0) {
       errors.push('Invalid Amount');
     }
-
     // Validate Category
     if (!category || typeof category !== 'string' || category.trim() === '') {
       errors.push('Missing Category');
