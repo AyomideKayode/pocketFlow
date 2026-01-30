@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useCallback,
   useState,
+  useRef,
 } from 'react';
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';

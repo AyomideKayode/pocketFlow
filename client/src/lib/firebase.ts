@@ -25,7 +25,7 @@ export const googleProvider = new GoogleAuthProvider();
 export const db = getFirestore(app);
 
 // Initialize Analytics (conditionally)
-import { Analytics } from 'firebase/analytics';
+import type { Analytics } from 'firebase/analytics';
 export let analytics: Analytics | null = null;
 isSupported().then((yes) => {
   if (yes) {

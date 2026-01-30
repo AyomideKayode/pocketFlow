@@ -78,10 +78,7 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({
           setProfile(data);
 
           // Check for budget reset (new month)
-          const now = new Date();
-          const currentMonth = `${now.getFullYear()}-${String(
-            now.getMonth() + 1,
-          ).padStart(2, '0')}`;
+          const currentMonth = new Date().toISOString().slice(0, 7);
           if (data.lastTrackedMonth && data.lastTrackedMonth !== currentMonth) {
             trackEvent('budget_reset', {
               previous_month: data.lastTrackedMonth,

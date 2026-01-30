@@ -1,9 +1,9 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import Papa from 'papaparse';
-import { Upload, X, Check, AlertCircle, FileText, Loader2, Info } from 'lucide-react';
+import { Upload, X, Check, AlertCircle, FileText, Loader2 } from 'lucide-react';
 import { useAnalytics } from '../hooks/useAnalytics';
-import { useFinancialRecords, FinancialRecord } from '../contexts/financial-record-context';
+import { useFinancialRecords, type FinancialRecord } from '../contexts/financial-record-context';
 
 interface CsvImportModalProps {
   isOpen: boolean;
@@ -60,9 +60,10 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({ isOpen, onClose 
 
     // Validate Amount
     const amountNum = parseFloat(amountStr);
-    if (amountStr === undefined || isNaN(amountNum) || amountNum === 0) {
+    if (amountStr === undefined || isNaN(amountNum)) {
       errors.push('Invalid Amount');
     }
+
     // Validate Category
     if (!category || typeof category !== 'string' || category.trim() === '') {
       errors.push('Missing Category');
