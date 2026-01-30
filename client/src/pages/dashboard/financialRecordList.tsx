@@ -3,6 +3,7 @@ import {
   useFinancialRecords,
   type FinancialRecord,
 } from '../../contexts/financial-record-context';
+import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 import { useConfirmationDialog } from '../../contexts/confirmation-dialog-context';
 import {
   useReactTable,
@@ -114,6 +115,7 @@ interface FinancialRecordListProps {
 export const FinancialRecordList = ({ limit }: FinancialRecordListProps) => {
   const { records, updateRecord, deleteRecord } = useFinancialRecords();
   const { showConfirmation } = useConfirmationDialog();
+  const { format } = useCurrencyFormatter();
 
   const displayRecords = useMemo(() => {
     // Sort by date descending
@@ -180,6 +182,11 @@ export const FinancialRecordList = ({ limit }: FinancialRecordListProps) => {
             renderItem={(val) => {
               const numVal = Number(val);
               const type = props.row.original.type;
+              // Remove the sign from format() output since we add + / - manually
+              // Actually, standard accounting usually implies sign via color or parenthesis
+              // but keeping existing style: +$100.00 or -$100.00
+              // format() returns symbol + number.
+              // So +{format(abs)} is correct: +$100.00
               return (
                 <div
                   className={clsx(
@@ -187,7 +194,7 @@ export const FinancialRecordList = ({ limit }: FinancialRecordListProps) => {
                     type === 'income' ? 'text-emerald-500' : 'text-rose-500',
                   )}
                 >
-                  {type === 'income' ? '+' : '-'}${Math.abs(numVal).toFixed(2)}
+                  {type === 'income' ? '+' : '-'}{format(Math.abs(numVal))}
                 </div>
               );
             }}
@@ -249,7 +256,7 @@ export const FinancialRecordList = ({ limit }: FinancialRecordListProps) => {
         ),
       }),
     ],
-    [updateCellRecord, handleDeleteRecord],
+    [updateCellRecord, handleDeleteRecord, format],
   );
 
   const table = useReactTable({

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useBudgets, type Budget } from '../../contexts/budget-context';
+import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 import { Plus, Trash2, Edit2, AlertTriangle, X, DollarSign, PieChart } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
@@ -22,6 +23,7 @@ const EXPENSE_CATEGORIES = [
 
 export const Budgets = () => {
   const { budgets, addBudget, updateBudget, deleteBudget } = useBudgets();
+  const { format, currencySymbol } = useCurrencyFormatter();
   const [showModal, setShowModal] = useState(false);
   const [editingBudget, setEditingBudget] = useState<Budget | null>(null);
 
@@ -62,10 +64,6 @@ export const Budgets = () => {
     }
     setShowModal(false);
   };
-
-  // Helper to format currency
-  const formatCurrency = (val: number) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
 
   return (
     <div className='space-y-6 animate-in fade-in duration-500'>
@@ -109,9 +107,9 @@ export const Budgets = () => {
 
               <div className='mb-2 flex items-baseline justify-between'>
                 <span className={cn('text-2xl font-bold', isOver ? 'text-rose-500' : 'text-white')}>
-                  {formatCurrency(budget.spent || 0)}
+                  {format(budget.spent || 0)}
                 </span>
-                <span className='text-sm text-slate-500'>of {formatCurrency(budget.amount)}</span>
+                <span className='text-sm text-slate-500'>of {format(budget.amount)}</span>
               </div>
 
               <div className='relative h-2 w-full overflow-hidden rounded-full bg-slate-800'>
@@ -177,7 +175,9 @@ export const Budgets = () => {
               <div className='space-y-2'>
                 <label className='text-xs font-medium text-slate-400'>Monthly Limit</label>
                 <div className='relative'>
-                  <DollarSign className='absolute left-3 top-2.5 h-4 w-4 text-slate-500' />
+                  <span className='absolute left-3 top-2 flex h-5 w-5 items-center justify-center text-sm font-bold text-slate-500'>
+                    {currencySymbol}
+                  </span>
                   <input
                     type='number'
                     required

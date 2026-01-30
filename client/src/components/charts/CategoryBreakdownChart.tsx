@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'recharts';
 import { ChartContainer } from './ChartContainer';
+import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 import { type FinancialRecord } from '../../contexts/financial-record-context';
 
 interface CategoryBreakdownChartProps {
@@ -19,6 +20,7 @@ interface CategoryBreakdownChartProps {
 export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({
   records,
 }) => {
+  const { format } = useCurrencyFormatter();
   const categoryData = records.reduce(
     (acc: Record<string, { income: number; expense: number }>, record) => {
       if (!acc[record.category]) {
@@ -61,7 +63,9 @@ export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({
               type='number'
               stroke='#64748b'
               fontSize={12}
-              tickFormatter={(val) => `$${val}`}
+              tickFormatter={(val) =>
+                format(val, { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+              }
             />
             <YAxis
               dataKey='category'
@@ -78,6 +82,7 @@ export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({
                 borderColor: '#1e293b',
                 color: '#f1f5f9',
               }}
+              formatter={(value: number) => [format(value), undefined]}
             />
             <Legend />
             <Bar

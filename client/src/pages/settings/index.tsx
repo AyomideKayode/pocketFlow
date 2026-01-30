@@ -50,6 +50,7 @@ export const Settings = () => {
     { code: 'INR', label: 'Indian Rupee (₹)' },
     { code: 'CNY', label: 'Chinese Yuan (¥)' },
     { code: 'NGN', label: 'Nigerian Naira (₦)' },
+    { code: 'GHS', label: 'Ghanaian Cedi (₵)' },
   ];
 
   if (profileLoading) {

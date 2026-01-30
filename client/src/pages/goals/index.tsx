@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useGoals, type Goal } from '../../contexts/goal-context';
+import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 import { Plus, Trash2, Edit2, Target, X, DollarSign, Calendar } from 'lucide-react';
 
 // Reuse categories for linking
@@ -18,6 +19,7 @@ const EXPENSE_CATEGORIES = [
 
 export const Goals = () => {
   const { goals, addGoal, updateGoal, deleteGoal } = useGoals();
+  const { format, currencySymbol } = useCurrencyFormatter();
   const [showModal, setShowModal] = useState(false);
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);
 
@@ -67,9 +69,6 @@ export const Goals = () => {
     setShowModal(false);
   };
 
-  const formatCurrency = (val: number) =>
-    new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(val);
-
   return (
     <div className='space-y-6 animate-in fade-in duration-500'>
       <div className='flex items-center justify-between'>
@@ -115,11 +114,11 @@ export const Goals = () => {
                 <div className='flex items-end justify-between'>
                   <div>
                     <p className='text-xs text-slate-400 mb-1'>Saved</p>
-                    <p className='text-2xl font-bold text-emerald-400'>{formatCurrency(goal.currentAmount)}</p>
+                    <p className='text-2xl font-bold text-emerald-400'>{format(goal.currentAmount)}</p>
                   </div>
                   <div className='text-right'>
                     <p className='text-xs text-slate-400 mb-1'>Target</p>
-                    <p className='text-lg font-medium text-white'>{formatCurrency(goal.targetAmount)}</p>
+                    <p className='text-lg font-medium text-white'>{format(goal.targetAmount)}</p>
                   </div>
                 </div>
 
@@ -189,7 +188,9 @@ export const Goals = () => {
               <div className='space-y-2'>
                 <label className='text-xs font-medium text-slate-400'>Target Amount</label>
                 <div className='relative'>
-                  <DollarSign className='absolute left-3 top-2.5 h-4 w-4 text-slate-500' />
+                  <span className='absolute left-3 top-2 flex h-5 w-5 items-center justify-center text-sm font-bold text-slate-500'>
+                    {currencySymbol}
+                  </span>
                   <input
                     type='number'
                     required

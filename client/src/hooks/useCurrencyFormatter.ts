@@ -1,20 +1,38 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useUserProfile } from '../contexts/user-profile-context';
 
 export const useCurrencyFormatter = () => {
   const { currency } = useUserProfile();
 
   const format = useCallback(
-    (amount: number) => {
+    (amount: number, options?: Intl.NumberFormatOptions) => {
       return new Intl.NumberFormat('en-US', {
         style: 'currency',
         currency: currency,
+        currencyDisplay: 'narrowSymbol',
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
+        ...options,
       }).format(amount);
     },
     [currency],
   );
 
-  return format;
+  const currencySymbol = useMemo(() => {
+    try {
+      return (
+        new Intl.NumberFormat('en-US', {
+          style: 'currency',
+          currency: currency,
+          currencyDisplay: 'narrowSymbol',
+        })
+          .formatToParts(0)
+          .find((p) => p.type === 'currency')?.value || '$'
+      );
+    } catch (e) {
+      return '$';
+    }
+  }, [currency]);
+
+  return { format, currencySymbol };
 };
