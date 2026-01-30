@@ -76,15 +76,20 @@ router.post('/bulk', async (req: Request, res: Response) => {
     }
 
     // Prepare records
-    const validRecords = records.map((r: any) => ({
-      userId,
-      date: r.date ? new Date(r.date) : new Date(),
-      description: r.description,
-      amount: Math.abs(r.amount),
-      type: r.type,
-      category: r.category,
-      paymentMethod: r.paymentMethod,
-    }));
+    const validRecords = records.map((r: any, index: number) => {
+      if (!r.type || !['income', 'expense'].includes(r.type)) {
+        throw new Error(`Invalid type at record index ${index}`);
+      }
+      return {
+        userId,
+        date: r.date ? new Date(r.date) : new Date(),
+        description: r.description,
+        amount: Math.abs(r.amount),
+        type: r.type,
+        category: r.category,
+        paymentMethod: r.paymentMethod,
+      };
+    });
 
     // Insert
     const inserted = await FinancialRecordModel.insertMany(validRecords);
