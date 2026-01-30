@@ -1,6 +1,6 @@
 # PocketFlow 💸
 
-**PocketFlow** is a modern, full-stack personal finance tracker designed to help users manage their income and expenses with ease. Built with reliability and user experience in mind, it features secure authentication, real-time analytics, and data integrity checks.
+**PocketFlow** is a personal finance management application designed to help users track income and expenses, define budgets, monitor financial goals, and gain insights into their spending behavior. Built with reliability and user experience in mind, it features secure authentication, real-time analytics, and data integrity checks. The product prioritizes clarity, data integrity, and user control, with a strong emphasis on reliability, testability, and extensibility.
 
 ![Status](https://img.shields.io/badge/Status-Active_Development-brightgreen)
 ![License](https://img.shields.io/badge/License-ISC-blue)

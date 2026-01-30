@@ -409,41 +409,140 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ## Planned Phases & Next Steps
 
-### **Phase 9: Data Import & Integrations**
+### **Phase 9A: Foundations (Data Integrity & Observability)**
 
 - **Primary Focus:**
-  - Data import (CSV/Bank)
-  - Product telemetry and insight
+  Establish reliable data ingress and foundational observability to validate system correctness, user behavior, and budget/goal lifecycle assumptions.
 
-- **Feature Areas**
-  - 1.**Data Import**
-    - CSV import for transactions
-    - Bank import (exploratory / future phase)
-    - Validation & preview before persistence
-  - 2.**Analytics & Telemetry**
-    - Advanced analytics telemetry
-      - Firebase Analytics (consideration)
-      - Vercel Analytics (already in use)
-    - Event tracking for:
-      - Budget threshold crossings
-      - Feature usage (imports, edits, deletes)
-      - Performance signals (slow loads, errors)
-  - 3.**Authentication Enhancements**
-    - Google / Social OAuth integration
-    - Unified identity model across providers
+- **1.CSV Transaction Import**
+  - **Scope**
+    - Import transactions via CSV only (no bank integrations at this stage)
+    - Transactions must map cleanly to the existing financial record schema
+  - **Key Requirements**
+    - CSV schema definition and documentation
+    - Pre-import validation (type checks, required fields, date formats, numeric bounds)
+    - Import preview UI (row-level visibility before persistence)
+    - Partial-failure handling (invalid rows do not poison entire import)
+  - **Out of Scope**
+    - Bank APIs or direct financial institution integrations
 
-### **Phase 10: Advanced Communication**
+- **2.Data Export Hardening**
+  - **Adjustments**
+    - Remove `userId` from all exported CSV/XLSX files
+    - Ensure exports contain only user-meaningful financial fields
+  - **Rationale**
+    - Ownership is enforced server-side
+    - `userId` provides no user value and introduces unnecessary exposure
+
+- **3.Core Analytics & Telemetry (Behavioral)**
+  - **Tooling**
+    - Firebase Analytics (primary behavioral telemetry)
+    - Vercel Analytics remains for performance and infra-level signals
+  - **Tracked Events (Initial Set)**
+    - CSV import started / completed / failed
+    - Transaction create / edit / delete
+    - Budget threshold crossed (100% only at this stage)
+    - Goal progress updated
+
+- **4.Budget Lifecycle Telemetry**
+  - **Instrumentation Goals**
+    - Detect monthly budget resets
+    - Capture budget state before and after reset
+    - Track whether users exceeded budgets prior to reset
+  - **Purpose**
+    - Validate budget reset correctness
+    - Surface real-world edge cases before notification automation
+
+- **5.Goal Progress Telemetry**
+  - **Instrumentation Goals**
+    - Track incremental goal progress
+    - Capture goal completion events
+    - Identify stalled or abandoned goals
+  - **Purpose**
+    - Build confidence in goal logic correctness
+    - Inform future goal UX improvements
+
+### **Phase 9B: Insights (Derived Intelligence)**
 
 - **Primary Focus:**
-  - Production-grade notifications (Email)
+  Convert raw telemetry into interpretable product and financial insights.
 
-- **Feature Areas**
-  - 1.**Email Notification Service**
-    - Integrate SendGrid or AWS SES for reliable email delivery.
-    - Transactional emails for:
-      - Budget alerts (80% / 100% threshold crossed)
-      - Weekly/Monthly financial summaries
-      - Goal achievement congratulations
+- **1.Monthly Budget Cycle Analysis**
+  - **Outputs**
+    - Per-user budget utilization summaries
+    - Distribution of spend vs budget over time
+
+- **2.Over-Budget Detection (Pre-Reset)**
+  - **Analysis Goals**
+    - Identify users who exceeded budgets before reset
+    - Quantify severity and frequency of overages
+
+- **3.Import Reliability Metrics**
+  - **Metrics**
+    - CSV import success rate
+    - Validation failure frequency
+    - Common schema or formatting errors
+  - **Purpose**
+    - Improve import UX
+    - Reduce onboarding friction
+
+### **Phase 10A: Email Infrastructure**
+
+- **Primary Focus:**
+  Introduce production-grade outbound communication without coupling it prematurely to business logic.
+
+- **1.Email Service Integration**
+  - **Options**
+    - SendGrid or AWS SES
+  - **Requirements**
+    - Environment-based configuration
+    - Retry and failure handling
+    - Email sending abstraction layer
+
+- **2.Email Template System**
+  - **Scope**
+    - Transactional templates only
+    - Reusable layout and branding
+    - Plain-text fallbacks
+
+- **3.Email Preferences**
+  - **User Controls**
+    - Global email on/off
+    - Category-based preferences (alerts, summaries, achievements)
+
+### **Phase 10B: Safe Notifications**
+
+- **Primary Focus**
+  Deliver high-confidence, low-noise email notifications backed by validated telemetry.
+
+- **Enabled Notifications (Initial)**
+  - Budget threshold crossed (100% only)
+  - Weekly financial summary
+  - Goal achievement confirmation
+- **Explicitly Deferred**
+  - 80% budget warnings
+  - Monthly summaries (pending confidence review)
+
+### **Phase 11: Expansion**
+
+- **Primary Focus:**
+  Expand financial capability and educational value once data integrity and communication channels are proven.
+
+- **1.Bills**
+  - Recurring bill tracking
+  - Due date awareness
+  - Budget impact visibility
+
+- **2.Learn / Insights Page**
+  - Actionable financial tips
+  - Contextual advice based on user behavior
+  - Non-prescriptive, educational focus
+
+### **Phase Zeta: Bank Import (Exploratory)**
+
+- Research-only phase
+- Regulatory, security, and compliance assessment
+- No production commitment - yet.
 
 ---
 
