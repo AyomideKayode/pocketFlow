@@ -85,8 +85,14 @@ export const Settings = () => {
       );
 
       if (!uploadResponse.ok) {
-        const errorData = await uploadResponse.json();
-        throw new Error(errorData.error?.message || 'Failed to upload image');
+        let errorMessage = 'Failed to upload image';
+        try {
+          const errorData = await uploadResponse.json();
+          errorMessage = errorData.error?.message || errorMessage;
+        } catch {
+          // Response wasn't JSON, use default message
+        }
+        throw new Error(errorMessage);
       }
       const uploadData = await uploadResponse.json();
 
@@ -226,7 +232,7 @@ export const Settings = () => {
                     />
                   </div>
                   <p className='text-xs text-slate-500'>
-                    Provide a direct link to an image or upload one above.
+                    Provide a direct link to an image or upload one above. (&lt; 5mb)
                   </p>
                 </div>
               </form>

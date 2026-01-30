@@ -108,6 +108,7 @@ CLOUDINARY_API_SECRET=your_api_secret
 ```
 
 **Note**: `FIREBASE_SERVICE_ACCOUNT_PATH` should point to your Firebase Service Account JSON file. Do not commit this file to version control.
+**Note**: `CLOUDINARY_API_SECRET` is sensitive. Keep it out of version control and load it via environment variables/secret manager.
 
 ---
 
