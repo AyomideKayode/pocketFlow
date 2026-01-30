@@ -38,6 +38,9 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({ isOpen, onClose 
     setStep('upload');
     setRows([]);
     setStats({ valid: 0, invalid: 0 });
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleClose = () => {
