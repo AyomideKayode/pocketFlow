@@ -1,6 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider, linkWithPopup } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore'; // Optional for future features
+import { getAnalytics, isSupported } from 'firebase/analytics';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -22,6 +23,15 @@ export const googleProvider = new GoogleAuthProvider();
 
 // Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(app);
+
+// Initialize Analytics (conditionally)
+import { Analytics } from 'firebase/analytics';
+export let analytics: Analytics | null = null;
+isSupported().then((yes) => {
+  if (yes) {
+    analytics = getAnalytics(app);
+  }
+});
 
 // Helper function to get ID token for API requests
 export const getIdToken = async (): Promise<string | null> => {

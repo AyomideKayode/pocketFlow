@@ -23,6 +23,7 @@ interface FinancialRecordContextType {
   records: FinancialRecord[];
   loading: boolean;
   addRecord: (record: FinancialRecord) => Promise<void>;
+  addBulkRecords: (records: FinancialRecord[]) => Promise<void>;
   updateRecord: (
     id: string,
     updatedRecord: Partial<FinancialRecord>,
@@ -123,6 +124,36 @@ export const FinancialRecordsProvider = ({
     }
   };
 
+  const addBulkRecords = async (newRecords: FinancialRecord[]) => {
+    if (!user) return;
+    try {
+      const response = await fetch(`${API_BASE_URL}/financial-records/bulk`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.uid,
+          records: newRecords,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to import records');
+      }
+
+      const savedRecords = await response.json();
+      setRecords((prevRecords) => [...prevRecords, ...savedRecords]);
+
+      await fetchBudgets();
+      addToast(`${savedRecords.length} records imported successfully!`, 'success');
+    } catch (error) {
+      console.error('Error importing records:', error);
+      addToast('Failed to import records. Please try again.', 'error');
+      throw error;
+    }
+  };
+
   const updateRecord = async (
     id: string,
     updatedRecord: Partial<FinancialRecord>,
@@ -173,7 +204,14 @@ export const FinancialRecordsProvider = ({
 
   return (
     <FinancialRecordContext.Provider
-      value={{ records, loading, addRecord, updateRecord, deleteRecord }}
+      value={{
+        records,
+        loading,
+        addRecord,
+        addBulkRecords,
+        updateRecord,
+        deleteRecord,
+      }}
     >
       {children}
     </FinancialRecordContext.Provider>

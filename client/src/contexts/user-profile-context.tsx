@@ -9,6 +9,7 @@ import React, {
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';
 import { getIdToken } from '../lib/firebase';
+import { useAnalytics } from '../hooks/useAnalytics';
 
 export interface UserProfile {
   userId: string;
@@ -16,13 +17,17 @@ export interface UserProfile {
   displayName?: string;
   photoURL?: string;
   theme?: string;
+  lastTrackedMonth?: string;
 }
 
 interface UserProfileContextType {
   profile: UserProfile | null;
   currency: string;
   loading: boolean;
-  updateProfile: (data: Partial<UserProfile>) => Promise<void>;
+  updateProfile: (
+    data: Partial<UserProfile>,
+    silent?: boolean,
+  ) => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
 
@@ -35,6 +40,7 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const { user } = useAuth();
   const { addToast } = useToast();
+  const { trackEvent } = useAnalytics();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -70,6 +76,24 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({
         if (response.ok) {
           const data = await response.json();
           setProfile(data);
+
+          // Check for budget reset (new month)
+          const currentMonth = new Date().toISOString().slice(0, 7);
+          if (data.lastTrackedMonth && data.lastTrackedMonth !== currentMonth) {
+            trackEvent('budget_reset', {
+              previous_month: data.lastTrackedMonth,
+              new_month: currentMonth,
+            });
+            // Update silently
+            updateProfile({ lastTrackedMonth: currentMonth }, true).catch(
+              (err) => console.error('Failed to update last tracked month', err),
+            );
+          } else if (!data.lastTrackedMonth) {
+            // Initialize if missing
+            updateProfile({ lastTrackedMonth: currentMonth }, true).catch(
+              (err) => console.error('Failed to init last tracked month', err),
+            );
+          }
         } else if (response.status === 404) {
           // Profile doesn't exist yet, treat as default
           setProfile({
@@ -97,7 +121,10 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchProfile();
   }, [fetchProfile]);
 
-  const updateProfile = async (data: Partial<UserProfile>) => {
+  const updateProfile = async (
+    data: Partial<UserProfile>,
+    silent: boolean = false,
+  ) => {
     if (!user) return;
 
     try {
@@ -120,10 +147,14 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({
 
       const updatedProfile = await response.json();
       setProfile(updatedProfile);
-      addToast('Profile updated successfully', 'success');
+      if (!silent) {
+        addToast('Profile updated successfully', 'success');
+      }
     } catch (error) {
       console.error('Error updating profile:', error);
-      addToast('Failed to update profile', 'error');
+      if (!silent) {
+        addToast('Failed to update profile', 'error');
+      }
       throw error;
     }
   };
