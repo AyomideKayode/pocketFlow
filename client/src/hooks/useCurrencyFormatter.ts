@@ -30,7 +30,10 @@ export const useCurrencyFormatter = () => {
           .find((p) => p.type === 'currency')?.value || '$'
       );
     } catch (e) {
-      return '$';
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Failed to derive currency symbol for', currency, e);
+      }
+        return '$';
     }
   }, [currency]);
 
