@@ -110,13 +110,26 @@ export const Dashboard = () => {
   if (!loading && records.length === 0) {
     return (
       <div className='flex min-h-[calc(100vh-4rem)] items-center justify-center'>
-        <EmptyState
-          variant='welcome'
-          icon='💰'
-          title={`Welcome to PocketFlow, ${user?.displayName || user?.email?.split('@')[0]}!`}
-          description='Start tracking your finances by adding your first financial record. You can log income, expenses, and monitor your spending patterns all in one place.'
-          actionText='Add Your First Record'
-          onAction={() => navigate('/transactions')}
+        <div className='space-y-4'>
+          <EmptyState
+            variant='welcome'
+            icon='💰'
+            title={`Welcome to PocketFlow, ${user?.displayName || user?.email?.split('@')[0]}!`}
+            description='Start tracking your finances by adding your first financial record. You can log income, expenses, and monitor your spending patterns all in one place.'
+            actionText='Add Your First Record'
+            onAction={() => navigate('/transactions')}
+          />
+          <button
+            onClick={() => setShowImportModal(true)}
+            className='flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white'
+          >
+            <Upload className='h-4 w-4' />
+            Import CSV
+          </button>
+        </div>
+        <CsvImportModal
+          isOpen={showImportModal}
+          onClose={() => setShowImportModal(false)}
         />
       </div>
     );

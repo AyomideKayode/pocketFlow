@@ -101,7 +101,11 @@ router.post('/bulk', async (req: Request, res: Response) => {
         const checksMap = new Map<string, Date>();
         inserted.forEach((r) => {
           if (r.type === 'expense') {
-            const period = r.date.toISOString().slice(0, 7);
+            // const period = r.date.toISOString().slice(0, 7);
+            // Use local month to avoid early/late budget reset
+            const year = r.date.getFullYear();
+            const month = String(r.date.getMonth() + 1).padStart(2, '0');
+            const period = `${year}-${month}`;
             const key = `${r.category}|${period}`;
             if (!checksMap.has(key)) {
               checksMap.set(key, r.date);
