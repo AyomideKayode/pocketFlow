@@ -8,6 +8,7 @@ import {
   Legend,
 } from 'recharts';
 import { ChartContainer } from './ChartContainer';
+import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 import { type FinancialRecord } from '../../contexts/financial-record-context';
 
 interface IncomeExpenseChartProps {
@@ -22,6 +23,7 @@ const COLORS = {
 export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({
   records,
 }) => {
+  const { format } = useCurrencyFormatter();
   const totalIncome = records
     .filter((record) => record.type === 'income')
     .reduce((acc, record) => acc + Math.abs(record.amount), 0);
@@ -61,7 +63,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({
               }}
               itemStyle={{ color: '#f1f5f9' }}
               formatter={(value: number | undefined) =>
-                value != null ? `$${value.toFixed(2)}` : ''
+                value != null ? format(value) : ''
               }
             />
             <Legend verticalAlign='bottom' height={36} iconType='circle' />

@@ -3,6 +3,7 @@ import { useAuth } from '../../contexts/auth-context';
 import { useNavigate } from 'react-router-dom';
 import { FinancialRecordList } from './financialRecordList';
 import { useFinancialRecords } from '../../contexts/financial-record-context';
+import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 import { EmptyState } from '../../components/EmptyState';
 import { DashboardSkeleton } from '../../components/skeletons/DashboardSkeleton';
 import { DateRangeFilter } from '../../components/DateRangeFilter';
@@ -45,6 +46,7 @@ const CategoryBreakdownChart = lazy(() =>
 export const Dashboard = () => {
   const { user } = useAuth();
   const { records, loading } = useFinancialRecords();
+  const { format } = useCurrencyFormatter();
   const [dateRange, setDateRange] = useState(getDefaultDateRange());
   const [isExporting, setIsExporting] = useState(false);
   const { addToast } = useToast();
@@ -170,7 +172,7 @@ export const Dashboard = () => {
             <div>
               <p className='text-sm font-medium text-slate-400'>Total Income</p>
               <p className='text-2xl font-bold text-emerald-500'>
-                ${totalIncome.toFixed(2)}
+                {format(totalIncome)}
               </p>
             </div>
           </div>
@@ -186,7 +188,7 @@ export const Dashboard = () => {
                 Total Expenses
               </p>
               <p className='text-2xl font-bold text-rose-500'>
-                ${totalExpenses.toFixed(2)}
+                {format(totalExpenses)}
               </p>
             </div>
           </div>
@@ -206,7 +208,7 @@ export const Dashboard = () => {
               <p
                 className={`text-2xl font-bold ${totalMonthlyBalance >= 0 ? 'text-indigo-500' : 'text-orange-500'}`}
               >
-                ${totalMonthlyBalance.toFixed(2)}
+                {format(totalMonthlyBalance)}
               </p>
             </div>
           </div>

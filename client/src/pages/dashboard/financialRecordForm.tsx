@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/auth-context';
 import { useFinancialRecords } from '../../contexts/financial-record-context';
-import { DollarSign, Tag, CreditCard, FileText } from 'lucide-react';
+import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
+import { Tag, CreditCard, FileText } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -84,6 +85,7 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
   const [type, setType] = useState<'income' | 'expense'>('expense');
   const { addRecord } = useFinancialRecords();
   const { user } = useAuth();
+  const { currencySymbol } = useCurrencyFormatter();
 
   // Reset category when type changes to avoid invalid categories for the type
   useEffect(() => {
@@ -155,7 +157,9 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
         <div className='space-y-2'>
           <label className='text-xs font-medium text-slate-400'>Amount</label>
           <div className='relative'>
-            <DollarSign className='absolute left-3 top-2.5 h-4 w-4 text-slate-500' />
+            <span className='absolute left-3 top-2 flex h-5 w-5 items-center justify-center text-sm font-bold text-slate-500'>
+              {currencySymbol}
+            </span>
             <input
               type='number'
               step='0.01'

@@ -10,6 +10,7 @@ import {
   CartesianGrid,
 } from 'recharts';
 import { ChartContainer } from './ChartContainer';
+import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 import type { FinancialRecord } from '../../contexts/financial-record-context';
 import {
   groupRecordsByMonth,
@@ -25,6 +26,7 @@ interface TrendLineChartProps {
 type Granularity = 'day' | 'week' | 'month';
 
 export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
+  const { format } = useCurrencyFormatter();
   const [granularity, setGranularity] = useState<Granularity>('month');
 
   const data = useMemo(() => {
@@ -103,7 +105,9 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
             fontSize={12}
             tickLine={false}
             axisLine={false}
-            tickFormatter={(value) => `$${value}`}
+            tickFormatter={(value) =>
+              format(value, { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+            }
           />
           <Tooltip
             contentStyle={{
@@ -114,6 +118,10 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
             }}
             itemStyle={{ color: '#f1f5f9' }}
             labelStyle={{ color: '#94a3b8', marginBottom: '0.5rem' }}
+            formatter={(value: number | undefined) => [
+              value != null ? format(value) : '',
+              undefined,
+            ]}
           />
           <Legend wrapperStyle={{ paddingTop: '20px' }} />
           <Area
