@@ -1,26 +1,9 @@
 import express from 'express';
-import type { Request, Response, NextFunction } from 'express';
+import type { Request, Response } from 'express';
 import UserProfileModel from '../schema/user-profile.js';
-import { verifyIdToken } from '../lib/firebaseAdmin.js';
+import { verifyAuth } from '../middleware/auth.js';
 
 const router = express.Router();
-
-// Middleware to verify auth
-const verifyAuth = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ message: 'Authorization token required' });
-    }
-    const idToken = authHeader.split(' ')[1] || '';
-    const decoded = await verifyIdToken(idToken);
-    (req as any).user = decoded;
-    next();
-  } catch (err) {
-    console.error('Auth error:', err);
-    res.status(401).json({ message: 'Invalid ID token' });
-  }
-};
 
 router.get('/:userId', verifyAuth, async (req: Request, res: Response) => {
   try {

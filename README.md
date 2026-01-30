@@ -156,11 +156,12 @@ PocketFlow is being built in distinct phases to ensure stability and code qualit
 - **Phase 4: Budgeting & Goals**: Set monthly limits, savings targets, and added smart notifications.
 - **Phase 5: Performance & Optimization**: Implemented lazy loading, database indexing, and robust budget logic.
 - **Phase 7: Advanced Features & Personalization**: Added User Profiles, Global Currency Support, and Multi-threshold Budget Notifications.
+- **Phase 8: Cloud Media**: Implemented Cloudinary integration for secure, direct-to-cloud profile image uploads.
 
 ### 🔮 Future Direction
 
-- **Phase 8: Cloud Media**: Cloudinary integration for robust avatar hosting and Email services.
 - **Phase 9: Data Import & Integrations**: CSV/Bank imports, Telemetry.
+- **Phase 10: Advanced Communication**: Email notifications via SendGrid/AWS SES.
 
 For a detailed history of the development process, challenges, and architectural decisions, see the [Development Blueprint](./POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
 
