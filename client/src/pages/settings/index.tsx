@@ -35,12 +35,14 @@ export const Settings = () => {
     // Validate size (5MB)
     if (file.size > 5 * 1024 * 1024) {
       alert('File size must be less than 5MB');
+      if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
     // Validate type
     if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
       alert('Only JPG, PNG, and WebP formats are allowed');
+      if (fileInputRef.current) fileInputRef.current.value = '';
       return;
     }
 
