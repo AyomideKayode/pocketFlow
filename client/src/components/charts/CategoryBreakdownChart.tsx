@@ -82,7 +82,10 @@ export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({
                 borderColor: '#1e293b',
                 color: '#f1f5f9',
               }}
-              formatter={(value: number) => [format(value), undefined]}
+              formatter={(value: number | undefined) => [
+                value != null ? format(value) : '',
+                undefined,
+              ]}
             />
             <Legend />
             <Bar

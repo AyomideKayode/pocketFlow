@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useGoals, type Goal } from '../../contexts/goal-context';
 import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
-import { Plus, Trash2, Edit2, Target, X, DollarSign, Calendar } from 'lucide-react';
+import { Plus, Trash2, Edit2, Target, X, Calendar } from 'lucide-react';
 
 // Reuse categories for linking
 const EXPENSE_CATEGORIES = [
