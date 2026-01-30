@@ -60,8 +60,8 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({ isOpen, onClose 
 
     // Validate Amount
     const amountNum = parseFloat(amountStr);
-    if (amountStr === undefined || isNaN(amountNum)) {
-      errors.push('Invalid Amount');
+    if (amountStr === undefined || isNaN(amountNum) || amountNum <= 0) {
+      errors.push('Amount must be positive');
     }
 
     // Validate Category
@@ -164,8 +164,19 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({ isOpen, onClose 
         {/* Content */}
         <div className="flex-1 overflow-auto p-6">
           {step === 'upload' && (
-            <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-slate-700 rounded-xl bg-slate-900/50 hover:bg-slate-800/50 transition-colors cursor-pointer"
-                 onClick={() => fileInputRef.current?.click()}>
+            <div
+              className="flex flex-col items-center justify-center h-64 border-2 border-dashed border-slate-700 rounded-xl bg-slate-900/50 hover:bg-slate-800/50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+              role="button"
+              tabIndex={0}
+              aria-label="Upload CSV file"
+              onClick={() => fileInputRef.current?.click()}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  fileInputRef.current?.click();
+                }
+              }}
+            >
               <input
                 type="file"
                 accept=".csv"

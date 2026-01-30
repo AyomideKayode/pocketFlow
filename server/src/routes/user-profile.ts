@@ -41,7 +41,7 @@ router.put('/:userId', verifyAuth, async (req: Request, res: Response) => {
     }
 
     // Only allow specific fields to be updated
-    const { displayName, currency, photoURL } = req.body;
+    const { displayName, currency, photoURL, lastTrackedMonth } = req.body;
 
     const updatedProfile = await UserProfileModel.findOneAndUpdate(
       { userId },
@@ -50,6 +50,7 @@ router.put('/:userId', verifyAuth, async (req: Request, res: Response) => {
         displayName,
         currency,
         photoURL,
+        lastTrackedMonth,
       },
       { new: true, upsert: true, setDefaultsOnInsert: true },
     );

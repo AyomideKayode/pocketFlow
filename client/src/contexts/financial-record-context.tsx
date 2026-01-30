@@ -125,7 +125,10 @@ export const FinancialRecordsProvider = ({
   };
 
   const addBulkRecords = async (newRecords: FinancialRecord[]) => {
-    if (!user) return;
+    if (!user) {
+      addToast('No authenticated user', 'error');
+      throw new Error('No authenticated user');
+    }
     try {
       const response = await fetch(`${API_BASE_URL}/financial-records/bulk`, {
         method: 'POST',

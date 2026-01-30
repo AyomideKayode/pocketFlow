@@ -76,38 +76,28 @@ router.post('/bulk', async (req: Request, res: Response) => {
     }
 
     // Prepare records
-    const validRecords = records.map((r: any) => ({
-      userId,
-      date: r.date ? new Date(r.date) : new Date(),
-      description: r.description,
-      amount: Math.abs(r.amount),
-      type: r.type,
-      category: r.category,
-      paymentMethod: r.paymentMethod,
-    }));
+    const validRecords = records.map((r: any) => {
+      if (!r.type || !['income', 'expense'].includes(r.type)) {
+        throw new Error('Invalid record type');
+      }
+      return {
+        userId,
+        date: r.date ? new Date(r.date) : new Date(),
+        description: r.description,
+        amount: Math.abs(r.amount),
+        type: r.type,
+        category: r.category,
+        paymentMethod: r.paymentMethod,
+      };
+    });
 
     // Insert
     const inserted = await FinancialRecordModel.insertMany(validRecords);
 
     // Budget checks (Async)
-    // We want to check unique categories affected
-    // Use a Set to store "category|YYYY-MM" strings to deduplicate checks
-    const checks = new Set<string>();
-    inserted.forEach((r) => {
-      if (r.type === 'expense') {
-        const period = r.date.toISOString().slice(0, 7);
-        // We append the full ISO string to pass a valid date object later,
-        // but we key by category+period to avoid redundant checks for same month
-        // Actually, checkAndNotifyBudgetExceeded takes a date, so we need a representative date.
-        // Let's store the key as "category|period" and value as the date.
-        checks.add(`${r.category}|${period}`);
-      }
-    });
-
     (async () => {
       try {
         // Group by category+period to minimize calls
-        // Since Set only stores strings, we iterate the inserted records again or use a Map
         const checksMap = new Map<string, Date>();
         inserted.forEach((r) => {
           if (r.type === 'expense') {
@@ -121,7 +111,9 @@ router.post('/bulk', async (req: Request, res: Response) => {
 
         for (const [key, date] of checksMap) {
           const [category] = key.split('|');
-          await checkAndNotifyBudgetExceeded(userId, category, date);
+          if (category) {
+            await checkAndNotifyBudgetExceeded(userId, category, date);
+          }
         }
       } catch (err) {
         console.error('Bulk budget check error', err);
