@@ -41,7 +41,9 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
   const { profile, updateProfile } = useUserProfile();
 
   // Track previous state to detect changes/completions
-  const goalStateRef = useRef<Map<string, { percent: number; currentAmount: number }>>(new Map());
+  const goalStateRef = useRef<
+    Map<string, { percent: number; currentAmount: number }>
+  >(new Map());
 
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
@@ -57,44 +59,51 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
           setGoals(data);
 
           // Check for progress updates and completions
-          data.forEach(goal => {
+          data.forEach((goal) => {
             if (!goal._id) return;
 
             // Calculate percent if not provided by backend (though it usually is or we can derive it)
             // Backend schema/service usually provides it. If not, calc locally.
             // Looking at types, percent is optional.
-            const percent = goal.percent ?? (goal.targetAmount > 0 ? (goal.currentAmount / goal.targetAmount) * 100 : 0);
+            const percent =
+              goal.percent ??
+              (goal.targetAmount > 0
+                ? (goal.currentAmount / goal.targetAmount) * 100
+                : 0);
 
             const previousState = goalStateRef.current.get(goal._id);
 
             if (previousState) {
-                // Check for completion transition
-                if (previousState.percent < 100 && percent >= 100) {
-                    trackEvent('goal_completed', {
-                        goal_id: goal._id,
-                        name: goal.name,
-                        target_amount: goal.targetAmount
-                    });
-                }
+              // Check for completion transition
+              if (previousState.percent < 100 && percent >= 100) {
+                trackEvent('goal_completed', {
+                  goal_id: goal._id,
+                  name: goal.name,
+                  target_amount: goal.targetAmount,
+                });
+              }
 
-                // Check for progress update
-                // "meaningful progress delta" - let's say any change in amount
-                if (previousState.currentAmount !== goal.currentAmount) {
-                     const delta = goal.currentAmount - previousState.currentAmount;
-                     // Only fire if significant? or just any change?
-                     // Let's fire on any amount change.
-                     trackEvent('goal_progress_updated', {
-                         goal_id: goal._id,
-                         name: goal.name,
-                         delta,
-                         new_amount: goal.currentAmount,
-                         new_percent: percent
-                     });
-                }
+              // Check for progress update
+              // "meaningful progress delta" - let's say any change in amount
+              if (previousState.currentAmount !== goal.currentAmount) {
+                const delta = goal.currentAmount - previousState.currentAmount;
+                // Only fire if significant? or just any change?
+                // Let's fire on any amount change.
+                trackEvent('goal_progress_updated', {
+                  goal_id: goal._id,
+                  name: goal.name,
+                  delta,
+                  new_amount: goal.currentAmount,
+                  new_percent: percent,
+                });
+              }
             }
 
             // Update ref
-            goalStateRef.current.set(goal._id, { percent, currentAmount: goal.currentAmount });
+            goalStateRef.current.set(goal._id, {
+              percent,
+              currentAmount: goal.currentAmount,
+            });
           });
         }
       } catch (error) {
@@ -125,8 +134,11 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
 
       // Analytics: First goal
       if (profile && !profile.hasCreatedFirstGoal) {
-          trackEvent('first_goal_created');
-          updateProfile({ hasCreatedFirstGoal: true }, true);
+        trackEvent('first_goal_created');
+        // add .catch() to avoid unhandled promise if updateProfile fails
+        void updateProfile({ hasCreatedFirstGoal: true }, true).catch((err) => {
+          console.error('Failed to persist first-goal flag', err);
+        });
       }
 
       fetchGoals(); // Re-fetch to get calculations if needed

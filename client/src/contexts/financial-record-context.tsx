@@ -126,7 +126,10 @@ export const FinancialRecordsProvider = ({
       // Analytics: Check for first transaction
       if (profile && !profile.hasCreatedFirstTransaction) {
         trackEvent('first_transaction_created');
-        updateProfile({ hasCreatedFirstTransaction: true }, true);
+        // add .catch() to avoid unhandled promise if updateProfile fails
+        void updateProfile({ hasCreatedFirstTransaction: true }, true).catch((err) => {
+          console.error('Failed to persist first-transaction flag', err);
+        });
       }
     } catch (error) {
       console.error('Error adding record:', error);
@@ -159,12 +162,18 @@ export const FinancialRecordsProvider = ({
       setRecords((prevRecords) => [...prevRecords, ...savedRecords]);
 
       await fetchBudgets();
-      addToast(`${savedRecords.length} records imported successfully!`, 'success');
+      addToast(
+        `${savedRecords.length} records imported successfully!`,
+        'success',
+      );
 
-       // Analytics: Check for first transaction
-       if (profile && !profile.hasCreatedFirstTransaction) {
+      // Analytics: Check for first transaction
+      if (profile && !profile.hasCreatedFirstTransaction) {
         trackEvent('first_transaction_created');
-        updateProfile({ hasCreatedFirstTransaction: true }, true);
+        // add .catch() to avoid unhandled promise if updateProfile fails
+        void updateProfile({ hasCreatedFirstTransaction: true }, true).catch((err) => {
+          console.error('Failed to persist first-transaction flag', err);
+        });
       }
     } catch (error) {
       console.error('Error importing records:', error);
