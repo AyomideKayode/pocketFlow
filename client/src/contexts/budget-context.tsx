@@ -84,14 +84,14 @@ export const BudgetsProvider = ({
 
               // Case 2: Going back under threshold (going down)
               else if (budget.percent! < threshold && isLogged) {
-                 trackEvent('budget_back_under_limit', {
-                    budget_id: budget._id,
-                    category: budget.category,
-                    threshold,
-                    amount_spent: budget.spent,
-                    budget_limit: budget.amount,
-                 });
-                 loggedThresholdsRef.current.delete(key);
+                trackEvent('budget_back_under_limit', {
+                  budget_id: budget._id,
+                  category: budget.category,
+                  threshold,
+                  amount_spent: budget.spent,
+                  budget_limit: budget.amount,
+                });
+                loggedThresholdsRef.current.delete(key);
               }
             };
 
@@ -132,11 +132,12 @@ export const BudgetsProvider = ({
       // Analytics: Check for first budget
       if (profile && !profile.hasCreatedFirstBudget) {
         trackEvent('first_budget_created');
-        void updateProfile({ hasCreatedFirstBudget: true }, true).catch((err) => {
-          console.error('Failed to persist first budget flag', err);
-        });
+        void updateProfile({ hasCreatedFirstBudget: true }, true).catch(
+          (err) => {
+            console.error('Failed to persist first budget flag', err);
+          },
+        );
       }
-
     } catch (err: unknown) {
       console.error('Error adding budget:', err);
       const error = err as { message?: string };

@@ -91,7 +91,8 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({
             });
             // Update silently
             updateProfile({ lastTrackedMonth: currentMonth }, true).catch(
-              (err) => console.error('Failed to update last tracked month', err),
+              (err) =>
+                console.error('Failed to update last tracked month', err),
             );
           } else if (!data.lastTrackedMonth) {
             // Initialize if missing

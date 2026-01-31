@@ -99,8 +99,8 @@ export const Dashboard = () => {
 
         // Track export completion
         trackEvent('csv_export_completed', {
-            record_count: jobData?.recordCount || 0,
-            format: 'csv'
+          record_count: jobData?.recordCount || 0,
+          format: 'csv',
         });
       }
     } catch (err: unknown) {
