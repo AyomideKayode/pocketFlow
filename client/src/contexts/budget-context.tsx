@@ -9,6 +9,7 @@ import React, {
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';
 import { useAnalytics } from '../hooks/useAnalytics';
+import { useUserProfile } from './user-profile-context';
 
 export interface Budget {
   _id?: string;
@@ -42,6 +43,7 @@ export const BudgetsProvider = ({
   const { user } = useAuth();
   const { addToast } = useToast();
   const { trackEvent } = useAnalytics();
+  const { profile, updateProfile } = useUserProfile();
   const loggedThresholdsRef = useRef(new Set<string>());
 
   const API_BASE_URL =
@@ -66,7 +68,10 @@ export const BudgetsProvider = ({
 
             const checkAndLog = (threshold: number) => {
               const key = `${budget._id}-${threshold}`;
-              if (budget.percent! >= threshold && !loggedThresholdsRef.current.has(key)) {
+              const isLogged = loggedThresholdsRef.current.has(key);
+
+              // Case 1: Crossing threshold (going up)
+              if (budget.percent! >= threshold && !isLogged) {
                 trackEvent('budget_threshold_crossed', {
                   budget_id: budget._id,
                   category: budget.category,
@@ -75,6 +80,18 @@ export const BudgetsProvider = ({
                   budget_limit: budget.amount,
                 });
                 loggedThresholdsRef.current.add(key);
+              }
+
+              // Case 2: Going back under threshold (going down)
+              else if (budget.percent! < threshold && isLogged) {
+                 trackEvent('budget_back_under_limit', {
+                    budget_id: budget._id,
+                    category: budget.category,
+                    threshold,
+                    amount_spent: budget.spent,
+                    budget_limit: budget.amount,
+                 });
+                 loggedThresholdsRef.current.delete(key);
               }
             };
 
@@ -109,9 +126,17 @@ export const BudgetsProvider = ({
         throw new Error('Failed to add budget');
       }
       // Re-fetch budget after creation to get accurate 'spent' value
-      // Since backend calculates 'spent', we re-fetch immediately or initially set spent to 0
       await fetchBudgets();
       addToast('Budget created successfully!', 'success');
+
+      // Analytics: Check for first budget
+      if (profile && !profile.hasCreatedFirstBudget) {
+        trackEvent('first_budget_created');
+        void updateProfile({ hasCreatedFirstBudget: true }, true).catch((err) => {
+          console.error('Failed to persist first budget flag', err);
+        });
+      }
+
     } catch (err: unknown) {
       console.error('Error adding budget:', err);
       const error = err as { message?: string };

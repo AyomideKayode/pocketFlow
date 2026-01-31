@@ -18,6 +18,10 @@ export interface UserProfile {
   photoURL?: string;
   theme?: string;
   lastTrackedMonth?: string;
+  // Adoption milestones
+  hasCreatedFirstTransaction?: boolean;
+  hasCreatedFirstBudget?: boolean;
+  hasCreatedFirstGoal?: boolean;
 }
 
 interface UserProfileContextType {

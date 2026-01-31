@@ -42,6 +42,7 @@ export const processExportJob = async (jobId: string) => {
     }
 
     job.data = csv;
+    job.recordCount = records.length; // Save record count
     job.status = 'completed';
     job.completedAt = new Date();
     await job.save();

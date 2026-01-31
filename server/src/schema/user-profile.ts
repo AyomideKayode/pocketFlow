@@ -6,6 +6,10 @@ interface UserProfile {
   currency: string;
   photoURL?: string;
   lastTrackedMonth?: string;
+  // Adoption milestones
+  hasCreatedFirstTransaction: boolean;
+  hasCreatedFirstBudget: boolean;
+  hasCreatedFirstGoal: boolean;
 }
 
 const userProfileSchema = new mongoose.Schema<UserProfile>(
@@ -15,6 +19,9 @@ const userProfileSchema = new mongoose.Schema<UserProfile>(
     currency: { type: String, required: true, default: 'USD' },
     photoURL: { type: String },
     lastTrackedMonth: { type: String }, // Format: YYYY-MM
+    hasCreatedFirstTransaction: { type: Boolean, default: false },
+    hasCreatedFirstBudget: { type: Boolean, default: false },
+    hasCreatedFirstGoal: { type: Boolean, default: false },
   },
   {
     timestamps: true,

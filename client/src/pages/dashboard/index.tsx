@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { FinancialRecordList } from './financialRecordList';
 import { useFinancialRecords } from '../../contexts/financial-record-context';
 import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
+import { useAnalytics } from '../../hooks/useAnalytics';
 import { EmptyState } from '../../components/EmptyState';
 import { DashboardSkeleton } from '../../components/skeletons/DashboardSkeleton';
 import { DateRangeFilter } from '../../components/DateRangeFilter';
@@ -49,6 +50,7 @@ export const Dashboard = () => {
   const { user } = useAuth();
   const { records, loading } = useFinancialRecords();
   const { format } = useCurrencyFormatter();
+  const { trackEvent } = useAnalytics();
   const [dateRange, setDateRange] = useState(getDefaultDateRange());
   const [isExporting, setIsExporting] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
@@ -81,9 +83,12 @@ export const Dashboard = () => {
 
       // Poll
       let status = 'pending';
+      let jobData: any = null;
+
       while (status === 'pending' || status === 'processing') {
         await new Promise((r) => setTimeout(r, 2000)); // wait 2s
         const job = await checkExportStatus(jobId);
+        jobData = job;
         status = job.status;
         if (status === 'failed') throw new Error(job.error || 'Export failed');
       }
@@ -91,6 +96,12 @@ export const Dashboard = () => {
       if (status === 'completed') {
         addToast('Export completed! Downloading...', 'success');
         await downloadExport(jobId);
+
+        // Track export completion
+        trackEvent('csv_export_completed', {
+            record_count: jobData?.recordCount || 0,
+            format: 'csv'
+        });
       }
     } catch (err: unknown) {
       console.error(err);

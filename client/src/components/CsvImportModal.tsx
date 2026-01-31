@@ -141,7 +141,11 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({ isOpen, onClose 
     setStep('importing');
     try {
       await addBulkRecords(validRecords as FinancialRecord[]);
-      trackEvent('csv_import_completed', { record_count: validRecords.length });
+
+      const count = validRecords.length;
+      trackEvent('csv_import_completed', { record_count: count });
+      trackEvent('transactions_bulk_created', { count });
+
       handleClose();
     } catch (error) {
       console.error(error);
