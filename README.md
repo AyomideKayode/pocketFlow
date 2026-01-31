@@ -22,7 +22,7 @@
   - **User Profile**: Custom display name and avatar management.
 - **Data Management**:
   - Add, edit, and delete financial records.
-  - **CSV Export**: Download your financial data for external analysis (Client & Server-side support).
+  - **CSV Import/Export**: Robust bulk import from CSV with validation and error handling; export your data for external analysis.
 - **Responsive Design**: A sleek, dark-themed UI that works on desktop and mobile.
 
 ---
@@ -157,10 +157,11 @@ PocketFlow is being built in distinct phases to ensure stability and code qualit
 - **Phase 5: Performance & Optimization**: Implemented lazy loading, database indexing, and robust budget logic.
 - **Phase 7: Advanced Features & Personalization**: Added User Profiles, Global Currency Support, and Multi-threshold Budget Notifications.
 - **Phase 8: Cloud Media**: Implemented Cloudinary integration for secure, direct-to-cloud profile image uploads.
+- **Phase 9A: Foundations (Data Integrity)**: Robust CSV Import with smart parsing (auto-detect delimiters) and data hardening.
 
 ### 🔮 Future Direction
 
-- **Phase 9: Data Import & Integrations**: CSV/Bank imports, Telemetry.
+- **Phase 9B: Insights**: Advanced telemetry and behavioral analytics.
 - **Phase 10: Advanced Communication**: Email notifications via SendGrid/AWS SES.
 
 For a detailed history of the development process, challenges, and architectural decisions, see the [Development Blueprint](./POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
