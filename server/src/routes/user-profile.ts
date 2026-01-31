@@ -55,10 +55,11 @@ router.put('/:userId', verifyAuth, async (req: Request, res: Response) => {
       { userId },
       {
         userId, // Ensure userId is set on create
-        displayName,
-        currency,
-        photoURL,
-        lastTrackedMonth,
+        ...(displayName !== undefined && { displayName }),
+        ...(currency !== undefined && { currency }),
+        ...(photoURL !== undefined && { photoURL }),
+        ...(lastTrackedMonth !== undefined && { lastTrackedMonth }),
+        // avoid data overwrite with undefined for optional fields (above)
         ...(hasCreatedFirstTransaction !== undefined && {
           hasCreatedFirstTransaction,
         }),
