@@ -109,16 +109,34 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
     };
   };
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    trackEvent('csv_import_started');
-
+  const parseFile = (file: File, retryWithComma = false) => {
     Papa.parse(file, {
       header: true,
       skipEmptyLines: true,
+      delimiter: retryWithComma ? ',' : undefined,
       complete: (results) => {
+        // Check for suspicious parsing results on the first attempt (auto-detect)
+        // Suspicious if:
+        // 1. We found only 1 field (header likely failed to split)
+        // 2. We have 'TooManyFields' error (header split differently than data)
+        const isSuspicious =
+          (results.meta.fields && results.meta.fields.length <= 1) ||
+          results.errors.some((e) => e.code === 'TooManyFields');
+
+        if (!retryWithComma && isSuspicious) {
+          if (import.meta.env.DEV) {
+            console.log(
+              'CSV Import: Auto-detection failed, retrying with comma delimiter.',
+            );
+          }
+          parseFile(file, true);
+          return;
+        }
+
+        if (import.meta.env.DEV && results.data.length > 0) {
+          console.log('CSV Import: First parsed row:', results.data[0]);
+        }
+
         if (results.errors.length > 0) {
           trackEvent('csv_import_failed', {
             reason: 'parse_error',
@@ -147,6 +165,14 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
         });
       },
     });
+  };
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    trackEvent('csv_import_started');
+    parseFile(file, false);
   };
 
   const handleImport = async () => {

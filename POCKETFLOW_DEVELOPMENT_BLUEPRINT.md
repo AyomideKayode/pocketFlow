@@ -407,63 +407,39 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ---
 
+### **Phase 9A: Foundations (Data Integrity & Observability)** ✅ COMPLETED
+
+- **Features:**
+  - **CSV Transaction Import:**
+    - Robust CSV parsing with intelligent delimiter detection (auto-detect with retry fallback).
+    - Client-side validation for required fields (`date`, `amount`, `category`).
+    - Smart handling of negative amounts (converted to expenses) and zero-value rejection.
+    - Interactive preview modal with validation statistics (Valid vs. Skipped).
+  - **Data Export Hardening:**
+    - Secure exports sans `userId` to minimize data exposure.
+  - **Observability:**
+    - Integrated behavioral telemetry for import flows (started, validated, failed, completed).
+
+- **Implementation Details:**
+  - **Parsing Logic:**
+    - Utilizes `PapaParse` with a two-pass strategy: Auto-detection first, followed by explicit comma fallback if parsing fails or yields single-column results.
+    - Ensures compatibility with various CSV exports (e.g., from banks or Excel) that may vary in formatting.
+  - **Validation Rules:**
+    - **Date:** Validates format and existence.
+    - **Amount:** Rejects 0; converts negative values to positive amount + 'expense' type.
+    - **Structure:** Enforces header presence and correct column mapping.
+  - **Dev-Experience:**
+    - Added `import.meta.env.DEV` guarded logs to debug parsing anomalies without polluting production consoles.
+
+- **Key Learnings:**
+  - **CSV Complexity:** "Standard" CSVs are rarely standard. Auto-detection is powerful but fallible; explicit fallbacks are necessary for reliability.
+  - **User Intent:** Users often export "debits" as negative numbers; the system must adapt to this mental model by normalizing to the internal schema (positive amount + type).
+
+---
+
 ## Planned Phases & Next Steps
 
-### **Phase 9A: Foundations (Data Integrity & Observability)**
-
-- **Primary Focus:**
-  Establish reliable data ingress and foundational observability to validate system correctness, user behavior, and budget/goal lifecycle assumptions.
-
-- **1.CSV Transaction Import**
-  - **Scope**
-    - Import transactions via CSV only (no bank integrations at this stage)
-    - Transactions must map cleanly to the existing financial record schema
-  - **Key Requirements**
-    - CSV schema definition and documentation
-    - Pre-import validation (type checks, required fields, date formats, numeric bounds)
-    - Import preview UI (row-level visibility before persistence)
-    - Partial-failure handling (invalid rows do not poison entire import)
-  - **Out of Scope**
-    - Bank APIs or direct financial institution integrations
-
-- **2.Data Export Hardening**
-  - **Adjustments**
-    - Remove `userId` from all exported CSV/XLSX files
-    - Ensure exports contain only user-meaningful financial fields
-  - **Rationale**
-    - Ownership is enforced server-side
-    - `userId` provides no user value and introduces unnecessary exposure
-
-- **3.Core Analytics & Telemetry (Behavioral)**
-  - **Tooling**
-    - Firebase Analytics (primary behavioral telemetry)
-    - Vercel Analytics remains for performance and infra-level signals
-  - **Tracked Events (Initial Set)**
-    - CSV import started / completed / failed
-    - Transaction create / edit / delete
-    - Budget threshold crossed (100% only at this stage)
-    - Goal progress updated
-
-- **4.Budget Lifecycle Telemetry**
-  - **Instrumentation Goals**
-    - Detect monthly budget resets
-    - Capture budget state before and after reset
-    - Track whether users exceeded budgets prior to reset
-  - **Purpose**
-    - Validate budget reset correctness
-    - Surface real-world edge cases before notification automation
-
-- **5.Goal Progress Telemetry**
-  - **Instrumentation Goals**
-    - Track incremental goal progress
-    - Capture goal completion events
-    - Identify stalled or abandoned goals
-  - **Purpose**
-    - Build confidence in goal logic correctness
-    - Inform future goal UX improvements
-
 ### **Phase 9B: Insights (Derived Intelligence)**
-
 - **Primary Focus:**
   Convert raw telemetry into interpretable product and financial insights.
 
@@ -694,6 +670,6 @@ interface FinancialRecord {
 - _Last updated: January 24, 2026 | Current Phase: Phase 4 (Budgeting & Goals) | Next Phase: 5 Performance, Optimization & Hardening_
 - _Last updated: January 26, 2026 | Current Phase: Phase 5 Performance, Optimization & Hardening | Next Phase: 7 Advanced Features (Roadmap)_
 - _Last updated: January 29, 2026 | Current Phase: Phase 7 Advanced Features & Product Maturity (Roadmap) | Next Phase: 8 Cloud Media & Advanced Communication_
-- _Last updated: January 30, 2026 | Current Phase: Phase 8 Cloud Media | Next Phase: 9 Data Import_
+- _Last updated: January 30, 2026 | Current Phase: Phase 9A Foundations (Completed) | Next Phase: 9B Insights (Derived Intelligence)_
 
 ---
