@@ -56,25 +56,72 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
     onClose();
   };
 
+  // helper functions to
+  // 1. normalize row keys
+  // 2. parse & validate fields
+  const normalizeRow = (row: Record<string, any>) => {
+    const normalized: Record<string, any> = {};
+
+    Object.entries(row).forEach(([key, value]) => {
+      const cleanKey = key
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '_');
+
+      normalized[cleanKey] = value;
+    });
+
+    return normalized;
+  };
+
+  const parseAmount = (raw?: string) => {
+    if (!raw) return NaN;
+
+    const cleaned = raw
+      .toString()
+      .replace(/[₦,$]/g, '')
+      .replace(/,/g, '')
+      .trim();
+
+    return Number(cleaned);
+  };
+
+  const parseDate = (raw?: string) => {
+    if (!raw) return null;
+
+    // ISO / JS-friendly formats
+    const d = new Date(raw);
+    if (!isNaN(d.getTime())) return d;
+
+    // DD/MM/YYYY fallback
+    const match = raw.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+    if (match) {
+      const [, dd, mm, yyyy] = match;
+      return new Date(`${yyyy}-${mm}-${dd}`);
+    }
+
+    return null;
+  };
+
   const validateRow = (row: any): ValidatedRow => {
     const errors: string[] = [];
-    const dateStr = row.date || row.Date;
-    const amountStr = row.amount ?? row.Amount ?? row.AMOUNT;
-    const category = row.category || row.Category;
-    const description = row.description || row.Description || '';
+    const dateStr = row.date;
+    const amountStr = row.amount;
+    const category = row.category;
+    const description = row.description || '';
 
     // Validate Date
-    const date = new Date(dateStr);
-    if (!dateStr || isNaN(date.getTime())) {
+    const date = parseDate(dateStr);
+    if (!date) {
       errors.push('Invalid Date');
     }
 
-    // Validate Amount
-    const amountNum = parseFloat(amountStr);
-    if (amountStr === undefined || isNaN(amountNum) || amountNum === 0) {
-      errors.push('Amount must be a non-zero number');
-    }
 
+    // Validate Amount
+    const amountNum = parseAmount(amountStr);
+    if (Number.isNaN(amountNum)) {
+      errors.push('Invalid Amount');
+    }
 
     // Validate Category
     if (!category || typeof category !== 'string' || category.trim() === '') {
@@ -137,16 +184,28 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
           console.log('CSV Import: First parsed row:', results.data[0]);
         }
 
-        if (results.errors.length > 0) {
-          trackEvent('csv_import_failed', {
-            reason: 'parse_error',
-            details: results.errors[0].message,
-          });
-        }
+        // if (results.errors.length > 0) {
+        //   trackEvent('csv_import_failed', {
+        //     reason: 'parse_error',
+        //     details: results.errors[0].message,
+        //   });
+        // }
 
-        const validatedRows = results.data.map((row: any) => validateRow(row));
+        const validatedRows = results.data.map((row: any) =>
+          validateRow(normalizeRow(row))
+        );
         const validCount = validatedRows.filter((r) => r.isValid).length;
         const invalidCount = validatedRows.length - validCount;
+
+        const parseErrorCount = results.errors.length;
+
+        if (parseErrorCount > 0 && validCount === 0) {
+          trackEvent('csv_import_failed', {
+            reason: 'parse_error',
+            details: results.errors[0]?.message ?? 'Unknown parse error',
+          });
+          return;
+        }
 
         setRows(validatedRows);
         setStats({ valid: validCount, invalid: invalidCount });
@@ -156,6 +215,7 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
           total_rows: validatedRows.length,
           valid_rows: validCount,
           invalid_rows: invalidCount,
+          parse_error_count: parseErrorCount,
         });
       },
       error: (error) => {
