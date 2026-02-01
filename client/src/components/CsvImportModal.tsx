@@ -134,7 +134,7 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
     if (isValid) {
       const isIncome = amountNum >= 0;
       payload = {
-        date: date,
+        date: date ?? undefined,
         amount: Math.abs(amountNum),
         type: isIncome ? 'income' : 'expense',
         category: category.trim(),
