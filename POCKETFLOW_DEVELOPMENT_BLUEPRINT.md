@@ -433,6 +433,7 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 - **Key Learnings:**
   - **CSV Complexity:** "Standard" CSVs are rarely standard. Auto-detection is powerful but fallible; explicit fallbacks are necessary for reliability.
+  - **File Extension:** Never trust the file extension, `test_data.csv` is just a name. The content is the truth.
   - **User Intent:** Users often export "debits" as negative numbers; the system must adapt to this mental model by normalizing to the internal schema (positive amount + type).
 
 ---
@@ -440,6 +441,7 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 ## Planned Phases & Next Steps
 
 ### **Phase 9B: Insights (Derived Intelligence)**
+
 - **Primary Focus:**
   Convert raw telemetry into interpretable product and financial insights.
 

@@ -63,10 +63,7 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
     const normalized: Record<string, any> = {};
 
     Object.entries(row).forEach(([key, value]) => {
-      const cleanKey = key
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, '_');
+      const cleanKey = key.toLowerCase().trim().replace(/\s+/g, '_');
 
       normalized[cleanKey] = value;
     });
@@ -115,7 +112,6 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
     if (!date) {
       errors.push('Invalid Date');
     }
-
 
     // Validate Amount
     const amountNum = parseAmount(amountStr);
@@ -184,15 +180,8 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
           console.log('CSV Import: First parsed row:', results.data[0]);
         }
 
-        // if (results.errors.length > 0) {
-        //   trackEvent('csv_import_failed', {
-        //     reason: 'parse_error',
-        //     details: results.errors[0].message,
-        //   });
-        // }
-
         const validatedRows = results.data.map((row: any) =>
-          validateRow(normalizeRow(row))
+          validateRow(normalizeRow(row)),
         );
         const validCount = validatedRows.filter((r) => r.isValid).length;
         const invalidCount = validatedRows.length - validCount;
