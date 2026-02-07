@@ -55,7 +55,7 @@ describe('Analytics Routes', () => {
           totalRows: 10,
           validCount: 10,
           invalidCount: 0,
-          importErrors: [],
+          errors: [],
         });
 
       expect(res.status).toBe(201);
