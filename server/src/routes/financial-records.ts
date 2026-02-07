@@ -116,7 +116,9 @@ router.post('/bulk', async (req: Request, res: Response) => {
         for (const [key, date] of checksMap) {
           const [category] = key.split('|');
           if (category) {
-            await checkAndNotifyBudgetExceeded(userId, category, date);
+            await checkAndNotifyBudgetExceeded(userId, category, date, {
+              suppressEmail: true,
+            });
           }
         }
       } catch (err) {

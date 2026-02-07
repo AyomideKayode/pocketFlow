@@ -6,6 +6,7 @@ import budgetRouter from './routes/budget.js';
 import goalRouter from './routes/goal.js';
 import userProfileRouter from './routes/user-profile.js';
 import cloudinaryRouter from './routes/cloudinary.js';
+import analyticsRouter from './routes/analytics.js';
 import cors from 'cors';
 
 const app: Express = express();
@@ -32,5 +33,6 @@ app.use('/budgets', budgetRouter);
 app.use('/goals', goalRouter);
 app.use('/user-profile', userProfileRouter);
 app.use('/cloudinary', cloudinaryRouter);
+app.use('/analytics', analyticsRouter);
 
 export default app;

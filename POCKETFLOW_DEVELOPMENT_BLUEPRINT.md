@@ -672,6 +672,37 @@ interface FinancialRecord {
 - _Last updated: January 24, 2026 | Current Phase: Phase 4 (Budgeting & Goals) | Next Phase: 5 Performance, Optimization & Hardening_
 - _Last updated: January 26, 2026 | Current Phase: Phase 5 Performance, Optimization & Hardening | Next Phase: 7 Advanced Features (Roadmap)_
 - _Last updated: January 29, 2026 | Current Phase: Phase 7 Advanced Features & Product Maturity (Roadmap) | Next Phase: 8 Cloud Media & Advanced Communication_
-- _Last updated: January 30, 2026 | Current Phase: Phase 9A Foundations (Completed) | Next Phase: 9B Insights (Derived Intelligence)_
+- _Last updated: January 30, 2026 | Current Phase: Phase 9B Insights (Derived Intelligence) | Next Phase: 10A Email Infrastructure_
+
+---
+
+### **Phase 9B: Insights & Derived Intelligence** ✅ COMPLETED
+
+- **Features:**
+  - **Analytics Backend:**
+    - `ImportJob` schema to track CSV import telemetry (success rate, invalid row counts, error types).
+    - `AnalyticsService` with aggregation pipelines for:
+      - Monthly Budget Cycle Analysis (Spend vs Budget, Utilization, Variance).
+      - Historical Over-Budget Detection (identifying past limit violations).
+  - **Client-Side Telemetry:**
+    - `CsvImportModal` now reports import attempts and validation stats to the backend.
+  - **Budget Alert Refinement:**
+    - Suppressed "noisy" email/console alerts for historical data and bulk imports.
+    - Preserved "true" budget status in the database (updating `notified` flag) without spamming the user.
+
+- **Implementation Details:**
+  - **Schema:**
+    - `ImportJob` stores `importErrors` (renamed from `errors` to avoid Mongoose conflict).
+  - **Routes:**
+    - `POST /analytics/import-events`
+    - `GET /analytics/budget-analysis/:userId`
+    - `GET /analytics/historical-over-budget` (Admin/Debug)
+  - **Service Logic:**
+    - `getBudgetCycleAnalysis` uses `$lookup` to join Financial Records and Budgets by period/category.
+    - `checkAndNotifyBudgetExceeded` accepts `options: { suppressEmail: boolean }`.
+
+- **Key Learnings:**
+  - **Historical Truth vs. Noise:** separating the *state* of being over budget (truth) from the *act* of notifying (noise) is crucial for bulk operations.
+  - **Mongoose Reserved Keys:** `errors` is a reserved path in Mongoose; explicit naming (`importErrors`) prevents conflicts.
 
 ---

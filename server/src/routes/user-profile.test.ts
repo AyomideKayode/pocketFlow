@@ -37,6 +37,11 @@ vi.mock('../schema/user-profile.js', () => {
 });
 
 // 4. Import app (after mocks)
+// Mock Cloudinary route to avoid env check failures
+vi.mock('../routes/cloudinary.js', () => ({
+  default: (req: any, res: any, next: any) => next(),
+}));
+
 import app from '../app.js';
 
 describe('UserProfile Routes', () => {
