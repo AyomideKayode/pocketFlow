@@ -75,6 +75,7 @@ export const checkAndNotifyBudgetExceeded = async (
   userId: string,
   category: string,
   date: Date | string,
+  options: { suppressEmail?: boolean } = {},
 ) => {
   const dateObj = typeof date === 'string' ? new Date(date) : date;
   // Ensure valid date
@@ -84,6 +85,13 @@ export const checkAndNotifyBudgetExceeded = async (
   }
 
   const period = dateObj.toISOString().slice(0, 7); // YYYY-MM
+  const currentPeriod = new Date().toISOString().slice(0, 7);
+
+  // Determine if we should send notifications (only for current/future periods)
+  // And respect manual suppression
+  const isHistorical = period < currentPeriod;
+  const shouldNotify = !options.suppressEmail && !isHistorical;
+
   const budgets = await getBudgetsWithProgress(userId, period);
   const budget = budgets.find((b) => b.category === category);
 
@@ -98,8 +106,17 @@ export const checkAndNotifyBudgetExceeded = async (
       await BudgetModel.findByIdAndUpdate(budget._id, {
         notified: true,
       });
-      // Mock Email Notification || Future: email / push / webhook
-      console.log(`[BUDGET] [EMAIL SERVICE] Sending alert to user... (Simulated)`);
+
+      if (shouldNotify) {
+        // Mock Email Notification || Future: email / push / webhook
+        console.log(
+          `[BUDGET] [EMAIL SERVICE] Sending alert to user... (Simulated)`,
+        );
+      } else {
+        console.log(
+          `[BUDGET] [EMAIL SERVICE] Alert suppressed (Historical/Bulk/Suppressed).`,
+        );
+      }
     }
   } else {
     // RESET LOGIC: If spending is back under limit (e.g. after deleting a record), reset notified flag

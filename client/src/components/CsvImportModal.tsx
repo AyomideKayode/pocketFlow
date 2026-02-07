@@ -7,6 +7,7 @@ import {
   useFinancialRecords,
   type FinancialRecord,
 } from '../contexts/financial-record-context';
+import { useAuth } from '../contexts/auth-context';
 
 interface CsvImportModalProps {
   isOpen: boolean;
@@ -39,6 +40,61 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { trackEvent } = useAnalytics();
   const { addBulkRecords } = useFinancialRecords();
+  const { user } = useAuth();
+
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+
+  const trackImportJob = async (
+    status: 'success' | 'failed',
+    rowsToProcess: ValidatedRow[],
+    errorDetails?: any,
+  ) => {
+    if (!user) return;
+
+    const validCount = rowsToProcess.filter((r) => r.isValid).length;
+    const invalidCount = rowsToProcess.length - validCount;
+
+    // Aggregate errors
+    const errorMap = new Map<string, number>();
+    rowsToProcess.forEach((row) => {
+      if (!row.isValid) {
+        row.errors.forEach((err) => {
+          errorMap.set(err, (errorMap.get(err) || 0) + 1);
+        });
+      }
+    });
+
+    const errors = Array.from(errorMap.entries()).map(([code, count]) => ({
+      code,
+      count,
+      sample:
+        rowsToProcess.find((r) => r.errors.includes(code))?.original
+          .description || 'N/A',
+    }));
+
+    try {
+      const token = await user.getIdToken();
+      await fetch(`${API_BASE_URL}/analytics/import-events`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          userId: user.uid,
+          status,
+          totalRows: rowsToProcess.length,
+          validCount,
+          invalidCount,
+          errors,
+          metadata: errorDetails,
+        }),
+      });
+    } catch (err) {
+      console.error('Failed to report import job', err);
+    }
+  };
 
   if (!isOpen) return null;
 
@@ -189,11 +245,22 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
         const parseErrorCount = results.errors.length;
 
         if (parseErrorCount > 0 && validCount === 0) {
+          const errorMsg =
+            results.errors[0]?.message ?? 'Unknown parse error';
           trackEvent('csv_import_failed', {
             reason: 'parse_error',
-            details: results.errors[0]?.message ?? 'Unknown parse error',
+            details: errorMsg,
+          });
+          trackImportJob('failed', [], {
+            reason: 'parse_error',
+            details: errorMsg,
           });
           return;
+        }
+
+        // Special case: validCount is 0 but we parsed something (garbage file)
+        if (validCount === 0 && validatedRows.length > 0) {
+            trackImportJob('failed', validatedRows, { reason: 'all_rows_invalid' });
         }
 
         setRows(validatedRows);
@@ -235,11 +302,13 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
       const count = validRecords.length;
       trackEvent('csv_import_completed', { record_count: count });
       trackEvent('transactions_bulk_created', { count });
+      trackImportJob('success', rows);
 
       handleClose();
     } catch (error) {
       console.error(error);
       trackEvent('csv_import_failed', { reason: 'api_error' });
+      trackImportJob('failed', rows, { reason: 'api_error' });
       setStep('preview'); // Go back to preview on failure
     }
   };

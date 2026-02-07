@@ -45,6 +45,11 @@ vi.mock('mongoose', async () => {
 });
 
 // Import app AFTER mocks are defined (though hoisting handles `vi.mock`, local vars need `vi.hoisted`)
+// Mock Cloudinary route to avoid env check failures
+vi.mock('./routes/cloudinary.js', () => ({
+  default: (req: any, res: any, next: any) => next(),
+}));
+
 import app from './app.js';
 
 describe('Server App Integration Tests', () => {

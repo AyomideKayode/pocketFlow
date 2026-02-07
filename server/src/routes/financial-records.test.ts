@@ -11,9 +11,15 @@ const { mockSave, mockFind, mockFindByIdAndUpdate, mockFindByIdAndDelete, mockIn
   };
 });
 
+const { mockCheckAndNotifyBudgetExceeded } = vi.hoisted(() => {
+  return {
+    mockCheckAndNotifyBudgetExceeded: vi.fn().mockResolvedValue(undefined),
+  };
+});
+
 vi.mock('../services/budget.service.js', () => {
   return {
-    checkAndNotifyBudgetExceeded: vi.fn().mockResolvedValue(undefined),
+    checkAndNotifyBudgetExceeded: mockCheckAndNotifyBudgetExceeded,
   };
 });
 
@@ -71,6 +77,15 @@ describe('Financial Records Routes', () => {
            expect.objectContaining({ userId, category: 'Salary' }),
            expect.objectContaining({ userId, category: 'Food' })
        ]));
+
+       // Verify budget check called with suppression
+       // Note: the implementation groups by category/period, so it might be called once for 'Food'
+       expect(mockCheckAndNotifyBudgetExceeded).toHaveBeenCalledWith(
+           userId,
+           'Food',
+           expect.any(Date),
+           { suppressEmail: true }
+       );
     });
 
      it('should reject invalid input', async () => {
