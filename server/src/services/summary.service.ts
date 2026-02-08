@@ -9,7 +9,7 @@ export const processWeeklySummaries = async () => {
   // Calculate previous week's Monday and Sunday
   // If today is Monday (1), previous Sunday is today - 1 day.
   // If today is Sunday (0), previous Sunday is today - 7 days.
-  // actually, "Complete Week" means Monday -> Sunday.
+  // "Complete Week" = Monday -> Sunday.
 
   // Logic: Go to the most recent completed Sunday.
   const dayOfWeek = now.getDay(); // 0 (Sun) - 6 (Sat)
@@ -26,7 +26,9 @@ export const processWeeklySummaries = async () => {
   const weekIdentifier = lastSunday.toISOString().split('T')[0]; // YYYY-MM-DD
   const weekRangeLabel = `${lastMonday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${lastSunday.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
 
-  console.log(`[SUMMARY] Processing weekly summaries for week ending ${weekIdentifier} (${weekRangeLabel})`);
+  console.log(
+    `[SUMMARY] Processing weekly summaries for week ending ${weekIdentifier} (${weekRangeLabel})`,
+  );
 
   // Find users who need a summary
   const users = await UserProfileModel.find({
@@ -48,7 +50,9 @@ export const processWeeklySummaries = async () => {
       const displayName = userRecord.displayName || 'User';
 
       if (!email) {
-        console.warn(`[SUMMARY] No email found for user ${user.userId}, skipping.`);
+        console.warn(
+          `[SUMMARY] No email found for user ${user.userId}, skipping.`,
+        );
         continue;
       }
 
@@ -106,6 +110,9 @@ export const processWeeklySummaries = async () => {
           }
         : { name: 'None', amount: 0 };
 
+      // Determine if there's a valid top category (service-level business logic)
+      const hasTopCategory = topCategory.amount > 0;
+
       // Prepare Payload
       const currency = user.currency || 'USD';
       const payload = {
@@ -117,6 +124,7 @@ export const processWeeklySummaries = async () => {
           name: topCategory.name,
           amount: formatCurrency(topCategory.amount, currency),
         },
+        hasTopCategory,
       };
 
       // Send Email
@@ -146,9 +154,8 @@ export const processWeeklySummaries = async () => {
           }),
         );
       } else {
-         console.warn(`[SUMMARY] Failed to send email to ${user.userId}`);
+        console.warn(`[SUMMARY] Failed to send email to ${user.userId}`);
       }
-
     } catch (error) {
       console.error(`[SUMMARY] Error processing user ${user.userId}:`, error);
     }

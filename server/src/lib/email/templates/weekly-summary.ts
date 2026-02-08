@@ -9,10 +9,11 @@ interface WeeklySummaryPayload {
     name: string;
     amount: string; // Formatted currency
   };
+  hasTopCategory: boolean; // Determined by service logic
 }
 
 export const renderWeeklySummary = (payload: WeeklySummaryPayload) => {
-  const { weekRange, income, expenses, net, topCategory } = payload;
+  const { weekRange, income, expenses, net, topCategory, hasTopCategory } = payload;
   const subject = `📊 Weekly Summary: ${weekRange}`;
 
   const content = `
@@ -37,7 +38,7 @@ export const renderWeeklySummary = (payload: WeeklySummaryPayload) => {
     </div>
 
     ${
-      topCategory.amount !== '$0.00' // Simple check, ideally handled by logic before passing
+      hasTopCategory
         ? `
       <div style="margin-bottom: 30px; border-top: 1px solid #e5e7eb; padding-top: 20px;">
         <p style="margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: #374151;">
