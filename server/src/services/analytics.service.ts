@@ -69,7 +69,8 @@ export const getBudgetCycleAnalysis = async (userId: string) => {
         period: '$_id.period',
         category: '$_id.category',
         spent: '$totalSpent',
-        budget: { $ifNull: ['$budgetDoc.amount', 0] },
+        hasBudget: { $cond: [{ $ifNull: ['$budgetDoc', false] }, true, false] },
+        budget: '$budgetDoc.amount',
       },
     },
     {
@@ -82,7 +83,14 @@ export const getBudgetCycleAnalysis = async (userId: string) => {
             0,
           ],
         },
-        isOverBudget: { $gt: ['$spent', '$budget'] },
+        isOverBudget: {
+          $cond: [
+            { $gt: ['$budget', 0] },
+            { $gt: ['$spent', '$budget'] },
+            false,
+          ],
+        },
+
       },
     },
     {
