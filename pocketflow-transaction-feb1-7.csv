@@ -1,0 +1,22 @@
+date,description,amount,category,paymentMethod
+2/1/2026,Morning Coffee,-1500,Coffee & Snacks,Cash
+2/1/2026,Shoprite Groceries,-24000,Groceries,Credit Card
+2/1/2026,Electricity Bill Payment,-16000,Utilities,Bank Transfer
+2/2/2026,Lunch Meeting,-5800,Dining Out,Credit Card
+2/2/2026,Uber Ride to Client,-4500,Ride Hailing,Card
+2/2/2026,Office Supplies,-3200,Office,Credit Card
+2/3/2026,Netflix & Spotify Renewal,-8500,Subscriptions,Credit Card
+2/3/2026,Gym Membership,-12000,Fitness,Bank Transfer
+2/3/2026,Movie Tickets,-8000,Entertainment,Credit Card
+2/4/2026,Freelance Web Project,150000,Freelance / Contract,Bank Transfer
+2/4/2026,Weekly Groceries at Costco,-28500,Groceries,Credit Card
+2/4/2026,Gas Station Fill Up,-18000,Transport,Credit Card
+2/5/2026,Coffee Stop,-1800,Coffee & Snacks,Cash
+2/5/2026,Dinner at Restaurant,-12500,Dining Out,Credit Card
+2/5/2026,Book Purchase - Business,-8900,Books & Courses,Credit Card
+2/6/2026,Hair Salon,-15000,Personal Care,Cash
+2/6/2026,Online Shopping,-22000,Shopping,Credit Card
+2/6/2026,Pharmacy,-4200,Health & Wellness,Card
+2/7/2026,Weekend Groceries,-19500,Groceries,Credit Card
+2/7/2026,Brunch with Friends,-9800,Dining Out,Credit Card
+2/7/2026,Internet Bill,-18000,Subscriptions,Bank Transfer

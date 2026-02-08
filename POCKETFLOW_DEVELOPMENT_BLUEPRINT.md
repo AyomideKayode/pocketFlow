@@ -469,30 +469,6 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ## Planned Phases & Next Steps
 
-### **Phase 9B: Insights (Derived Intelligence)**
-
-- **Primary Focus:**
-  Convert raw telemetry into interpretable product and financial insights.
-
-- **1.Monthly Budget Cycle Analysis**
-  - **Outputs**
-    - Per-user budget utilization summaries
-    - Distribution of spend vs budget over time
-
-- **2.Over-Budget Detection (Pre-Reset)**
-  - **Analysis Goals**
-    - Identify users who exceeded budgets before reset
-    - Quantify severity and frequency of overages
-
-- **3.Import Reliability Metrics**
-  - **Metrics**
-    - CSV import success rate
-    - Validation failure frequency
-    - Common schema or formatting errors
-  - **Purpose**
-    - Improve import UX
-    - Reduce onboarding friction
-
 ### **Phase 10A: Email Infrastructure**
 
 - **Primary Focus:**
