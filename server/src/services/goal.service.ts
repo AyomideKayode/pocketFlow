@@ -14,6 +14,7 @@ const calculateGoalProgress = async (userId: string, goal: any) => {
         $match: {
           userId,
           category: goal.linkedCategory,
+          type: 'income',
         },
       },
       {
