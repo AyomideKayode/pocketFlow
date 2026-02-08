@@ -1,6 +1,10 @@
-export function renderBaseLayout(content: string, title: string = 'Notification'): string {
+export function renderBaseLayout(
+  content: string,
+  title: string = 'Notification',
+): string {
   const primaryColor = process.env.EMAIL_PRIMARY_COLOR || '#3b82f6';
-  const logoUrl = process.env.EMAIL_LOGO_URL || 'https://placehold.co/200x50?text=PocketFlow';
+  const logoUrl =
+    process.env.EMAIL_LOGO_URL || 'https://placehold.co/200x50?text=PocketFlow';
 
   return `
 <!DOCTYPE html>

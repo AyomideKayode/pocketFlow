@@ -15,8 +15,8 @@ async function run() {
 
     const recipient = {
       userId: 'test-user-' + Date.now(),
-      email: 'test@example.com',
-      displayName: 'Test User'
+      email: 'ayomidekay7@gmail.com',
+      displayName: 'Ayo Mi De'
     };
 
     console.log('Sending test email to:', recipient.email);

@@ -7,13 +7,17 @@ export class ConsoleEmailProvider implements EmailProvider {
     console.log('--- EMAIL SIMULATION START ---');
     console.log(`Timestamp: ${timestamp.toISOString()}`);
     console.log(`To: ${message.to}`);
-    console.log(`From: ${message.from || 'default'}`);
+    console.log(
+      `From: ${
+        message.from || process.env.EMAIL_FROM_ADDRESS || 'system-default'
+      }`,
+    );
     console.log(`Subject: ${message.subject}`);
     console.log('--- HTML CONTENT ---');
     console.log(message.html);
     if (message.text) {
-        console.log('--- TEXT CONTENT ---');
-        console.log(message.text);
+      console.log('--- TEXT CONTENT ---');
+      console.log(message.text);
     }
     console.log('--- EMAIL SIMULATION END ---');
 

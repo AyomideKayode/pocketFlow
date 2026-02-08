@@ -470,7 +470,7 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 ### **Phase 10A: Email Infrastructure** ✅ COMPLETED
 
 - **Features:**
-  - **Provider-Agnostic Infrastructure:** Built a robust email service abstraction supporting `Resend` (production) and `Console` (development) providers.
+  - **Provider-Agnostic Infrastructure:** Built a robust email service abstraction supporting `Resend` (production) and `Console` (development & CI) providers.
   - **Template System:** Created a flexible template engine with a reusable base layout, branding support, and plain-text fallbacks.
   - **User Preferences:**
     - Embedded `emailPreferences` in `UserProfile` schema.
@@ -487,6 +487,24 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
     - `GET /user/preferences`
     - `PUT /user/preferences`
   - **Security:** API endpoints protected by `verifyAuth` middleware.
+
+- **Verification Status:**
+  - ✅ Provider API accepts and delivers mail to authorized test address.
+  - ⛔ Sending to arbitrary recipients blocked by vendor until domain verification.
+
+- **Operational Limitation (Discovered in testing):**
+  - Modern email providers restrict outbound mail to prevent abuse.
+  - To unlock global delivery we must:
+    - Purchase a domain
+    - Configure SPF/DKIM
+    - Verify ownership in provider dashboard
+  - No application code changes will be required when this occurs.
+
+- **Architecture Readiness:**
+  - When domain verification happens, the system will immediately support:
+    - full user delivery
+    - higher throughput
+    - additional providers
 
 - **Key Learnings:**
   - **Abstraction:** Defining clear interfaces early allows seamless switching between local logging and real email sending.
@@ -527,6 +545,63 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 - Research-only phase
 - Regulatory, security, and compliance assessment
 - No production commitment - yet.
+
+## **Post-10B Scaling Path**
+
+The following capabilities are planned for implementation after Phase 10B validation, organized by priority and architectural dependencies:
+
+### **Phase 12: Foundation Infrastructure**
+
+- **Queues & Delivery Decoupling**
+  - Separate notification generation from delivery cycles.
+  - Protect core APIs from email service latency spikes.
+  - Retry strategy for transient failures with dead-letter queue visibility.
+
+- **Basic Rate Limiting**
+  - Prevent provider throttling.
+  - Protect sender reputation through controlled sending.
+
+### **Phase 13: Enhanced User Experience**
+
+- **User Preference Management**
+  - Frontend controls for notification preferences.
+  - Real-time preference updates.
+  - Self-service management interface.
+
+- **Telemetry Expansion**
+  - Enhanced delivery tracking (attempts, failures, suppressions).
+  - Foundation for future engagement metrics (opens/clicks).
+
+### **Phase 14: Advanced Notification Systems**
+
+- **Batching & Digest Systems**
+  - Combine related events into single messages.
+  - Reduce notification noise through intelligent grouping.
+  - Improve user engagement through consolidated updates.
+
+- **Expanded Trigger Sources**
+  - System alerts and additional achievement events.
+  - More granular budget thresholds (pending Phase 10B learnings).
+
+## **Implementation Notes:**
+
+- Each future phase will incorporate learnings from Phase 10B's telemetry validation.
+
+- Core principles of high-confidence, low-noise notifications will guide all implementations.
+
+- Delivery reach will scale alongside domain and reputation maturity.
+
+- User-facing features (UI, preferences) will follow backend infrastructure readiness.
+
+- All telemetry will follow the same rigorous validation standards established in Phase 10B.
+
+## **Key Integration Points:**
+
+- Phase 10B's telemetry will inform retry strategies and rate limiting thresholds.
+
+- Current notification types will serve as the foundation for expanded trigger sources.
+
+- The "explicitly deferred" items will be reevaluated against infrastructure readiness in Phase 12.
 
 ---
 
@@ -680,6 +755,6 @@ interface FinancialRecord {
 - _Last updated: January 29, 2026 | Current Phase: Phase 7 Advanced Features & Product Maturity (Roadmap) | Next Phase: 8 Cloud Media & Advanced Communication_
   _Last updated: January 30, 2026 | Current Phase: Phase 9A Foundations (Data Integrity & Observability) | Next Phase: 9B Insights (Derived Intelligence)_
 - _Last updated: February 7, 2026 | Current Phase: Phase 9B Insights (Derived Intelligence) | Next Phase: 10A Email Infrastructure_
-- _Last updated: February 9, 2026 | Current Phase: Phase 10A Email Infrastructure | Next Phase: 10B Safe Notifications_
+- _Last updated: February 8, 2026 | Current Phase: Phase 10A Email Infrastructure | Next Phase: 10B Safe Notifications_
 
 ---

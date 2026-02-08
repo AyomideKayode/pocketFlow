@@ -27,11 +27,11 @@ export class ResendEmailProvider implements EmailProvider {
       if (error) {
         console.error('Resend API returned error:', error);
         return {
-            id: `failed-${timestamp.getTime()}`,
-            success: false,
-            provider: 'resend',
-            timestamp,
-            error: error
+          id: `failed-${timestamp.getTime()}`,
+          success: false,
+          provider: 'resend',
+          timestamp,
+          error: error
         }
       }
 

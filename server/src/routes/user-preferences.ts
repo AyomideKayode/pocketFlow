@@ -27,17 +27,17 @@ router.get('/preferences', verifyAuth, async (req, res) => {
     };
 
     if (!profile) {
-        return res.status(200).json(defaults);
+      return res.status(200).json(defaults);
     }
 
     // Safely merge
     const prefs = {
-        global: profile.emailPreferences?.global ?? defaults.global,
-        categories: {
-            alerts: profile.emailPreferences?.categories?.alerts ?? defaults.categories.alerts,
-            summaries: profile.emailPreferences?.categories?.summaries ?? defaults.categories.summaries,
-            achievements: profile.emailPreferences?.categories?.achievements ?? defaults.categories.achievements,
-        }
+      global: profile.emailPreferences?.global ?? defaults.global,
+      categories: {
+        alerts: profile.emailPreferences?.categories?.alerts ?? defaults.categories.alerts,
+        summaries: profile.emailPreferences?.categories?.summaries ?? defaults.categories.summaries,
+        achievements: profile.emailPreferences?.categories?.achievements ?? defaults.categories.achievements,
+      }
     };
 
     return res.status(200).json(prefs);
@@ -60,23 +60,23 @@ router.put('/preferences', verifyAuth, async (req, res) => {
     // Construct update query
     const update: any = {};
     if (global !== undefined) {
-        update['emailPreferences.global'] = global;
+      update['emailPreferences.global'] = global;
     }
 
     if (categories) {
-        if (categories.alerts !== undefined) update['emailPreferences.categories.alerts'] = categories.alerts;
-        if (categories.summaries !== undefined) update['emailPreferences.categories.summaries'] = categories.summaries;
-        if (categories.achievements !== undefined) update['emailPreferences.categories.achievements'] = categories.achievements;
+      if (categories.alerts !== undefined) update['emailPreferences.categories.alerts'] = categories.alerts;
+      if (categories.summaries !== undefined) update['emailPreferences.categories.summaries'] = categories.summaries;
+      if (categories.achievements !== undefined) update['emailPreferences.categories.achievements'] = categories.achievements;
     }
 
     if (Object.keys(update).length === 0) {
-        return res.status(400).json({ message: 'No valid fields provided' });
+      return res.status(400).json({ message: 'No valid fields provided' });
     }
 
     const profile = await UserProfileModel.findOneAndUpdate(
-        { userId },
-        { $set: update },
-        { new: true, upsert: true }
+      { userId },
+      { $set: update },
+      { new: true, upsert: true },
     );
 
     return res.status(200).json(profile.emailPreferences);
