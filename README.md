@@ -158,11 +158,13 @@ PocketFlow is being built in distinct phases to ensure stability and code qualit
 - **Phase 7: Advanced Features & Personalization**: Added User Profiles, Global Currency Support, and Multi-threshold Budget Notifications.
 - **Phase 8: Cloud Media**: Implemented Cloudinary integration for secure, direct-to-cloud profile image uploads.
 - **Phase 9A: Foundations (Data Integrity)**: Robust CSV Import with smart parsing (auto-detect delimiters) and data hardening.
+- **Phase 9B: Insights (Derived Intelligence)**: Backend analytics pipelines for budget cycle analysis and historical over-budget detection.
+- **Phase 10A: Email Infrastructure**: Provider-agnostic email service, template system, and user preference management.
+- **Phase 10B: Safe Notifications**: High-confidence budget alerts (100%), goal achievements, and weekly summaries with strict idempotency and historical suppression.
 
 ### 🔮 Future Direction
 
-- **Phase 9B: Insights**: Advanced telemetry and behavioral analytics.
-- **Phase 10: Advanced Communication**: Email notifications via SendGrid/AWS SES.
+- **Phase 11: Expansion**: Recurring bills, educational insights, and advanced financial capabilities.
 
 For a detailed history of the development process, challenges, and architectural decisions, see the [Development Blueprint](./POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
 

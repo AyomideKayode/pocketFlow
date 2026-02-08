@@ -1,5 +1,9 @@
 import BudgetModel from '../schema/budget.js';
 import FinancialRecordModel from '../schema/financial-records.js';
+import UserProfileModel from '../schema/user-profile.js';
+import { emailService } from './email.service.js';
+import { formatCurrency } from '../utils/currency.js';
+import admin from '../lib/firebaseAdmin.js';
 
 export const getBudgetsWithProgress = async (
   userId: string,
@@ -99,30 +103,69 @@ export const checkAndNotifyBudgetExceeded = async (
 
   if (budget.spent > budget.amount) {
     if (!budget.notified) {
-      console.log(
-        `[BUDGET] ALERT: Budget Exceeded for User ${userId}: ${category} (${budget.spent.toFixed(2)}/${budget.amount.toFixed(2)})`,
-      );
-
+      // 1. Mark as notified immediately (Idempotency)
       await BudgetModel.findByIdAndUpdate(budget._id, {
         notified: true,
       });
 
+      console.log(
+        JSON.stringify({
+          event: 'budget_exceeded',
+          userId,
+          category,
+          spent: budget.spent,
+          limit: budget.amount,
+          period,
+          historical: isHistorical,
+          suppressed: !shouldNotify,
+        }),
+      );
+
+      // 2. Send Email if applicable
       if (shouldNotify) {
-        // Mock Email Notification || Future: email / push / webhook
-        console.log(
-          `[BUDGET] [EMAIL SERVICE] Sending alert to user... (Simulated)`,
-        );
-      } else {
-        console.log(
-          `[BUDGET] [EMAIL SERVICE] Alert suppressed (Historical/Bulk/Suppressed).`,
-        );
+        try {
+          // Fetch user details from Firebase Admin
+          const userRecord = await admin.auth().getUser(userId);
+          const email = userRecord.email;
+          const displayName = userRecord.displayName || 'User';
+
+          if (email) {
+            // Fetch profile for currency preference
+            const userProfile = await UserProfileModel.findOne({ userId });
+            const currency = userProfile?.currency || 'USD';
+
+            const payload = {
+              category,
+              spent: formatCurrency(budget.spent, currency),
+              limit: formatCurrency(budget.amount, currency),
+              period,
+            };
+
+            await emailService.sendTransactionEmail(
+              { userId, email, displayName },
+              'budget-alert',
+              payload,
+              'alerts',
+            );
+          } else {
+            console.warn(`[BUDGET] No email found for user ${userId}`);
+          }
+        } catch (error) {
+          console.error(`[BUDGET] Error sending notification:`, error);
+        }
       }
     }
   } else {
-    // RESET LOGIC: If spending is back under limit (e.g. after deleting a record), reset notified flag
+    // RESET LOGIC: If spending is back under limit
     if (budget.notified) {
       console.log(
-        `[BUDGET] INFO: Spending back within limits for User ${userId}: ${category} (${budget.spent.toFixed(2)}/${budget.amount.toFixed(2)})`,
+        JSON.stringify({
+          event: 'budget_reset',
+          userId,
+          category,
+          spent: budget.spent,
+          limit: budget.amount,
+        }),
       );
 
       await BudgetModel.findByIdAndUpdate(budget._id, {
