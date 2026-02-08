@@ -1,0 +1,11 @@
+date,description,amount,category,paymentMethod 
+1/28/2026,January Salary,250000,Salary,Bank Transfer 
+1/25/2026,Groceries at Shoprite,-18500,Groceries,Credit Card 
+1/26/2026,Uber Ride,-3200,Ride Hailing,Credit Card 
+1/25/2026,Netflix Subscription,-4400,Entertainment,Credit Card 
+1/29/2026,Electricity Bill,-15000,Utilities,Bank Transfer 
+1/27/2026,Freelance UI Design,85000,Freelance / Contract,Bank Transfer 
+1/28/2026,Lunch at Office,-4200,Dining Out,Cash
+1/29/2026,Internet Subscription,-18000,Subscriptions,Bank Transfer
+1/30/2026,Book Purchase,-6500,Books & Courses,Credit Card
+1/11/2025,Coffee with Friend,-2200,Coffee & Snacks,Cash

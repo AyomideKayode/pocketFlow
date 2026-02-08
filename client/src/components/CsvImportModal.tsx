@@ -245,8 +245,7 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
         const parseErrorCount = results.errors.length;
 
         if (parseErrorCount > 0 && validCount === 0) {
-          const errorMsg =
-            results.errors[0]?.message ?? 'Unknown parse error';
+          const errorMsg = results.errors[0]?.message ?? 'Unknown parse error';
           trackEvent('csv_import_failed', {
             reason: 'parse_error',
             details: errorMsg,
@@ -260,7 +259,9 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
 
         // Special case: validCount is 0 but we parsed something (garbage file)
         if (validCount === 0 && validatedRows.length > 0) {
-            trackImportJob('failed', validatedRows, { reason: 'all_rows_invalid' });
+          trackImportJob('failed', validatedRows, {
+            reason: 'all_rows_invalid',
+          });
         }
 
         setRows(validatedRows);
