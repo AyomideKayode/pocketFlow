@@ -74,13 +74,17 @@ router.get('/budget-analysis/:userId', async (req: Request, res: Response) => {
 });
 
 // Admin/Debug endpoint for historical over-budget detection
-// In a real app, this would be restricted to admin roles
 router.get('/historical-over-budget', async (req: Request, res: Response) => {
   try {
-    // For now, allow any authenticated user to see this (for demo/dev purposes as per instructions)
-    // Or maybe restrict to a specific user ID if needed.
-    // Given the prompt "Produce per-user summaries... Identify which users exceeded limits",
-    // this endpoint serves that "Identify" purpose globally.
+    const ADMIN_UID = process.env.ADMIN_UID;
+
+    if (!ADMIN_UID) {
+      return res.status(500).json({ message: 'Admin UID not configured' });
+    }
+
+    if ((req as any).user?.uid !== ADMIN_UID) {
+      return res.status(403).json({ message: 'Admin access required' });
+    }
 
     const results = await getHistoricalOverBudgetUsers();
     res.status(200).json(results);
