@@ -544,20 +544,59 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ## Planned Phases & Next Steps
 
-### **Phase 11: Expansion**
+### **Phase 11A: Data Capability Expansion**
 
 - **Primary Focus:**
-  Expand financial capability and educational value once data integrity and communication channels are proven.
+  Ensure imported data preserves user intent and becomes easier to work with as volume grows.
 
-- **1.Bills**
-  - Recurring bill tracking
-  - Due date awareness
-  - Budget impact visibility
+- **Scope**
+  - **1. CSV Payment Method Preservation**
+    - Detect if column exists.
+    - Map raw value → supported enum.
+    - Only fallback if missing or invalid.
+    - Log mapping decisions.
+      No guessing beyond normalization.
 
-- **2.Learn / Insights Page**
-  - Actionable financial tips
-  - Contextual advice based on user behavior
-  - Non-prescriptive, educational focus
+  - **2. Normalization Layer**
+    Introduce deterministic mapping rules.
+    - This prevents:
+      - analytics chaos later
+      - UI inconsistencies
+      - future migrations
+
+  - **3. Transactions Retrieval Upgrade**
+    Users now have history.
+    We support finding, not just listing.
+    - **Filters**
+      - category
+      - type
+      - date range
+      - payment method
+    - **Sorting**
+      - date asc/desc
+      - amount asc/desc
+
+  - **4. API Responsibility**
+    Filtering must occur server-side.
+    We are designing for future scale, not today's count.
+
+  - **5. Dashboard Rule**
+    Untouched.
+    Last 5. Always.
+
+### **Phase 11B: Bills**
+
+Expand financial capability and educational value once data integrity and communication channels are proven.
+
+- Recurring bill tracking
+- Due date awareness
+- Budget impact visibility / interaction
+
+### **Phase 11C: Learn & Insights Page**
+
+- Actionable financial tips
+- Contextual advice based on user behavior
+- Non-prescriptive, educational focus
 
 ### **Phase Zeta: Bank Import (Exploratory)**
 
