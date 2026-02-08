@@ -5,6 +5,7 @@ import reportsRouter from './routes/reports.js';
 import budgetRouter from './routes/budget.js';
 import goalRouter from './routes/goal.js';
 import userProfileRouter from './routes/user-profile.js';
+import userPreferencesRouter from './routes/user-preferences.js';
 import cloudinaryRouter from './routes/cloudinary.js';
 import analyticsRouter from './routes/analytics.js';
 import cors from 'cors';
@@ -32,6 +33,7 @@ app.use('/reports', reportsRouter);
 app.use('/budgets', budgetRouter);
 app.use('/goals', goalRouter);
 app.use('/user-profile', userProfileRouter);
+app.use('/user', userPreferencesRouter);
 app.use('/cloudinary', cloudinaryRouter);
 app.use('/analytics', analyticsRouter);
 

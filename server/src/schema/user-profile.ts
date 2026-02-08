@@ -1,5 +1,14 @@
 import mongoose from 'mongoose';
 
+export interface EmailPreferences {
+  global: boolean;
+  categories: {
+    alerts: boolean;
+    summaries: boolean;
+    achievements: boolean;
+  };
+}
+
 interface UserProfile {
   userId: string;
   displayName?: string;
@@ -10,6 +19,8 @@ interface UserProfile {
   hasCreatedFirstTransaction: boolean;
   hasCreatedFirstBudget: boolean;
   hasCreatedFirstGoal: boolean;
+  // Email Preferences
+  emailPreferences: EmailPreferences;
 }
 
 const userProfileSchema = new mongoose.Schema<UserProfile>(
@@ -22,6 +33,14 @@ const userProfileSchema = new mongoose.Schema<UserProfile>(
     hasCreatedFirstTransaction: { type: Boolean, default: false },
     hasCreatedFirstBudget: { type: Boolean, default: false },
     hasCreatedFirstGoal: { type: Boolean, default: false },
+    emailPreferences: {
+      global: { type: Boolean, default: true },
+      categories: {
+        alerts: { type: Boolean, default: true },
+        summaries: { type: Boolean, default: true },
+        achievements: { type: Boolean, default: true },
+      },
+    },
   },
   {
     timestamps: true,

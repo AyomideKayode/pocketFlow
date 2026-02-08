@@ -467,31 +467,32 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
   - **Historical Truth vs. Noise:** separating the _state_ of being over budget (truth) from the _act_ of notifying (noise) is crucial for bulk operations.
   - **Mongoose Reserved Keys:** `errors` is a reserved path in Mongoose; explicit naming (`importErrors`) prevents conflicts.
 
+### **Phase 10A: Email Infrastructure** ✅ COMPLETED
+
+- **Features:**
+  - **Provider-Agnostic Infrastructure:** Built a robust email service abstraction supporting `Resend` (production) and `Console` (development) providers.
+  - **Template System:** Created a flexible template engine with a reusable base layout, branding support, and plain-text fallbacks.
+  - **User Preferences:**
+    - Embedded `emailPreferences` in `UserProfile` schema.
+    - Implemented `GET` / `PUT` endpoints for granular control (Global, Alerts, Summaries, Achievements).
+  - **Reliability:**
+    - Graceful failure handling (no crashes).
+    - Structured logging for all attempts and results.
+    - Preference checking enforced before dispatch.
+
+- **Implementation Details:**
+  - **Service Layer:** `EmailService` manages provider selection and preference logic.
+  - **Interfaces:** `EmailProvider` interface ensures future swap-ability (e.g., to SES/SendGrid).
+  - **API:**
+    - `GET /user/preferences`
+    - `PUT /user/preferences`
+  - **Security:** API endpoints protected by `verifyAuth` middleware.
+
+- **Key Learnings:**
+  - **Abstraction:** Defining clear interfaces early allows seamless switching between local logging and real email sending.
+  - **Preferences:** Storing preferences directly on the user profile simplifies lookup logic during the critical send path.
+
 ## Planned Phases & Next Steps
-
-### **Phase 10A: Email Infrastructure**
-
-- **Primary Focus:**
-  Introduce production-grade outbound communication without coupling it prematurely to business logic.
-
-- **1.Email Service Integration**
-  - **Options**
-    - SendGrid or AWS SES
-  - **Requirements**
-    - Environment-based configuration
-    - Retry and failure handling
-    - Email sending abstraction layer
-
-- **2.Email Template System**
-  - **Scope**
-    - Transactional templates only
-    - Reusable layout and branding
-    - Plain-text fallbacks
-
-- **3.Email Preferences**
-  - **User Controls**
-    - Global email on/off
-    - Category-based preferences (alerts, summaries, achievements)
 
 ### **Phase 10B: Safe Notifications**
 
@@ -679,5 +680,6 @@ interface FinancialRecord {
 - _Last updated: January 29, 2026 | Current Phase: Phase 7 Advanced Features & Product Maturity (Roadmap) | Next Phase: 8 Cloud Media & Advanced Communication_
   _Last updated: January 30, 2026 | Current Phase: Phase 9A Foundations (Data Integrity & Observability) | Next Phase: 9B Insights (Derived Intelligence)_
 - _Last updated: February 7, 2026 | Current Phase: Phase 9B Insights (Derived Intelligence) | Next Phase: 10A Email Infrastructure_
+- _Last updated: February 9, 2026 | Current Phase: Phase 10A Email Infrastructure | Next Phase: 10B Safe Notifications_
 
 ---
