@@ -101,7 +101,7 @@ export const checkAndNotifyBudgetExceeded = async (
 
   if (!budget) return;
 
-  if (budget.spent > budget.amount) {
+  if (budget.spent >= budget.amount) {
     if (!budget.notified) {
       // 1. Mark as notified immediately (Idempotency)
       await BudgetModel.findByIdAndUpdate(budget._id, {
