@@ -7,6 +7,7 @@ export interface Goal {
   currentAmount: number;
   deadline?: Date;
   linkedCategory?: string;
+  achievedNotified?: boolean;
 }
 
 const goalSchema = new mongoose.Schema<Goal>(
@@ -17,6 +18,7 @@ const goalSchema = new mongoose.Schema<Goal>(
     currentAmount: { type: Number, default: 0 },
     deadline: { type: Date },
     linkedCategory: { type: String },
+    achievedNotified: { type: Boolean, default: false },
   },
   {
     timestamps: true,

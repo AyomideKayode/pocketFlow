@@ -512,18 +512,33 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ## Planned Phases & Next Steps
 
-### **Phase 10B: Safe Notifications**
+### **Phase 10B: Safe Notifications** ✅ COMPLETED
 
-- **Primary Focus**
-  Deliver high-confidence, low-noise email notifications backed by validated telemetry.
+- **Features:**
+  - **Deterministic Triggers:** Implemented high-confidence notification logic for:
+    - **Budget Alerts:** Triggered strictly at >100% of budget. Resets only when spending drops below limit.
+    - **Goal Achievements:** Triggered when current amount >= target. Resets if target increases or savings decrease.
+    - **Weekly Summaries:** Triggered via cron endpoint (`POST /cron/weekly-summary`) for the previous complete week (Mon-Sun).
+  - **Safety Mechanisms:**
+    - **Idempotency:** State flags (`notified`, `achievedNotified`, `lastWeeklySummaryWeekEnd`) prevent duplicate sends.
+    - **Historical Suppression:** Notifications are suppressed for historical data imports and bulk operations to prevent "storms".
+    - **User Preferences:** Enforced global and category-level email preferences before dispatch.
+  - **Observability:**
+    - Structured JSON logs for every decision (alert, skip, suppress, reset).
 
-- **Enabled Notifications (Initial)**
-  - Budget threshold crossed (100% only)
-  - Weekly financial summary
-  - Goal achievement confirmation
-- **Explicitly Deferred**
-  - 80% budget warnings
-  - Monthly summaries (pending confidence review)
+- **Implementation Details:**
+  - **Schema Updates:**
+    - `Goal` schema: Added `achievedNotified` boolean.
+    - `UserProfile` schema: Added `lastWeeklySummaryWeekEnd` string (YYYY-MM-DD).
+  - **Services:**
+    - `BudgetService`: Refined `checkAndNotifyBudgetExceeded` with strict reset/suppress logic.
+    - `GoalService`: Added `checkAndNotifyGoalAchieved`.
+    - `SummaryService`: Created `processWeeklySummaries` for batch processing.
+  - **Templates:** Created responsive email templates (`budget-alert`, `goal-achieved`, `weekly-summary`) extending the base layout.
+
+- **Key Learnings:**
+  - **Idempotency is Logic, Not Just Code:** Storing the *reason* a notification was sent (e.g., specific week ending date) is more robust than just a timestamp.
+  - **Reset Logic:** Handling the "un-achievement" case is as important as the achievement case to keep state consistent with reality.
 
 ### **Phase 11: Expansion**
 
@@ -756,5 +771,6 @@ interface FinancialRecord {
   _Last updated: January 30, 2026 | Current Phase: Phase 9A Foundations (Data Integrity & Observability) | Next Phase: 9B Insights (Derived Intelligence)_
 - _Last updated: February 7, 2026 | Current Phase: Phase 9B Insights (Derived Intelligence) | Next Phase: 10A Email Infrastructure_
 - _Last updated: February 8, 2026 | Current Phase: Phase 10A Email Infrastructure | Next Phase: 10B Safe Notifications_
+- _Last updated: February 17, 2026 | Current Phase: Phase 10B Safe Notifications | Next Phase: 11 Expansion_
 
 ---

@@ -1,9 +1,24 @@
 import express from 'express';
 import type { Request, Response } from 'express';
 import FinancialRecordModel from '../schema/financial-records.js';
+import GoalModel from '../schema/goal.js';
 import { checkAndNotifyBudgetExceeded } from '../services/budget.service.js';
+import { checkAndNotifyGoalAchieved } from '../services/goal.service.js';
 
 const router = express.Router();
+
+const checkGoalsForCategory = async (userId: string, category: string) => {
+  try {
+    const goals = await GoalModel.find({ userId, linkedCategory: category });
+    for (const goal of goals) {
+      checkAndNotifyGoalAchieved(userId, goal._id.toString()).catch((err) =>
+        console.error(`[GOAL] Error checking goal ${goal._id}:`, err),
+      );
+    }
+  } catch (error) {
+    console.error(`[GOAL] Error finding goals for category ${category}:`, error);
+  }
+};
 
 router.get('/getAllByUserId/:userId', async (req: Request, res: Response) => {
   try {
@@ -55,6 +70,9 @@ router.post('/', async (req: Request, res: Response) => {
         (err) => console.error('Error checking budget:', err),
       );
     }
+
+    // Check goals (regardless of type, usually linked to category)
+    checkGoalsForCategory(userId, category);
 
     res.status(201).json(savedRecord);
   } catch (error) {
@@ -126,6 +144,28 @@ router.post('/bulk', async (req: Request, res: Response) => {
       }
     })();
 
+    // Goal Checks (Async) - suppress email for bulk?
+    // Usually bulk imports should suppress emails for goals too?
+    // "Retroactive storms after imports" -> "If detection of historical context is uncertain -> suppress."
+    // For bulk import, we should suppress emails.
+    (async () => {
+      try {
+        const categories = new Set<string>();
+        inserted.forEach((r) => categories.add(r.category));
+
+        for (const category of categories) {
+           const goals = await GoalModel.find({ userId, linkedCategory: category });
+           for (const goal of goals) {
+             checkAndNotifyGoalAchieved(userId, goal._id.toString(), { suppressEmail: true }).catch(err =>
+               console.error(`[GOAL] Error checking goal ${goal._id}:`, err)
+             );
+           }
+        }
+      } catch (err) {
+        console.error('Bulk goal check error', err);
+      }
+    })();
+
     res.status(201).json(inserted);
   } catch (error) {
     console.error('Bulk import error:', error);
@@ -187,8 +227,17 @@ router.put('/:id', async (req: Request, res: Response) => {
             originalRecord.date,
           );
         }
+
+        // Goal Checks
+        // Check new category
+        await checkGoalsForCategory(updatedRecord.userId, updatedRecord.category);
+
+        // If category changed, check old category too (might dip below goal?)
+        if (categoryChanged) {
+          await checkGoalsForCategory(originalRecord.userId, originalRecord.category);
+        }
       } catch (err) {
-        console.error('[BUDGET] Error checking budget on update:', err);
+        console.error('[BUDGET/GOAL] Error checking updates:', err);
       }
     })();
   } catch (error) {
@@ -216,6 +265,10 @@ router.delete('/:id', async (req: Request, res: Response) => {
         console.error('[BUDGET] Error checking budget on delete:', err),
       );
     }
+
+    // Goal Check (Async)
+    checkGoalsForCategory(deletedRecord.userId, deletedRecord.category);
+
   } catch (error) {
     res.status(500).send(error);
   }
