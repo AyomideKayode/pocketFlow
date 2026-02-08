@@ -28,7 +28,7 @@ export const renderGoalAchieved = (payload: GoalAchievedPayload) => {
     </p>
 
     <div style="text-align: center;">
-      <a href="${process.env.VITE_APP_URL || '#'}/goals" style="display: inline-block; padding: 12px 24px; background-color: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">
+      <a href="${process.env.APP_BASE_URL || '#'}/goals" style="display: inline-block; padding: 12px 24px; background-color: #10b981; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">
         View Goals
       </a>
     </div>

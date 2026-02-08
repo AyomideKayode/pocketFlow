@@ -32,7 +32,7 @@ export const renderBudgetAlert = (payload: BudgetAlertPayload) => {
     </p>
 
     <div style="text-align: center;">
-      <a href="${process.env.VITE_APP_URL || '#'}/budgets" style="display: inline-block; padding: 12px 24px; background-color: #ef4444; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">
+      <a href="${process.env.APP_BASE_URL || '#'}/budgets" style="display: inline-block; padding: 12px 24px; background-color: #ef4444; color: white; text-decoration: none; border-radius: 6px; font-weight: bold;">
         Adjust Budget
       </a>
     </div>
