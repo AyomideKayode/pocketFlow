@@ -251,8 +251,8 @@ describe('Notification Services', () => {
         expect.objectContaining({ userId: 'user1' }),
         'weekly-summary',
         expect.objectContaining({
-            net: '$300.00',
-            topCategory: expect.objectContaining({ name: 'Food' })
+          net: '$300.00',
+          topCategory: expect.objectContaining({ name: 'Food' })
         }),
         'summaries'
       );

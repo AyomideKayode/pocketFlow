@@ -16,7 +16,10 @@ const checkGoalsForCategory = async (userId: string, category: string) => {
       );
     }
   } catch (error) {
-    console.error(`[GOAL] Error finding goals for category ${category}:`, error);
+    console.error(
+      `[GOAL] Error finding goals for category ${category}:`,
+      error,
+    );
   }
 };
 
@@ -154,12 +157,17 @@ router.post('/bulk', async (req: Request, res: Response) => {
         inserted.forEach((r) => categories.add(r.category));
 
         for (const category of categories) {
-           const goals = await GoalModel.find({ userId, linkedCategory: category });
-           for (const goal of goals) {
-             checkAndNotifyGoalAchieved(userId, goal._id.toString(), { suppressEmail: true }).catch(err =>
-               console.error(`[GOAL] Error checking goal ${goal._id}:`, err)
-             );
-           }
+          const goals = await GoalModel.find({
+            userId,
+            linkedCategory: category,
+          });
+          for (const goal of goals) {
+            checkAndNotifyGoalAchieved(userId, goal._id.toString(), {
+              suppressEmail: true,
+            }).catch((err) =>
+              console.error(`[GOAL] Error checking goal ${goal._id}:`, err),
+            );
+          }
         }
       } catch (err) {
         console.error('Bulk goal check error', err);
@@ -230,11 +238,17 @@ router.put('/:id', async (req: Request, res: Response) => {
 
         // Goal Checks
         // Check new category
-        await checkGoalsForCategory(updatedRecord.userId, updatedRecord.category);
+        await checkGoalsForCategory(
+          updatedRecord.userId,
+          updatedRecord.category,
+        );
 
         // If category changed, check old category too (might dip below goal?)
         if (categoryChanged) {
-          await checkGoalsForCategory(originalRecord.userId, originalRecord.category);
+          await checkGoalsForCategory(
+            originalRecord.userId,
+            originalRecord.category,
+          );
         }
       } catch (err) {
         console.error('[BUDGET/GOAL] Error checking updates:', err);
@@ -268,7 +282,6 @@ router.delete('/:id', async (req: Request, res: Response) => {
 
     // Goal Check (Async)
     checkGoalsForCategory(deletedRecord.userId, deletedRecord.category);
-
   } catch (error) {
     res.status(500).send(error);
   }

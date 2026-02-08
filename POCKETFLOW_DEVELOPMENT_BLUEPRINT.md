@@ -510,7 +510,7 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
   - **Abstraction:** Defining clear interfaces early allows seamless switching between local logging and real email sending.
   - **Preferences:** Storing preferences directly on the user profile simplifies lookup logic during the critical send path.
 
-## Planned Phases & Next Steps
+---
 
 ### **Phase 10B: Safe Notifications** ✅ COMPLETED
 
@@ -537,8 +537,12 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
   - **Templates:** Created responsive email templates (`budget-alert`, `goal-achieved`, `weekly-summary`) extending the base layout.
 
 - **Key Learnings:**
-  - **Idempotency is Logic, Not Just Code:** Storing the *reason* a notification was sent (e.g., specific week ending date) is more robust than just a timestamp.
+  - **Idempotency is Logic, Not Just Code:** Storing the _reason_ a notification was sent (e.g., specific week ending date) is more robust than just a timestamp.
   - **Reset Logic:** Handling the "un-achievement" case is as important as the achievement case to keep state consistent with reality.
+
+---
+
+## Planned Phases & Next Steps
 
 ### **Phase 11: Expansion**
 
@@ -771,6 +775,6 @@ interface FinancialRecord {
   _Last updated: January 30, 2026 | Current Phase: Phase 9A Foundations (Data Integrity & Observability) | Next Phase: 9B Insights (Derived Intelligence)_
 - _Last updated: February 7, 2026 | Current Phase: Phase 9B Insights (Derived Intelligence) | Next Phase: 10A Email Infrastructure_
 - _Last updated: February 8, 2026 | Current Phase: Phase 10A Email Infrastructure | Next Phase: 10B Safe Notifications_
-- _Last updated: February 17, 2026 | Current Phase: Phase 10B Safe Notifications | Next Phase: 11 Expansion_
+- _Last updated: February 8, 2026 | Current Phase: Phase 10B Safe Notifications | Next Phase: 11 Expansion_
 
 ---
