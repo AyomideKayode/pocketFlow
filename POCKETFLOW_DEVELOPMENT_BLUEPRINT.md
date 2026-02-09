@@ -226,98 +226,6 @@ PocketFlow is a full-stack personal finance tracker designed for modern usabilit
 
 ---
 
-### **Optimization Sprint: UX & Stability** ✅ COMPLETED
-
-- **Features:**
-  - **Production Favicon:** Designed and implemented a custom wallet SVG favicon in Emerald-500.
-  - **Dashboard Synchronization:** Fixed a stale data issue where new records were excluded from charts until refresh (updated date range logic to be end-of-day inclusive).
-  - **Layout Fixes:** Resolved chart container warnings by enforcing stable minimum heights.
-  - **Auth UX:** Added password visibility toggles (Eye/EyeOff) for better usability during sign-up/sign-in.
-  - **Feedback Channel:** Added a "Report Bug" icon in the navbar to facilitate direct user feedback.
-
-- **Implementation Details:**
-  - **Date Logic:** Updated `getDefaultDateRange` and `DateRangeFilter` to use inclusive end-of-day timestamps (`23:59:59.999`).
-  - **Components:** Integrated Lucide icons (`Eye`, `EyeOff`, `Bug`) into existing UI components.
-  - **Styling:** Tailwind-based updates for responsive chart containers.
-
-- **Key Learnings:**
-  - **Date Intervals:** "Last 30 days" must include the _full_ current day to feel "real-time" to users.
-  - **Chart Responsiveness:** Recharts requires explicit parent dimensions to avoid layout warnings during initial render.
-
----
-
-### **Phase 4 Preparation: Sidebar Navigation & Layout Refactor** ✅ COMPLETED
-
-- **Features:**
-  - **Sidebar Navigation:**
-    - Replaced top navigation with a responsive left-side sidebar.
-    - Top navbar now contains only Branding, Menu Toggle, and Feedback icon.
-    - Sidebar includes links to Dashboard, Transactions, Budgets, and Goals.
-    - User Profile moved to the bottom of the sidebar.
-    - Responsive behavior: Collapsible sidebar on desktop, slide-out drawer on mobile.
-  - **Dedicated Transactions Page:**
-    - Created `/transactions` route for full financial record management.
-    - Moved "Add Transaction" modal logic to this new page.
-  - **Dashboard Simplification:**
-    - Dashboard now acts as a high-level overview.
-    - "Recent Transactions" list limited to top 5 records.
-    - "Add Transaction" shortcut redirects to the Transactions page.
-  - **Placeholder Pages:**
-    - Created placeholder components for `/budgets` and `/goals` to prepare for Phase 4 features.
-
-- **Implementation Details:**
-  - **Layout Architecture:**
-    - Created `DashboardLayout` component to wrap authenticated routes.
-    - Manages sidebar state (open/closed) and responsive transitions.
-    - `App.tsx` refactored to use nested routes within `DashboardLayout`.
-  - **Component Refactoring:**
-    - `FinancialRecordList` updated to accept a `limit` prop and handle sorting by date.
-    - `Navbar` stripped of user controls, now accepts `onToggleSidebar` prop.
-
-- **Key Learnings:**
-  - **Layout State:** Centralizing layout state (sidebar open/close) in a layout wrapper (`DashboardLayout`) simplifies state management compared to prop drilling from App root.
-  - **Routing Structure:** Grouping authenticated routes under a common layout route allows for cleaner `App.tsx` and easier context sharing.
-
----
-
-### **Phase 4: Budgeting & Goals** ✅ COMPLETED
-
-- **Features:**
-  - Monthly budgets per category
-  - Budget progress calculation and visual indicators
-  - Budget exceedance alerts (single notification per period)
-  - Savings and financial goal tracking
-
-- **Implementation Details:**
-  - New Mongoose models for budgets/goals
-  - Budgets and goals backed by dedicated Mongoose schemas
-  - Budget progress derived from financial records (no duplicated state)
-  - Notification logic is idempotent using a persisted notified flag
-  - Client-side contexts manage synchronization and UI consistency
-
----
-
-### **Optimization Sprint #2: Layout Stability & Context Refactor** ✅ COMPLETED
-
-After pulling the changes made in Phase 4 Budget & Goals features implementation, I carried out tests and made the following changes and modifications:
-
-- **✅ UI/Layout Stabilization**
-  - Resolved sidebar overlapping navbar on desktop and not showing on mobile.
-  - Clarify layout ownership between navbar & sidebar.
-  - Corrected user profile dropdown behavior (opening upward for accessibility and viewport safety).
-
-- **✅ Context Refactor (Budgets)**
-  - Centralized budget recalculation via `fetchBudgets()` to eliminate stale UI state and refresh dependency after budget creation.
-  - Enforced provider hierarchy to guarantee `BudgetContext` availability for dependent contexts (e.g. Financial Records).
-
-- **✅ Budget Notification State**
-  - Introduced `notified` state on Budget schema.
-  - Implemented idempotent `checkAndNotifyBudgetExceeded` to prevent duplicate alerts on repeated threshold violations.
-
-  _Note: Advanced budget behaviors (e.g. reset semantics, multi-threshold alerts) are intentionally deferred to avoid over-engineering at this stage._
-
----
-
 ### **Phase 5: Performance, Optimization & Hardening** ✅ COMPLETED
 
 - **Features:**
@@ -340,6 +248,23 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 - **Key Learnings:**
   - **Aggregation vs. Iteration:** Moving aggregation logic to the database layer significantly reduces application-level looping and memory usage.
   - **Staleness:** Relying on checks only at creation time leaves gaps; handling updates/deletes is crucial for a "live" budget system.
+
+---
+
+### **Phase 4: Budgeting & Goals** ✅ COMPLETED
+
+- **Features:**
+  - Monthly budgets per category
+  - Budget progress calculation and visual indicators
+  - Budget exceedance alerts (single notification per period)
+  - Savings and financial goal tracking
+
+- **Implementation Details:**
+  - New Mongoose models for budgets/goals
+  - Budgets and goals backed by dedicated Mongoose schemas
+  - Budget progress derived from financial records (no duplicated state)
+  - Notification logic is idempotent using a persisted notified flag
+  - Client-side contexts manage synchronization and UI consistency
 
 ---
 
@@ -575,15 +500,35 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ---
 
+### **Phase 11B: Bills Foundation & Lifecycle** ✅ COMPLETED
+
+- **Features:**
+  - **Bills Entity:** Created a first-class `Bill` concept for financial obligations (intent), distinct from transactions (facts).
+  - **Deterministic Lifecycle:**
+    - Bills are "Upcoming" or "Paid" based strictly on a time-bound check: `lastPaidPeriod === currentPeriod`.
+    - No background automation or cron jobs; state is derived at runtime.
+    - One-time bills are effectively archived once paid in a past period.
+  - **Full Stack Implementation:**
+    - **Backend:** `Bill` Schema, Service, and Routes (`GET`, `POST`, `PUT`, `DELETE`).
+    - **Frontend:** Dedicated `/bills` page with CRUD operations and clear "Upcoming" vs "Paid" sections.
+
+- **Implementation Details:**
+  - **Schema:**
+    - Fields: `name`, `amount`, `dueDay` (1-31), `isRecurring` (bool), `lastPaidPeriod` (YYYY-MM).
+    - Explicitly avoided `is_paid` boolean to prevent state drift.
+  - **Logic:**
+    - `getBills` service filters out one-time bills that were paid in previous months.
+    - Due dates automatically clamp to the last day of the month (e.g., Feb 28 for due day 30).
+  - **Safety:**
+    - Strict isolation: Bills logic does *not* create transactions or touch budgets (by design).
+
+- **Key Learnings:**
+  - **State derivation > State storage:** Deriving "Paid" status from `lastPaidPeriod` + `currentDate` eliminates the need for complex reset jobs at the start of every month.
+  - **Intent vs. Fact:** Clearly separating "Bills" (what I should pay) from "Transactions" (what I paid) clarifies the domain model and prevents circular dependencies.
+
+---
+
 ## Planned Phases & Next Steps
-
-### **Phase 11B: Bills**
-
-Expand financial capability and educational value once data integrity and communication channels are proven.
-
-- Recurring bill tracking
-- Due date awareness
-- Budget impact visibility / interaction
 
 ### **Phase 11C: Learn & Insights Page**
 
@@ -808,5 +753,6 @@ interface FinancialRecord {
 - _Last updated: February 7, 2026 | Current Phase: Phase 9B Insights (Derived Intelligence) | Next Phase: 10A Email Infrastructure_
 - _Last updated: February 8, 2026 | Current Phase: Phase 10A Email Infrastructure | Next Phase: 10B Safe Notifications_
 - _Last updated: February 9, 2026 | Current Phase: Phase 11A Data Capability Expansion | Next Phase: 11B Bills_
+- _Last updated: February 9, 2026 | Current Phase: Phase 11B Bills Foundation | Next Phase: 11C Learn & Insights_
 
 ---

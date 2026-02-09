@@ -5,7 +5,8 @@ import {
   Receipt,
   PieChart,
   Target,
-  X
+  X,
+  Calendar
 } from 'lucide-react';
 import { UserButton } from '../UserButton';
 import { clsx } from 'clsx';
@@ -43,6 +44,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ isOpen, onClose, isMobile }) =
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { name: 'Transactions', path: '/transactions', icon: Receipt },
     { name: 'Budgets', path: '/budgets', icon: PieChart },
+    { name: 'Bills', path: '/bills', icon: Calendar },
     { name: 'Goals', path: '/goals', icon: Target },
   ];
 
