@@ -74,7 +74,7 @@ export const FinancialRecordsProvider = ({
     limit: 0,
     pages: 1,
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const { user } = useAuth();
   const { addToast } = useToast();
   const { fetchBudgets } = useBudgets();
