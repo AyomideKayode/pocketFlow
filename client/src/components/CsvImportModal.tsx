@@ -166,7 +166,13 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
     const description = row.description || '';
 
     // Check for payment method aliases
-    const paymentMethodRaw = row.payment_method || row.method || row.payment || row.source;
+    const paymentMethodRaw =
+      row.payment_method ??
+      row.paymentmethod ??
+      row['payment-method'] ??
+      row.method ??
+      row.payment ??
+      row.source;
 
     // Validate Date
     const date = parseDate(dateStr);
@@ -448,7 +454,7 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
                           {/* Show the normalized value if valid, otherwise raw */}
                           {row.isValid
                             ? row.payload?.paymentMethod
-                            : (row.original.payment_method || '-')}
+                            : row.original.payment_method || '-'}
                         </td>
                       </tr>
                     ))}
