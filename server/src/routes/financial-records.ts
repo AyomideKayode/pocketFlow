@@ -29,12 +29,101 @@ router.get('/getAllByUserId/:userId', async (req: Request, res: Response) => {
     if (!userId) {
       return res.status(400).json({ message: 'User ID is required.' });
     }
-    const records = await FinancialRecordModel.find({ userId });
-    if (records.length === 0) {
-      return res
-        .status(404)
-        .json({ message: 'No records found for this user.' });
+
+    // Extract query parameters
+    const {
+      page,
+      limit,
+      category,
+      type,
+      paymentMethod,
+      startDate,
+      endDate,
+      sortBy,
+      sortOrder,
+    } = req.query;
+
+    const query: any = { userId };
+
+    // Apply filters
+    if (category) {
+      query.category = category;
     }
+    if (type) {
+      query.type = type;
+    }
+    if (paymentMethod) {
+      query.paymentMethod = paymentMethod;
+    }
+    if (startDate || endDate) {
+      query.date = {};
+      if (startDate) query.date.$gte = new Date(startDate as string);
+      if (endDate) query.date.$lte = new Date(endDate as string);
+    }
+
+    // Pagination
+    const pageNum = page ? parseInt(page as string) : 1;
+    const limitNum = limit ? parseInt(limit as string) : 0; // 0 means no limit (all)
+
+    // Sorting
+    const sortField = (sortBy as string) || 'date';
+    const sortDir = sortOrder === 'asc' ? 1 : -1;
+    const sort: any = { [sortField]: sortDir };
+
+    // If default sort is by date, we might want to also sort by _id for stability if dates are equal?
+    // Mongoose sorts by insertion order if keys are equal, usually fine.
+
+    // If no pagination/filters provided, preserve legacy behavior (return all, 404 if empty)
+    // Legacy check: Only userId is provided?
+    const hasFilters =
+      category ||
+      type ||
+      paymentMethod ||
+      startDate ||
+      endDate ||
+      page ||
+      limit ||
+      sortBy;
+
+    if (!hasFilters) {
+      const records = await FinancialRecordModel.find({ userId });
+      if (records.length === 0) {
+        return res
+          .status(404)
+          .json({ message: 'No records found for this user.' });
+      }
+      return res.status(200).json(records);
+    }
+
+    // New behavior with filters/pagination
+    let queryBuilder = FinancialRecordModel.find(query).sort(sort);
+
+    if (limitNum > 0) {
+      queryBuilder = queryBuilder.skip((pageNum - 1) * limitNum).limit(limitNum);
+    }
+
+    const records = await queryBuilder.exec();
+    const totalCount = await FinancialRecordModel.countDocuments(query);
+
+    // Return extended response if pagination is requested
+    if (page || limit) {
+      return res.status(200).json({
+        data: records,
+        pagination: {
+          total: totalCount,
+          page: pageNum,
+          limit: limitNum,
+          pages: limitNum > 0 ? Math.ceil(totalCount / limitNum) : 1,
+        },
+      });
+    }
+
+    // If only filters provided but no pagination params, return array (compatible with simple filter use cases)
+    // But filters might return empty array. In legacy, empty -> 404.
+    // In search mode, empty -> 200 [].
+    // Since "hasFilters" is true, we are in "Search Mode".
+    // We should return [] if empty, not 404.
+
     res.status(200).json(records);
   } catch (error) {
     console.error('Error fetching records:', error);

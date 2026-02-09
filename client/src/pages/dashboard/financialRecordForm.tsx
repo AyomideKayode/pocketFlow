@@ -6,7 +6,7 @@ import { Tag, CreditCard, FileText } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-const INCOME_CATEGORIES = [
+export const INCOME_CATEGORIES = [
   // Active income
   'Salary',
   'Bonus',
@@ -29,7 +29,7 @@ const INCOME_CATEGORIES = [
 ];
 
 
-const EXPENSE_CATEGORIES = [
+export const EXPENSE_CATEGORIES = [
   // Housing
   'Rent / Mortgage',
   'Utilities',

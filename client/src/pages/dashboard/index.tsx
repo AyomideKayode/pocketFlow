@@ -1,4 +1,4 @@
-import { useState, useMemo, lazy, Suspense } from 'react';
+import { useState, useMemo, lazy, Suspense, useEffect } from 'react';
 import { useAuth } from '../../contexts/auth-context';
 import { useNavigate } from 'react-router-dom';
 import { FinancialRecordList } from './financialRecordList';
@@ -48,7 +48,7 @@ const CategoryBreakdownChart = lazy(() =>
 
 export const Dashboard = () => {
   const { user } = useAuth();
-  const { records, loading } = useFinancialRecords();
+  const { records, recentRecords, loading, fetchRecords } = useFinancialRecords();
   const { format } = useCurrencyFormatter();
   const { trackEvent } = useAnalytics();
   const [dateRange, setDateRange] = useState(getDefaultDateRange());
@@ -56,6 +56,11 @@ export const Dashboard = () => {
   const [showImportModal, setShowImportModal] = useState(false);
   const { addToast } = useToast();
   const navigate = useNavigate();
+
+  // Ensure we have all records for charts
+  useEffect(() => {
+    fetchRecords();
+  }, [fetchRecords]);
 
   const filteredRecords = useMemo(() => {
     return filterRecordsByDateRange(records, dateRange);
@@ -113,11 +118,12 @@ export const Dashboard = () => {
     }
   };
 
-  if (loading) {
+  if (loading && records.length === 0) {
     return <DashboardSkeleton />;
   }
 
   // Initial Empty State for new users
+  // Use recentRecords or records length? If records is empty, empty state.
   if (!loading && records.length === 0) {
     return (
       <div className='flex min-h-[calc(100vh-4rem)] items-center justify-center'>
@@ -289,7 +295,8 @@ export const Dashboard = () => {
           </button>
         </div>
 
-        <FinancialRecordList limit={5} />
+        {/* Use recentRecords (top 5) for dashboard list */}
+        <FinancialRecordList limit={5} data={recentRecords} />
       </div>
     </div>
   );

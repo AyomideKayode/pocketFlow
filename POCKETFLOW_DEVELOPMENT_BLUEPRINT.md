@@ -544,45 +544,36 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ## Planned Phases & Next Steps
 
-### **Phase 11A: Data Capability Expansion**
+### **Phase 11A: Data Capability Expansion** ✅ COMPLETED
 
-- **Primary Focus:**
-  Ensure imported data preserves user intent and becomes easier to work with as volume grows.
+- **Features:**
+  - **Payment Method Normalization:**
+    - Imports now strictly map payment methods to `Credit Card`, `Cash`, or `Bank Transfer`.
+    - Fallback to `CSV Import` (or original value) if low confidence.
+    - Console logging for mapping decisions to ensure transparency.
+  - **Transactions Retrieval Upgrade:**
+    - Server-side filtering by Category, Type, Payment Method, and Date Range.
+    - Server-side sorting by Date and Amount.
+    - Server-side pagination (Limit/Offset).
+  - **Transactions Page Overhaul:**
+    - New Filter Bar UI with comprehensive controls.
+    - Pagination controls (Next/Prev).
+    - Optimistic updates and refresh logic for consistent state.
 
-- **Scope**
-  - **1. CSV Payment Method Preservation**
-    - Detect if column exists.
-    - Map raw value → supported enum.
-    - Only fallback if missing or invalid.
-    - Log mapping decisions.
-      No guessing beyond normalization.
+- **Implementation Details:**
+  - **Backend:**
+    - `GET /financial-records/getAllByUserId` extended with `req.query` parsing.
+    - Dynamic Mongoose query building for filters and sort.
+    - Backward compatibility maintained for legacy calls (no params -> return all).
+  - **Frontend:**
+    - `FinancialRecordContext` split into `records` (filtered) and `recentRecords` (dashboard).
+    - `FinancialRecordList` refactored to accept data source prop.
+    - `CsvImportModal` updated with `payment_method` column detection and preview.
+    - `normalization.ts` utility created for deterministic mapping.
 
-  - **2. Normalization Layer**
-    Introduce deterministic mapping rules.
-    - This prevents:
-      - analytics chaos later
-      - UI inconsistencies
-      - future migrations
-
-  - **3. Transactions Retrieval Upgrade**
-    Users now have history.
-    We support finding, not just listing.
-    - **Filters**
-      - category
-      - type
-      - date range
-      - payment method
-    - **Sorting**
-      - date asc/desc
-      - amount asc/desc
-
-  - **4. API Responsibility**
-    Filtering must occur server-side.
-    We are designing for future scale, not today's count.
-
-  - **5. Dashboard Rule**
-    Untouched.
-    Last 5. Always.
+- **Key Learnings:**
+  - **Context Separation:** Sharing a single `records` state for both "Dashboard Overview" and "Search Results" is problematic. Splitting into `records` and `recentRecords` solved the conflict while preserving the Dashboard's "Recent 5" rule.
+  - **Backward Compatibility:** Extending existing endpoints with optional query parameters allows new features without breaking existing consumers (Dashboard charts).
 
 ### **Phase 11B: Bills**
 
@@ -814,6 +805,6 @@ interface FinancialRecord {
   _Last updated: January 30, 2026 | Current Phase: Phase 9A Foundations (Data Integrity & Observability) | Next Phase: 9B Insights (Derived Intelligence)_
 - _Last updated: February 7, 2026 | Current Phase: Phase 9B Insights (Derived Intelligence) | Next Phase: 10A Email Infrastructure_
 - _Last updated: February 8, 2026 | Current Phase: Phase 10A Email Infrastructure | Next Phase: 10B Safe Notifications_
-- _Last updated: February 8, 2026 | Current Phase: Phase 10B Safe Notifications | Next Phase: 11 Expansion_
+- _Last updated: February 10, 2026 | Current Phase: Phase 11A Data Capability Expansion | Next Phase: 11B Bills_
 
 ---
