@@ -147,7 +147,7 @@ export const FinancialRecordsProvider = ({
       try {
         const response = await fetch(
           `${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}?${params.toString()}`,
-          { signal: controller.signal }
+          { signal: controller.signal },
         );
 
         if (response.ok) {
@@ -180,7 +180,7 @@ export const FinancialRecordsProvider = ({
       } finally {
         // Only turn off loading if this is the active request
         if (abortControllerRef.current === controller) {
-            setLoading(false);
+          setLoading(false);
         }
       }
     },
@@ -225,7 +225,7 @@ export const FinancialRecordsProvider = ({
   // Initial load: Fetch recent for dashboard
   useEffect(() => {
     if (user) {
-        refreshRecent();
+      refreshRecent();
     }
   }, [user, refreshRecent]);
 
@@ -243,19 +243,23 @@ export const FinancialRecordsProvider = ({
       }
       // Refresh lists to ensure consistency
       await Promise.all([
-          // Refresh main list if we have active filters (Transactions page)
-          lastFiltersRef.current ? fetchRecords(lastFiltersRef.current) : Promise.resolve(),
-          refreshRecent(),
-          fetchBudgets()
+        // Refresh main list if we have active filters (Transactions page)
+        lastFiltersRef.current
+          ? fetchRecords(lastFiltersRef.current)
+          : Promise.resolve(),
+        refreshRecent(),
+        fetchBudgets(),
       ]);
 
       addToast('Financial record added successfully!', 'success');
 
       if (profile && !profile.hasCreatedFirstTransaction) {
         trackEvent('first_transaction_created');
-        void updateProfile({ hasCreatedFirstTransaction: true }, true).catch((err) => {
-          console.error('Failed to persist first-transaction flag', err);
-        });
+        void updateProfile({ hasCreatedFirstTransaction: true }, true).catch(
+          (err) => {
+            console.error('Failed to persist first-transaction flag', err);
+          },
+        );
       }
     } catch (error) {
       console.error('Error adding record:', error);
@@ -285,9 +289,11 @@ export const FinancialRecordsProvider = ({
       }
 
       await Promise.all([
-          lastFiltersRef.current ? fetchRecords(lastFiltersRef.current) : Promise.resolve(),
-          refreshRecent(),
-          fetchBudgets()
+        lastFiltersRef.current
+          ? fetchRecords(lastFiltersRef.current)
+          : Promise.resolve(),
+        refreshRecent(),
+        fetchBudgets(),
       ]);
 
       const savedRecords = await response.json();
@@ -298,9 +304,11 @@ export const FinancialRecordsProvider = ({
 
       if (profile && !profile.hasCreatedFirstTransaction) {
         trackEvent('first_transaction_created');
-        void updateProfile({ hasCreatedFirstTransaction: true }, true).catch((err) => {
-          console.error('Failed to persist first-transaction flag', err);
-        });
+        void updateProfile({ hasCreatedFirstTransaction: true }, true).catch(
+          (err) => {
+            console.error('Failed to persist first-transaction flag', err);
+          },
+        );
       }
     } catch (error) {
       console.error('Error importing records:', error);
@@ -355,9 +363,11 @@ export const FinancialRecordsProvider = ({
       // Refetch logic similar to addRecord to ensure pagination is correct
       // (Optimistic delete might leave a short page)
       await Promise.all([
-          lastFiltersRef.current ? fetchRecords(lastFiltersRef.current) : Promise.resolve(),
-          refreshRecent(),
-          fetchBudgets()
+        lastFiltersRef.current
+          ? fetchRecords(lastFiltersRef.current)
+          : Promise.resolve(),
+        refreshRecent(),
+        fetchBudgets(),
       ]);
 
       addToast('Financial record deleted successfully!', 'success');

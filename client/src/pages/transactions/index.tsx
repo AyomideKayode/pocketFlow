@@ -102,7 +102,9 @@ export const Transactions = () => {
   const availableCategories = useMemo(() => {
     if (filters.type === 'income') return INCOME_CATEGORIES;
     if (filters.type === 'expense') return EXPENSE_CATEGORIES;
-    return Array.from(new Set([...INCOME_CATEGORIES, ...EXPENSE_CATEGORIES])).sort();
+    return Array.from(
+      new Set([...INCOME_CATEGORIES, ...EXPENSE_CATEGORIES]),
+    ).sort();
   }, [filters.type]);
 
   const selectClass =
@@ -218,7 +220,7 @@ export const Transactions = () => {
               onChange={(e) => handleFilterChange('startDate', e.target.value)}
             />
           </div>
-           <div className='space-y-1'>
+          <div className='space-y-1'>
             <label className='text-xs text-slate-500'>End Date</label>
             <input
               type='date'
@@ -230,41 +232,44 @@ export const Transactions = () => {
         </div>
 
         <div className='mt-4 pt-4 border-t border-slate-800 flex items-center justify-end gap-4'>
-             <div className='flex items-center gap-2'>
-                <label className='text-xs text-slate-500'>Sort By:</label>
-                <select
-                    className={cn(selectClass, "w-32")}
-                    value={filters.sortBy}
-                    onChange={(e) => handleFilterChange('sortBy', e.target.value)}
-                >
-                    <option value='date'>Date</option>
-                    <option value='amount'>Amount</option>
-                </select>
-                <button
-                    onClick={() => handleFilterChange('sortOrder', filters.sortOrder === 'asc' ? 'desc' : 'asc')}
-                    className='p-2 rounded-md border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300'
-                    title={filters.sortOrder === 'asc' ? 'Ascending' : 'Descending'}
-                >
-                    <ArrowUpDown className='h-4 w-4' />
-                </button>
-             </div>
+          <div className='flex items-center gap-2'>
+            <label className='text-xs text-slate-500'>Sort By:</label>
+            <select
+              className={cn(selectClass, 'w-32')}
+              value={filters.sortBy}
+              onChange={(e) => handleFilterChange('sortBy', e.target.value)}
+            >
+              <option value='date'>Date</option>
+              <option value='amount'>Amount</option>
+            </select>
+            <button
+              onClick={() =>
+                handleFilterChange(
+                  'sortOrder',
+                  filters.sortOrder === 'asc' ? 'desc' : 'asc',
+                )
+              }
+              className='p-2 rounded-md border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300'
+              title={filters.sortOrder === 'asc' ? 'Ascending' : 'Descending'}
+            >
+              <ArrowUpDown className='h-4 w-4' />
+            </button>
+          </div>
         </div>
       </div>
 
       {/* List */}
       <div className='relative min-h-[200px]'>
         {loading && (
-            <div className='absolute inset-0 z-10 flex items-center justify-center bg-slate-950/50 backdrop-blur-sm rounded-xl'>
-                 <div className='animate-pulse text-emerald-500'>Loading...</div>
-            </div>
+          <div className='absolute inset-0 z-10 flex items-center justify-center bg-slate-950/50 backdrop-blur-sm rounded-xl'>
+            <div className='animate-pulse text-emerald-500'>Loading...</div>
+          </div>
         )}
-
         <FinancialRecordList data={records} /> {/* Explicitly pass records */}
-
         {!loading && records.length === 0 && (
-             <div className='text-center py-12 text-slate-500'>
-                 No transactions found matching your filters.
-             </div>
+          <div className='text-center py-12 text-slate-500'>
+            No transactions found matching your filters.
+          </div>
         )}
       </div>
 
@@ -272,11 +277,17 @@ export const Transactions = () => {
       {pagination.total > 0 && (
         <div className='flex items-center justify-between border-t border-slate-800 pt-4'>
           <div className='text-sm text-slate-400'>
-            Showing <span className='font-medium text-white'>{(pagination.page - 1) * pagination.limit + 1}</span> to{' '}
+            Showing{' '}
+            <span className='font-medium text-white'>
+              {(pagination.page - 1) * pagination.limit + 1}
+            </span>{' '}
+            to{' '}
             <span className='font-medium text-white'>
               {Math.min(pagination.page * pagination.limit, pagination.total)}
             </span>{' '}
-            of <span className='font-medium text-white'>{pagination.total}</span> results
+            of{' '}
+            <span className='font-medium text-white'>{pagination.total}</span>{' '}
+            results
           </div>
           <div className='flex items-center gap-2'>
             <button
@@ -288,7 +299,7 @@ export const Transactions = () => {
               Previous
             </button>
             <div className='text-sm text-slate-400'>
-                Page {pagination.page} of {pagination.pages}
+              Page {pagination.page} of {pagination.pages}
             </div>
             <button
               onClick={() => handlePageChange(pagination.page + 1)}
@@ -305,8 +316,8 @@ export const Transactions = () => {
       <CsvImportModal
         isOpen={showImportModal}
         onClose={() => {
-            setShowImportModal(false);
-            refreshList();
+          setShowImportModal(false);
+          refreshList();
         }}
       />
 
@@ -322,10 +333,12 @@ export const Transactions = () => {
                 ✕
               </button>
             </div>
-            <FinancialRecordForm onSuccess={() => {
+            <FinancialRecordForm
+              onSuccess={() => {
                 setShowAddForm(false);
                 refreshList();
-            }} />
+              }}
+            />
           </div>
         </div>
       )}

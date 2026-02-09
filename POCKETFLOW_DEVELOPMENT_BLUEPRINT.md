@@ -542,8 +542,6 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ---
 
-## Planned Phases & Next Steps
-
 ### **Phase 11A: Data Capability Expansion** ✅ COMPLETED
 
 - **Features:**
@@ -574,6 +572,10 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 - **Key Learnings:**
   - **Context Separation:** Sharing a single `records` state for both "Dashboard Overview" and "Search Results" is problematic. Splitting into `records` and `recentRecords` solved the conflict while preserving the Dashboard's "Recent 5" rule.
   - **Backward Compatibility:** Extending existing endpoints with optional query parameters allows new features without breaking existing consumers (Dashboard charts).
+
+---
+
+## Planned Phases & Next Steps
 
 ### **Phase 11B: Bills**
 
@@ -805,6 +807,6 @@ interface FinancialRecord {
   _Last updated: January 30, 2026 | Current Phase: Phase 9A Foundations (Data Integrity & Observability) | Next Phase: 9B Insights (Derived Intelligence)_
 - _Last updated: February 7, 2026 | Current Phase: Phase 9B Insights (Derived Intelligence) | Next Phase: 10A Email Infrastructure_
 - _Last updated: February 8, 2026 | Current Phase: Phase 10A Email Infrastructure | Next Phase: 10B Safe Notifications_
-- _Last updated: February 10, 2026 | Current Phase: Phase 11A Data Capability Expansion | Next Phase: 11B Bills_
+- _Last updated: February 9, 2026 | Current Phase: Phase 11A Data Capability Expansion | Next Phase: 11B Bills_
 
 ---

@@ -63,10 +63,7 @@ router.get('/getAllByUserId/:userId', async (req: Request, res: Response) => {
         if (!Number.isFinite(start.getTime())) {
             return res.status(400).json({ message: 'Invalid startDate parameter.' });
         }
-        // Normalize to start of day (UTC) or just set hours/min/sec to 0?
-        // Since input is YYYY-MM-DD from frontend usually, `new Date('2023-01-01')` is UTC 00:00.
-        // If it's full ISO, we should respect it but "start date" usually implies "from beginning of that day".
-        // Let's ensure time is 00:00:00.000 for that day.
+        // Normalize to start of day (UTC)
         start.setUTCHours(0, 0, 0, 0);
         query.date.$gte = start;
       }

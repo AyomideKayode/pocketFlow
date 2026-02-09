@@ -28,7 +28,6 @@ export const INCOME_CATEGORIES = [
   'Other',
 ];
 
-
 export const EXPENSE_CATEGORIES = [
   // Housing
   'Rent / Mortgage',

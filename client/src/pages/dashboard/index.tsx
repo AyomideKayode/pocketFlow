@@ -48,7 +48,8 @@ const CategoryBreakdownChart = lazy(() =>
 
 export const Dashboard = () => {
   const { user } = useAuth();
-  const { records, recentRecords, loading, fetchRecords } = useFinancialRecords();
+  const { records, recentRecords, loading, fetchRecords } =
+    useFinancialRecords();
   const { format } = useCurrencyFormatter();
   const { trackEvent } = useAnalytics();
   const [dateRange, setDateRange] = useState(getDefaultDateRange());

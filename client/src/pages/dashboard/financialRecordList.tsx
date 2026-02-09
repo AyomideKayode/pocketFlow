@@ -113,7 +113,10 @@ interface FinancialRecordListProps {
   data?: FinancialRecord[];
 }
 
-export const FinancialRecordList = ({ limit, data }: FinancialRecordListProps) => {
+export const FinancialRecordList = ({
+  limit,
+  data,
+}: FinancialRecordListProps) => {
   const { records, updateRecord, deleteRecord } = useFinancialRecords();
   const { showConfirmation } = useConfirmationDialog();
   const { format } = useCurrencyFormatter();
@@ -123,32 +126,9 @@ export const FinancialRecordList = ({ limit, data }: FinancialRecordListProps) =
   const sourceRecords = data || records;
 
   const displayRecords = useMemo(() => {
-    // If data is passed, it might be already sorted or not.
-    // However, the original component sorted locally.
-    // If we rely on server sort for filtered lists, we might not want to re-sort locally if it breaks pagination order?
-    // But currently we fetch page 1.
-    // For Dashboard (Recent 5), it comes sorted by date desc from API.
-    // For Transactions (Filtered), it comes sorted by whatever the filter said.
-    // So re-sorting locally by Date might be redundant or even wrong if the user selected "Sort by Amount".
-    // "Transactions Retrieval Upgrade" -> "Sort by amount asc / desc".
-    // If I force sort by Date here, I break the new feature.
-
-    // So: I should ONLY sort if the user hasn't specified a sort order via API, OR trust the API order.
-    // Since this is a UI component, trust the order of `sourceRecords` passed to it?
-    // The original code:
-    /*
-    const sorted = [...records].sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
-      return dateB - dateA;
-    });
-    */
-    // If I remove this sort, existing Dashboard behavior (sorted by date) relies on API being sorted.
-    // My updated API `refreshRecent` uses `sortBy=date&sortOrder=desc`. So API returns sorted.
-    // So I can remove the local sort here safely?
-    // Yes, for "Recent" it works.
-    // For "Filtered", it respects API.
-    // So I should remove the local sort to support "Sort by Amount".
+    // Trust the API sort order to support user-selected sorting (e.g., by amount).
+    // Dashboard "Recent" is already sorted by date desc from API.
+    // Filtered lists respect the user's chosen sort order.
 
     let processed = [...sourceRecords];
 
@@ -209,11 +189,7 @@ export const FinancialRecordList = ({ limit, data }: FinancialRecordListProps) =
             renderItem={(val) => {
               const numVal = Number(val);
               const type = props.row.original.type;
-              // Remove the sign from format() output since we add + / - manually
-              // Actually, standard accounting usually implies sign via color or parenthesis
-              // but keeping existing style: +$100.00 or -$100.00
-              // format() returns symbol + number.
-              // So +{format(abs)} is correct: +$100.00
+              // Format currency with sign based on type (income/expense)
               return (
                 <div
                   className={clsx(
@@ -221,7 +197,8 @@ export const FinancialRecordList = ({ limit, data }: FinancialRecordListProps) =
                     type === 'income' ? 'text-emerald-500' : 'text-rose-500',
                   )}
                 >
-                  {type === 'income' ? '+' : '-'}{format(Math.abs(numVal))}
+                  {type === 'income' ? '+' : '-'}
+                  {format(Math.abs(numVal))}
                 </div>
               );
             }}
@@ -311,9 +288,9 @@ export const FinancialRecordList = ({ limit, data }: FinancialRecordListProps) =
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
                   </th>
                 ))}
               </tr>
