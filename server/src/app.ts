@@ -9,6 +9,7 @@ import userPreferencesRouter from './routes/user-preferences.js';
 import cloudinaryRouter from './routes/cloudinary.js';
 import analyticsRouter from './routes/analytics.js';
 import cronRouter from './routes/cron.js';
+import billRouter from './routes/bill.js';
 import cors from 'cors';
 
 const app: Express = express();
@@ -38,5 +39,6 @@ app.use('/user', userPreferencesRouter);
 app.use('/cloudinary', cloudinaryRouter);
 app.use('/analytics', analyticsRouter);
 app.use('/cron', cronRouter);
+app.use('/bills', billRouter);
 
 export default app;

@@ -8,6 +8,7 @@ import { Dashboard } from './pages/dashboard';
 import { Auth } from './pages/auth';
 import { Transactions } from './pages/transactions';
 import { Budgets } from './pages/budgets';
+import { Bills } from './pages/bills';
 import { Goals } from './pages/goals';
 import { Settings } from './pages/settings';
 import { FinancialRecordsProvider } from './contexts/financial-record-context';
@@ -55,6 +56,7 @@ function App() {
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/transactions' element={<Transactions />} />
             <Route path='/budgets' element={<Budgets />} />
+            <Route path='/bills' element={<Bills />} />
             <Route path='/goals' element={<Goals />} />
             <Route path='/settings' element={<Settings />} />
           </Route>
