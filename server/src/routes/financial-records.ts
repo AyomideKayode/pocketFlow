@@ -66,9 +66,12 @@ router.get('/getAllByUserId/:userId', async (req: Request, res: Response) => {
     const limitNum = limit ? parseInt(limit as string) : 0; // 0 means no limit (all)
 
     // Sorting
-    const sortField = (sortBy as string) || 'date';
+    const allowedSortFields = ['date', 'amount', 'category', 'type', 'paymentMethod'];
+    const sortField = (typeof sortBy === 'string' && allowedSortFields.includes(sortBy))
+      ? sortBy
+      : 'date';
     const sortDir = sortOrder === 'asc' ? 1 : -1;
-    const sort: any = { [sortField]: sortDir };
+    const sort: Record<string, 1 | -1> = { [sortField]: sortDir };
 
     // If default sort is by date, we might want to also sort by _id for stability if dates are equal?
     // Mongoose sorts by insertion order if keys are equal, usually fine.
