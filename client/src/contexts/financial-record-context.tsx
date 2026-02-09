@@ -320,13 +320,14 @@ export const FinancialRecordsProvider = ({
         throw new Error('Failed to update record');
       }
       const updated = await response.json();
+      const migrated = migrateRecord(updated);
 
       // Optimistic/Local update is safe for updates (ID match)
       setRecords((prevRecords) =>
-        prevRecords.map((record) => (record._id === id ? updated : record)),
+        prevRecords.map((record) => (record._id === id ? migrated : record)),
       );
       setRecentRecords((prevRecords) =>
-        prevRecords.map((record) => (record._id === id ? updated : record)),
+        prevRecords.map((record) => (record._id === id ? migrated : record)),
       );
 
       await fetchBudgets();
