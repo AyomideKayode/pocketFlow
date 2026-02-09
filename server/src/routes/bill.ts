@@ -15,7 +15,7 @@ router.get('/', async (req: Request, res: Response) => {
     res.status(200).json(bills);
   } catch (error) {
     console.error('Error fetching bills:', error);
-    res.status(500).send(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
@@ -29,8 +29,22 @@ router.post('/', async (req: Request, res: Response) => {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
+    const parsedAmount = Number(amount);
+    if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
+      return res.status(400).json({ message: 'Amount must be a positive number' });
+    }
+
+    const parsedDueDay = Number(dueDay);
+    if (!Number.isInteger(parsedDueDay) || parsedDueDay < 1 || parsedDueDay > 31) {
+      return res.status(400).json({ message: 'Due day must be an integer between 1 and 31' });
+    }
+
     const bill = await BillService.createBill({
-      ...req.body,
+      name,
+      amount: parsedAmount,
+      dueDay: parsedDueDay,
+      isRecurring: !!isRecurring,
+      lastPaidPeriod: null, // Reset on create
       userId,
     });
     res.status(201).json(bill);
@@ -39,7 +53,7 @@ router.post('/', async (req: Request, res: Response) => {
       return res.status(400).json({ message: error.message });
     }
     console.error('Error creating bill:', error);
-    res.status(500).send(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
@@ -49,7 +63,30 @@ router.put('/:id', async (req: Request, res: Response) => {
     const id = req.params.id;
     if (!id) return res.status(400).json({ message: 'ID is required' });
 
-    const updated = await BillService.updateBill(id, userId, req.body);
+    const { name, amount, dueDay, isRecurring, lastPaidPeriod } = req.body;
+    const updates: any = {};
+
+    if (name !== undefined) updates.name = name;
+    if (isRecurring !== undefined) updates.isRecurring = !!isRecurring;
+    if (lastPaidPeriod !== undefined) updates.lastPaidPeriod = lastPaidPeriod;
+
+    if (amount !== undefined) {
+      const parsedAmount = Number(amount);
+      if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
+        return res.status(400).json({ message: 'Amount must be a positive number' });
+      }
+      updates.amount = parsedAmount;
+    }
+
+    if (dueDay !== undefined) {
+      const parsedDueDay = Number(dueDay);
+      if (!Number.isInteger(parsedDueDay) || parsedDueDay < 1 || parsedDueDay > 31) {
+        return res.status(400).json({ message: 'Due day must be an integer between 1 and 31' });
+      }
+      updates.dueDay = parsedDueDay;
+    }
+
+    const updated = await BillService.updateBill(id, userId, updates);
     if (!updated) return res.status(404).json({ message: 'Bill not found' });
     res.status(200).json(updated);
   } catch (error: any) {
@@ -57,7 +94,7 @@ router.put('/:id', async (req: Request, res: Response) => {
       return res.status(400).json({ message: error.message });
     }
     console.error('Error updating bill:', error);
-    res.status(500).send(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 
@@ -72,7 +109,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
     res.status(200).json({ message: 'Bill deleted' });
   } catch (error) {
     console.error('Error deleting bill:', error);
-    res.status(500).send(error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 });
 

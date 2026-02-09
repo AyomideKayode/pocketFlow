@@ -28,6 +28,11 @@ export const BillForm: React.FC<BillFormProps> = ({ initialData, onSave, onCance
       return;
     }
 
+    if (parsedAmount <= 0) {
+      setError('Amount must be greater than 0.');
+      return;
+    }
+
     if (parsedDueDay < 1 || parsedDueDay > 31) {
       setError('Due day must be between 1 and 31.');
       return;
@@ -79,6 +84,7 @@ export const BillForm: React.FC<BillFormProps> = ({ initialData, onSave, onCance
           <label className="block text-sm font-medium text-slate-400 mb-1">Amount</label>
           <input
             type="number"
+            min="0.01"
             step="0.01"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}

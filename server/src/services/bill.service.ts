@@ -32,7 +32,10 @@ export const updateBill = async (
   userId: string,
   data: Partial<Bill>,
 ) => {
-  return await BillModel.findOneAndUpdate({ _id: id, userId }, data, {
+  // Prevent userId or protected fields from being overwritten
+  const { userId: _, _id, createdAt, updatedAt, ...safeData } = data as any;
+
+  return await BillModel.findOneAndUpdate({ _id: id, userId }, safeData, {
     new: true,
   });
 };

@@ -5,6 +5,7 @@ import type { Bill } from '../../types/bill';
 import { BillForm } from './BillForm';
 import { Loader2, Plus, Calendar, CheckCircle2, Trash2, AlertCircle, Pencil } from 'lucide-react';
 import { useToast } from '../../contexts/toast-context';
+import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 
 export const Bills: React.FC = () => {
   const { user } = useAuth();
@@ -251,6 +252,8 @@ interface BillCardProps {
 }
 
 const BillCard: React.FC<BillCardProps> = ({ bill, isPaid, dueDateDisplay, onMarkPaid, onEdit, onDelete }) => {
+   const { format } = useCurrencyFormatter();
+
    return (
       <div className="flex items-center justify-between p-4 bg-slate-900 border border-slate-800 rounded-lg hover:border-slate-700 transition-colors group">
          <div className="flex items-center gap-4">
@@ -285,9 +288,9 @@ const BillCard: React.FC<BillCardProps> = ({ bill, isPaid, dueDateDisplay, onMar
 
          <div className="flex items-center gap-4">
             <span className={`font-semibold ${isPaid ? 'text-slate-500' : 'text-emerald-400'}`}>
-               {new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD' }).format(bill.amount)}
+               {format(bill.amount)}
             </span>
-            <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+            <div className="flex items-center gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
                <button
                   onClick={onEdit}
                   className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded"
