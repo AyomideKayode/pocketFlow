@@ -62,8 +62,8 @@ router.get('/getAllByUserId/:userId', async (req: Request, res: Response) => {
     }
 
     // Pagination
-    const pageNum = page ? parseInt(page as string) : 1;
-    const limitNum = limit ? parseInt(limit as string) : 0; // 0 means no limit (all)
+    const pageNum = Math.max(1, parseInt(page as string) || 1);
+    const limitNum = Math.max(0, parseInt(limit as string) || 0); // 0 means no limit (all)
 
     // Sorting
     const allowedSortFields = ['date', 'amount', 'category', 'type', 'paymentMethod'];
