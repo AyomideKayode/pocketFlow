@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useCallback,
   useState,
+  useRef,
 } from 'react';
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';
@@ -74,12 +75,17 @@ export const FinancialRecordsProvider = ({
     limit: 0,
     pages: 1,
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { addToast } = useToast();
   const { fetchBudgets } = useBudgets();
   const { profile, updateProfile } = useUserProfile();
   const { trackEvent } = useAnalytics();
+
+  // Track last used filters to enable re-fetching after mutations
+  const lastFiltersRef = useRef<FilterState | null>(null);
+  // AbortController to handle race conditions in fetch
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
@@ -111,6 +117,19 @@ export const FinancialRecordsProvider = ({
   const fetchRecords = useCallback(
     async (filters: FilterState = {}) => {
       if (!user) return;
+
+      // Update last used filters
+      lastFiltersRef.current = filters;
+
+      // Cancel previous request if exists
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      // Create new controller
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
       setLoading(true);
 
       const params = new URLSearchParams();
@@ -128,6 +147,7 @@ export const FinancialRecordsProvider = ({
       try {
         const response = await fetch(
           `${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}?${params.toString()}`,
+          { signal: controller.signal }
         );
 
         if (response.ok) {
@@ -152,13 +172,29 @@ export const FinancialRecordsProvider = ({
           setRecords(migrated);
         }
       } catch (error) {
+        if (error instanceof Error && error.name === 'AbortError') {
+          // Ignore abort errors
+          return;
+        }
         console.error('Error fetching records:', error);
       } finally {
-        setLoading(false);
+        // Only turn off loading if this is the active request
+        if (abortControllerRef.current === controller) {
+            setLoading(false);
+        }
       }
     },
     [user, API_BASE_URL],
   );
+
+  // Clean up on unmount
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
 
   // Fetch specifically for Dashboard (recent 5)
   const refreshRecent = useCallback(async () => {
@@ -190,13 +226,6 @@ export const FinancialRecordsProvider = ({
   useEffect(() => {
     if (user) {
         refreshRecent();
-        // Note: We do NOT fetch 'records' (main list) automatically anymore.
-        // The Transactions page should trigger that on mount.
-        // But for backward compatibility with other pages that might expect `records` to be populated...
-        // If other pages rely on `records`, they might show empty now.
-        // Given constraints "Users now have meaningful history", lazy loading is correct.
-        // However, if the App starts on Dashboard, `records` is empty.
-        // If user navigates to Transactions, Transactions page will call fetchRecords.
     }
   }, [user, refreshRecent]);
 
@@ -214,36 +243,11 @@ export const FinancialRecordsProvider = ({
       }
       // Refresh lists to ensure consistency
       await Promise.all([
-          // If the user is on Transactions page, we want to see the new record if it matches filters
-          // But we don't know the current filters here easily unless we store them in state.
-          // For now, we only refresh recent.
-          // To make 'records' update, we'd need to re-fetch with *current* filters.
-          // Since we didn't store current filters in a ref/state accessible here (only local vars in fetchRecords),
-          // we might just append to `records` optimistically?
-          // Optimistic update for `records`:
-          // But we don't know if it matches server filters.
-          // Simplest approach: Just refresh Recent.
-          // If user is on Transactions page, they might need to refresh or we force a refresh?
-          // Let's rely on optimistic update for simple UX or just refresh Recent.
-          // Actually, `records` state is local here.
-          // If I append to `records`, it might violate sort/filter.
-          // "Users now have meaningful history".
-          // I will refresh Recent.
-          // For `records`, I won't touch it unless I know it's safe.
-          // The user experience: Add record -> Success -> List updates?
-          // If I don't update `records`, the list won't show it.
-          // I'll assume standard usage: Append to `records` if it looks like it belongs (e.g. sorted by date).
-          // But with pagination, it's hard.
-          // Safe bet: Just refresh Recent.
+          // Refresh main list if we have active filters (Transactions page)
+          lastFiltersRef.current ? fetchRecords(lastFiltersRef.current) : Promise.resolve(),
           refreshRecent(),
           fetchBudgets()
       ]);
-
-      // If we want to update `records`, we need to trigger a fetch.
-      // But we need the last used filters.
-      // I'll leave `records` stale for now? No, that's bad.
-      // I should store `lastFilters` in a ref or state.
-      // But for this refactor, I'll stick to updating `recentRecords`.
 
       addToast('Financial record added successfully!', 'success');
 
@@ -281,6 +285,7 @@ export const FinancialRecordsProvider = ({
       }
 
       await Promise.all([
+          lastFiltersRef.current ? fetchRecords(lastFiltersRef.current) : Promise.resolve(),
           refreshRecent(),
           fetchBudgets()
       ]);
@@ -320,16 +325,16 @@ export const FinancialRecordsProvider = ({
         throw new Error('Failed to update record');
       }
       const updated = await response.json();
-      const migrated = migrateRecord(updated);
 
       // Optimistic/Local update is safe for updates (ID match)
       setRecords((prevRecords) =>
-        prevRecords.map((record) => (record._id === id ? migrated : record)),
+        prevRecords.map((record) => (record._id === id ? updated : record)),
       );
       setRecentRecords((prevRecords) =>
-        prevRecords.map((record) => (record._id === id ? migrated : record)),
+        prevRecords.map((record) => (record._id === id ? updated : record)),
       );
 
+      // Also refresh budget as categories/amounts might change
       await fetchBudgets();
       addToast('Financial record updated successfully!', 'success');
     } catch (error) {
@@ -347,14 +352,14 @@ export const FinancialRecordsProvider = ({
         throw new Error('Failed to delete record');
       }
 
-      setRecords((prevRecords) =>
-        prevRecords.filter((record) => record._id !== id),
-      );
-      setRecentRecords((prevRecords) =>
-        prevRecords.filter((record) => record._id !== id),
-      );
+      // Refetch logic similar to addRecord to ensure pagination is correct
+      // (Optimistic delete might leave a short page)
+      await Promise.all([
+          lastFiltersRef.current ? fetchRecords(lastFiltersRef.current) : Promise.resolve(),
+          refreshRecent(),
+          fetchBudgets()
+      ]);
 
-      await fetchBudgets();
       addToast('Financial record deleted successfully!', 'success');
     } catch (error) {
       console.error('Error deleting record:', error);

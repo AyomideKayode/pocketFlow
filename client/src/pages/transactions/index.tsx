@@ -63,11 +63,16 @@ export const Transactions = () => {
   ]);
 
   const handleFilterChange = (key: keyof FilterState, value: any) => {
-    setFilters((prev) => ({
-      ...prev,
-      [key]: value,
-      page: 1, // Reset to page 1 on filter change
-    }));
+    setFilters((prev) => {
+      const updates: any = { [key]: value, page: 1 };
+
+      // If changing type, clear the category as options will change
+      if (key === 'type') {
+        updates.category = '';
+      }
+
+      return { ...prev, ...updates };
+    });
   };
 
   const handlePageChange = (newPage: number) => {

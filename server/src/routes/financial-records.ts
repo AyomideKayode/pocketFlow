@@ -46,32 +46,50 @@ router.get('/getAllByUserId/:userId', async (req: Request, res: Response) => {
     const query: any = { userId };
 
     // Apply filters
-    if (category && typeof category === 'string') {
+    if (category) {
       query.category = category;
     }
-    if (type && typeof type === 'string' && ['income', 'expense'].includes(type)) {
+    if (type) {
       query.type = type;
     }
-    if (paymentMethod && typeof paymentMethod === 'string') {
+    if (paymentMethod) {
       query.paymentMethod = paymentMethod;
     }
     if (startDate || endDate) {
       query.date = {};
-      if (startDate) query.date.$gte = new Date(startDate as string);
-      if (endDate) query.date.$lte = new Date(endDate as string);
+
+      if (startDate) {
+        const start = new Date(startDate as string);
+        if (!Number.isFinite(start.getTime())) {
+            return res.status(400).json({ message: 'Invalid startDate parameter.' });
+        }
+        // Normalize to start of day (UTC) or just set hours/min/sec to 0?
+        // Since input is YYYY-MM-DD from frontend usually, `new Date('2023-01-01')` is UTC 00:00.
+        // If it's full ISO, we should respect it but "start date" usually implies "from beginning of that day".
+        // Let's ensure time is 00:00:00.000 for that day.
+        start.setUTCHours(0, 0, 0, 0);
+        query.date.$gte = start;
+      }
+
+      if (endDate) {
+        const end = new Date(endDate as string);
+        if (!Number.isFinite(end.getTime())) {
+            return res.status(400).json({ message: 'Invalid endDate parameter.' });
+        }
+        // Normalize to end of day
+        end.setUTCHours(23, 59, 59, 999);
+        query.date.$lte = end;
+      }
     }
 
     // Pagination
-    const pageNum = Math.max(1, parseInt(page as string) || 1);
-    const limitNum = Math.max(0, parseInt(limit as string) || 0); // 0 means no limit (all)
+    const pageNum = page ? parseInt(page as string) : 1;
+    const limitNum = limit ? parseInt(limit as string) : 0; // 0 means no limit (all)
 
     // Sorting
-    const allowedSortFields = ['date', 'amount', 'category', 'type', 'paymentMethod'];
-    const sortField = (typeof sortBy === 'string' && allowedSortFields.includes(sortBy))
-      ? sortBy
-      : 'date';
+    const sortField = (sortBy as string) || 'date';
     const sortDir = sortOrder === 'asc' ? 1 : -1;
-    const sort: Record<string, 1 | -1> = { [sortField]: sortDir };
+    const sort: any = { [sortField]: sortDir };
 
     // If default sort is by date, we might want to also sort by _id for stability if dates are equal?
     // Mongoose sorts by insertion order if keys are equal, usually fine.

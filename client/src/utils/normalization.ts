@@ -5,20 +5,23 @@ export const normalizePaymentMethod = (raw: string): string => {
 
   // Return early if already normalized (or close enough)
   if (['credit card', 'cash', 'bank transfer'].includes(normalized)) {
-      // Capitalize properly
-      if (normalized === 'credit card') return 'Credit Card';
-      if (normalized === 'cash') return 'Cash';
-      if (normalized === 'bank transfer') return 'Bank Transfer';
+    // Capitalize properly
+    if (normalized === 'credit card') return 'Credit Card';
+    if (normalized === 'cash') return 'Cash';
+    if (normalized === 'bank transfer') return 'Bank Transfer';
   }
 
   // Credit Card
+  // Check for standalone "cc" using word boundaries or exact token match
+  const isCC = /\bcc\b/.test(normalized);
+
   if (
     normalized.includes('credit') ||
     normalized.includes('visa') ||
     normalized.includes('mastercard') ||
     normalized.includes('amex') ||
     normalized.includes('card') ||
-    normalized.includes('cc') ||
+    isCC ||
     normalized.includes('debit')
   ) {
     console.log(`[Normalization] Payment Method: "${raw}" -> "Credit Card"`);
@@ -26,9 +29,17 @@ export const normalizePaymentMethod = (raw: string): string => {
   }
 
   // Cash
+  // Exclude electronic bill phrases from "bill" check
+  const isBill = normalized.includes('bill');
+  const isElectronicBill =
+    normalized.includes('bill pay') ||
+    normalized.includes('billpay') ||
+    normalized.includes('bill payment') ||
+    normalized.includes('utility');
+
   if (
     normalized.includes('cash') ||
-    normalized.includes('bill') ||
+    (isBill && !isElectronicBill) ||
     normalized.includes('notes')
     // removed 'coin' to avoid false positives with 'bitcoin'
   ) {
