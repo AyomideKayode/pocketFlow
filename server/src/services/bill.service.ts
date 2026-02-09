@@ -1,4 +1,4 @@
-import BillModel, { Bill } from '../schema/bill.js';
+import BillModel, { type Bill } from '../schema/bill.js';
 
 export const getBills = async (userId: string, period?: string) => {
   const currentPeriod = period || new Date().toISOString().slice(0, 7);
