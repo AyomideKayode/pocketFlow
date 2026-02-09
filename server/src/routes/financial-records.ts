@@ -46,13 +46,13 @@ router.get('/getAllByUserId/:userId', async (req: Request, res: Response) => {
     const query: any = { userId };
 
     // Apply filters
-    if (category) {
+    if (category && typeof category === 'string') {
       query.category = category;
     }
-    if (type) {
+    if (type && typeof type === 'string' && ['income', 'expense'].includes(type)) {
       query.type = type;
     }
-    if (paymentMethod) {
+    if (paymentMethod && typeof paymentMethod === 'string') {
       query.paymentMethod = paymentMethod;
     }
     if (startDate || endDate) {
