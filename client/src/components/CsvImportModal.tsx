@@ -8,6 +8,7 @@ import {
   type FinancialRecord,
 } from '../contexts/financial-record-context';
 import { useAuth } from '../contexts/auth-context';
+import { normalizePaymentMethod } from '../utils/normalization';
 
 interface CsvImportModalProps {
   isOpen: boolean;
@@ -19,6 +20,7 @@ interface ParsedRow {
   amount: string;
   category: string;
   description: string;
+  payment_method?: string; // Add optional field
 }
 
 interface ValidatedRow {
@@ -163,6 +165,9 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
     const category = row.category;
     const description = row.description || '';
 
+    // Check for payment method aliases
+    const paymentMethodRaw = row.payment_method || row.method || row.payment || row.source;
+
     // Validate Date
     const date = parseDate(dateStr);
     if (!date) {
@@ -185,13 +190,16 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
 
     if (isValid) {
       const isIncome = amountNum >= 0;
+      // Normalize payment method (fallback to CSV Import if missing/low confidence)
+      const paymentMethod = normalizePaymentMethod(paymentMethodRaw);
+
       payload = {
         date: date ?? undefined,
         amount: Math.abs(amountNum),
         type: isIncome ? 'income' : 'expense',
         category: category.trim(),
         description: description.trim(),
-        paymentMethod: 'CSV Import',
+        paymentMethod: paymentMethod,
       };
     }
 
@@ -201,6 +209,7 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
         amount: amountStr,
         category: category,
         description: description,
+        payment_method: paymentMethodRaw,
       },
       isValid,
       errors,
@@ -398,6 +407,7 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
                         Amount
                       </th>
                       <th className='px-4 py-3 font-medium'>Category</th>
+                      <th className='px-4 py-3 font-medium'>Payment Method</th>
                     </tr>
                   </thead>
                   <tbody className='divide-y divide-slate-800'>
@@ -433,6 +443,12 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
                         </td>
                         <td className='px-4 py-3 text-slate-300'>
                           {row.original.category}
+                        </td>
+                        <td className='px-4 py-3 text-slate-300'>
+                          {/* Show the normalized value if valid, otherwise raw */}
+                          {row.isValid
+                            ? row.payload?.paymentMethod
+                            : (row.original.payment_method || '-')}
                         </td>
                       </tr>
                     ))}

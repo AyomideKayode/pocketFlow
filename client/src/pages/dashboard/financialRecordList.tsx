@@ -110,27 +110,54 @@ const columnHelper = createColumnHelper<FinancialRecord>();
 
 interface FinancialRecordListProps {
   limit?: number;
+  data?: FinancialRecord[];
 }
 
-export const FinancialRecordList = ({ limit }: FinancialRecordListProps) => {
+export const FinancialRecordList = ({ limit, data }: FinancialRecordListProps) => {
   const { records, updateRecord, deleteRecord } = useFinancialRecords();
   const { showConfirmation } = useConfirmationDialog();
   const { format } = useCurrencyFormatter();
 
+  // Use provided data or fallback to context records
+  // If data is provided, it's assumed to be the correct list (e.g. recent vs filtered)
+  const sourceRecords = data || records;
+
   const displayRecords = useMemo(() => {
-    // Sort by date descending
+    // If data is passed, it might be already sorted or not.
+    // However, the original component sorted locally.
+    // If we rely on server sort for filtered lists, we might not want to re-sort locally if it breaks pagination order?
+    // But currently we fetch page 1.
+    // For Dashboard (Recent 5), it comes sorted by date desc from API.
+    // For Transactions (Filtered), it comes sorted by whatever the filter said.
+    // So re-sorting locally by Date might be redundant or even wrong if the user selected "Sort by Amount".
+    // "Transactions Retrieval Upgrade" -> "Sort by amount asc / desc".
+    // If I force sort by Date here, I break the new feature.
+
+    // So: I should ONLY sort if the user hasn't specified a sort order via API, OR trust the API order.
+    // Since this is a UI component, trust the order of `sourceRecords` passed to it?
+    // The original code:
+    /*
     const sorted = [...records].sort((a, b) => {
       const dateA = new Date(a.date).getTime();
       const dateB = new Date(b.date).getTime();
       return dateB - dateA;
     });
+    */
+    // If I remove this sort, existing Dashboard behavior (sorted by date) relies on API being sorted.
+    // My updated API `refreshRecent` uses `sortBy=date&sortOrder=desc`. So API returns sorted.
+    // So I can remove the local sort here safely?
+    // Yes, for "Recent" it works.
+    // For "Filtered", it respects API.
+    // So I should remove the local sort to support "Sort by Amount".
 
-    // Limit if needed
+    let processed = [...sourceRecords];
+
+    // Limit if needed (Client-side limit for legacy usage or double safety)
     if (limit && limit > 0) {
-      return sorted.slice(0, limit);
+      processed = processed.slice(0, limit);
     }
-    return sorted;
-  }, [records, limit]);
+    return processed;
+  }, [sourceRecords, limit]);
 
   const handleDeleteRecord = useCallback(
     (record: FinancialRecord) => {
@@ -265,7 +292,7 @@ export const FinancialRecordList = ({ limit }: FinancialRecordListProps) => {
     getCoreRowModel: getCoreRowModel(),
   });
 
-  if (records.length === 0) {
+  if (sourceRecords.length === 0) {
     return null;
   }
 

@@ -3,6 +3,8 @@ import React, {
   useContext,
   useEffect,
   useCallback,
+  useState,
+  useRef,
 } from 'react';
 import { useAuth } from './auth-context';
 import { useToast } from './toast-context';
@@ -21,9 +23,30 @@ export interface FinancialRecord {
   paymentMethod: string;
 }
 
+export interface FilterState {
+  category?: string;
+  type?: string;
+  paymentMethod?: string;
+  startDate?: string;
+  endDate?: string;
+  sortBy?: string;
+  sortOrder?: 'asc' | 'desc';
+  page?: number;
+  limit?: number;
+}
+
+interface PaginationState {
+  total: number;
+  page: number;
+  limit: number;
+  pages: number;
+}
+
 interface FinancialRecordContextType {
-  records: FinancialRecord[];
+  records: FinancialRecord[]; // Filtered/Paginated list
+  recentRecords: FinancialRecord[]; // Recent 5 for dashboard
   loading: boolean;
+  pagination: PaginationState;
   addRecord: (record: FinancialRecord) => Promise<void>;
   addBulkRecords: (records: FinancialRecord[]) => Promise<void>;
   updateRecord: (
@@ -31,6 +54,8 @@ interface FinancialRecordContextType {
     updatedRecord: Partial<FinancialRecord>,
   ) => Promise<void>;
   deleteRecord: (id: string) => Promise<void>;
+  fetchRecords: (filters?: FilterState) => Promise<void>;
+  refreshRecent: () => Promise<void>;
 }
 
 const FinancialRecordContext = createContext<
@@ -42,13 +67,25 @@ export const FinancialRecordsProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [records, setRecords] = React.useState<FinancialRecord[]>([]);
-  const [loading, setLoading] = React.useState(true);
+  const [records, setRecords] = useState<FinancialRecord[]>([]);
+  const [recentRecords, setRecentRecords] = useState<FinancialRecord[]>([]);
+  const [pagination, setPagination] = useState<PaginationState>({
+    total: 0,
+    page: 1,
+    limit: 0,
+    pages: 1,
+  });
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const { addToast } = useToast();
   const { fetchBudgets } = useBudgets();
   const { profile, updateProfile } = useUserProfile();
   const { trackEvent } = useAnalytics();
+
+  // Track last used filters to enable re-fetching after mutations
+  const lastFiltersRef = useRef<FilterState | null>(null);
+  // AbortController to handle race conditions in fetch
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
@@ -76,34 +113,121 @@ export const FinancialRecordsProvider = ({
     };
   };
 
-  const fetchRecordsByUserId = useCallback(
-    async (showLoading = false) => {
+  // Fetch with support for filters/pagination
+  const fetchRecords = useCallback(
+    async (filters: FilterState = {}) => {
       if (!user) return;
 
-      if (showLoading) setLoading(true);
+      // Update last used filters
+      lastFiltersRef.current = filters;
+
+      // Cancel previous request if exists
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+
+      // Create new controller
+      const controller = new AbortController();
+      abortControllerRef.current = controller;
+
+      setLoading(true);
+
+      const params = new URLSearchParams();
+      if (filters.category) params.append('category', filters.category);
+      if (filters.type) params.append('type', filters.type);
+      if (filters.paymentMethod)
+        params.append('paymentMethod', filters.paymentMethod);
+      if (filters.startDate) params.append('startDate', filters.startDate);
+      if (filters.endDate) params.append('endDate', filters.endDate);
+      if (filters.sortBy) params.append('sortBy', filters.sortBy);
+      if (filters.sortOrder) params.append('sortOrder', filters.sortOrder);
+      if (filters.page) params.append('page', filters.page.toString());
+      if (filters.limit) params.append('limit', filters.limit.toString());
+
       try {
         const response = await fetch(
-          `${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}`,
+          `${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}?${params.toString()}`,
+          { signal: controller.signal }
         );
 
         if (response.ok) {
-          const rawRecords = await response.json();
-          // Migrate legacy records and ensure type field exists
-          const migratedRecords = rawRecords.map(migrateRecord);
-          setRecords(migratedRecords);
+          const result = await response.json();
+          // Check if result is array (legacy) or object (paginated)
+          let fetchedRecords = [];
+
+          if (Array.isArray(result)) {
+            fetchedRecords = result;
+            setPagination({
+              total: result.length,
+              page: 1,
+              limit: 0,
+              pages: 1,
+            });
+          } else {
+            fetchedRecords = result.data;
+            setPagination(result.pagination);
+          }
+
+          const migrated = fetchedRecords.map(migrateRecord);
+          setRecords(migrated);
         }
       } catch (error) {
+        if (error instanceof Error && error.name === 'AbortError') {
+          // Ignore abort errors
+          return;
+        }
         console.error('Error fetching records:', error);
       } finally {
-        if (showLoading) setLoading(false);
+        // Only turn off loading if this is the active request
+        if (abortControllerRef.current === controller) {
+            setLoading(false);
+        }
       }
     },
     [user, API_BASE_URL],
   );
 
+  // Clean up on unmount
   useEffect(() => {
-    fetchRecordsByUserId(true);
-  }, [user, fetchRecordsByUserId]);
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort();
+      }
+    };
+  }, []);
+
+  // Fetch specifically for Dashboard (recent 5)
+  const refreshRecent = useCallback(async () => {
+    if (!user) return;
+    // Don't set main loading state to avoid flickering whole app
+    try {
+      const params = new URLSearchParams({
+        limit: '5',
+        sortBy: 'date',
+        sortOrder: 'desc',
+      });
+      const response = await fetch(
+        `${API_BASE_URL}/financial-records/getAllByUserId/${user.uid}?${params.toString()}`,
+      );
+
+      if (response.ok) {
+        const result = await response.json();
+        // Should be object format since limit is passed
+        const data = Array.isArray(result) ? result : result.data;
+        const migrated = data.map(migrateRecord);
+        setRecentRecords(migrated);
+      }
+    } catch (error) {
+      console.error('Error fetching recent records:', error);
+    }
+  }, [user, API_BASE_URL]);
+
+  // Initial load: Fetch recent for dashboard
+  useEffect(() => {
+    if (user) {
+        refreshRecent();
+    }
+  }, [user, refreshRecent]);
 
   const addRecord = async (record: FinancialRecord) => {
     try {
@@ -117,16 +241,18 @@ export const FinancialRecordsProvider = ({
       if (!response.ok) {
         throw new Error('Failed to add record');
       }
-      const savedRecord = await response.json();
-      setRecords((prevRecords) => [...prevRecords, savedRecord]);
+      // Refresh lists to ensure consistency
+      await Promise.all([
+          // Refresh main list if we have active filters (Transactions page)
+          lastFiltersRef.current ? fetchRecords(lastFiltersRef.current) : Promise.resolve(),
+          refreshRecent(),
+          fetchBudgets()
+      ]);
 
-      await fetchBudgets();
       addToast('Financial record added successfully!', 'success');
 
-      // Analytics: Check for first transaction
       if (profile && !profile.hasCreatedFirstTransaction) {
         trackEvent('first_transaction_created');
-        // add .catch() to avoid unhandled promise if updateProfile fails
         void updateProfile({ hasCreatedFirstTransaction: true }, true).catch((err) => {
           console.error('Failed to persist first-transaction flag', err);
         });
@@ -158,19 +284,20 @@ export const FinancialRecordsProvider = ({
         throw new Error('Failed to import records');
       }
 
-      const savedRecords = await response.json();
-      setRecords((prevRecords) => [...prevRecords, ...savedRecords]);
+      await Promise.all([
+          lastFiltersRef.current ? fetchRecords(lastFiltersRef.current) : Promise.resolve(),
+          refreshRecent(),
+          fetchBudgets()
+      ]);
 
-      await fetchBudgets();
+      const savedRecords = await response.json();
       addToast(
         `${savedRecords.length} records imported successfully!`,
         'success',
       );
 
-      // Analytics: Check for first transaction
       if (profile && !profile.hasCreatedFirstTransaction) {
         trackEvent('first_transaction_created');
-        // add .catch() to avoid unhandled promise if updateProfile fails
         void updateProfile({ hasCreatedFirstTransaction: true }, true).catch((err) => {
           console.error('Failed to persist first-transaction flag', err);
         });
@@ -198,10 +325,16 @@ export const FinancialRecordsProvider = ({
         throw new Error('Failed to update record');
       }
       const updated = await response.json();
+
+      // Optimistic/Local update is safe for updates (ID match)
       setRecords((prevRecords) =>
         prevRecords.map((record) => (record._id === id ? updated : record)),
       );
+      setRecentRecords((prevRecords) =>
+        prevRecords.map((record) => (record._id === id ? updated : record)),
+      );
 
+      // Also refresh budget as categories/amounts might change
       await fetchBudgets();
       addToast('Financial record updated successfully!', 'success');
     } catch (error) {
@@ -218,11 +351,15 @@ export const FinancialRecordsProvider = ({
       if (!response.ok) {
         throw new Error('Failed to delete record');
       }
-      setRecords((prevRecords) =>
-        prevRecords.filter((record) => record._id !== id),
-      );
 
-      await fetchBudgets();
+      // Refetch logic similar to addRecord to ensure pagination is correct
+      // (Optimistic delete might leave a short page)
+      await Promise.all([
+          lastFiltersRef.current ? fetchRecords(lastFiltersRef.current) : Promise.resolve(),
+          refreshRecent(),
+          fetchBudgets()
+      ]);
+
       addToast('Financial record deleted successfully!', 'success');
     } catch (error) {
       console.error('Error deleting record:', error);
@@ -234,11 +371,15 @@ export const FinancialRecordsProvider = ({
     <FinancialRecordContext.Provider
       value={{
         records,
+        recentRecords,
         loading,
+        pagination,
         addRecord,
         addBulkRecords,
         updateRecord,
         deleteRecord,
+        fetchRecords,
+        refreshRecent,
       }}
     >
       {children}

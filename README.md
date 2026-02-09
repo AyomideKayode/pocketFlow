@@ -161,10 +161,12 @@ PocketFlow is being built in distinct phases to ensure stability and code qualit
 - **Phase 9B: Insights (Derived Intelligence)**: Backend analytics pipelines for budget cycle analysis and historical over-budget detection.
 - **Phase 10A: Email Infrastructure**: Provider-agnostic email service, template system, and user preference management.
 - **Phase 10B: Safe Notifications**: High-confidence budget alerts (100%), goal achievements, and weekly summaries with strict idempotency and historical suppression.
+- **Phase 11A: Data Capability Expansion**: Payment method normalization, advanced server-side transaction filtering/sorting/pagination, and improved import flows.
 
 ### 🔮 Future Direction
 
-- **Phase 11: Expansion**: Recurring bills, educational insights, and advanced financial capabilities.
+- **Phase 11B: Bills**: Recurring bill tracking and due date awareness.
+- **Phase 11C: Learn**: Educational insights and financial tips.
 
 For a detailed history of the development process, challenges, and architectural decisions, see the [Development Blueprint](./POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
 
