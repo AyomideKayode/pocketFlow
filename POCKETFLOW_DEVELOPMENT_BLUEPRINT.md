@@ -603,6 +603,31 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ---
 
+### **Phase 11B Hardening: Authority & Validation (ADR-001)** ✅ COMPLETED
+
+- **Features:**
+  - **Server-Side Authority:** Migrated payment logic from client to server. Introduced `POST /pay` and `POST /unpay` endpoints.
+  - **Strict Validation:**
+    - `PUT` updates to `lastPaidPeriod` are strictly rejected with 400 Bad Request.
+    - Period strings (`YYYY-MM`) are validated via Regex at schema and route level.
+    - "Unpay" action is only allowed if the bill was paid in the *current* period, preserving historical records.
+  - **Centralized Logic:** Date handling and due day overflow logic moved to shared `server/src/utils/date.ts`.
+
+- **Implementation Details:**
+  - **Backend:**
+    - `bill.service.ts`: `markAsPaid` now throws "Bill not found" for consistent error handling. `markAsUnpaid` throws if period mismatch (409 Conflict).
+    - `bill.ts`: Route handlers normalize error objects to prevent crashes on non-Error throws.
+  - **Frontend:**
+    - `bill-service.ts`: Updated to use new RPC-style endpoints.
+    - `Bills.tsx`: UI handles 409 Conflict errors gracefully.
+
+- **Key Learnings:**
+  - **Guardrails:** Preventing client-side state manipulation (via `PUT`) is critical for long-term data integrity.
+  - **Validation Layers:** Implementing validation at Route (Regex), Service (Logic), and Schema (Mongoose) provides depth of defense.
+  - **Error Safety:** Always normalize caught objects in `catch` blocks before accessing properties to prevent runtime crashes.
+
+---
+
 ## Planned Phases & Next Steps
 
 ### **Phase 11C: Learn & Insights Page**
