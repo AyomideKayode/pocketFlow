@@ -128,10 +128,14 @@ router.post('/:id/pay', async (req: Request, res: Response) => {
     if (!id) return res.status(400).json({ message: 'ID is required' });
 
     const bill = await BillService.markAsPaid(id, userId);
-    if (!bill) return res.status(404).json({ message: 'Bill not found' });
-
     res.status(200).json(bill);
-  } catch (error) {
+  } catch (error: any) {
+    const msg =
+      error && typeof error.message === 'string' ? error.message : String(error);
+
+    if (msg === 'Bill not found') {
+      return res.status(404).json({ message: 'Bill not found' });
+    }
     console.error('Error marking bill as paid:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
@@ -146,11 +150,14 @@ router.post('/:id/unpay', async (req: Request, res: Response) => {
     const bill = await BillService.markAsUnpaid(id, userId);
     res.status(200).json(bill);
   } catch (error: any) {
-    if (error.message === 'Bill not found') {
+    const msg =
+      error && typeof error.message === 'string' ? error.message : String(error);
+
+    if (msg === 'Bill not found') {
       return res.status(404).json({ message: 'Bill not found' });
     }
-    if (error.message.includes('Cannot unpay')) {
-      return res.status(409).json({ message: error.message });
+    if (msg.includes('Cannot unpay')) {
+      return res.status(409).json({ message: msg });
     }
     console.error('Error marking bill as unpaid:', error);
     res.status(500).json({ message: 'Internal server error' });

@@ -69,7 +69,7 @@ describe('Bill Routes - Hardening', () => {
     });
 
     it('should return 404 if bill not found', async () => {
-      vi.mocked(BillService.markAsPaid).mockResolvedValue(null);
+      vi.mocked(BillService.markAsPaid).mockRejectedValue(new Error('Bill not found'));
 
       const response = await request(app).post('/bills/bill123/pay');
 
