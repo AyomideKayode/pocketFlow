@@ -22,7 +22,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }
 
   if (!user) {
-    return <Navigate to='/auth' />;
+    return <Navigate to='/' />;
   }
 
   return <>{children}</>;

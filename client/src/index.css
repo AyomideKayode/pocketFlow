@@ -4,6 +4,7 @@
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-accent: "Space Mono", monospace;
+  --font-landing: "Inter", sans-serif;
 }
 
 @layer base {

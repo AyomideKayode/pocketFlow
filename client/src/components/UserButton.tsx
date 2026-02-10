@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/auth-context';
 import { useUserProfile } from '../contexts/user-profile-context';
 import { useToast } from '../contexts/toast-context';
@@ -21,6 +21,7 @@ export const UserButton: React.FC = () => {
   const { user, logout, linkGoogleAccount } = useAuth();
   const { profile } = useUserProfile();
   const { addToast } = useToast();
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLinking, setIsLinking] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -47,6 +48,7 @@ export const UserButton: React.FC = () => {
   const handleLogout = async () => {
     try {
       await logout();
+      navigate('/');
       addToast('Successfully signed out. See you soon!', 'success');
       setIsDropdownOpen(false);
     } catch (error) {

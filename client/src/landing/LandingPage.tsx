@@ -1,0 +1,29 @@
+import { LandingNavbar } from './components/LandingNavbar';
+import { Hero } from './components/Hero';
+import { ProblemRelief } from './components/ProblemRelief';
+import { Capabilities } from './components/Capabilities';
+import { TrustSecurity } from './components/TrustSecurity';
+import { HowItWorks } from './components/HowItWorks';
+import { FinalCTA } from './components/FinalCTA';
+import { FAQ } from './components/FAQ';
+import { Footer } from './components/Footer';
+
+export const LandingPage = () => {
+  return (
+    <div className="min-h-screen bg-slate-950 text-white font-landing selection:bg-emerald-500/30 overflow-x-hidden">
+      <LandingNavbar />
+
+      <main className="relative z-10 w-full">
+        <Hero />
+        <ProblemRelief />
+        <Capabilities />
+        <TrustSecurity />
+        <HowItWorks />
+        <FinalCTA />
+        <FAQ />
+      </main>
+
+      <Footer />
+    </div>
+  );
+};
