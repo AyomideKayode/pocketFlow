@@ -21,7 +21,9 @@ client/src/
 ├── lib/            # External library configurations (Firebase)
 ├── pages/          # Route components
 │   ├── auth/       # Login/Register pages
-│   └── dashboard/  # Main application view
+│   ├── dashboard/  # Main application view
+│   ├── learn/      # Educational content & Insights
+│   └── ...
 ├── utils/          # Helper functions
 │   ├── chartDataTransforms.ts # Data aggregation logic
 │   └── exportUtils.ts         # CSV export logic

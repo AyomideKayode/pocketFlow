@@ -628,13 +628,28 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ---
 
+### **Phase 11C: Learn & Insights** ✅ COMPLETED
+
+- **Features:**
+  - **Learn Page:** Dedicated educational hub with static content (Budgeting, Emergency Fund, Debt Management).
+  - **Insight Engine:** Deterministic, rule-based service generating personalized financial nudges.
+  - **Insights:**
+    - "Upcoming Bills": Warns if 2+ unpaid bills are due within 7 days.
+    - "Subscription Check": Notes if user has 5+ recurring bills.
+  - **Philosophy:** Strictly "calm" and "optional" tone. No AI, no probability, no judgment.
+
+- **Implementation Details:**
+  - **Service:** `InsightService` (Server) encapsulates all logic.
+  - **API:** `GET /insights` (Protected).
+  - **Frontend:** `client/src/pages/learn/index.tsx` renders insights and education cards.
+
+- **Key Learnings:**
+  - **Determinism is Trust:** Users trust insights they can verify (e.g., "You have 5 subscriptions").
+  - **Scope Control:** Rejecting "fuzzy matching" for payments kept the feature robust and explainable.
+
+---
+
 ## Planned Phases & Next Steps
-
-### **Phase 11C: Learn & Insights Page**
-
-- Actionable financial tips
-- Contextual advice based on user behavior
-- Non-prescriptive, educational focus
 
 ### **Phase Zeta: Bank Import (Exploratory)**
 

@@ -10,6 +10,7 @@ import { Transactions } from './pages/transactions';
 import { Budgets } from './pages/budgets';
 import { Bills } from './pages/bills';
 import { Goals } from './pages/goals';
+import { Learn } from './pages/learn';
 import { Settings } from './pages/settings';
 import { FinancialRecordsProvider } from './contexts/financial-record-context';
 import { BudgetsProvider } from './contexts/budget-context';
@@ -58,6 +59,7 @@ function App() {
             <Route path='/budgets' element={<Budgets />} />
             <Route path='/bills' element={<Bills />} />
             <Route path='/goals' element={<Goals />} />
+            <Route path='/learn' element={<Learn />} />
             <Route path='/settings' element={<Settings />} />
           </Route>
 

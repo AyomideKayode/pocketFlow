@@ -14,7 +14,8 @@ server/src/
 │   ├── financial-records.ts # CRUD operations for records
 │   ├── budget.ts           # Budget management
 │   ├── goal.ts             # Financial goals
-│   └── reports.ts          # Aggregation and export endpoints
+│   ├── reports.ts          # Aggregation and export endpoints
+│   └── insights.ts         # Deterministic insight generation
 ├── schema/
 │   ├── financial-records.ts # Mongoose model (Indexed)
 │   ├── budget.ts           # Budget model (Indexed)
@@ -50,6 +51,12 @@ server/src/
 - `GET /export`: Stream a CSV export of user records.
   - **Auth**: Requires `Authorization: Bearer <ID_TOKEN>`.
   - **Query Params**: `start`, `end`, `granularity`.
+
+### Insights (`/insights`)
+
+- `GET /`: Retrieve personalized financial insights.
+  - **Auth**: Requires `Authorization: Bearer <ID_TOKEN>`.
+  - **Returns**: Array of `Insight` objects (Upcoming Bills, Subscription Checks).
 
 ---
 
