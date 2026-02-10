@@ -76,9 +76,13 @@ router.put('/:id', async (req: Request, res: Response) => {
     // Hardening: Reject updates to lastPaidPeriod via PUT
     if (lastPaidPeriod !== undefined) {
       return res.status(400).json({
-        message: 'Cannot update lastPaidPeriod via PUT. Use /pay or /unpay endpoints.',
+        message:
+          'Cannot update lastPaidPeriod via PUT. Use /pay or /unpay endpoints.',
       });
     }
+
+    // Defensive: Strip lastPaidPeriod from request body to prevent accidental overwrites
+    delete req.body.lastPaidPeriod;
 
     const updates: any = {};
 
@@ -131,7 +135,9 @@ router.post('/:id/pay', async (req: Request, res: Response) => {
     res.status(200).json(bill);
   } catch (error: any) {
     const msg =
-      error && typeof error.message === 'string' ? error.message : String(error);
+      error && typeof error.message === 'string'
+        ? error.message
+        : String(error);
 
     if (msg === 'Bill not found') {
       return res.status(404).json({ message: 'Bill not found' });
@@ -151,7 +157,9 @@ router.post('/:id/unpay', async (req: Request, res: Response) => {
     res.status(200).json(bill);
   } catch (error: any) {
     const msg =
-      error && typeof error.message === 'string' ? error.message : String(error);
+      error && typeof error.message === 'string'
+        ? error.message
+        : String(error);
 
     if (msg === 'Bill not found') {
       return res.status(404).json({ message: 'Bill not found' });

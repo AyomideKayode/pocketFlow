@@ -79,6 +79,15 @@ export const billService = {
     });
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
+      
+      // Handle 409 Conflict: Cannot unpay past periods
+      if (response.status === 409) {
+        throw new Error(
+          error.message ||
+            'Cannot unpay bill from a past period. Unpaying is only allowed for the current period.'
+        );
+      }
+      
       throw new Error(error.message || 'Failed to mark bill as unpaid');
     }
     return response.json();

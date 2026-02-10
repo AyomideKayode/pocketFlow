@@ -22,6 +22,7 @@ export const Bills: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
   const [editingBill, setEditingBill] = useState<Bill | null>(null);
+  const [loadingBillId, setLoadingBillId] = useState<string | null>(null);
 
   // Use local time for current period
   const currentPeriod = useMemo(() => {
@@ -87,6 +88,7 @@ export const Bills: React.FC = () => {
   const handleMarkPaid = async (bill: Bill) => {
     if (!user) return;
     try {
+      setLoadingBillId(bill._id!);
       const token = await user.getIdToken();
       await billService.markBillPaid(token, bill._id!);
       addToast('Marked as paid', 'success');
@@ -94,27 +96,29 @@ export const Bills: React.FC = () => {
     } catch (error) {
       console.error('Error marking bill paid:', error);
       addToast('Failed to mark as paid', 'error');
+    } finally {
+      setLoadingBillId(null);
     }
   };
 
   const handleMarkUnpaid = async (bill: Bill) => {
     if (!user) return;
     try {
+      setLoadingBillId(bill._id!);
       const token = await user.getIdToken();
       await billService.markBillUnpaid(token, bill._id!);
       addToast('Marked as unpaid', 'success');
       fetchBills();
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error marking bill unpaid:', error);
-      // Handle the 409 Conflict specifically
-      if (error.message && error.message.includes('Cannot unpay')) {
-        addToast(
-          'Cannot unpay bills from previous months',
-          'error',
-        );
+      // Handle the 409 Conflict specifically with type safety
+      if (error instanceof Error && error.message.includes('Cannot unpay')) {
+        addToast('Cannot unpay bills from previous months', 'error');
       } else {
         addToast('Failed to mark as unpaid', 'error');
       }
+    } finally {
+      setLoadingBillId(null);
     }
   };
 
@@ -229,6 +233,7 @@ export const Bills: React.FC = () => {
                     setIsAdding(false);
                   }}
                   onDelete={() => handleDelete(bill._id!)}
+                  isLoading={loadingBillId === bill._id}
                 />
               ))}
             </div>
@@ -262,6 +267,7 @@ export const Bills: React.FC = () => {
                     setIsAdding(false);
                   }}
                   onDelete={() => handleDelete(bill._id!)}
+                  isLoading={loadingBillId === bill._id}
                 />
               ))}
             </div>
@@ -279,6 +285,7 @@ interface BillCardProps {
   onMarkPaid: () => void;
   onEdit: () => void;
   onDelete: () => void;
+  isLoading?: boolean;
 }
 
 const BillCard: React.FC<BillCardProps> = ({
@@ -288,6 +295,7 @@ const BillCard: React.FC<BillCardProps> = ({
   onMarkPaid,
   onEdit,
   onDelete,
+  isLoading = false,
 }) => {
   const { format } = useCurrencyFormatter();
 
@@ -296,13 +304,18 @@ const BillCard: React.FC<BillCardProps> = ({
       <div className='flex items-center gap-4'>
         <button
           onClick={onMarkPaid}
+          disabled={isLoading}
           className={`h-6 w-6 rounded-full border flex items-center justify-center transition-colors ${isPaid
               ? 'bg-emerald-500 border-emerald-500 text-white'
               : 'border-slate-600 hover:border-emerald-500 text-transparent hover:text-emerald-500/50'
-            }`}
+            } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           title={isPaid ? 'Mark as unpaid' : 'Mark as paid'}
         >
-          <CheckCircle2 className='h-4 w-4' />
+          {isLoading ? (
+            <Loader2 className='h-4 w-4 animate-spin' />
+          ) : (
+            <CheckCircle2 className='h-4 w-4' />
+          )}
         </button>
         <div>
           <h3
@@ -333,14 +346,16 @@ const BillCard: React.FC<BillCardProps> = ({
         <div className='flex items-center gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity'>
           <button
             onClick={onEdit}
-            className='p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded'
+            disabled={isLoading}
+            className='p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded disabled:opacity-50 disabled:cursor-not-allowed'
             title='Edit'
           >
             <Pencil className='h-4 w-4' />
           </button>
           <button
             onClick={onDelete}
-            className='p-2 text-slate-400 hover:text-red-400 hover:bg-red-900/20 rounded'
+            disabled={isLoading}
+            className='p-2 text-slate-400 hover:text-red-400 hover:bg-red-900/20 rounded disabled:opacity-50 disabled:cursor-not-allowed'
             title='Delete'
           >
             <Trash2 className='h-4 w-4' />
