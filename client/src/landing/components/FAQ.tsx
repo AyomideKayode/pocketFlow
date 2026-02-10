@@ -64,7 +64,7 @@ export const FAQ = () => {
             <div key={index} className="border-b border-slate-800">
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full flex items-center justify-between py-6 text-left focus:outline-none group"
+                className="w-full flex items-center justify-between py-6 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 group"
               >
                 <span className={`text-lg font-medium transition-colors group-hover:text-emerald-400 ${openIndex === index ? 'text-emerald-500' : 'text-white'}`}>
                   {faq.question}

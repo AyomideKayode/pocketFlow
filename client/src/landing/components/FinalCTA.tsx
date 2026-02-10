@@ -6,7 +6,7 @@ export const FinalCTA = () => {
   return (
     <section className="py-24 relative overflow-hidden bg-slate-950">
       {/* Background Radial Glow */}
-      <div className="absolute inset-0 bg-radial-gradient from-emerald-900/20 to-transparent opacity-50" />
+      <div className="absolute inset-0 bg-radial from-emerald-900/20 to-transparent opacity-50" />
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         <motion.div

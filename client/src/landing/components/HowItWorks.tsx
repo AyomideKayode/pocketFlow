@@ -30,7 +30,7 @@ export const HowItWorks = () => {
           transition={{ duration: 0.8 }}
           className="mb-20"
         >
-          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6">
+          <h2 className="text-3xl md:text-5xl font-accent font-bold tracking-tight text-white mb-6">
             Three steps to financial clarity
           </h2>
         </motion.div>
@@ -47,7 +47,7 @@ export const HowItWorks = () => {
                 transition={{ duration: 0.5, delay: index * 0.2 }}
               >
                 <div className="w-20 h-20 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/5">
-                  <span className="text-2xl font-bold text-emerald-500">{step.number}</span>
+                  <span className="text-2xl font-bold font-mono text-emerald-500">{step.number}</span>
                 </div>
                 <h3 className="text-xl font-bold text-white mb-4">
                   {step.title}
