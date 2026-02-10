@@ -1,6 +1,7 @@
 import type { Bill } from '../types/bill';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
 export const billService = {
   getBills: async (token: string, period?: string): Promise<Bill[]> => {
@@ -29,13 +30,17 @@ export const billService = {
       body: JSON.stringify(bill),
     });
     if (!response.ok) {
-        const error = await response.json().catch(() => ({}));
-        throw new Error(error.message || 'Failed to create bill');
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || 'Failed to create bill');
     }
     return response.json();
   },
 
-  updateBill: async (token: string, id: string, updates: Partial<Bill>): Promise<Bill> => {
+  updateBill: async (
+    token: string,
+    id: string,
+    updates: Partial<Bill>,
+  ): Promise<Bill> => {
     const response = await fetch(`${API_BASE_URL}/bills/${id}`, {
       method: 'PUT',
       headers: {
@@ -45,8 +50,8 @@ export const billService = {
       body: JSON.stringify(updates),
     });
     if (!response.ok) {
-        const error = await response.json().catch(() => ({}));
-        throw new Error(error.message || 'Failed to update bill');
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || 'Failed to update bill');
     }
     return response.json();
   },
