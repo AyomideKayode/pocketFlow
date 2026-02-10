@@ -7,6 +7,7 @@ import {
   Target,
   X,
   Calendar,
+  BookOpen,
 } from 'lucide-react';
 import { UserButton } from '../UserButton';
 import { clsx } from 'clsx';
@@ -46,6 +47,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { name: 'Budgets', path: '/budgets', icon: PieChart },
     { name: 'Bills', path: '/bills', icon: Calendar },
     { name: 'Goals', path: '/goals', icon: Target },
+    { name: 'Learn', path: '/learn', icon: BookOpen },
   ];
 
   const sidebarClasses = cn(
