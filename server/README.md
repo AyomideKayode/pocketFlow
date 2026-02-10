@@ -4,25 +4,56 @@ The backend API for PocketFlow, built with **Node.js**, **Express**, and **Mongo
 
 ## 🏗️ Architecture & Structure
 
-The server is organized into routes, schemas, and services.
+The server is organized into routes, schemas, services, middleware, scripts, and utilities.
 
 ```sh
 server/src/
 ├── lib/
-│   └── firebaseAdmin.ts    # Firebase Admin SDK initialization
+│   └── firebaseAdmin.ts         # Firebase Admin SDK initialization
+│   └── email/                  # Email sending providers and templates
+│       ├── types.ts            # Email type definitions
+│       ├── providers/          # Email provider implementations (console, resend)
+│       └── templates/          # Email templates (budget alert, goal achieved, etc.)
+├── middleware/
+│   └── auth.ts                 # Express middleware for authentication
 ├── routes/
-│   ├── financial-records.ts # CRUD operations for records
-│   ├── budget.ts           # Budget management
-│   ├── goal.ts             # Financial goals
-│   ├── reports.ts          # Aggregation and export endpoints
-│   └── insights.ts         # Deterministic insight generation
+│   ├── analytics.ts            # Analytics endpoints
+│   ├── bill.ts                 # Bill management (CRUD, pay/unpay)
+│   ├── budget.ts               # Budget management
+│   ├── cloudinary.ts           # Cloudinary signature endpoints
+│   ├── cron.ts                 # Scheduled/recurring jobs
+│   ├── financial-records.ts    # CRUD operations for records
+│   ├── goal.ts                 # Financial goals
+│   ├── insights.ts             # Deterministic insight generation
+│   ├── reports.ts              # Aggregation and export endpoints
+│   ├── user-preferences.ts     # User preferences (currency, theme, etc.)
+│   └── user-profile.ts         # User profile management
 ├── schema/
-│   ├── financial-records.ts # Mongoose model (Indexed)
-│   ├── budget.ts           # Budget model (Indexed)
-│   └── goal.ts             # Goal model
+│   ├── bill.ts                 # Bill schema
+│   ├── budget.ts               # Budget schema
+│   ├── export-job.ts           # Export job tracking
+│   ├── financial-records.ts    # Financial record schema
+│   ├── goal.ts                 # Goal schema
+│   ├── import-job.ts           # Import job tracking
+│   └── user-profile.ts         # User profile schema
+├── scripts/
+│   └── test-email.ts           # Script for testing email sending
 ├── services/
-│   └── budget.service.ts   # Core budget logic
-└── index.ts                # App entry point (CORS, DB connect)
+│   ├── analytics.service.ts    # Analytics logic
+│   ├── bill.service.ts         # Bill logic
+│   ├── budget.service.ts       # Budget logic
+│   ├── email.service.ts        # Email sending logic
+│   ├── exportService.ts        # Export logic
+│   ├── goal.service.ts         # Goal logic
+│   ├── insight.service.ts      # Insights logic
+│   ├── notifications.test.ts   # Notification logic tests
+│   └── summary.service.ts      # Weekly summary logic
+├── utils/
+│   ├── currency.ts             # Currency formatting helpers
+│   └── date.ts                 # Date utilities and validation
+├── app.test.ts                 # Main app integration tests
+├── app.ts                      # Express app setup
+└── index.ts                    # App entry point (CORS, DB connect)
 ```
 
 ## 🔌 API Endpoints
@@ -135,6 +166,53 @@ The server implements logic to track budget adherence dynamically:
 - **Endpoint**: `GET /reports/export`
 - **Authentication**: Verifies Firebase ID token via Admin SDK.
 - **Behavior**: Streams a CSV response using a Mongoose cursor to avoid loading large datasets into memory.
+
+### Bill Management
+
+- **Bill CRUD**: Endpoints and logic for creating, updating, paying, and unpaying bills.
+- **Validation**: Ensures correct period and payment status, with server-side checks.
+- **Schema**: Tracks bill details, payment history, and user association.
+
+### User Profile & Preferences
+
+- **Profile Management**: Endpoints for updating user profile data (name, photo, etc.).
+- **Preferences**: Endpoints for user settings such as currency and theme.
+- **Schema**: Stores user profile and preferences separately for flexibility.
+
+### Cloudinary Integration
+
+- **Direct Uploads**: Secure signature generation for client-side image uploads.
+- **Security**: Only authenticated users can request upload signatures.
+
+### Analytics & Insights
+
+- **Analytics**: Endpoints and services for aggregating user financial data.
+- **Insights**: Deterministic, rule-based engine for generating financial nudges (e.g., upcoming bills, subscription checks).
+
+### Email Notifications
+
+- **Providers**: Pluggable email providers (console, Resend, etc.).
+- **Templates**: Modular email templates for budget alerts, goal achievements, weekly summaries, and more.
+- **Service**: Centralized logic for sending and testing notifications.
+
+### Data Import & Export
+
+- **Export**: Streaming CSV export of user records, tracked by export-job schema.
+- **Import**: CSV import job tracking and validation (import-job schema).
+
+### Scheduled Jobs
+
+- **Cron**: Endpoints and logic for scheduled tasks (e.g., weekly summaries).
+
+### Utilities
+
+- **Currency**: Helpers for formatting and validating currency values.
+- **Date**: Utilities for date parsing, validation, and overflow logic.
+
+### Testing
+
+- **Integration & Unit Tests**: Comprehensive tests for routes, services, and notification logic using Vitest and Supertest.
+- **Scripts**: Standalone scripts for testing email delivery and other features.
 
 ---
 
