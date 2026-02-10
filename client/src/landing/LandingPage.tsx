@@ -10,7 +10,7 @@ import { Footer } from './components/Footer';
 
 export const LandingPage = () => {
   return (
-    <div className="min-h-screen bg-slate-950 text-white font-landing selection:bg-emerald-500/30 overflow-x-hidden">
+    <div className="min-h-screen bg-slate-950 text-white font-sans selection:bg-emerald-500/30 overflow-x-hidden">
       <LandingNavbar />
 
       <main className="relative z-10 w-full">

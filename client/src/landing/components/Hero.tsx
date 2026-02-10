@@ -13,7 +13,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-4xl md:text-6xl font-bold tracking-tight text-white max-w-4xl mb-6 leading-tight"
+          className="text-4xl md:text-6xl font-accent font-bold tracking-tight text-white max-w-4xl mb-6 leading-tight"
         >
           Never miss a bill. <br className="hidden md:block" />
           <span className="bg-gradient-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent">
@@ -34,7 +34,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto"
+          className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto font-mono"
         >
           <Link
             to="/auth?mode=signup"
