@@ -13,8 +13,10 @@ export const getBills = async (userId: string, period?: string) => {
     userId,
     $or: [
       { isRecurring: true },
-      { lastPaidPeriod: null },
-      { lastPaidPeriod: currentPeriod },
+      {
+        isRecurring: false,
+        $or: [{ lastPaidPeriod: null }, { lastPaidPeriod: currentPeriod }],
+      },
     ],
   };
 

@@ -31,12 +31,20 @@ router.post('/', async (req: Request, res: Response) => {
 
     const parsedAmount = Number(amount);
     if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
-      return res.status(400).json({ message: 'Amount must be a positive number' });
+      return res
+        .status(400)
+        .json({ message: 'Amount must be a positive number' });
     }
 
     const parsedDueDay = Number(dueDay);
-    if (!Number.isInteger(parsedDueDay) || parsedDueDay < 1 || parsedDueDay > 31) {
-      return res.status(400).json({ message: 'Due day must be an integer between 1 and 31' });
+    if (
+      !Number.isInteger(parsedDueDay) ||
+      parsedDueDay < 1 ||
+      parsedDueDay > 31
+    ) {
+      return res
+        .status(400)
+        .json({ message: 'Due day must be an integer between 1 and 31' });
     }
 
     const bill = await BillService.createBill({
@@ -73,15 +81,23 @@ router.put('/:id', async (req: Request, res: Response) => {
     if (amount !== undefined) {
       const parsedAmount = Number(amount);
       if (!Number.isFinite(parsedAmount) || parsedAmount <= 0) {
-        return res.status(400).json({ message: 'Amount must be a positive number' });
+        return res
+          .status(400)
+          .json({ message: 'Amount must be a positive number' });
       }
       updates.amount = parsedAmount;
     }
 
     if (dueDay !== undefined) {
       const parsedDueDay = Number(dueDay);
-      if (!Number.isInteger(parsedDueDay) || parsedDueDay < 1 || parsedDueDay > 31) {
-        return res.status(400).json({ message: 'Due day must be an integer between 1 and 31' });
+      if (
+        !Number.isInteger(parsedDueDay) ||
+        parsedDueDay < 1 ||
+        parsedDueDay > 31
+      ) {
+        return res
+          .status(400)
+          .json({ message: 'Due day must be an integer between 1 and 31' });
       }
       updates.dueDay = parsedDueDay;
     }
