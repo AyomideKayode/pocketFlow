@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useAuth } from '../../contexts/auth-context';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import { AuthForms } from '../../components/AuthForms';
 import { Wallet, Loader2 } from 'lucide-react';
 
 export const Auth = () => {
   const { user, loading } = useAuth();
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [searchParams] = useSearchParams();
+  const [isSignUp, setIsSignUp] = useState(searchParams.get('mode') === 'signup');
 
   if (loading) {
     return (
