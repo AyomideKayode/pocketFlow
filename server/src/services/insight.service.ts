@@ -76,9 +76,7 @@ function countUpcomingUnpaidBills(bills: Bill[]): number {
       nextMonthYear++;
     }
 
-    if (
-      isBillDueInWindow(bill, nextMonthYear, nextMonth, today, nextWeek)
-    ) {
+    if (isBillDueInWindow(bill, nextMonthYear, nextMonth, today, nextWeek)) {
       count++;
     }
   }
