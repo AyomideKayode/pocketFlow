@@ -49,12 +49,12 @@ export const getInsights = async (userId: string): Promise<Insight[]> => {
 function countUpcomingUnpaidBills(bills: Bill[]): number {
   const today = new Date();
   // Reset time to start of day for accurate comparison
-  today.setHours(0, 0, 0, 0);
+  today.setUTCHours(0, 0, 0, 0);
 
   const nextWeek = new Date(today);
-  nextWeek.setDate(today.getDate() + 7);
+  nextWeek.setUTCDate(today.getUTCDate() + 7);
   // Set end of window to end of day to be inclusive
-  nextWeek.setHours(23, 59, 59, 999);
+  nextWeek.setUTCHours(23, 59, 59, 999);
 
   let count = 0;
 
