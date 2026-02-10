@@ -16,34 +16,57 @@ We will implement **Option B: Explicit Actions** to centralize control over bill
   - `POST /bills/:id/pay`: Sets `lastPaidPeriod` to the **current server-derived period** (YYYY-MM).
   - `POST /bills/:id/unpay`: Sets `lastPaidPeriod` to `null`.
 
-**Trade-offs & Risks:**
-- **Risk:** "Unpaying" a bill wipes the `lastPaidPeriod` entirely. If a user paid a bill in January (`2024-01`) and accidentally marks it as paid in February (`2024-02`), then clicks "Unmark Paid", the system reverts to `null` (Unpaid for all time), losing the January record.
-- **Mitigation:** This is an acceptable constraint of the current `Bill` schema (which only tracks *most recent* payment). A full history would require a separate `BillPayment` entity, which is out of scope for this hardening pass.
+**Refined "Unpay" Constraints:**
+- The "Unpay" action is **conditional**.
+- It succeeds **only if** `lastPaidPeriod` matches the **current server period**.
+- Rationale: We must prevent accidental erasure of historical payments. If a user paid a bill in January (`2024-01`) and attempts to "unpay" it in February (`2024-02`), the action must be rejected to preserve history.
 
-### 2. Period Format Validation
+### 2. PUT Behavior & Determinism
 
-We will enforce strict format validation for the `period` string (`YYYY-MM`) at the API boundary.
+**Strict Rejection:**
+- `PUT /bills/:id` requests that include the `lastPaidPeriod` field in the payload will be **rejected with a 400 Bad Request**.
+- Silent ignores are explicitly forbidden to prevent client-side state drift and debugging confusion.
 
-**Location:**
-- A new centralized utility file: `server/src/utils/date.ts`.
-- **Regex:** `/^\d{4}-(0[1-9]|1[0-2])$/`
+### 3. Period Computation Authority
 
-**Behavior:**
-- Invalid formats will be rejected with a `400 Bad Request` before reaching the service layer.
-- Schema-level validation (Mongoose) will also use this regex for double safety.
+**Single Source of Truth:**
+- The **current period** is derived exclusively inside the **service layer**.
+- It is **never** accepted from request input, query parameters, or route logic.
+- We maintain one internal clock for payment operations.
 
-### 3. Due Day Overflow Rule
+### 4. Validation Hierarchy
+
+We enforce a strict order of trust for data validation:
+
+1.  **Route Boundary:**
+    - Immediate rejection of malformed data types or invalid formats (e.g., regex check for `YYYY-MM`) before business logic is invoked.
+2.  **Service Enforcement:**
+    - Business rules and state validity (e.g., "Is this bill already paid?", "Is the due day valid for this month?").
+3.  **Schema Defense:**
+    - Database-level constraints (Mongoose validators) act as the final safety net against corruption.
+
+### 5. Due Day Overflow Rule
 
 The logic to handle "Day 31 in February" must be consistent and reusable.
 
-**Location:**
-- `server/src/utils/date.ts`
+**Location:** `server/src/utils/date.ts`
 
 **Implementation:**
 - Function: `normalizeDueDay(year: number, month: number, day: number): Date`
 - Logic: If `day` exceeds the number of days in the given month, it clamps to the **last day of that month**.
 
-### 4. Timezone & Period Computation
+### 6. Access Outcomes & Responses
+
+For `POST /pay` and `POST /unpay`:
+
+| Scenario | HTTP Status | Reason |
+| :--- | :--- | :--- |
+| Bill not found | **404** | ID does not exist. |
+| Not owned by user | **404** | Security best practice (avoid leaking existence). |
+| Unpay mismatch | **409** | `lastPaidPeriod` does not match current period. |
+| Success | **200** | State updated successfully. |
+
+### 7. Timezone & Period Computation
 
 **Current Behavior:**
 - Periods are derived from **Server Time (UTC)**.
@@ -51,7 +74,6 @@ The logic to handle "Day 31 in February" must be consistent and reusable.
 
 **Decision:**
 - We acknowledge this behavior as **intentional** for Phase 11B to maintain determinism without complex user-timezone logic.
-- **Future Implication:** When we move to user-locale evaluation (Phase 12+), we will need to pass the user's timezone or a client-provided reference timestamp (validated within a reasonable skew) to the `pay` endpoint.
 
 ---
 
@@ -60,8 +82,8 @@ The logic to handle "Day 31 in February" must be consistent and reusable.
 This design introduces breaking changes to the frontend `BillService`.
 
 ### Breaking Changes
-1.  **`PUT /bills/:id`**: Will no longer accept `lastPaidPeriod`. Calls attempting to update this field will be ignored or rejected (server-side strictness).
-2.  **Optimistic Updates**: The frontend can no longer simply toggle a boolean. It must understand that "marking paid" is a server-authoritative action.
+1.  **`PUT /bills/:id`**: Will no longer accept `lastPaidPeriod`. Calls attempting to update this field will be rejected with **400 Bad Request**.
+2.  **Optimistic Updates**: The frontend must handle the **409 Conflict** case for "Unpay" actions (e.g., show an error toast if trying to unpay a past bill).
 
 ### Required Refactoring
 - **Client Service:**
@@ -70,7 +92,7 @@ This design introduces breaking changes to the frontend `BillService`.
 - **UI Components (`BillCard` / `BillsPage`):**
     - Update "Mark Paid" button to call the new endpoint.
     - Update "Mark Unpaid" button to call the new endpoint.
-    - Handle loading states for these specific actions.
+    - Handle loading states and error toasts (especially 409s).
 
 ### Migration Strategy
 - Deploy backend changes first (with backward compatibility if possible, or simultaneous deploy).
@@ -84,12 +106,12 @@ This design introduces breaking changes to the frontend `BillService`.
 1.  `server/src/utils/date.ts` (New file: Validation regex, Overflow logic).
 2.  `server/src/schema/bill.ts` (Add validation validator to `lastPaidPeriod`).
 3.  `server/src/routes/bill.ts`:
-    - Remove `lastPaidPeriod` from `PUT` handler.
+    - Remove `lastPaidPeriod` from `PUT` handler -> Reject with 400.
     - Add `POST /:id/pay` route.
     - Add `POST /:id/unpay` route.
 4.  `server/src/services/bill.service.ts`:
-    - Add `markAsPaid(id, userId)` logic.
-    - Add `markAsUnpaid(id, userId)` logic.
+    - Add `markAsPaid(id, userId)` logic (derives period internally).
+    - Add `markAsUnpaid(id, userId)` logic (checks period match).
 
 ### Client
 1.  `client/src/services/bill.service.ts` (Add new methods).
