@@ -1,4 +1,5 @@
 import BillModel, { type Bill } from '../schema/bill.js';
+import { getCurrentPeriod } from '../utils/date.js';
 
 export const getBills = async (userId: string, period?: string) => {
   const currentPeriod = period || new Date().toISOString().slice(0, 7);
@@ -44,4 +45,37 @@ export const updateBill = async (
 
 export const deleteBill = async (id: string, userId: string) => {
   return await BillModel.findOneAndDelete({ _id: id, userId });
+};
+
+export const markAsPaid = async (id: string, userId: string) => {
+  const currentPeriod = getCurrentPeriod();
+  // We use findOneAndUpdate to ensure atomic update and return the new doc
+  const bill = await BillModel.findOneAndUpdate(
+    { _id: id, userId },
+    { lastPaidPeriod: currentPeriod },
+    { new: true },
+  );
+  return bill;
+};
+
+export const markAsUnpaid = async (id: string, userId: string) => {
+  const currentPeriod = getCurrentPeriod();
+
+  // First fetch the bill to check ownership and current status
+  const bill = await BillModel.findOne({ _id: id, userId });
+
+  if (!bill) {
+    throw new Error('Bill not found');
+  }
+
+  // Strict check: Can only unpay if lastPaidPeriod matches the current period
+  if (bill.lastPaidPeriod !== currentPeriod) {
+    throw new Error(
+      `Cannot unpay bill: Last paid period (${bill.lastPaidPeriod}) does not match current period (${currentPeriod})`,
+    );
+  }
+
+  // If valid, set to null
+  bill.lastPaidPeriod = null;
+  return await bill.save();
 };

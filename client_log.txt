@@ -10,3 +10,5 @@
 2:26:22 AM [vite] (client) hmr update /src/contexts/auth-context.tsx, /src/index.css
 2:26:26 AM [vite] (client) hmr update /src/index.css
 2:26:26 AM [vite] (client) hmr update /src/index.css
+2:45:02 AM [vite] (client) hmr update /src/index.css, /src/pages/bills/index.tsx
+2:45:12 AM [vite] (client) hmr update /src/pages/bills/index.tsx, /src/index.css

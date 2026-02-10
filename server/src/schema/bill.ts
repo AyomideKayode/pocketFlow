@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { isValidPeriod } from '../utils/date.js';
 
 export interface Bill {
   userId: string;
@@ -18,7 +19,18 @@ const billSchema = new mongoose.Schema<Bill>(
     amount: { type: Number, required: true },
     dueDay: { type: Number, required: true, min: 1, max: 31 },
     isRecurring: { type: Boolean, default: false },
-    lastPaidPeriod: { type: String, default: null },
+    lastPaidPeriod: {
+      type: String,
+      default: null,
+      validate: {
+        validator: function (v: string | null) {
+          if (v === null) return true;
+          return isValidPeriod(v);
+        },
+        message: (props: any) =>
+          `${props.value} is not a valid period format (YYYY-MM)!`,
+      },
+    },
   },
   {
     timestamps: true,
