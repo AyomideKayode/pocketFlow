@@ -2,7 +2,7 @@ import BillModel, { type Bill } from '../schema/bill.js';
 import { getCurrentPeriod } from '../utils/date.js';
 
 export const getBills = async (userId: string, period?: string) => {
-  const currentPeriod = period || new Date().toISOString().slice(0, 7);
+  const currentPeriod = period || getCurrentPeriod();
 
   // We want:
   // 1. All recurring bills (regardless of lastPaidPeriod)
