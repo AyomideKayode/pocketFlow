@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../../contexts/auth-context';
 import { billService } from '../../services/bill-service';
+import { useConfirmationDialog } from '../../contexts/confirmation-dialog-context';
 import type { Bill } from '../../types/bill';
 import { BillForm } from './BillForm';
 import {
@@ -18,6 +19,8 @@ import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 export const Bills: React.FC = () => {
   const { user } = useAuth();
   const { addToast } = useToast();
+  const { showConfirmation } = useConfirmationDialog();
+  const { format } = useCurrencyFormatter();
   const [bills, setBills] = useState<Bill[]>([]);
   const [loading, setLoading] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
@@ -72,17 +75,41 @@ export const Bills: React.FC = () => {
     }
   };
 
-  const handleDelete = async (id: string) => {
-    if (!user || !confirm('Are you sure you want to delete this bill?')) return;
-    try {
-      const token = await user.getIdToken();
-      await billService.deleteBill(token, id);
-      addToast('Bill deleted successfully', 'success');
-      fetchBills();
-    } catch (error) {
-      console.error('Error deleting bill:', error);
-      addToast('Failed to delete bill', 'error');
-    }
+  const handleDelete = (bill: Bill) => {
+    if (!user) return;
+
+    const daysInMonth = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth() + 1,
+      0,
+    ).getDate();
+    const dueDateStr = new Date(
+      new Date().getFullYear(),
+      new Date().getMonth(),
+      Math.min(bill.dueDay, daysInMonth),
+    ).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+
+    showConfirmation({
+      title: 'Delete Bill',
+      message: `Are you sure you want to delete "${bill.name}"?\n\nAmount: ${format(bill.amount)} • Due: ${dueDateStr}${bill.isRecurring ? ' • Recurring' : ''}`,
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      variant: 'danger',
+      onConfirm: async () => {
+        try {
+          setLoadingBillId(bill._id!);
+          const token = await user.getIdToken();
+          await billService.deleteBill(token, bill._id!);
+          addToast('Bill deleted successfully', 'success');
+          fetchBills();
+        } catch (error) {
+          console.error('Error deleting bill:', error);
+          addToast('Failed to delete bill', 'error');
+        } finally {
+          setLoadingBillId(null);
+        }
+      },
+    });
   };
 
   const handleMarkPaid = async (bill: Bill) => {
@@ -232,7 +259,7 @@ export const Bills: React.FC = () => {
                     setEditingBill(bill);
                     setIsAdding(false);
                   }}
-                  onDelete={() => handleDelete(bill._id!)}
+                  onDelete={() => handleDelete(bill)}
                   isLoading={loadingBillId === bill._id}
                 />
               ))}
@@ -266,7 +293,7 @@ export const Bills: React.FC = () => {
                     setEditingBill(bill);
                     setIsAdding(false);
                   }}
-                  onDelete={() => handleDelete(bill._id!)}
+                  onDelete={() => handleDelete(bill)}
                   isLoading={loadingBillId === bill._id}
                 />
               ))}
@@ -306,8 +333,8 @@ const BillCard: React.FC<BillCardProps> = ({
           onClick={onMarkPaid}
           disabled={isLoading}
           className={`h-6 w-6 rounded-full border flex items-center justify-center transition-colors ${isPaid
-              ? 'bg-emerald-500 border-emerald-500 text-white'
-              : 'border-slate-600 hover:border-emerald-500 text-transparent hover:text-emerald-500/50'
+            ? 'bg-emerald-500 border-emerald-500 text-white'
+            : 'border-slate-600 hover:border-emerald-500 text-transparent hover:text-emerald-500/50'
             } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           title={isPaid ? 'Mark as unpaid' : 'Mark as paid'}
         >

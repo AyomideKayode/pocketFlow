@@ -610,7 +610,7 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
   - **Strict Validation:**
     - `PUT` updates to `lastPaidPeriod` are strictly rejected with 400 Bad Request.
     - Period strings (`YYYY-MM`) are validated via Regex at schema and route level.
-    - "Unpay" action is only allowed if the bill was paid in the *current* period, preserving historical records.
+    - "Unpay" action is only allowed if the bill was paid in the _current_ period, preserving historical records.
   - **Centralized Logic:** Date handling and due day overflow logic moved to shared `server/src/utils/date.ts`.
 
 - **Implementation Details:**
