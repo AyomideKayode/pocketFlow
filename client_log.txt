@@ -1,0 +1,12 @@
+
+> client@0.0.0 dev
+> vite --port 5173
+
+
+  VITE v7.3.0  ready in 405 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+2:26:22 AM [vite] (client) hmr update /src/contexts/auth-context.tsx, /src/index.css
+2:26:26 AM [vite] (client) hmr update /src/index.css
+2:26:26 AM [vite] (client) hmr update /src/index.css
