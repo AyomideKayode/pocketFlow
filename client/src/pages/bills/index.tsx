@@ -88,9 +88,7 @@ export const Bills: React.FC = () => {
     if (!user) return;
     try {
       const token = await user.getIdToken();
-      await billService.updateBill(token, bill._id!, {
-        lastPaidPeriod: currentPeriod,
-      });
+      await billService.markBillPaid(token, bill._id!);
       addToast('Marked as paid', 'success');
       fetchBills();
     } catch (error) {
@@ -100,20 +98,23 @@ export const Bills: React.FC = () => {
   };
 
   const handleMarkUnpaid = async (bill: Bill) => {
-    // Optional: Undo paid status
     if (!user) return;
     try {
       const token = await user.getIdToken();
-      // Clear lastPaidPeriod to mark bill as unpaid for current period
-      // This works for both recurring and one-time bills
-      await billService.updateBill(token, bill._id!, {
-        lastPaidPeriod: null,
-      });
+      await billService.markBillUnpaid(token, bill._id!);
       addToast('Marked as unpaid', 'success');
       fetchBills();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error marking bill unpaid:', error);
-      addToast('Failed to mark as unpaid', 'error');
+      // Handle the 409 Conflict specifically
+      if (error.message && error.message.includes('Cannot unpay')) {
+        addToast(
+          'Cannot unpay bills from previous months',
+          'error',
+        );
+      } else {
+        addToast('Failed to mark as unpaid', 'error');
+      }
     }
   };
 

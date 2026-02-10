@@ -72,11 +72,18 @@ router.put('/:id', async (req: Request, res: Response) => {
     if (!id) return res.status(400).json({ message: 'ID is required' });
 
     const { name, amount, dueDay, isRecurring, lastPaidPeriod } = req.body;
+
+    // Hardening: Reject updates to lastPaidPeriod via PUT
+    if (lastPaidPeriod !== undefined) {
+      return res.status(400).json({
+        message: 'Cannot update lastPaidPeriod via PUT. Use /pay or /unpay endpoints.',
+      });
+    }
+
     const updates: any = {};
 
     if (name !== undefined) updates.name = name;
     if (isRecurring !== undefined) updates.isRecurring = !!isRecurring;
-    if (lastPaidPeriod !== undefined) updates.lastPaidPeriod = lastPaidPeriod;
 
     if (amount !== undefined) {
       const parsedAmount = Number(amount);
@@ -110,6 +117,49 @@ router.put('/:id', async (req: Request, res: Response) => {
       return res.status(400).json({ message: error.message });
     }
     console.error('Error updating bill:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.post('/:id/pay', async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.uid;
+    const id = req.params.id;
+    if (!id) return res.status(400).json({ message: 'ID is required' });
+
+    const bill = await BillService.markAsPaid(id, userId);
+    res.status(200).json(bill);
+  } catch (error: any) {
+    const msg =
+      error && typeof error.message === 'string' ? error.message : String(error);
+
+    if (msg === 'Bill not found') {
+      return res.status(404).json({ message: 'Bill not found' });
+    }
+    console.error('Error marking bill as paid:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.post('/:id/unpay', async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.uid;
+    const id = req.params.id;
+    if (!id) return res.status(400).json({ message: 'ID is required' });
+
+    const bill = await BillService.markAsUnpaid(id, userId);
+    res.status(200).json(bill);
+  } catch (error: any) {
+    const msg =
+      error && typeof error.message === 'string' ? error.message : String(error);
+
+    if (msg === 'Bill not found') {
+      return res.status(404).json({ message: 'Bill not found' });
+    }
+    if (msg.includes('Cannot unpay')) {
+      return res.status(409).json({ message: msg });
+    }
+    console.error('Error marking bill as unpaid:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 });

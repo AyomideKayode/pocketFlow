@@ -39,7 +39,7 @@ export const billService = {
   updateBill: async (
     token: string,
     id: string,
-    updates: Partial<Bill>,
+    updates: Omit<Partial<Bill>, 'lastPaidPeriod'>,
   ): Promise<Bill> => {
     const response = await fetch(`${API_BASE_URL}/bills/${id}`, {
       method: 'PUT',
@@ -52,6 +52,34 @@ export const billService = {
     if (!response.ok) {
       const error = await response.json().catch(() => ({}));
       throw new Error(error.message || 'Failed to update bill');
+    }
+    return response.json();
+  },
+
+  markBillPaid: async (token: string, id: string): Promise<Bill> => {
+    const response = await fetch(`${API_BASE_URL}/bills/${id}/pay`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || 'Failed to mark bill as paid');
+    }
+    return response.json();
+  },
+
+  markBillUnpaid: async (token: string, id: string): Promise<Bill> => {
+    const response = await fetch(`${API_BASE_URL}/bills/${id}/unpay`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({}));
+      throw new Error(error.message || 'Failed to mark bill as unpaid');
     }
     return response.json();
   },
