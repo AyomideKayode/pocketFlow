@@ -6,7 +6,7 @@ Phase 11B established the `Bill` entity and lifecycle. To ensure long-term syste
 
 ## Decisions
 
-### 1. Authority Over `last_paid_period`
+### 1. Authority Over `lastPaidPeriod`
 
 We will implement **Option B: Explicit Actions** to centralize control over bill payment status.
 
