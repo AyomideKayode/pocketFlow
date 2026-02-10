@@ -21,9 +21,10 @@ import { ToastContainer } from './components/ToastContainer';
 import { Navbar } from './components/Navbar';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { Loader2 } from 'lucide-react';
+import { LandingPage } from './landing/LandingPage';
 
 function App() {
-  const { loading } = useAuth();
+  const { user, loading } = useAuth();
 
   if (loading) {
     return (
@@ -41,6 +42,12 @@ function App() {
       <div className='flex min-h-screen w-full flex-col bg-slate-950 text-slate-50 font-sans antialiased'>
         <Routes>
           <Route
+            path='/'
+            element={
+              user ? <Navigate to='/dashboard' replace /> : <LandingPage />
+            }
+          />
+          <Route
             element={
               <ProtectedRoute>
                 <BudgetsProvider>
@@ -53,7 +60,6 @@ function App() {
               </ProtectedRoute>
             }
           >
-            <Route path='/' element={<Navigate to='/dashboard' replace />} />
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/transactions' element={<Transactions />} />
             <Route path='/budgets' element={<Budgets />} />
