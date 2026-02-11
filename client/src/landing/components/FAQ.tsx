@@ -6,12 +6,12 @@ const faqs = [
   {
     question: 'Is PocketFlow really free?',
     answer:
-      'Yes, completely free. No hidden fees, no premium tiers, no credit card required. We built this to help people take control of their finances, not to charge them for it.',
+      'Our goal is to make financial clarity accessible. PocketFlow is free, with no hidden costs.',
   },
   {
     question: 'Do you need access to my bank account?',
     answer:
-      'No. PocketFlow is manual tracking only. You log your own transactions, which means we never need (or want) access to your bank credentials. Your accounts stay private.',
+      'No. Today, PocketFlow works without bank connections. You enter or import your data yourself, so your credentials always remain private.',
   },
   {
     question: 'What data do you collect?',
@@ -26,7 +26,7 @@ const faqs = [
   {
     question: 'What if I have a question or need help?',
     answer:
-      "We're a small team, but we're responsive. Reach out via the in-app feedback button or email us at ayomidekay7@gmail.com. We typically respond within 24 hours.",
+      "We’re responsive and typically reply within 24 hours. You can reach us at support@pocketflow.app.",
   },
   {
     question: 'Will there be a mobile app?',

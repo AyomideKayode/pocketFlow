@@ -17,26 +17,26 @@ interface ShowcaseCard {
 const showcaseCards: ShowcaseCard[] = [
   {
     id: 1,
-    headline: 'Bring Your Data',
-    subheader:
-      'Import your transaction history from CSV. Keep your financial records intact. Start with real data, no empty slate.',
-    image: csvImport,
-    position: 'left',
-  },
-  {
-    id: 2,
     headline: 'Add Bills Manually',
     subheader:
       "Track bills with reminders. Set once, relax forever. Know exactly what's coming.",
     image: billAdd,
-    position: 'right',
+    position: 'left',
   },
   {
-    id: 3,
+    id: 2,
     headline: 'Understand Your Spending',
     subheader:
       'Visual insights reveal where your money actually goes. No spreadsheets, no guessing.',
     image: spending,
+    position: 'right',
+  },
+  {
+    id: 3,
+    headline: 'Bring Your Data',
+    subheader:
+      'Start with your real financial history instantly. No blank screens, no rebuilding from memory.',
+    image: csvImport,
     position: 'left',
   },
   {

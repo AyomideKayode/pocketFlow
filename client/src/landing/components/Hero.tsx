@@ -28,7 +28,7 @@ export const Hero = () => {
           className='text-lg md:text-xl text-slate-400 max-w-2xl mb-12 leading-relaxed'
         >
           Track expenses, monitor bills, and understand your spending — all in
-          one calm, secure place. No complexity. No bank access required*.
+          one calm, secure place. No complexity. No bank access required.
         </motion.p>
 
         <motion.div
