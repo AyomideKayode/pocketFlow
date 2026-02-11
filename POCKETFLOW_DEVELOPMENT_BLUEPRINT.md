@@ -759,6 +759,15 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ---
 
+### **Landing Page Conversion Optimization** ✅ COMPLETED
+
+- **Features:**
+  - **Focus Highlights:** Added subtle visual cues (glows, rings, spotlights) to product screenshots to guide user attention to key features (e.g., "Add Bill" button, "Charts").
+  - **Implementation:** Created a `ShowcaseHighlight` component within `ProductShowcase` using Framer Motion for entrance animations.
+  - **Refinement:** Implemented conditional CSS positioning and `viewport={{ once: true }}` to ensure professional, non-distracting behavior.
+
+---
+
 ## Planned Phases & Next Steps
 
 ### **Phase Zeta: Bank Import (Exploratory)**
