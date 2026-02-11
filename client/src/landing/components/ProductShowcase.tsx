@@ -6,7 +6,7 @@ import learn from '../../assets/landing/learn-education-insights.JPG?url';
 import preferences from '../../assets/landing/preference-settings.JPG?url';
 import { Link } from 'react-router-dom';
 
-type HighlightType = 'glow' | 'ring' | 'arrow' | 'tooltip' | 'spotlight';
+type HighlightType = 'glow' | 'ring' | 'arrow' | 'spotlight';
 
 interface ShowcaseHighlightConfig {
   type: HighlightType;
@@ -18,7 +18,7 @@ interface ShowcaseHighlightConfig {
   height?: string;
   size?: string; // e.g. 'w-12 h-12' for ring
   delay?: number;
-  label?: string; // For tooltip
+  label?: string; // For arrow type
 }
 
 interface ShowcaseCard {
@@ -41,11 +41,11 @@ const showcaseCards: ShowcaseCard[] = [
     highlights: [
       {
         type: 'ring',
-        top: '12%',
-        right: '12%',
+        top: '18%',
+        right: '17%',
         width: '8%',
         height: '12%',
-        delay: 0.6,
+        delay: 0.9,
       },
     ],
   },
@@ -59,11 +59,11 @@ const showcaseCards: ShowcaseCard[] = [
     highlights: [
       {
         type: 'glow',
-        top: '35%',
-        left: '50%',
-        width: '80%',
+        top: '50%',
+        left: '55%',
+        width: '65%',
         height: '40%',
-        delay: 0.6,
+        delay: 0.9,
       },
     ],
   },
@@ -77,11 +77,11 @@ const showcaseCards: ShowcaseCard[] = [
     highlights: [
       {
         type: 'ring',
-        top: '25%', // Adjust based on "Valid Records" box
-        left: '25%',
-        width: '35%',
+        top: '28%', // Adjust based on "Valid Records" box
+        left: '34%',
+        width: '30%',
         height: '20%',
-        delay: 0.6,
+        delay: 0.9,
       },
     ],
   },
@@ -94,12 +94,12 @@ const showcaseCards: ShowcaseCard[] = [
     position: 'right',
     highlights: [
       {
-        type: 'spotlight',
-        top: '30%',
-        right: '30%',
-        width: '40%',
-        height: '45%',
-        delay: 0.6,
+        type: 'ring',
+        top: '46%',
+        left: '46%',
+        width: '55%',
+        height: '54%',
+        delay: 0.9,
       },
     ],
   },
@@ -112,11 +112,12 @@ const showcaseCards: ShowcaseCard[] = [
     position: 'left',
     highlights: [
       {
-        type: 'ring',
-        top: '30%',
-        left: '30%',
-        width: '50%',
-        height: '10%',
+        type: 'arrow',
+        label: 'Customize',
+        top: '65%',
+        left: '5%',
+        width: '40%',
+        height: '20%',
         delay: 0.6,
       },
     ],
@@ -130,8 +131,16 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
   const style = { top, left, right, bottom, width, height };
 
   // Calculate translation based on anchor point
-  const translateXClass = left ? '-translate-x-1/2' : right ? 'translate-x-1/2' : '-translate-x-1/2';
-  const translateYClass = top ? '-translate-y-1/2' : bottom ? 'translate-y-1/2' : '-translate-y-1/2';
+  const translateXClass = left
+    ? '-translate-x-1/2'
+    : right
+      ? 'translate-x-1/2'
+      : '-translate-x-1/2';
+  const translateYClass = top
+    ? '-translate-y-1/2'
+    : bottom
+      ? 'translate-y-1/2'
+      : '-translate-y-1/2';
   const transformClass = `${translateXClass} ${translateYClass}`;
 
   if (type === 'glow') {
