@@ -24,7 +24,7 @@ export const ProblemRelief = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:col-span-5 bg-gradient-to-br from-red-900/10 to-red-950/10 border border-red-900/20 rounded-2xl p-8 md:p-12 relative overflow-hidden group hover:border-red-900/40 transition-colors"
+            className="lg:col-span-5 bg-linear-to-br from-red-900/10 to-red-950/10 border border-red-900/20 rounded-2xl p-8 md:p-12 relative overflow-hidden group hover:border-red-900/40 transition-colors"
           >
             <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-red-500/10 rounded-full blur-2xl" />
 
@@ -61,7 +61,7 @@ export const ProblemRelief = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="lg:col-span-5 bg-gradient-to-br from-emerald-900/10 to-emerald-950/10 border border-emerald-900/20 rounded-2xl p-8 md:p-12 relative overflow-hidden group hover:border-emerald-500/30 transition-colors shadow-lg shadow-emerald-900/5"
+            className="lg:col-span-5 bg-linear-to-br from-emerald-900/10 to-emerald-950/10 border border-emerald-900/20 rounded-2xl p-8 md:p-12 relative overflow-hidden group hover:border-emerald-500/30 transition-colors shadow-lg shadow-emerald-900/5"
           >
             <div className="absolute top-0 right-0 -mt-8 -mr-8 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl" />
 
