@@ -1,5 +1,6 @@
 import { LandingNavbar } from './components/LandingNavbar';
 import { Hero } from './components/Hero';
+import ProductShowcase from './components/ProductShowcase';
 import { ProblemRelief } from './components/ProblemRelief';
 import { Capabilities } from './components/Capabilities';
 import { TrustSecurity } from './components/TrustSecurity';
@@ -15,6 +16,7 @@ export const LandingPage = () => {
 
       <main className='relative z-10 w-full'>
         <Hero />
+        <ProductShowcase />
         <ProblemRelief />
         <Capabilities />
         <TrustSecurity />

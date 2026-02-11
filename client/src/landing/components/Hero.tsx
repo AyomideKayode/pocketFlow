@@ -47,7 +47,7 @@ export const Hero = () => {
             to='/auth?mode=login'
             className='inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-slate-300 border border-slate-700 rounded-xl hover:text-white hover:border-emerald-500/50 hover:bg-slate-900 transition-all'
           >
-            View Demo
+            Sign in
           </Link>
         </motion.div>
 
@@ -76,7 +76,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 60, rotateX: 20 }}
           animate={{ opacity: 1, y: 0, rotateX: 0 }}
           transition={{ duration: 1, delay: 0.6, ease: 'easeOut' }}
-          className='mt-24 relative w-full max-w-5xl perspective-1000'
+          className='mt-16 relative w-full max-w-5xl perspective-1000'
         >
           <div className='relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl shadow-emerald-900/20 transform-gpu rotate-x-12 hover:rotate-x-0 transition-transform duration-700 ease-out'>
             {/* Glow effect behind */}
