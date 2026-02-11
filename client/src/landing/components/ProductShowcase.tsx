@@ -152,7 +152,7 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
         }`}
         style={style}
       >
-        <span className='absolute inset-0 rounded-lg animate-ping opacity-75 bg-emerald-400/30' />
+        <span className='absolute inset-0 rounded-lg animate-ping opacity-75 bg-emerald-400/30 motion-reduce:animate-none' />
       </motion.div>
     );
   }
