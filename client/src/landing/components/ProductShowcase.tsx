@@ -6,12 +6,28 @@ import learn from '../../assets/landing/learn-education-insights.JPG?url';
 import preferences from '../../assets/landing/preference-settings.JPG?url';
 import { Link } from 'react-router-dom';
 
+type HighlightType = 'glow' | 'ring' | 'arrow' | 'tooltip' | 'spotlight';
+
+interface ShowcaseHighlightConfig {
+  type: HighlightType;
+  top?: string;
+  left?: string;
+  right?: string;
+  bottom?: string;
+  width?: string;
+  height?: string;
+  size?: string; // e.g. 'w-12 h-12' for ring
+  delay?: number;
+  label?: string; // For tooltip
+}
+
 interface ShowcaseCard {
   id: number;
   headline: string;
   subheader: string;
   image: string;
   position: 'left' | 'right';
+  highlights?: ShowcaseHighlightConfig[];
 }
 
 const showcaseCards: ShowcaseCard[] = [
@@ -22,6 +38,16 @@ const showcaseCards: ShowcaseCard[] = [
       "Track bills with reminders. Set once, relax forever. Know exactly what's coming.",
     image: billAdd,
     position: 'left',
+    highlights: [
+      {
+        type: 'ring',
+        top: '12%',
+        right: '12%',
+        width: '8%',
+        height: '12%',
+        delay: 0.6,
+      },
+    ],
   },
   {
     id: 2,
@@ -30,6 +56,16 @@ const showcaseCards: ShowcaseCard[] = [
       'Visual insights reveal where your money actually goes. No spreadsheets, no guessing.',
     image: spending,
     position: 'right',
+    highlights: [
+      {
+        type: 'glow',
+        top: '35%',
+        left: '50%',
+        width: '80%',
+        height: '40%',
+        delay: 0.6,
+      },
+    ],
   },
   {
     id: 3,
@@ -38,6 +74,16 @@ const showcaseCards: ShowcaseCard[] = [
       'Start with your real financial history instantly. No blank screens, no rebuilding from memory.',
     image: csvImport,
     position: 'left',
+    highlights: [
+      {
+        type: 'ring',
+        top: '25%', // Adjust based on "Valid Records" box
+        left: '25%',
+        width: '35%',
+        height: '20%',
+        delay: 0.6,
+      },
+    ],
   },
   {
     id: 4,
@@ -46,6 +92,16 @@ const showcaseCards: ShowcaseCard[] = [
       'See upcoming bills at a glance. Access educational insights and resources. Make better financial decisions.',
     image: learn,
     position: 'right',
+    highlights: [
+      {
+        type: 'spotlight',
+        top: '30%',
+        right: '30%',
+        width: '40%',
+        height: '45%',
+        delay: 0.6,
+      },
+    ],
   },
   {
     id: 5,
@@ -54,8 +110,95 @@ const showcaseCards: ShowcaseCard[] = [
       'Customize your profile, set your preferred currency, manage your account. Full control, zero friction.',
     image: preferences,
     position: 'left',
+    highlights: [
+      {
+        type: 'ring',
+        top: '30%',
+        left: '30%',
+        width: '50%',
+        height: '10%',
+        delay: 0.6,
+      },
+    ],
   },
 ];
+
+const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
+  const { type, top, left, right, bottom, width, height, size, delay, label } =
+    config;
+
+  const style = { top, left, right, bottom, width, height };
+
+  if (type === 'glow') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, delay }}
+        className='absolute -translate-x-1/2 -translate-y-1/2 bg-emerald-500/20 blur-2xl rounded-full pointer-events-none z-10'
+        style={style}
+      />
+    );
+  }
+
+  if (type === 'ring') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay }}
+        className={`absolute -translate-x-1/2 -translate-y-1/2 border-2 border-emerald-400 rounded-lg pointer-events-none z-10 shadow-[0_0_15px_rgba(52,211,153,0.5)] ${
+          size || ''
+        }`}
+        style={style}
+      >
+        <span className='absolute inset-0 rounded-lg animate-ping opacity-75 bg-emerald-400/30' />
+      </motion.div>
+    );
+  }
+
+  if (type === 'spotlight') {
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay }}
+        className='absolute -translate-x-1/2 -translate-y-1/2 bg-radial from-white/10 to-transparent pointer-events-none z-10 mix-blend-overlay'
+        style={style}
+      />
+    );
+  }
+
+  if (type === 'arrow') {
+    // Basic arrow implementation
+    return (
+      <motion.div
+        initial={{ opacity: 0, x: -10 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5, delay }}
+        className='absolute pointer-events-none z-10 flex items-center gap-2'
+        style={style}
+      >
+        <div className='text-emerald-400 text-sm font-mono bg-slate-900/80 px-2 py-1 rounded border border-emerald-500/30 backdrop-blur-sm'>
+          {label}
+        </div>
+        <svg
+          width='24'
+          height='24'
+          viewBox='0 0 24 24'
+          fill='none'
+          stroke='currentColor'
+          className='text-emerald-400'
+          strokeWidth='2'
+        >
+          <path d='M5 12h14M12 5l7 7-7 7' />
+        </svg>
+      </motion.div>
+    );
+  }
+
+  return null;
+};
 
 export default function ProductShowcase() {
   return (
@@ -111,10 +254,16 @@ export default function ProductShowcase() {
                 <img
                   src={card.image}
                   alt={card.headline}
-                  className='w-full h-auto object-cover'
+                  className='w-full h-auto object-cover relative z-0'
                 />
+
+                {/* Highlights */}
+                {card.highlights?.map((highlight, hIndex) => (
+                  <ShowcaseHighlight key={hIndex} config={highlight} />
+                ))}
+
                 {/* Subtle glow behind image */}
-                <div className='absolute inset-0 bg-linear-to-r from-emerald-500/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300' />
+                <div className='absolute inset-0 bg-linear-to-r from-emerald-500/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none' />
               </motion.div>
             </div>
           </motion.div>
