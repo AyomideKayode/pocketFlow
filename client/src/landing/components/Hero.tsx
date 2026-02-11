@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import dashboardHero from '../../assets/landing/dashboard-hero.JPG';
+import dashboardHero from '../../assets/landing/dashboard-hero.JPG?url';
 
 export const Hero = () => {
   return (
-    <section className='relative pt-32 pb-24 px-4 overflow-hidden'>
+    <section className='relative pt-24 pb-16 px-4 overflow-hidden'>
       {/* Background with noise texture (optional, skipped for simplicity) */}
       <div className='absolute inset-0 bg-slate-950 -z-10' />
 
@@ -49,6 +49,26 @@ export const Hero = () => {
           >
             View Demo
           </Link>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
+          className='mt-6 grid grid-cols-2 sm:flex sm:flex-row gap-4 text-sm text-slate-400'
+        >
+          <div className='flex items-center gap-2'>
+            <span className='text-emerald-400 font-semibold'>✓</span>
+            <span>Free forever</span>
+          </div>
+          <div className='flex items-center gap-2'>
+            <span className='text-emerald-400 font-semibold'>✓</span>
+            <span>No credit card required</span>
+          </div>
+          <div className='flex items-center gap-2'>
+            <span className='text-emerald-400 font-semibold'>✓</span>
+            <span>Your data stays private</span>
+          </div>
         </motion.div>
 
         {/* Dashboard Screenshot with perspective tilt */}
