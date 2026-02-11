@@ -129,13 +129,19 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
 
   const style = { top, left, right, bottom, width, height };
 
+  // Calculate translation based on anchor point
+  const translateXClass = left ? '-translate-x-1/2' : right ? 'translate-x-1/2' : '-translate-x-1/2';
+  const translateYClass = top ? '-translate-y-1/2' : bottom ? 'translate-y-1/2' : '-translate-y-1/2';
+  const transformClass = `${translateXClass} ${translateYClass}`;
+
   if (type === 'glow') {
     return (
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.8, delay }}
-        className='absolute -translate-x-1/2 -translate-y-1/2 bg-emerald-500/20 blur-2xl rounded-full pointer-events-none z-10'
+        className={`absolute ${transformClass} bg-emerald-500/20 blur-2xl rounded-full pointer-events-none z-10`}
         style={style}
       />
     );
@@ -146,13 +152,14 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.5, delay }}
-        className={`absolute -translate-x-1/2 -translate-y-1/2 border-2 border-emerald-400 rounded-lg pointer-events-none z-10 shadow-[0_0_15px_rgba(52,211,153,0.5)] ${
+        className={`absolute ${transformClass} border-2 border-emerald-400 rounded-lg pointer-events-none z-10 shadow-[0_0_15px_rgba(52,211,153,0.5)] ${
           size || ''
         }`}
         style={style}
       >
-        <span className='absolute inset-0 rounded-lg animate-ping opacity-75 bg-emerald-400/30 motion-reduce:animate-none' />
+        <span className='absolute inset-0 rounded-lg animate-ping opacity-75 bg-emerald-400/30' />
       </motion.div>
     );
   }
@@ -162,8 +169,9 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
       <motion.div
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.8, delay }}
-        className='absolute -translate-x-1/2 -translate-y-1/2 bg-radial from-white/10 to-transparent pointer-events-none z-10 mix-blend-overlay'
+        className={`absolute ${transformClass} bg-radial from-white/10 to-transparent pointer-events-none z-10 mix-blend-overlay`}
         style={style}
       />
     );
@@ -175,6 +183,7 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
       <motion.div
         initial={{ opacity: 0, x: -10 }}
         whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true }}
         transition={{ duration: 0.5, delay }}
         className='absolute pointer-events-none z-10 flex items-center gap-2'
         style={style}
