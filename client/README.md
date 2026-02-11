@@ -134,6 +134,20 @@ The `pages/` directory contains the following route components:
 - **settings/**: User preferences and application settings.
 - **transactions/**: View and manage transaction history.
 
+### Landing Page
+
+The `landing/` directory contains the public-facing landing page with high-conversion design:
+
+- **Hero Section**: Eye-catching headline with trust signals ("Free forever", "No credit card required", "Your data stays private") and clear CTAs ("Create Free Account", "Sign in").
+- **ProductShowcase Component**: Guided feature narrative with 5 alternating screenshot cards showcasing core capabilities:
+  - Import historical transaction data via CSV
+  - Add and track recurring bills
+  - Visualize spending patterns with interactive insights
+  - Access upcoming bills and educational resources
+  - Customize profile and currency preferences
+- **Design Pattern**: Screenshot-based demos proven to convert better than video. Effortless scrolling = no friction.
+- **Mobile Responsive**: Trust signals adapt to mobile viewport with 2-column grid layout for optimal readability.
+
 ### Profile Photo Upload
 
 The `settings/` page includes a feature for uploading and updating user profile photos. This is implemented with the following:

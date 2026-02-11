@@ -168,6 +168,7 @@ PocketFlow is being built in distinct phases to ensure stability and code qualit
 - **Phase 11A: Data Capability Expansion**: Payment method normalization, advanced server-side transaction filtering/sorting/pagination, and improved import flows.
 - **Phase 11B: Bills**: Recurring bill tracking and due date awareness.
 - **Phase 11C: Learn & Insights**: Added "Learn" page for financial education and "Insights" engine for deterministic, rule-based suggestions (Upcoming Bills, Subscription Check).
+- **Landing Page Conversion Optimization**: Implemented high-converting landing page design with Product Showcase section featuring 5 guided screenshots, trust reinforcement signals, and mobile-responsive layout. Removed misleading "View Demo" CTA in favor of honest "Sign in" button with effortless product narrative scrolling.
 
 ### 🔮 Future Direction
 
