@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Wallet } from 'lucide-react';
+import { Wallet, Github, Linkedin, Twitter, Newspaper } from 'lucide-react';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -7,9 +7,9 @@ export const Footer = () => {
   return (
     <footer className='bg-slate-950 border-t border-slate-900 py-16 px-4'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12'>
+        <div className='grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 mb-12'>
           {/* Brand */}
-          <div className='flex flex-col gap-4'>
+          <div className='col-span-2 md:col-span-1 flex flex-col gap-4'>
             <Link to='/' className='flex items-center gap-2 group w-fit'>
               <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 group-hover:bg-emerald-500/20 transition-colors'>
                 <Wallet className='h-5 w-5 text-emerald-500' />
@@ -21,6 +21,40 @@ export const Footer = () => {
             <p className='text-slate-500 max-w-xs leading-relaxed'>
               Simple finance tracking for people who value their privacy.
             </p>
+            <div className='flex gap-4 mt-2'>
+              <a
+                href='https://github.com/AyomideKayode'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-slate-400 hover:text-emerald-500 transition-colors'
+              >
+                <Github className='h-5 w-5' />
+              </a>
+              <a
+                href='https://www.linkedin.com/in/ayomide-kayode-alawode/'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-slate-400 hover:text-emerald-500 transition-colors'
+              >
+                <Linkedin className='h-5 w-5' />
+              </a>
+              <a
+                href='https://x.com/Ayomide_KayoDev'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-slate-400 hover:text-emerald-500 transition-colors'
+              >
+                <Twitter className='h-5 w-5' />
+              </a>
+              <a
+                href='https://medium.com/@kazzywiz7'
+                target='_blank'
+                rel='noopener noreferrer'
+                className='text-slate-400 hover:text-emerald-500 transition-colors'
+              >
+                <Newspaper className='h-5 w-5' />
+              </a>
+            </div>
           </div>
 
           {/* Product */}

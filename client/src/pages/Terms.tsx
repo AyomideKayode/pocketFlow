@@ -13,7 +13,7 @@ export const Terms = () => {
             <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
               Terms of Service
             </h1>
-            <p className="text-slate-400">Last updated: {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}</p>
+            <p className="text-slate-400">Last updated: February 2026</p>
           </div>
 
           <div className="prose prose-invert prose-lg max-w-none text-slate-300 space-y-8">
