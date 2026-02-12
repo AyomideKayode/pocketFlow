@@ -22,6 +22,9 @@ import { Navbar } from './components/Navbar';
 import { DashboardLayout } from './components/layout/DashboardLayout';
 import { Loader2 } from 'lucide-react';
 import { LandingPage } from './landing/LandingPage';
+import { Privacy } from './pages/Privacy';
+import { Terms } from './pages/Terms';
+import { About } from './pages/About';
 
 function App() {
   const { user, loading } = useAuth();
@@ -47,6 +50,9 @@ function App() {
               user ? <Navigate to='/dashboard' replace /> : <LandingPage />
             }
           />
+          <Route path='/privacy' element={<Privacy />} />
+          <Route path='/terms' element={<Terms />} />
+          <Route path='/about' element={<About />} />
           <Route
             element={
               <ProtectedRoute>

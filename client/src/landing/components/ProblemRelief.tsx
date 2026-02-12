@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { XCircle, CheckCircle, ArrowRight, ArrowDown } from 'lucide-react';
+import { XCircle, CheckCircle, ArrowRight, ArrowDown, Dot, Check } from 'lucide-react';
 
 export const ProblemRelief = () => {
   return (
@@ -37,12 +37,12 @@ export const ProblemRelief = () => {
               {[
                 "Late payment fees from forgotten bills",
                 "Subscriptions charging you unnoticed",
-                "Panic wondering if you can afford it",
+                "Uncertainty about what you can safely spend",
                 "Guessing how much you spent on food",
                 "Spreadsheets you abandoned in February"
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3 text-slate-400">
-                  <XCircle className="h-5 w-5 text-red-900/50 mt-1 shrink-0" />
+                  <Dot className="h-6 w-6 text-red-900/50 mt-0.5 shrink-0" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -71,18 +71,26 @@ export const ProblemRelief = () => {
             </div>
 
             <ul className="space-y-4">
-              {[
-                "See every upcoming bill before it hits",
-                "Know exactly what's draining your account",
-                "Budgets that show real-time progress",
-                "Spending patterns you can actually understand",
-                "All your finance data in one secure place"
-              ].map((item, i) => (
-                <li key={i} className="flex items-start gap-3 text-white">
-                  <CheckCircle className="h-5 w-5 text-emerald-500 mt-1 shrink-0" />
-                  <span>{item}</span>
-                </li>
-              ))}
+              <li className="flex items-start gap-3 text-white">
+                <Check className="h-5 w-5 text-emerald-500 mt-1 shrink-0" />
+                <span>See every <span className="font-bold text-emerald-200">upcoming bill</span> before it hits</span>
+              </li>
+              <li className="flex items-start gap-3 text-white">
+                <Check className="h-5 w-5 text-emerald-500 mt-1 shrink-0" />
+                <span>Know exactly what's draining your account</span>
+              </li>
+              <li className="flex items-start gap-3 text-white">
+                <Check className="h-5 w-5 text-emerald-500 mt-1 shrink-0" />
+                <span>Budgets that show <span className="font-bold text-emerald-200">real-time progress</span></span>
+              </li>
+              <li className="flex items-start gap-3 text-white">
+                <Check className="h-5 w-5 text-emerald-500 mt-1 shrink-0" />
+                <span>Spending patterns you can actually understand</span>
+              </li>
+              <li className="flex items-start gap-3 text-white">
+                <Check className="h-5 w-5 text-emerald-500 mt-1 shrink-0" />
+                <span>All your finance data in <span className="font-bold text-emerald-200">one secure place</span></span>
+              </li>
             </ul>
           </motion.div>
         </div>

@@ -220,7 +220,7 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
 
 export default function ProductShowcase() {
   return (
-    <section className='relative w-full py-24 px-4 sm:px-6 lg:px-8 bg-slate-950'>
+    <section id='features' className='relative w-full py-24 px-4 sm:px-6 lg:px-8 bg-slate-950'>
       {/* Section header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
