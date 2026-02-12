@@ -8,8 +8,22 @@ import { HowItWorks } from './components/HowItWorks';
 import { FinalCTA } from './components/FinalCTA';
 import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 export const LandingPage = () => {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const id = hash.replace('#', '');
+      const element = document.getElementById(id);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  }, [hash]);
+
   return (
     <div className='min-h-screen bg-slate-950 text-white font-sans selection:bg-emerald-500/30 overflow-x-hidden'>
       <LandingNavbar />
