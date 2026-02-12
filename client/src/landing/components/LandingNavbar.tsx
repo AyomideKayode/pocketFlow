@@ -15,6 +15,17 @@ export const LandingNavbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isMobileMenuOpen]);
+
   const navLinks = [
     { name: 'Features', href: '/#features' },
     { name: 'Security', href: '/#security' },
@@ -75,6 +86,7 @@ export const LandingNavbar = () => {
           <button
             className='md:hidden text-slate-400 hover:text-white'
             onClick={() => setIsMobileMenuOpen(true)}
+            aria-label='Open menu'
           >
             <Menu className='h-6 w-6' />
           </button>
@@ -106,6 +118,7 @@ export const LandingNavbar = () => {
               <button
                 className='text-slate-400 hover:text-white'
                 onClick={() => setIsMobileMenuOpen(false)}
+                aria-label='Close menu'
               >
                 <X className='h-6 w-6' />
               </button>

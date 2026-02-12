@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Wallet, Github, Linkedin, Twitter, Newspaper } from 'lucide-react';
+import { useAuth } from '../../contexts/auth-context';
 
 export const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { user } = useAuth();
 
   return (
     <footer className='bg-slate-950 border-t border-slate-900 py-16 px-4'>
@@ -64,23 +66,23 @@ export const Footer = () => {
             </h4>
             <div className='flex flex-col gap-2'>
               <Link
-                to='/dashboard'
+                to={user ? '/dashboard' : '/auth?mode=signup'}
                 className='text-slate-400 hover:text-emerald-500 transition-colors w-fit'
               >
                 Dashboard
               </Link>
-              <a
-                href='/#features'
+              <Link
+                to='/#features'
                 className='text-slate-400 hover:text-emerald-500 transition-colors w-fit'
               >
                 Features
-              </a>
-              <a
-                href='/#how-it-works'
+              </Link>
+              <Link
+                to='/#how-it-works'
                 className='text-slate-400 hover:text-emerald-500 transition-colors w-fit'
               >
                 How it Works
-              </a>
+              </Link>
               <Link
                 to='/about'
                 className='text-slate-400 hover:text-emerald-500 transition-colors w-fit'
@@ -96,26 +98,26 @@ export const Footer = () => {
               Support
             </h4>
             <div className='flex flex-col gap-2'>
-              <a
-                href='/#faq'
+              <Link
+                to='/#faq'
                 className='text-slate-400 hover:text-emerald-500 transition-colors w-fit'
               >
                 Help Center
-              </a>
+              </Link>
               <a
-                href='mailto:ayomidekay7@gmail.com'
+                href='mailto:ayomidekay7@gmail.com?subject=General%20Inquiry'
                 className='text-slate-400 hover:text-emerald-500 transition-colors w-fit'
               >
                 Contact Us
               </a>
               <a
-                href='mailto:ayomidekay7@gmail.com'
+                href='mailto:ayomidekay7@gmail.com?subject=Feature%20Request'
                 className='text-slate-400 hover:text-emerald-500 transition-colors w-fit'
               >
                 Feature Requests
               </a>
               <a
-                href='mailto:ayomidekay7@gmail.com'
+                href='mailto:ayomidekay7@gmail.com?subject=Bug%20Report'
                 className='text-slate-400 hover:text-emerald-500 transition-colors w-fit'
               >
                 Report a Bug
@@ -162,6 +164,7 @@ export const Footer = () => {
             </p>
           </div>
           <div className='flex items-center gap-6'>
+            {/* TODO: Fetch version from package.json or environment variable */}
             <span className='px-2 py-1 rounded bg-slate-900 border border-slate-800 text-xs font-mono text-slate-500'>
               v0.9.0
             </span>
