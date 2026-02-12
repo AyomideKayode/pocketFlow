@@ -1,6 +1,7 @@
 import { LandingNavbar } from '../landing/components/LandingNavbar';
 import { Footer } from '../landing/components/Footer';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 export const About = () => {
   return (
@@ -29,7 +30,7 @@ export const About = () => {
             <h2 className="text-2xl font-bold text-emerald-400">The Story</h2>
             <div className="prose prose-invert prose-lg text-slate-300 leading-relaxed">
               <p>
-                PocketFlow started with a simple, uncomfortable question.
+                Development began in early 2024, sparked by a simple, uncomfortable question.
               </p>
               <p>
                 During the holidays, after family gatherings and celebrations, I noticed my spending had quietly increased. Nothing dramatic. Just small payments stacking up. Meals here. Gifts there. Subscriptions humming in the background.
@@ -91,16 +92,16 @@ export const About = () => {
 
           {/* The Builder Note */}
           <section className="bg-slate-900/50 border border-slate-800 rounded-2xl p-8 space-y-6">
-            <h2 className="text-2xl font-bold text-emerald-400">A Note from the Builder</h2>
+            <h2 className="text-2xl font-bold text-emerald-400">A Note from the Founder</h2>
             <div className="prose prose-invert prose-lg text-slate-300 leading-relaxed">
               <p>
-                PocketFlow is built and maintained by an independent software engineer who cares deeply about financial transparency and user privacy.
+                PocketFlow is built and maintained by a founder and builder who cares deeply about financial transparency and user privacy.
               </p>
               <p>
-                The goal is steady, thoughtful improvement — shaped by real user feedback.
+                I use PocketFlow every day to manage my own finances. This "dogfooding" ensures that the tool remains practical, reliable, and focused on real-world needs.
               </p>
               <p>
-                If something feels confusing or could work better, I want to hear about it.
+                The goal is steady, thoughtful improvement — shaped by my own usage and real user feedback. If something feels confusing or could work better, I want to hear about it.
               </p>
             </div>
           </section>
@@ -115,6 +116,28 @@ export const About = () => {
               <p>
                 In the future, we may explore additional integrations and smarter automation — but only if they maintain the same commitment to privacy, control, and simplicity.
               </p>
+            </div>
+          </section>
+
+          {/* CTA */}
+          <section className="pt-8 flex flex-col items-center text-center space-y-6">
+            <h2 className="text-3xl font-bold text-white">Ready to find clarity?</h2>
+            <p className="text-slate-400 max-w-lg">
+              Join others who are taking control of their financial life with a simple, private tool.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link
+                to="/auth?mode=signup"
+                className="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold px-8 py-3 rounded-lg shadow-lg shadow-emerald-500/20 transition-all transform hover:scale-[1.02]"
+              >
+                Create your free account
+              </Link>
+              <Link
+                to="/auth?mode=login"
+                className="text-slate-300 hover:text-white font-medium px-8 py-3 transition-colors border border-slate-700 hover:border-slate-500 rounded-lg"
+              >
+                Sign In
+              </Link>
             </div>
           </section>
         </div>

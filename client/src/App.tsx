@@ -25,6 +25,7 @@ import { LandingPage } from './landing/LandingPage';
 import { Privacy } from './pages/Privacy';
 import { Terms } from './pages/Terms';
 import { About } from './pages/About';
+import { ScrollToTop } from './components/ScrollToTop';
 
 function App() {
   const { user, loading } = useAuth();
@@ -42,6 +43,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <div className='flex min-h-screen w-full flex-col bg-slate-950 text-slate-50 font-sans antialiased'>
         <Routes>
           <Route

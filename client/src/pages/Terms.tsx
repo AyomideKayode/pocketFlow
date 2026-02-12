@@ -46,6 +46,27 @@ export const Terms = () => {
             </section>
 
             <section>
+              <h2 className="text-2xl font-bold text-white mb-4">Accounts & Eligibility</h2>
+              <p>
+                You must be at least 13 years old to use this service. By creating an account, you represent that you meet this requirement.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-4">Acceptable Use</h2>
+              <p>
+                You agree not to misuse the service, including but not limited to: interfering with its operation, attempting to access data that is not yours, or using it for illegal activities.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-4">Intellectual Property</h2>
+              <p>
+                PocketFlow and its original content, features, and functionality are owned by the developers and are protected by copyright, trademark, and other intellectual property laws.
+              </p>
+            </section>
+
+            <section>
               <h2 className="text-2xl font-bold text-white mb-4">Availability</h2>
               <p>
                 We aim for reliability but cannot guarantee uninterrupted service. We are not liable for any downtime or data loss.
@@ -63,6 +84,13 @@ export const Terms = () => {
               <h2 className="text-2xl font-bold text-white mb-4">Termination</h2>
               <p>
                 You may stop using the service at any time. We reserve the right to suspend or terminate accounts that misuse the service.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-4">Governing Law</h2>
+              <p>
+                These terms shall be governed by and construed in accordance with the laws of the jurisdiction in which the service provider is established, without regard to its conflict of law provisions.
               </p>
             </section>
 

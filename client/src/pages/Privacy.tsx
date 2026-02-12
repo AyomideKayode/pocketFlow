@@ -69,6 +69,34 @@ export const Privacy = () => {
             </section>
 
             <section>
+              <h2 className="text-2xl font-bold text-white mb-4">Data Retention</h2>
+              <p>
+                We retain your data only for as long as your account is active or as needed to provide you services. If you delete your account, your data is removed from our active databases.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-4">Data Deletion & User Rights</h2>
+              <p>
+                You have the right to access, correct, export, or delete your personal data. You can delete your account directly within the settings or request assistance by contacting support.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-4">Third-Party Services</h2>
+              <p>
+                We use trusted third-party services for essential infrastructure, such as authentication (Firebase), hosting (Vercel), and database management (MongoDB). These providers adhere to strict data protection standards.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-4">Children's Privacy</h2>
+              <p>
+                PocketFlow is not intended for use by children under the age of 13. We do not knowingly collect personal information from children.
+              </p>
+            </section>
+
+            <section>
               <h2 className="text-2xl font-bold text-white mb-4">Changes</h2>
               <p>
                 If this policy changes, updates will be reflected on this page.
