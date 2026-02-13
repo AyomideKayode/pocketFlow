@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '../../contexts/auth-context';
 import { billService } from '../../services/bill-service';
 import { useConfirmationDialog } from '../../contexts/confirmation-dialog-context';
@@ -9,51 +9,32 @@ import {
   Plus,
   Calendar,
   CheckCircle2,
-  Trash2,
   AlertCircle,
-  Pencil,
+  AlertTriangle,
 } from 'lucide-react';
 import { useToast } from '../../contexts/toast-context';
 import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
+import { useBills } from '../../hooks/useBills';
+import { BillCard } from '../../components/bills/BillCard';
 
 export const Bills: React.FC = () => {
   const { user } = useAuth();
   const { addToast } = useToast();
   const { showConfirmation } = useConfirmationDialog();
   const { format } = useCurrencyFormatter();
-  const [bills, setBills] = useState<Bill[]>([]);
-  const [loading, setLoading] = useState(true);
+
+  const {
+    overdue,
+    upcoming,
+    paid,
+    loading,
+    refreshBills,
+    currentPeriod
+  } = useBills();
+
   const [isAdding, setIsAdding] = useState(false);
   const [editingBill, setEditingBill] = useState<Bill | null>(null);
   const [loadingBillId, setLoadingBillId] = useState<string | null>(null);
-
-  // Use local time for current period
-  const currentPeriod = useMemo(() => {
-    const now = new Date();
-    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-  }, []);
-
-  const fetchBills = async () => {
-    if (!user) return;
-    try {
-      setLoading(true);
-      const token = await user.getIdToken();
-      // Pass currentPeriod to service if needed, but service defaults to backend current time.
-      // Frontend filtering relies on local currentPeriod, so we just fetch all relevant bills.
-      // The backend filters out old one-time bills.
-      const data = await billService.getBills(token, currentPeriod);
-      setBills(data);
-    } catch (error) {
-      console.error('Failed to fetch bills:', error);
-      addToast('Failed to load bills', 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchBills();
-  }, [user, currentPeriod]);
 
   const handleSave = async (billData: Partial<Bill>) => {
     if (!user) return;
@@ -68,7 +49,7 @@ export const Bills: React.FC = () => {
       }
       setIsAdding(false);
       setEditingBill(null);
-      fetchBills();
+      refreshBills();
     } catch (error) {
       console.error('Error saving bill:', error);
       addToast('Failed to save bill', 'error');
@@ -101,7 +82,7 @@ export const Bills: React.FC = () => {
           const token = await user.getIdToken();
           await billService.deleteBill(token, bill._id!);
           addToast('Bill deleted successfully', 'success');
-          fetchBills();
+          refreshBills();
         } catch (error) {
           console.error('Error deleting bill:', error);
           addToast('Failed to delete bill', 'error');
@@ -119,7 +100,7 @@ export const Bills: React.FC = () => {
       const token = await user.getIdToken();
       await billService.markBillPaid(token, bill._id!);
       addToast('Marked as paid', 'success');
-      fetchBills();
+      refreshBills();
     } catch (error) {
       console.error('Error marking bill paid:', error);
       addToast('Failed to mark as paid', 'error');
@@ -135,10 +116,9 @@ export const Bills: React.FC = () => {
       const token = await user.getIdToken();
       await billService.markBillUnpaid(token, bill._id!);
       addToast('Marked as unpaid', 'success');
-      fetchBills();
+      refreshBills();
     } catch (error) {
       console.error('Error marking bill unpaid:', error);
-      // Handle the 409 Conflict specifically with type safety
       if (error instanceof Error && error.message.includes('Cannot unpay')) {
         addToast('Cannot unpay bills from previous months', 'error');
       } else {
@@ -149,49 +129,15 @@ export const Bills: React.FC = () => {
     }
   };
 
-  const { upcoming, paid } = useMemo(() => {
-    const upcoming: Bill[] = [];
-    const paid: Bill[] = [];
-
-    bills.forEach((bill) => {
-      const isPaid = bill.lastPaidPeriod === currentPeriod;
-      if (isPaid) {
-        paid.push(bill);
-      } else {
-        upcoming.push(bill);
-      }
-    });
-
-    // Sort by due day
-    upcoming.sort((a, b) => a.dueDay - b.dueDay);
-    paid.sort((a, b) => a.dueDay - b.dueDay);
-
-    return { upcoming, paid };
-  }, [bills, currentPeriod]);
-
-  const getDueDateDisplay = (dueDay: number) => {
-    const now = new Date();
-    const daysInMonth = new Date(
-      now.getFullYear(),
-      now.getMonth() + 1,
-      0,
-    ).getDate();
-    const day = Math.min(dueDay, daysInMonth);
-    // Format: "Feb 15"
-    const date = new Date(now.getFullYear(), now.getMonth(), day);
-    return date.toLocaleDateString(undefined, {
-      month: 'short',
-      day: 'numeric',
-    });
-  };
-
-  if (loading && bills.length === 0) {
+  if (loading && overdue.length === 0 && upcoming.length === 0 && paid.length === 0) {
     return (
       <div className='flex items-center justify-center h-full min-h-[400px]'>
         <Loader2 className='h-8 w-8 animate-spin text-emerald-500' />
       </div>
     );
   }
+
+  const allEmpty = overdue.length === 0 && upcoming.length === 0 && paid.length === 0;
 
   return (
     <div className='space-y-6 max-w-4xl mx-auto pb-10'>
@@ -230,165 +176,125 @@ export const Bills: React.FC = () => {
         </div>
       )}
 
-      <div className='space-y-8'>
-        {/* Upcoming Bills */}
-        <section>
-          <h2 className='text-lg font-semibold text-slate-200 mb-4 flex items-center gap-2'>
-            <AlertCircle className='h-5 w-5 text-amber-500' />
-            Upcoming
-            <span className='text-sm font-normal text-slate-500 ml-2'>
-              ({upcoming.length})
-            </span>
-          </h2>
-          {upcoming.length === 0 ? (
-            <div className='text-center py-8 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed'>
-              <p className='text-slate-500'>
-                No upcoming bills for this month.
-              </p>
-            </div>
-          ) : (
-            <div className='grid gap-3'>
-              {upcoming.map((bill) => (
-                <BillCard
-                  key={bill._id}
-                  bill={bill}
-                  isPaid={false}
-                  dueDateDisplay={getDueDateDisplay(bill.dueDay)}
-                  onMarkPaid={() => handleMarkPaid(bill)}
-                  onEdit={() => {
-                    setEditingBill(bill);
-                    setIsAdding(false);
-                  }}
-                  onDelete={() => handleDelete(bill)}
-                  isLoading={loadingBillId === bill._id}
-                />
-              ))}
-            </div>
+      {allEmpty && !isAdding && !editingBill ? (
+         <div className='text-center py-16 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed'>
+            <p className='text-slate-500'>No bills found. Add one to get started!</p>
+         </div>
+      ) : (
+        <div className='space-y-8'>
+
+          {/* Overdue Section - Render FIRST */}
+          {overdue.length > 0 && (
+            <section className="animate-in fade-in slide-in-from-top-4 duration-500">
+              <h2 className='text-lg font-semibold text-red-400 mb-4 flex items-center gap-2'>
+                <AlertTriangle className='h-5 w-5' />
+                Overdue
+                <span className='bg-red-500/20 text-red-400 text-xs px-2 py-0.5 rounded-full border border-red-500/20'>
+                  {overdue.length}
+                </span>
+              </h2>
+              <div className='grid gap-3'>
+                {overdue.map((bill) => (
+                  <BillCard
+                    key={bill._id}
+                    bill={bill}
+                    visualState="overdue"
+                    currentPeriod={currentPeriod}
+                    onMarkPaid={() => handleMarkPaid(bill)}
+                    onEdit={() => {
+                      setEditingBill(bill);
+                      setIsAdding(false);
+                    }}
+                    onDelete={() => handleDelete(bill)}
+                    isLoading={loadingBillId === bill._id}
+                  />
+                ))}
+              </div>
+            </section>
           )}
-        </section>
 
-        {/* Paid Bills */}
-        <section>
-          <h2 className='text-lg font-semibold text-slate-200 mb-4 flex items-center gap-2'>
-            <CheckCircle2 className='h-5 w-5 text-emerald-500' />
-            Paid
-            <span className='text-sm font-normal text-slate-500 ml-2'>
-              ({paid.length})
-            </span>
-          </h2>
-          {paid.length === 0 ? (
-            <div className='text-center py-8 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed'>
-              <p className='text-slate-500'>No bills paid yet this month.</p>
-            </div>
-          ) : (
-            <div className='grid gap-3 opacity-75 hover:opacity-100 transition-opacity'>
-              {paid.map((bill) => (
-                <BillCard
-                  key={bill._id}
-                  bill={bill}
-                  isPaid={true}
-                  dueDateDisplay={getDueDateDisplay(bill.dueDay)}
-                  onMarkPaid={() => handleMarkUnpaid(bill)} // Toggle back
-                  onEdit={() => {
-                    setEditingBill(bill);
-                    setIsAdding(false);
-                  }}
-                  onDelete={() => handleDelete(bill)}
-                  isLoading={loadingBillId === bill._id}
-                />
-              ))}
-            </div>
-          )}
-        </section>
-      </div>
-    </div>
-  );
-};
+          {/* Upcoming Section */}
+          <section>
+             <div className="flex items-center justify-between mb-4">
+                <h2 className='text-lg font-semibold text-slate-200 flex items-center gap-2'>
+                  <AlertCircle className='h-5 w-5 text-amber-500' />
+                  Upcoming
+                  <span className='text-sm font-normal text-slate-500 ml-2'>
+                    ({upcoming.length})
+                  </span>
+                </h2>
 
-interface BillCardProps {
-  bill: Bill;
-  isPaid: boolean;
-  dueDateDisplay: string;
-  onMarkPaid: () => void;
-  onEdit: () => void;
-  onDelete: () => void;
-  isLoading?: boolean;
-}
+                {/* Positive reinforcement if no overdue bills */}
+                {overdue.length === 0 && (upcoming.length > 0 || paid.length > 0) && (
+                  <div className="flex items-center gap-2 text-emerald-500/80 text-xs sm:text-sm bg-emerald-500/5 px-3 py-1.5 rounded-full border border-emerald-500/10">
+                      <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4" />
+                      <span>Nothing overdue 🎉</span>
+                  </div>
+                )}
+             </div>
 
-const BillCard: React.FC<BillCardProps> = ({
-  bill,
-  isPaid,
-  dueDateDisplay,
-  onMarkPaid,
-  onEdit,
-  onDelete,
-  isLoading = false,
-}) => {
-  const { format } = useCurrencyFormatter();
-
-  return (
-    <div className='flex items-center justify-between p-4 bg-slate-900 border border-slate-800 rounded-lg hover:border-slate-700 transition-colors group'>
-      <div className='flex items-center gap-4'>
-        <button
-          onClick={onMarkPaid}
-          disabled={isLoading}
-          className={`h-6 w-6 rounded-full border flex items-center justify-center transition-colors ${isPaid
-            ? 'bg-emerald-500 border-emerald-500 text-white'
-            : 'border-slate-600 hover:border-emerald-500 text-transparent hover:text-emerald-500/50'
-            } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-          title={isPaid ? 'Mark as unpaid' : 'Mark as paid'}
-        >
-          {isLoading ? (
-            <Loader2 className='h-4 w-4 animate-spin' />
-          ) : (
-            <CheckCircle2 className='h-4 w-4' />
-          )}
-        </button>
-        <div>
-          <h3
-            className={`font-medium ${isPaid ? 'text-slate-400 line-through' : 'text-slate-200'}`}
-          >
-            {bill.name}
-          </h3>
-          <div className='flex items-center gap-3 text-sm text-slate-500'>
-            <span className='flex items-center gap-1'>
-              <Calendar className='h-3 w-3' />
-              {dueDateDisplay}
-            </span>
-            {bill.isRecurring && (
-              <span className='bg-slate-800 text-slate-400 text-xs px-2 py-0.5 rounded-full'>
-                Recurring
-              </span>
+            {upcoming.length === 0 ? (
+               <div className='text-center py-8 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed'>
+                  <p className='text-slate-500'>
+                    No upcoming bills for this month.
+                  </p>
+               </div>
+            ) : (
+              <div className='grid gap-3'>
+                {upcoming.map((bill) => (
+                  <BillCard
+                    key={bill._id}
+                    bill={bill}
+                    visualState="upcoming"
+                    currentPeriod={currentPeriod}
+                    onMarkPaid={() => handleMarkPaid(bill)}
+                    onEdit={() => {
+                      setEditingBill(bill);
+                      setIsAdding(false);
+                    }}
+                    onDelete={() => handleDelete(bill)}
+                    isLoading={loadingBillId === bill._id}
+                  />
+                ))}
+              </div>
             )}
-          </div>
-        </div>
-      </div>
+          </section>
 
-      <div className='flex items-center gap-4'>
-        <span
-          className={`font-semibold ${isPaid ? 'text-slate-500' : 'text-emerald-400'}`}
-        >
-          {format(bill.amount)}
-        </span>
-        <div className='flex items-center gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity'>
-          <button
-            onClick={onEdit}
-            disabled={isLoading}
-            className='p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded disabled:opacity-50 disabled:cursor-not-allowed'
-            title='Edit'
-          >
-            <Pencil className='h-4 w-4' />
-          </button>
-          <button
-            onClick={onDelete}
-            disabled={isLoading}
-            className='p-2 text-slate-400 hover:text-red-400 hover:bg-red-900/20 rounded disabled:opacity-50 disabled:cursor-not-allowed'
-            title='Delete'
-          >
-            <Trash2 className='h-4 w-4' />
-          </button>
+          {/* Paid Bills */}
+          <section>
+            <h2 className='text-lg font-semibold text-slate-200 mb-4 flex items-center gap-2'>
+              <CheckCircle2 className='h-5 w-5 text-emerald-500' />
+              Paid
+              <span className='text-sm font-normal text-slate-500 ml-2'>
+                ({paid.length})
+              </span>
+            </h2>
+            {paid.length === 0 ? (
+              <div className='text-center py-8 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed'>
+                <p className='text-slate-500'>No bills paid yet this month.</p>
+              </div>
+            ) : (
+              <div className='grid gap-3 opacity-75 hover:opacity-100 transition-opacity'>
+                {paid.map((bill) => (
+                  <BillCard
+                    key={bill._id}
+                    bill={bill}
+                    visualState="paid"
+                    currentPeriod={currentPeriod}
+                    onMarkPaid={() => handleMarkUnpaid(bill)}
+                    onEdit={() => {
+                      setEditingBill(bill);
+                      setIsAdding(false);
+                    }}
+                    onDelete={() => handleDelete(bill)}
+                    isLoading={loadingBillId === bill._id}
+                  />
+                ))}
+              </div>
+            )}
+          </section>
         </div>
-      </div>
+      )}
     </div>
   );
 };
