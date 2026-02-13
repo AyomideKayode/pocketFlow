@@ -1,11 +1,21 @@
-import { Bill } from '../types/bill';
+import type { Bill } from '../types/bill';
 
 export type BillVisualState = 'paid' | 'upcoming' | 'overdue';
 
 /**
+ * Returns the current period (YYYY-MM) in local time.
+ */
+function getCurrentLocalPeriod(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  return `${year}-${month}`;
+}
+
+/**
  * Determines the due date for a bill in the context of the given period.
  */
-export function getBillDueDate(bill: Bill, currentPeriod: string = new Date().toISOString().slice(0, 7)): Date {
+export function getBillDueDate(bill: Bill, currentPeriod: string = getCurrentLocalPeriod()): Date {
   const [yearStr, monthStr] = currentPeriod.split('-');
   const year = parseInt(yearStr, 10);
   const month = parseInt(monthStr, 10) - 1; // 0-indexed
@@ -23,7 +33,7 @@ export function getBillDueDate(bill: Bill, currentPeriod: string = new Date().to
  * Calculates how many days overdue a bill is relative to today.
  * Returns 0 if due date is today or in the future.
  */
-export function getDaysOverdue(bill: Bill, currentPeriod: string = new Date().toISOString().slice(0, 7)): number {
+export function getDaysOverdue(bill: Bill, currentPeriod: string = getCurrentLocalPeriod()): number {
   const dueDate = getBillDueDate(bill, currentPeriod);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -46,7 +56,7 @@ export function getDaysOverdue(bill: Bill, currentPeriod: string = new Date().to
  */
 export function getBillVisualState(
   bill: Bill,
-  currentPeriod: string = new Date().toISOString().slice(0, 7)
+  currentPeriod: string = getCurrentLocalPeriod()
 ): BillVisualState {
   // 1. Check if paid
   if (bill.lastPaidPeriod === currentPeriod) {

@@ -1,7 +1,8 @@
 import React from 'react';
 import type { Bill } from '../../types/bill';
 import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
-import { BillVisualState, getBillDueDate, getDaysOverdue } from '../../utils/bill';
+import { getBillDueDate, getDaysOverdue } from '../../utils/bill';
+import type { BillVisualState } from '../../utils/bill';
 import { Loader2, Calendar, CheckCircle2, Pencil, Trash2 } from 'lucide-react';
 
 interface BillCardProps {
@@ -99,7 +100,7 @@ export const BillCard: React.FC<BillCardProps> = ({
         >
           {format(bill.amount)}
         </span>
-        <div className='flex items-center gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity'>
+        <div className='flex items-center gap-2 opacity-100 lg:opacity-0 lg:group-hover:opacity-100 lg:group-focus-within:opacity-100 transition-opacity'>
           <button
             onClick={onEdit}
             disabled={isLoading}
