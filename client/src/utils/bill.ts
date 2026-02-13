@@ -42,7 +42,7 @@ export function getDaysOverdue(bill: Bill, currentPeriod: string = getCurrentLoc
 
   // Calculate difference in days
   const diffTime = Math.abs(today.getTime() - dueDate.getTime());
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
   return diffDays;
 }
 
