@@ -26,7 +26,7 @@ const faqs = [
   {
     question: 'What if I have a question or need help?',
     answer:
-      "We’re responsive and typically reply within 24 hours. You can reach us at support@pocketflow.app.",
+      'We’re responsive and typically reply within 24 hours. You can reach us at support@pocketflow.app.',
   },
   {
     question: 'Will there be a mobile app?',

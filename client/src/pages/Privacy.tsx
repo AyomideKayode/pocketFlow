@@ -3,31 +3,35 @@ import { Footer } from '../landing/components/Footer';
 
 export const Privacy = () => {
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-50 font-sans selection:bg-emerald-500/30 flex flex-col">
+    <div className='min-h-screen bg-slate-950 text-slate-50 font-sans selection:bg-emerald-500/30 flex flex-col'>
       <LandingNavbar />
 
-      <main className="flex-grow pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="max-w-3xl mx-auto space-y-12">
+      <main className='flex-grow pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative z-10'>
+        <div className='max-w-3xl mx-auto space-y-12'>
           {/* Header */}
-          <div className="text-center space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white">
+          <div className='text-center space-y-4'>
+            <h1 className='text-4xl md:text-5xl font-bold tracking-tight text-white'>
               Privacy Policy
             </h1>
-            <p className="text-slate-400">Last updated: February 2026</p>
+            <p className='text-slate-400'>Last updated: February 2026</p>
           </div>
 
-          <div className="prose prose-invert prose-lg max-w-none text-slate-300 space-y-8">
+          <div className='prose prose-invert prose-lg max-w-none text-slate-300 space-y-8'>
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">Overview</h2>
+              <h2 className='text-2xl font-bold text-white mb-4'>Overview</h2>
               <p>
-                PocketFlow is built to help individuals understand their finances while keeping their information private and under their control.
+                PocketFlow is built to help individuals understand their
+                finances while keeping their information private and under their
+                control.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">Information You Provide</h2>
+              <h2 className='text-2xl font-bold text-white mb-4'>
+                Information You Provide
+              </h2>
               <p>We store only the data you choose to enter, such as:</p>
-              <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500">
+              <ul className='list-disc pl-6 space-y-2 marker:text-emerald-500'>
                 <li>Transactions</li>
                 <li>Bills</li>
                 <li>Budgets</li>
@@ -36,18 +40,24 @@ export const Privacy = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">Authentication</h2>
+              <h2 className='text-2xl font-bold text-white mb-4'>
+                Authentication
+              </h2>
               <p>
-                Authentication is handled securely through trusted providers (Google, GitHub, Email). We do not see or store your passwords.
+                Authentication is handled securely through trusted providers
+                (Google, GitHub, Email). We do not see or store your passwords.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">How Your Data Is Used</h2>
+              <h2 className='text-2xl font-bold text-white mb-4'>
+                How Your Data Is Used
+              </h2>
               <p>
-                Your information is used solely to provide the PocketFlow service: calculations, reminders, and visualizations.
+                Your information is used solely to provide the PocketFlow
+                service: calculations, reminders, and visualizations.
               </p>
-              <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500">
+              <ul className='list-disc pl-6 space-y-2 marker:text-emerald-500'>
                 <li>We do not sell data.</li>
                 <li>We do not share data with advertisers.</li>
                 <li>We do not use your information for marketing profiling.</li>
@@ -55,58 +65,87 @@ export const Privacy = () => {
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">Data Ownership</h2>
+              <h2 className='text-2xl font-bold text-white mb-4'>
+                Data Ownership
+              </h2>
               <p>
-                Your data belongs to you. You may export or delete it at any time.
+                Your data belongs to you. You may export or delete it at any
+                time.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">Security</h2>
+              <h2 className='text-2xl font-bold text-white mb-4'>Security</h2>
               <p>
-                We apply industry-standard security practices to protect stored information. No system is perfect, but safeguarding your data is a priority.
+                We apply industry-standard security practices to protect stored
+                information. No system is perfect, but safeguarding your data is
+                a priority.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">Data Retention</h2>
+              <h2 className='text-2xl font-bold text-white mb-4'>
+                Data Retention
+              </h2>
               <p>
-                We retain your data only for as long as your account is active or as needed to provide you services. If you delete your account, your data is removed from our active databases.
+                We retain your data only for as long as your account is active
+                or as needed to provide you services. If you delete your
+                account, your data is removed from our active databases.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">Data Deletion & User Rights</h2>
+              <h2 className='text-2xl font-bold text-white mb-4'>
+                Data Deletion & User Rights
+              </h2>
               <p>
-                You have the right to access, correct, export, or delete your personal data. You can delete your account directly within the settings or request assistance by contacting support.
+                You have the right to access, correct, export, or delete your
+                personal data. You can delete your account directly within the
+                settings or request assistance by contacting support.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">Third-Party Services</h2>
+              <h2 className='text-2xl font-bold text-white mb-4'>
+                Third-Party Services
+              </h2>
               <p>
-                We use trusted third-party services for essential infrastructure, such as authentication (Firebase), hosting (Vercel), and database management (MongoDB). These providers adhere to strict data protection standards.
+                We use trusted third-party services for essential
+                infrastructure, such as authentication (Firebase), hosting
+                (Vercel), and database management (MongoDB). These providers
+                adhere to strict data protection standards.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">Children's Privacy</h2>
+              <h2 className='text-2xl font-bold text-white mb-4'>
+                Children's Privacy
+              </h2>
               <p>
-                PocketFlow is not intended for use by children under the age of 13. We do not knowingly collect personal information from children.
+                PocketFlow is not intended for use by children under the age of
+                13. We do not knowingly collect personal information from
+                children.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">Changes</h2>
+              <h2 className='text-2xl font-bold text-white mb-4'>Changes</h2>
               <p>
                 If this policy changes, updates will be reflected on this page.
               </p>
             </section>
 
             <section>
-              <h2 className="text-2xl font-bold text-white mb-4">Contact</h2>
+              <h2 className='text-2xl font-bold text-white mb-4'>Contact</h2>
               <p>
-                Questions? Reach out at: <a href="mailto:ayomidekay7@gmail.com" className="text-emerald-400 hover:text-emerald-300">ayomidekay7@gmail.com</a>.
+                Questions? Reach out at:{' '}
+                <a
+                  href='mailto:ayomidekay7@gmail.com'
+                  className='text-emerald-400 hover:text-emerald-300'
+                >
+                  ayomidekay7@gmail.com
+                </a>
+                .
               </p>
             </section>
           </div>

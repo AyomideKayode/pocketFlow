@@ -170,7 +170,7 @@ export const Footer = () => {
           <div className='flex items-center gap-6'>
             {/* TODO: Fetch version from package.json or environment variable */}
             <span className='px-2 py-1 rounded bg-slate-900 border border-slate-800 text-xs font-mono text-slate-500'>
-              v0.9.0
+              v0.9.2
             </span>
           </div>
         </div>
