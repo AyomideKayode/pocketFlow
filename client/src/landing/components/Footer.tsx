@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom';
-import { Wallet, Github, Linkedin, Twitter, Newspaper } from 'lucide-react';
+import { Wallet } from 'lucide-react';
+import { GitHubIcon } from '../../components/icons/brands/GitHub';
+import { LinkedInIcon } from '../../components/icons/brands/LinkedIn';
+import { XIcon } from '../../components/icons/brands/X';
+import { MediumIcon } from '../../components/icons/brands/Medium';
 import { useAuth } from '../../contexts/auth-context';
 
 export const Footer = () => {
@@ -30,7 +34,7 @@ export const Footer = () => {
                 rel='noopener noreferrer'
                 className='text-slate-400 hover:text-emerald-500 transition-colors'
               >
-                <Github className='h-5 w-5' />
+                <GitHubIcon className='h-5 w-5' />
               </a>
               <a
                 href='https://www.linkedin.com/in/ayomide-kayode-alawode/'
@@ -38,7 +42,7 @@ export const Footer = () => {
                 rel='noopener noreferrer'
                 className='text-slate-400 hover:text-emerald-500 transition-colors'
               >
-                <Linkedin className='h-5 w-5' />
+                <LinkedInIcon className='h-5 w-5' />
               </a>
               <a
                 href='https://x.com/Ayomide_KayoDev'
@@ -46,7 +50,7 @@ export const Footer = () => {
                 rel='noopener noreferrer'
                 className='text-slate-400 hover:text-emerald-500 transition-colors'
               >
-                <Twitter className='h-5 w-5' />
+                <XIcon className='h-5 w-5' />
               </a>
               <a
                 href='https://medium.com/@kazzywiz7'
@@ -54,7 +58,7 @@ export const Footer = () => {
                 rel='noopener noreferrer'
                 className='text-slate-400 hover:text-emerald-500 transition-colors'
               >
-                <Newspaper className='h-5 w-5' />
+                <MediumIcon className='h-5 w-5' />
               </a>
             </div>
           </div>

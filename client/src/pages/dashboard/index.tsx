@@ -28,6 +28,8 @@ import {
 } from 'lucide-react';
 import { useToast } from '../../contexts/toast-context';
 import { CsvImportModal } from '../../components/CsvImportModal';
+import { useBills } from '../../hooks/useBills';
+import { OverdueWarning } from '../../components/bills/OverdueWarning';
 
 // Lazy load chart components for performance
 const TrendLineChart = lazy(() =>
@@ -57,6 +59,8 @@ export const Dashboard = () => {
   const [showImportModal, setShowImportModal] = useState(false);
   const { addToast } = useToast();
   const navigate = useNavigate();
+
+  const { overdue, loading: billsLoading } = useBills();
 
   // Ensure we have all records for charts
   useEffect(() => {
@@ -207,6 +211,10 @@ export const Dashboard = () => {
         isOpen={showImportModal}
         onClose={() => setShowImportModal(false)}
       />
+
+      {!billsLoading && overdue.length > 0 && (
+        <OverdueWarning count={overdue.length} />
+      )}
 
       {/* Stats Grid */}
       <div className='grid gap-4 md:grid-cols-3'>
