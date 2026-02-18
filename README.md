@@ -31,7 +31,7 @@ _[Live URL](https://pocket-flow-kay.vercel.app/) | [Documentation](./docs) | [Re
 ## ✨ Key Features
 
 - 💸 **Bills & Subscriptions**: Track recurring payments and avoid late fees.
-- 📊 **Smart Budget Tracking**: Set monthly limits and get alerted *before* you overspend.
+- 📊 **Smart Budget Tracking**: Set monthly limits and get alerted _before_ you overspend.
 - 📈 **Spending Insights & Analytics**: Visual analytics for income, expenses, and category breakdowns.
 - 🎯 **Financial Goals**: Set savings targets and track your progress.
 - 📧 **Email Notifications**: Receive weekly summaries and budget alerts.
