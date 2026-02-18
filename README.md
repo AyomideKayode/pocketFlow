@@ -2,11 +2,14 @@
 
 > A privacy-first personal finance tracker built with modern web technologies.
 
-![Status](https://img.shields.io/badge/Status-Active_Development-brightgreen)
+> **PocketFlow** is a personal finance management application designed to help users track income and expenses, define budgets, monitor financial goals, and gain insights into their spending behavior. Built with reliability and user experience in mind, it features secure authentication, real-time analytics, and data integrity checks. The product prioritizes clarity, data integrity, and user control, with a strong emphasis on reliability, testability, and extensibility.
+
+
+![Status](https://img.shields.io/badge/Status-Stable_MVP%20%7C%20Active_Development-brightgreen)
 ![Tech Stack](https://img.shields.io/badge/Tech-React%20%7C%20TypeScript%20%7C%20Node.js%20%7C%20MongoDB%20%7C%20Firebase-blue)
 ![License](https://img.shields.io/badge/License-ISC-blue)
 
-[Live Demo](#) | [Documentation](./docs) | [Report Bug](https://github.com/yourusername/pocketflow/issues)
+_[Live URL](https://pocket-flow-kay.vercel.app/) | [Documentation](./docs) | [Report Bug](https://github.com/AyomideKayode/pocketflow/issues)_
 
 ---
 
@@ -145,14 +148,44 @@ pocketflow/
 
 ## 📅 Development Phases
 
-- **Phase 1**: Core UI & Auth ✅
-- **Phase 2**: Data Model & Visualization ✅
-- **Phase 3**: Budget System ✅
-- **Phase 4**: Goals & Insights ✅
-- **Phase 5**: Bills Management ✅
-- **Phase 6**: Production Landing Page ✅
+**Start the Frontend:**
 
-For a detailed history, see [Development Blueprint](./POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
+```bash
+# In client/ terminal
+npm run dev
+```
+
+Visit `http://localhost:5173` in your browser.
+
+---
+
+## 🗺️ Development Journey & Roadmap
+
+PocketFlow is being built in distinct phases to ensure stability and code quality.
+
+### ✅ Completed Phases
+
+- **Phase 1: Core Foundation**: Set up React+Vite, Firebase Auth, and basic UI structure. ✅
+- **Phase 2A: Data Integrity**: Implemented robust backend validation, `income`/`expense` typing, and bug fixes for environment configurations. ✅
+- **Phase 2B: Visualization**: Added Recharts for spending breakdowns and date range filtering. ✅
+- **Phase 2C: Trend Analysis & Advanced Reporting**: Completed configurable trend charts (Day/Week/Month), server-side CSV exports, and UI polish (Fonts, Editable Cells). ✅
+- **Phase 3: OAuth Integration**: Added Google Sign-In and account linking capabilities. ✅
+- **Phase 6: Quality Assurance**: Established Testing Infrastructure (Vitest, Playwright) and CI/CD Pipelines (GitHub Actions). ✅
+- **Optimization Sprint**: UX/UI refinements including production favicon, dashboard state synchronization, password visibility toggles, and feedback channels. ✅
+- **Phase 4: Budgeting & Goals**: Set monthly limits, savings targets, and added smart notifications. ✅
+- **Phase 5: Performance & Optimization**: Implemented lazy loading, database indexing, and robust budget logic. ✅
+- **Phase 7: Advanced Features & Personalization**: Added User Profiles, Global Currency Support, and Multi-threshold Budget Notifications. ✅
+- **Phase 8: Cloud Media**: Implemented Cloudinary integration for secure, direct-to-cloud profile image uploads. ✅
+- **Phase 9A: Foundations (Data Integrity)**: Robust CSV Import with smart parsing (auto-detect delimiters) and data hardening. ✅
+- **Phase 9B: Insights (Derived Intelligence)**: Backend analytics pipelines for budget cycle analysis and historical over-budget detection. ✅
+- **Phase 10A: Email Infrastructure**: Provider-agnostic email service, template system, and user preference management. ✅
+- **Phase 10B: Safe Notifications**: High-confidence budget alerts (100%), goal achievements, and weekly summaries with strict idempotency and historical suppression. ✅
+- **Phase 11A: Data Capability Expansion**: Payment method normalization, advanced server-side transaction filtering/sorting/pagination, and improved import flows. ✅
+- **Phase 11B: Bills**: Recurring bill tracking and due date awareness. ✅
+- **Phase 11C: Learn & Insights**: Added "Learn" page for financial education and "Insights" engine for deterministic, rule-based suggestions (Upcoming Bills, Subscription Check). ✅
+- **Landing Page Conversion Optimization**: Implemented high-converting production landing page design with Product Showcase section featuring 5 guided screenshots, trust reinforcement signals, and mobile-responsive layout. ✅
+
+For a detailed history of the development process, challenges, and architectural decisions, see the [Development Blueprint](./POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
 
 ---
 
@@ -184,5 +217,5 @@ This project is licensed under the ISC License.
 
 ## 👤 Author
 
-**Jules**
-- Status: Active Development 🚀
+**Ayomide Kayode**
+- Status: Production Ready 🚀
