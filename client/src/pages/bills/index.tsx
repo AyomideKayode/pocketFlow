@@ -23,14 +23,8 @@ export const Bills: React.FC = () => {
   const { showConfirmation } = useConfirmationDialog();
   const { format } = useCurrencyFormatter();
 
-  const {
-    overdue,
-    upcoming,
-    paid,
-    loading,
-    refreshBills,
-    currentPeriod
-  } = useBills();
+  const { overdue, upcoming, paid, loading, refreshBills, currentPeriod } =
+    useBills();
 
   const [isAdding, setIsAdding] = useState(false);
   const [editingBill, setEditingBill] = useState<Bill | null>(null);
@@ -129,7 +123,12 @@ export const Bills: React.FC = () => {
     }
   };
 
-  if (loading && overdue.length === 0 && upcoming.length === 0 && paid.length === 0) {
+  if (
+    loading &&
+    overdue.length === 0 &&
+    upcoming.length === 0 &&
+    paid.length === 0
+  ) {
     return (
       <div className='flex items-center justify-center h-full min-h-[400px]'>
         <Loader2 className='h-8 w-8 animate-spin text-emerald-500' />
@@ -137,7 +136,8 @@ export const Bills: React.FC = () => {
     );
   }
 
-  const allEmpty = overdue.length === 0 && upcoming.length === 0 && paid.length === 0;
+  const allEmpty =
+    overdue.length === 0 && upcoming.length === 0 && paid.length === 0;
 
   return (
     <div className='space-y-6 max-w-4xl mx-auto pb-10'>
@@ -177,15 +177,16 @@ export const Bills: React.FC = () => {
       )}
 
       {allEmpty && !isAdding && !editingBill ? (
-         <div className='text-center py-16 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed'>
-            <p className='text-slate-500'>No bills found. Add one to get started!</p>
-         </div>
+        <div className='text-center py-16 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed'>
+          <p className='text-slate-500'>
+            No bills found. Add one to get started!
+          </p>
+        </div>
       ) : (
         <div className='space-y-8'>
-
           {/* Overdue Section - Render FIRST */}
           {overdue.length > 0 && (
-            <section className="animate-in fade-in slide-in-from-top-4 duration-500">
+            <section className='animate-in fade-in slide-in-from-top-4 duration-500'>
               <h2 className='text-lg font-semibold text-red-400 mb-4 flex items-center gap-2'>
                 <AlertTriangle className='h-5 w-5' />
                 Overdue
@@ -198,7 +199,7 @@ export const Bills: React.FC = () => {
                   <BillCard
                     key={bill._id}
                     bill={bill}
-                    visualState="overdue"
+                    visualState='overdue'
                     currentPeriod={currentPeriod}
                     onMarkPaid={() => handleMarkPaid(bill)}
                     onEdit={() => {
@@ -215,37 +216,38 @@ export const Bills: React.FC = () => {
 
           {/* Upcoming Section */}
           <section>
-             <div className="flex items-center justify-between mb-4">
-                <h2 className='text-lg font-semibold text-slate-200 flex items-center gap-2'>
-                  <AlertCircle className='h-5 w-5 text-amber-500' />
-                  Upcoming
-                  <span className='text-sm font-normal text-slate-500 ml-2'>
-                    ({upcoming.length})
-                  </span>
-                </h2>
+            <div className='flex items-center justify-between mb-4'>
+              <h2 className='text-lg font-semibold text-slate-200 flex items-center gap-2'>
+                <AlertCircle className='h-5 w-5 text-amber-500' />
+                Upcoming
+                <span className='text-sm font-normal text-slate-500 ml-2'>
+                  ({upcoming.length})
+                </span>
+              </h2>
 
-                {/* Positive reinforcement if no overdue bills */}
-                {overdue.length === 0 && (upcoming.length > 0 || paid.length > 0) && (
-                  <div className="flex items-center gap-2 text-emerald-500/80 text-xs sm:text-sm bg-emerald-500/5 px-3 py-1.5 rounded-full border border-emerald-500/10">
-                      <CheckCircle2 className="h-3 w-3 sm:h-4 sm:w-4" />
-                      <span>Nothing overdue 🎉</span>
+              {/* Positive reinforcement if no overdue bills */}
+              {overdue.length === 0 &&
+                (upcoming.length > 0 || paid.length > 0) && (
+                  <div className='flex items-center gap-2 text-emerald-500/80 text-xs sm:text-sm bg-emerald-500/5 px-3 py-1.5 rounded-full border border-emerald-500/10'>
+                    <CheckCircle2 className='h-3 w-3 sm:h-4 sm:w-4' />
+                    <span>Nothing overdue 🎉</span>
                   </div>
                 )}
-             </div>
+            </div>
 
             {upcoming.length === 0 ? (
-               <div className='text-center py-8 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed'>
-                  <p className='text-slate-500'>
-                    No upcoming bills for this month.
-                  </p>
-               </div>
+              <div className='text-center py-8 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed'>
+                <p className='text-slate-500'>
+                  No upcoming bills for this month.
+                </p>
+              </div>
             ) : (
               <div className='grid gap-3'>
                 {upcoming.map((bill) => (
                   <BillCard
                     key={bill._id}
                     bill={bill}
-                    visualState="upcoming"
+                    visualState='upcoming'
                     currentPeriod={currentPeriod}
                     onMarkPaid={() => handleMarkPaid(bill)}
                     onEdit={() => {
@@ -279,7 +281,7 @@ export const Bills: React.FC = () => {
                   <BillCard
                     key={bill._id}
                     bill={bill}
-                    visualState="paid"
+                    visualState='paid'
                     currentPeriod={currentPeriod}
                     onMarkPaid={() => handleMarkUnpaid(bill)}
                     onEdit={() => {

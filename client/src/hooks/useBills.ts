@@ -78,6 +78,6 @@ export function useBills(period?: string) {
     loading,
     error,
     refreshBills: fetchBills,
-    currentPeriod
+    currentPeriod,
   };
 }

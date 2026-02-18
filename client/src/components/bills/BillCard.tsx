@@ -42,23 +42,27 @@ export const BillCard: React.FC<BillCardProps> = ({
   const daysLate = isOverdue ? getDaysOverdue(bill, currentPeriod) : 0;
 
   return (
-    <div className={`
+    <div
+      className={`
       flex items-center justify-between p-4 rounded-lg transition-all group border
-      ${isOverdue
-        ? 'bg-red-950/20 border-red-500/50 hover:border-red-400/70'
-        : isPaid
-          ? 'bg-slate-900 border-slate-800 opacity-75 hover:opacity-100'
-          : 'bg-slate-900 border-slate-800 hover:border-emerald-500/50'
+      ${
+        isOverdue
+          ? 'bg-red-950/20 border-red-500/50 hover:border-red-400/70'
+          : isPaid
+            ? 'bg-slate-900 border-slate-800 opacity-75 hover:opacity-100'
+            : 'bg-slate-900 border-slate-800 hover:border-emerald-500/50'
       }
-    `}>
+    `}
+    >
       <div className='flex items-center gap-4'>
         <button
           onClick={onMarkPaid}
           disabled={isLoading}
           className={`h-6 w-6 rounded-full border flex items-center justify-center transition-colors
-            ${isPaid
-              ? 'bg-emerald-500 border-emerald-500 text-white'
-              : 'border-slate-600 hover:border-emerald-500 text-transparent hover:text-emerald-500/50'
+            ${
+              isPaid
+                ? 'bg-emerald-500 border-emerald-500 text-white'
+                : 'border-slate-600 hover:border-emerald-500 text-transparent hover:text-emerald-500/50'
             }
             ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           title={isPaid ? 'Mark as unpaid' : 'Mark as paid'}
@@ -76,9 +80,13 @@ export const BillCard: React.FC<BillCardProps> = ({
             {bill.name}
           </h3>
           <div className='flex items-center gap-2 text-sm'>
-            <span className={`flex items-center gap-1 ${isOverdue ? 'text-red-400 font-medium' : 'text-slate-500'}`}>
+            <span
+              className={`flex items-center gap-1 ${isOverdue ? 'text-red-400 font-medium' : 'text-slate-500'}`}
+            >
               <Calendar className='h-3 w-3' />
-              {isOverdue ? `Due ${dueDateDisplay} • ${daysLate} day${daysLate !== 1 ? 's' : ''} late` : dueDateDisplay}
+              {isOverdue
+                ? `Due ${dueDateDisplay} • ${daysLate} day${daysLate !== 1 ? 's' : ''} late`
+                : dueDateDisplay}
             </span>
             {isOverdue && (
               <span className='bg-red-500/20 text-red-400 text-xs px-2 py-0.5 rounded-full border border-red-500/20'>
