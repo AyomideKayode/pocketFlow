@@ -22,7 +22,7 @@ describe('Learn Page', () => {
     vi.clearAllMocks();
   });
 
-  it('renders education content by default', () => {
+  it('renders education content by default', async () => {
     // Mock successful empty fetch to avoid error state
     (global.fetch as any).mockResolvedValue({
       ok: true,
@@ -30,6 +30,9 @@ describe('Learn Page', () => {
     });
 
     render(<Learn />);
+
+    // Wait for the effect to run to avoid act warnings
+    await waitFor(() => expect(global.fetch).toHaveBeenCalled());
 
     expect(screen.getByText('Financial Education')).toBeInTheDocument();
     expect(screen.getByText('Budgeting Basics')).toBeInTheDocument();

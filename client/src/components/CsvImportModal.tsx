@@ -184,6 +184,8 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
     const amountNum = parseAmount(amountStr);
     if (Number.isNaN(amountNum)) {
       errors.push('Invalid Amount');
+    } else if (amountNum === 0) {
+      errors.push('Amount must be a non-zero number');
     }
 
     // Validate Category

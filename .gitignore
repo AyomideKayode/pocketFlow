@@ -35,3 +35,6 @@ dist-ssr
 .env.production.local
 # Firebase service account keys
 pocketflow-d735c-firebase-adminsdk-fbsvc-f03bf1f4b7.json
+
+# Test Coverage
+coverage/
