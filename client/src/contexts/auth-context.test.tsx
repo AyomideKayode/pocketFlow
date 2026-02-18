@@ -98,7 +98,7 @@ describe('AuthContext', () => {
     });
 
     // Simulate auth state change to null (signed out)
-    await act(async () => {
+    act(() => {
       authCallback(null);
     });
 

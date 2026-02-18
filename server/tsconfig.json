@@ -41,6 +41,8 @@
     "dist",
     "**/*.test.ts",
     "**/*.spec.ts",
-    "**/tests/**"
+    "**/tests/**",
+    "**/test/**",
+    "vitest.config.ts"
   ]
 }
