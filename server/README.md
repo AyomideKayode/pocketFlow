@@ -61,6 +61,7 @@ All protected endpoints require a Firebase ID token in the `Authorization` heade
 - `POST /bills/:id/pay`: Mark a bill as paid for the current period.
 - `POST /bills/:id/unpay`: Revert payment status (current period only).
 - `PUT /bills/:id`: Update bill details (excludes payment history).
+- `DELETE /bills/:id`: Remove a bill.
 
 #### Goals
 - `GET /goals`: List financial goals.
