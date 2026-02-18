@@ -21,7 +21,7 @@ This server provides a RESTful API for managing personal finance data. It enforc
 
 ## 📂 Project Structure
 
-```
+```sh
 server/src/
 ├── routes/          # API endpoints (Controllers)
 ├── schema/          # Mongoose data models
@@ -38,24 +38,28 @@ server/src/
 ## 🔌 API Documentation
 
 ### Authentication
+
 All protected endpoints require a Firebase ID token in the `Authorization` header:
 `Authorization: Bearer <firebase_id_token>`
 
 ### Key Endpoints
 
 #### Financial Records
+
 - `GET /financial-records/getAllByUserId/:userId`: Retrieve records with filtering & pagination.
 - `POST /financial-records`: Create a new transaction (Income/Expense).
 - `PUT /financial-records/:id`: Update a transaction.
 - `DELETE /financial-records/:id`: Remove a transaction.
 
 #### Budgets
+
 - `GET /budgets`: List budgets with current spending progress.
 - `POST /budgets`: Set a monthly limit for a category.
 - `PUT /budgets/:id`: Update budget amount or category.
 - `DELETE /budgets/:id`: Remove a budget.
 
 #### Bills
+
 - `GET /bills`: List recurring and one-time bills.
 - `POST /bills`: Create a new bill.
 - `POST /bills/:id/pay`: Mark a bill as paid for the current period.
@@ -64,11 +68,13 @@ All protected endpoints require a Firebase ID token in the `Authorization` heade
 - `DELETE /bills/:id`: Remove a bill.
 
 #### Goals
+
 - `GET /goals`: List financial goals.
 - `POST /goals`: Create a savings target.
 - `PUT /goals/:id`: Update goal progress.
 
 #### Insights
+
 - `GET /insights`: Retrieve deterministic financial advice (e.g., upcoming bills).
 
 ---
@@ -76,6 +82,7 @@ All protected endpoints require a Firebase ID token in the `Authorization` heade
 ## 💾 Data Models
 
 ### FinancialRecord
+
 - `userId`: String (Firebase UID)
 - `description`: String
 - `amount`: Number (Always positive)
@@ -85,12 +92,14 @@ All protected endpoints require a Firebase ID token in the `Authorization` heade
 - `paymentMethod`: String
 
 ### Budget
+
 - `userId`: String
 - `category`: String
 - `amount`: Number
 - `notified`: Boolean (Tracks alert state)
 
 ### Bill
+
 - `userId`: String
 - `name`: String
 - `amount`: Number
@@ -99,6 +108,7 @@ All protected endpoints require a Firebase ID token in the `Authorization` heade
 - `lastPaidPeriod`: String (YYYY-MM)
 
 ### Goal
+
 - `userId`: String
 - `name`: String
 - `targetAmount`: Number
@@ -121,42 +131,46 @@ All protected endpoints require a Firebase ID token in the `Authorization` heade
 
 ## 🧠 Key Design Decisions
 
-1.  **Server-Side Authority**:
-    -   Payment logic and "is paid" status are calculated on the server to prevent client-side state manipulation.
-    -   Budget alerts are triggered by server-side hooks on record creation/updates.
+1. **Server-Side Authority**:
+   - Payment logic and "is paid" status are calculated on the server to prevent client-side state manipulation.
+   - Budget alerts are triggered by server-side hooks on record creation/updates.
 
-2.  **Strict Validation**:
-    -   Period strings must match `YYYY-MM`.
-    -   Due days are normalized (e.g., Feb 30 -> Feb 28).
+2. **Strict Validation**:
+   - Period strings must match `YYYY-MM`.
+   - Due days are normalized (e.g., Feb 30 -> Feb 28).
 
-3.  **Idempotency**:
-    -   Notification flags (`notified`, `achievedNotified`) prevent duplicate alerts.
-    -   Weekly summaries track the last sent week to avoid re-sending.
+3. **Idempotency**:
+   - Notification flags (`notified`, `achievedNotified`) prevent duplicate alerts.
+   - Weekly summaries track the last sent week to avoid re-sending.
 
-4.  **Derived State**:
-    -   Bill status (Overdue/Paid/Upcoming) is derived at runtime from `lastPaidPeriod` vs `currentDate`.
+4. **Derived State**:
+   - Bill status (Overdue/Paid/Upcoming) is derived at runtime from `lastPaidPeriod` vs `currentDate`.
 
 ---
 
 ## 💻 Development
 
 ### Prerequisites
+
 - Node.js 18+
 - MongoDB instance running
 
 ### Setup & Run
 
-1.  **Install dependencies**
-    ```bash
-    cd server
-    npm install
-    ```
+1. **Install dependencies**
 
-2.  **Start Development Server**
-    ```bash
-    npm run dev
-    ```
-    Server runs on `http://localhost:3001`.
+   ```bash
+   cd server
+   npm install
+   ```
+
+2. **Start Development Server**
+
+   ```bash
+   npm run dev
+   ```
+
+   Server runs on `http://localhost:3001`.
 
 ---
 

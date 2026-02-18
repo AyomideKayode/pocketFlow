@@ -1,9 +1,8 @@
 # PocketFlow 💸
 
 > A privacy-first personal finance tracker built with modern web technologies.
-> 
+>
 > **PocketFlow** is a personal finance management application designed to help users track income and expenses, define budgets, monitor financial goals, and gain insights into their spending behavior. Built with reliability and user experience in mind, it features secure authentication, real-time analytics, and data integrity checks. The product prioritizes clarity, data integrity, and user control, with a strong emphasis on reliability, testability, and extensibility.
-
 
 ![Status](https://img.shields.io/badge/Status-Stable_MVP%20%7C%20Active_Development-brightgreen)
 ![Tech Stack](https://img.shields.io/badge/Tech-React%20%7C%20TypeScript%20%7C%20Node.js%20%7C%20MongoDB%20%7C%20Firebase-blue)
@@ -18,11 +17,13 @@ _[Live URL](https://pocket-flow-kay.vercel.app/) | [Documentation](./docs) | [Re
 **PocketFlow** solves the problem of scattered financial data without compromising privacy. Unlike other trackers that require bank credentials, PocketFlow operates on a **manual-first** principle with **smart automation** capabilities.
 
 ### Core Value Proposition
+
 - 🔒 **Privacy First**: Your data stays yours. No bank account linking required.
 - ⚡ **Simplicity**: Clean, distraction-free interface focused on what matters.
 - 🧠 **Smart Insights**: Deterministic algorithms analyze your spending habits.
 
 ### Target Users
+
 - Privacy-conscious individuals who want control over their financial data.
 - Users who prefer manual tracking or CSV imports over direct bank integration.
 
@@ -42,31 +43,34 @@ _[Live URL](https://pocket-flow-kay.vercel.app/) | [Documentation](./docs) | [Re
 
 ## 📸 Screenshots
 
-| Landing Page | Dashboard |
-|:---:|:---:|
-| ![Landing Page](./docs/assets/landing-preview.png) | ![Dashboard](./docs/assets/dashboard-preview.png) |
+|                          Landing Page                           |                          Dashboard                          |
+| :-------------------------------------------------------------: | :---------------------------------------------------------: |
+| ![Landing Page](./docs/landing-spec/assets/landing-preview.png) | ![Dashboard](./docs/landing-spec/assets/dashboard-hero.JPG) |
 
-| Budgets & Goals | Mobile View |
-|:---:|:---:|
-| ![Budgets](./docs/assets/budgets-preview.png) | ![Mobile](./docs/assets/mobile-preview.png) |
+|                     Budgets & Goals                     |                      Mobile View                      |
+| :-----------------------------------------------------: | :---------------------------------------------------: |
+| ![Budgets](./docs/landing-spec/assets/budgets-view.JPG) | ![Mobile](./docs/landing-spec/assets/mobile-view.jpg) |
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
+
 - **React 19** + **TypeScript** + **Vite**
 - **Tailwind CSS** + **Framer Motion**
 - **Recharts** for data visualization
 - **Lucide React** for icons
 
 ### Backend
+
 - **Node.js** + **Express** + **TypeScript**
 - **MongoDB** + **Mongoose**
 - **Firebase Auth** (Admin SDK)
 - **Resend** for email notifications
 
 ### Infrastructure
+
 - RESTful API architecture
 - JWT-based authentication (Firebase ID Tokens)
 - Server-side validation
@@ -88,28 +92,32 @@ graph TD
 ```
 
 ### Key Design Decisions
-1.  **Manual Tracking**: Deliberate choice to avoid bank APIs (Plaid/Yodlee) for privacy and "active" financial awareness.
-2.  **Firebase Auth**: Offloads complexity of secure authentication while keeping user data in our own MongoDB.
-3.  **Server-Side Authority**: All critical logic (bill payments, budget calculations) resides on the server to prevent client-side manipulation.
+
+1. **Manual Tracking**: Deliberate choice to avoid bank APIs (Plaid/Yodlee) for privacy and "active" financial awareness.
+2. **Firebase Auth**: Offloads complexity of secure authentication while keeping user data in our own MongoDB.
+3. **Server-Side Authority**: All critical logic (bill payments, budget calculations) resides on the server to prevent client-side manipulation.
 
 ---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js 18+
 - MongoDB (Local or Atlas)
 - Firebase Project (Authentication enabled)
 
 ### Installation
 
-1.  **Clone the repository**
+1. **Clone the repository**
+
     ```bash
     git clone https://github.com/yourusername/pocketflow.git
     cd pocketflow
     ```
 
-2.  **Install dependencies**
+2. **Install dependencies**
+
     ```bash
     # Install dependencies for both client and server
     npm install
@@ -117,11 +125,12 @@ graph TD
     cd ../server && npm install
     ```
 
-3.  **Set up Environment Variables**
+3. **Set up Environment Variables**
     - Copy `.env.example` to `.env` in both `client/` and `server/` directories.
     - Fill in your Firebase and MongoDB credentials.
 
-4.  **Run Development Servers**
+4. **Run Development Servers**
+
     ```bash
     # Terminal 1: Server
     cd server
@@ -201,11 +210,11 @@ For a detailed history of the development process, challenges, and architectural
 
 ## 🤝 Contributing
 
-1.  Fork the repository.
-2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4.  Push to the branch (`git push origin feature/AmazingFeature`).
-5.  Open a Pull Request.
+1. Fork the repository.
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4. Push to the branch (`git push origin feature/AmazingFeature`).
+5. Open a Pull Request.
 
 ---
 
@@ -217,5 +226,6 @@ This project is licensed under the ISC License.
 
 ## 👤 Author
 
-**Ayomide Kayode**
+### **Ayomide Kayode**
+
 - Status: Production Ready 🚀

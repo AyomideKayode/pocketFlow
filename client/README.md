@@ -23,7 +23,7 @@ This client-side application provides a responsive, privacy-focused interface fo
 
 ## 📂 Project Structure
 
-```
+```sh
 client/src/
 ├── components/       # Reusable UI components (Charts, Modals, etc.)
 ├── contexts/         # React Context (Auth, Toast, FinancialRecords)
@@ -69,21 +69,25 @@ client/src/
 ## 💻 Development
 
 ### Prerequisites
+
 - Node.js 18+
 - Backend server running on port 3001
 
 ### Setup & Run
 
-1.  **Install dependencies**
+1. **Install dependencies**
+
     ```bash
     cd client
     npm install
     ```
 
-2.  **Start Development Server**
+2. **Start Development Server**
+
     ```bash
     npm run dev
     ```
+
     The app will be available at `http://localhost:5173`.
 
 ---
