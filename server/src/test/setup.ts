@@ -32,6 +32,6 @@ vi.mock('../lib/firebaseAdmin', () => {
 vi.mock('../services/email.service', () => ({
   emailService: {
     sendEmail: vi.fn(),
-    sendTransactionEmail: vi.fn(),
+    sendTransactionalEmail: vi.fn(),
   },
 }));
