@@ -1,7 +1,7 @@
 # PocketFlow 💸
 
 > A privacy-first personal finance tracker built with modern web technologies.
-
+> 
 > **PocketFlow** is a personal finance management application designed to help users track income and expenses, define budgets, monitor financial goals, and gain insights into their spending behavior. Built with reliability and user experience in mind, it features secure authentication, real-time analytics, and data integrity checks. The product prioritizes clarity, data integrity, and user control, with a strong emphasis on reliability, testability, and extensibility.
 
 
@@ -136,7 +136,7 @@ graph TD
 
 ## 📂 Project Structure
 
-```
+```bash
 pocketflow/
 ├── client/          # React frontend application
 ├── server/          # Express backend API
