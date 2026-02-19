@@ -20,7 +20,7 @@ import {
 import {
   TrendingUp,
   TrendingDown,
-  DollarSign,
+  CreditCard,
   Download,
   Plus,
   Loader2,
@@ -253,7 +253,7 @@ export const Dashboard = () => {
             <div
               className={`flex h-12 w-12 items-center justify-center rounded-full ${totalMonthlyBalance >= 0 ? 'bg-indigo-500/10' : 'bg-orange-500/10'}`}
             >
-              <DollarSign
+              <CreditCard
                 className={`h-6 w-6 ${totalMonthlyBalance >= 0 ? 'text-indigo-500' : 'text-orange-500'}`}
               />
             </div>
