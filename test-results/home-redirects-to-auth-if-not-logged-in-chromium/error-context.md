@@ -1,0 +1,300 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e4]:
+  - navigation [ref=e5]:
+    - generic [ref=e6]:
+      - link "PocketFlow" [ref=e7] [cursor=pointer]:
+        - /url: /
+        - img [ref=e9]
+        - generic [ref=e12]: PocketFlow
+      - generic [ref=e13]:
+        - link "Features" [ref=e14] [cursor=pointer]:
+          - /url: /#features
+        - link "Security" [ref=e15] [cursor=pointer]:
+          - /url: /#security
+        - link "FAQ" [ref=e16] [cursor=pointer]:
+          - /url: /#faq
+      - generic [ref=e17]:
+        - link "Sign In" [ref=e18] [cursor=pointer]:
+          - /url: /auth?mode=login
+        - link "Get Started" [ref=e19] [cursor=pointer]:
+          - /url: /auth?mode=signup
+  - main [ref=e20]:
+    - generic [ref=e23]:
+      - heading "Never miss a bill. Never wonder where your money went." [level=1] [ref=e24]:
+        - text: Never miss a bill.
+        - text: Never wonder where your money went.
+      - paragraph [ref=e25]: Track expenses, monitor bills, and understand your spending — all in one calm, secure place. No complexity. No bank access required.
+      - generic [ref=e26]:
+        - link "Create Free Account" [ref=e27] [cursor=pointer]:
+          - /url: /auth?mode=signup
+        - link "Sign in" [ref=e28] [cursor=pointer]:
+          - /url: /auth?mode=login
+      - generic [ref=e29]:
+        - generic [ref=e30]:
+          - generic [ref=e31]: ✓
+          - generic [ref=e32]: Free forever
+        - generic [ref=e33]:
+          - generic [ref=e34]: ✓
+          - generic [ref=e35]: No credit card required
+        - generic [ref=e36]:
+          - generic [ref=e37]: ✓
+          - generic [ref=e38]: Your data stays private
+      - img "PocketFlow Dashboard showing upcoming bills and spending overview" [ref=e42]
+    - generic [ref=e43]:
+      - generic [ref=e44]:
+        - heading "Control Your Money. Simply." [level=2] [ref=e45]:
+          - text: Control Your Money.
+          - text: Simply.
+        - paragraph [ref=e46]: Five features designed to make financial management effortless.
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - heading "Add Bills Manually" [level=3] [ref=e50]
+            - paragraph [ref=e51]: Track bills with reminders. Set once, relax forever. Know exactly what's coming.
+          - img "Add Bills Manually" [ref=e54]
+        - generic [ref=e55]:
+          - generic [ref=e56]:
+            - heading "Understand Your Spending" [level=3] [ref=e57]
+            - paragraph [ref=e58]: Visual insights reveal where your money actually goes. No spreadsheets, no guessing.
+          - img "Understand Your Spending" [ref=e61]
+        - generic [ref=e62]:
+          - generic [ref=e63]:
+            - heading "Bring Your Data" [level=3] [ref=e64]
+            - paragraph [ref=e65]: Start with your real financial history instantly. No blank screens, no rebuilding from memory.
+          - img "Bring Your Data" [ref=e68]
+        - generic [ref=e69]:
+          - generic [ref=e70]:
+            - heading "Stay Informed & Learn" [level=3] [ref=e71]
+            - paragraph [ref=e72]: See upcoming bills at a glance. Access educational insights and resources. Make better financial decisions.
+          - img "Stay Informed & Learn" [ref=e75]
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - heading "Your Preferences, Your Way" [level=3] [ref=e78]
+            - paragraph [ref=e79]: Customize your profile, set your preferred currency, manage your account. Full control, zero friction.
+          - generic [ref=e81]:
+            - img "Your Preferences, Your Way" [ref=e82]
+            - generic:
+              - generic: Customize
+              - img
+      - generic [ref=e83]:
+        - heading "Ready to take control?" [level=3] [ref=e84]
+        - generic [ref=e85]:
+          - link "Create Free Account" [ref=e86] [cursor=pointer]:
+            - /url: /auth?mode=signup
+          - link "Sign in" [ref=e87] [cursor=pointer]:
+            - /url: /auth?mode=login
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - generic [ref=e90]: ✓
+            - generic [ref=e91]: Free forever
+          - generic [ref=e92]:
+            - generic [ref=e93]: ✓
+            - generic [ref=e94]: No credit card required
+          - generic [ref=e95]:
+            - generic [ref=e96]: ✓
+            - generic [ref=e97]: Your data stays private
+    - generic [ref=e99]:
+      - heading "From financial chaos to financial clarity" [level=2] [ref=e101]
+      - generic [ref=e102]:
+        - generic [ref=e103]:
+          - generic [ref=e105]:
+            - img [ref=e106]
+            - heading "The usual mess" [level=3] [ref=e110]
+          - list [ref=e111]:
+            - listitem [ref=e112]:
+              - img [ref=e113]
+              - generic [ref=e115]: Late payment fees from forgotten bills
+            - listitem [ref=e116]:
+              - img [ref=e117]
+              - generic [ref=e119]: Subscriptions charging you unnoticed
+            - listitem [ref=e120]:
+              - img [ref=e121]
+              - generic [ref=e123]: Uncertainty about what you can safely spend
+            - listitem [ref=e124]:
+              - img [ref=e125]
+              - generic [ref=e127]: Guessing how much you spent on food
+            - listitem [ref=e128]:
+              - img [ref=e129]
+              - generic [ref=e131]: Spreadsheets you abandoned in February
+        - img [ref=e133]
+        - generic [ref=e135]:
+          - generic [ref=e137]:
+            - img [ref=e138]
+            - heading "The PocketFlow way" [level=3] [ref=e141]
+          - list [ref=e142]:
+            - listitem [ref=e143]:
+              - img [ref=e144]
+              - generic [ref=e146]: See every upcoming bill before it hits
+            - listitem [ref=e147]:
+              - img [ref=e148]
+              - generic [ref=e150]: Know exactly what's draining your account
+            - listitem [ref=e151]:
+              - img [ref=e152]
+              - generic [ref=e154]: Budgets that show real-time progress
+            - listitem [ref=e155]:
+              - img [ref=e156]
+              - generic [ref=e158]: Spending patterns you can actually understand
+            - listitem [ref=e159]:
+              - img [ref=e160]
+              - generic [ref=e162]: All your finance data in one secure place
+    - generic [ref=e165]:
+      - generic [ref=e166]:
+        - heading "Everything you need. Nothing you don't." [level=2] [ref=e167]
+        - paragraph [ref=e168]: Focus on what matters without the clutter. PocketFlow gives you the essential tools to master your money.
+      - generic [ref=e169]:
+        - generic [ref=e170]:
+          - img [ref=e172]
+          - heading "Never miss a payment" [level=3] [ref=e175]
+          - paragraph [ref=e176]: See all your bills and subscriptions in one timeline. Get reminded before due dates. Mark them paid with a tap.
+        - generic [ref=e177]:
+          - img [ref=e179]
+          - heading "Stay within your limits" [level=3] [ref=e183]
+          - paragraph [ref=e184]: Set monthly budgets by category. Watch real-time progress bars. Get alerts before you overspend.
+        - generic [ref=e185]:
+          - img [ref=e187]
+          - heading "Understand where it goes" [level=3] [ref=e189]
+          - paragraph [ref=e190]: Visual breakdowns by category. Trends over time. Clear answers to 'how much did I spend on…'
+        - generic [ref=e191]:
+          - img [ref=e193]
+          - heading "Build your future" [level=3] [ref=e199]
+          - paragraph [ref=e200]: Set savings goals. Track progress automatically. Get notified when you hit milestones.
+    - generic [ref=e202]:
+      - generic [ref=e203]:
+        - heading "Your data. Your control. Your privacy." [level=2] [ref=e204]
+        - paragraph [ref=e205]: PocketFlow takes security seriously. We use industry-standard encryption and never ask for your bank login. Your financial data stays yours.
+      - generic [ref=e206]:
+        - generic [ref=e207]:
+          - img [ref=e209]
+          - heading "Firebase Auth" [level=3] [ref=e212]
+          - paragraph [ref=e213]: Industry-leading authentication. Your credentials never touch our servers.
+        - generic [ref=e214]:
+          - img [ref=e216]
+          - heading "Your data stays yours" [level=3] [ref=e219]
+          - paragraph [ref=e220]: We never sell your data. No third-party tracking. No ads. Ever.
+        - generic [ref=e221]:
+          - img [ref=e223]
+          - heading "No bank login required" [level=3] [ref=e227]
+          - paragraph [ref=e228]: Manual tracking means you're in control. We never need access to your accounts.
+    - generic [ref=e230]:
+      - heading "Three steps to financial clarity" [level=2] [ref=e232]
+      - generic [ref=e233]:
+        - generic [ref=e234]:
+          - generic [ref=e235]:
+            - generic [ref=e237]: "01"
+            - heading "Add your info" [level=3] [ref=e238]
+            - paragraph [ref=e239]: Manually log expenses, set up recurring bills, create budgets by category. Import CSV if you have historical data.
+          - img [ref=e241]
+        - generic [ref=e243]:
+          - generic [ref=e244]:
+            - generic [ref=e246]: "02"
+            - heading "Get Visibility" [level=3] [ref=e247]
+            - paragraph [ref=e248]: Your dashboard shows income vs expenses, spending by category, upcoming bills, and budget progress — all in real-time.
+          - img [ref=e250]
+        - generic [ref=e253]:
+          - generic [ref=e255]: "03"
+          - heading "Stay on Track" [level=3] [ref=e256]
+          - paragraph [ref=e257]: Receive email alerts for budget limits, upcoming bills, and goal achievements. Review patterns and adjust your habits.
+    - generic [ref=e261]:
+      - heading "Ready to take control?" [level=2] [ref=e262]
+      - paragraph [ref=e263]: Join users who've stopped stressing about money. It's free to start, no credit card required.
+      - link "Create Free Account" [ref=e265] [cursor=pointer]:
+        - /url: /auth?mode=signup
+      - generic [ref=e266]:
+        - generic [ref=e267]:
+          - img [ref=e268]
+          - generic [ref=e270]: No credit card required
+        - generic [ref=e271]:
+          - img [ref=e272]
+          - generic [ref=e274]: Free forever
+        - generic [ref=e275]:
+          - img [ref=e276]
+          - generic [ref=e278]: Takes 30 seconds
+    - generic [ref=e280]:
+      - heading "Common questions" [level=2] [ref=e282]
+      - generic [ref=e283]:
+        - button "Is PocketFlow really free?" [ref=e285]:
+          - generic [ref=e286]: Is PocketFlow really free?
+          - img [ref=e287]
+        - button "Do you need access to my bank account?" [ref=e290]:
+          - generic [ref=e291]: Do you need access to my bank account?
+          - img [ref=e292]
+        - button "What data do you collect?" [ref=e295]:
+          - generic [ref=e296]: What data do you collect?
+          - img [ref=e297]
+        - button "Can I import my existing data?" [ref=e300]:
+          - generic [ref=e301]: Can I import my existing data?
+          - img [ref=e302]
+        - button "What if I have a question or need help?" [ref=e305]:
+          - generic [ref=e306]: What if I have a question or need help?
+          - img [ref=e307]
+        - button "Will there be a mobile app?" [ref=e310]:
+          - generic [ref=e311]: Will there be a mobile app?
+          - img [ref=e312]
+        - button "How is this different from Mint or YNAB?" [ref=e315]:
+          - generic [ref=e316]: How is this different from Mint or YNAB?
+          - img [ref=e317]
+        - button "Can I export my data?" [ref=e320]:
+          - generic [ref=e321]: Can I export my data?
+          - img [ref=e322]
+  - contentinfo [ref=e324]:
+    - generic [ref=e325]:
+      - generic [ref=e326]:
+        - generic [ref=e327]:
+          - link "PocketFlow" [ref=e328] [cursor=pointer]:
+            - /url: /
+            - img [ref=e330]
+            - generic [ref=e333]: PocketFlow
+          - paragraph [ref=e334]: Simple finance tracking for people who value their privacy.
+          - generic [ref=e335]:
+            - link [ref=e336] [cursor=pointer]:
+              - /url: https://github.com/AyomideKayode
+              - img [ref=e337]
+            - link [ref=e339] [cursor=pointer]:
+              - /url: https://www.linkedin.com/in/ayomide-kayode-alawode/
+              - img [ref=e340]
+            - link [ref=e342] [cursor=pointer]:
+              - /url: https://x.com/Ayomide_KayoDev
+              - img [ref=e343]
+            - link [ref=e345] [cursor=pointer]:
+              - /url: https://medium.com/@kazzywiz7
+              - img [ref=e346]
+        - generic [ref=e348]:
+          - heading "Product" [level=4] [ref=e349]
+          - generic [ref=e350]:
+            - link "Dashboard" [ref=e351] [cursor=pointer]:
+              - /url: /auth?mode=signup
+            - link "Features" [ref=e352] [cursor=pointer]:
+              - /url: /#features
+            - link "How it Works" [ref=e353] [cursor=pointer]:
+              - /url: /#how-it-works
+            - link "About" [ref=e354] [cursor=pointer]:
+              - /url: /about
+        - generic [ref=e355]:
+          - heading "Support" [level=4] [ref=e356]
+          - generic [ref=e357]:
+            - link "Help Center" [ref=e358] [cursor=pointer]:
+              - /url: /#faq
+            - link "Contact Us" [ref=e359] [cursor=pointer]:
+              - /url: mailto:ayomidekay7@gmail.com?subject=General%20Inquiry
+            - link "Feature Requests" [ref=e360] [cursor=pointer]:
+              - /url: mailto:ayomidekay7@gmail.com?subject=Feature%20Request
+            - link "Report a Bug" [ref=e361] [cursor=pointer]:
+              - /url: mailto:ayomidekay7@gmail.com?subject=Bug%20Report
+        - generic [ref=e362]:
+          - heading "Legal" [level=4] [ref=e363]
+          - generic [ref=e364]:
+            - link "Privacy Policy" [ref=e365] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms of Service" [ref=e366] [cursor=pointer]:
+              - /url: /terms
+      - generic [ref=e367]:
+        - generic [ref=e368]:
+          - paragraph [ref=e369]: © 2026 PocketFlow. Designed for clarity and privacy.
+          - paragraph [ref=e371]:
+            - text: Built by
+            - link "Ayomide Kayode" [ref=e372] [cursor=pointer]:
+              - /url: https://github.com/AyomideKayode
+        - generic [ref=e374]: v0.9.2
+```
