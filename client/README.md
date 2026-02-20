@@ -137,3 +137,14 @@ npm run preview
 - **Budget Alerts**: Visual indicators when spending exceeds defined limits.
 - **Goal Tracking**: Progress bars for savings targets.
 - **Responsive Navigation**: Adaptive sidebar/mobile menu.
+
+---
+
+## 🖼️ Image Handling Best Practices
+
+To ensure performance and visual stability, we follow these guidelines for images:
+
+1.  **WebP Optimization**: All static assets should be converted to `.webp` for reduced file size.
+2.  **Explicit Sources**: Components like `ProductShowcase` use explicit paths for both `jpg` (fallback) and `webp` versions to avoid brittle string manipulation.
+3.  **Layout Stability**: Use `aspect-ratio` utilities (e.g., `aspect-[16/10]`) on containers to prevent layout shifts (CLS) while images load.
+4.  **Object Fit**: Use `object-cover` in combination with `w-full h-full` to ensure images fill their containers correctly without distortion.
