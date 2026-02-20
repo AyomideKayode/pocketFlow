@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import dashboardHero from '../../assets/landing/dashboard-hero.JPG?url';
 
 export const Hero = () => {
   return (
@@ -82,12 +81,20 @@ export const Hero = () => {
             {/* Glow effect behind */}
             <div className='absolute -inset-1 bg-linear-to-r from-emerald-500/20 to-purple-500/20 blur-2xl opacity-50 -z-10' />
 
-            <img
-              src={dashboardHero}
-              alt='PocketFlow Dashboard showing upcoming bills and spending overview'
-              className='w-full h-auto object-cover rounded-2xl'
-              loading='eager'
-            />
+            <picture>
+              <source
+                srcSet="/assets/landing/dashboard-hero.webp"
+                type="image/webp"
+              />
+              <img
+                src="/assets/landing/dashboard-hero.JPG"
+                alt="PocketFlow Dashboard showing upcoming bills and spending overview"
+                className="w-full h-auto object-cover rounded-2xl"
+                loading="eager"
+                width="1100"
+                height="700"
+              />
+            </picture>
 
             {/* Overlay gradient for depth */}
             <div className='absolute inset-0 bg-linear-to-t from-slate-950/50 via-transparent to-transparent pointer-events-none' />

@@ -10,6 +10,8 @@ import { FAQ } from './components/FAQ';
 import { Footer } from './components/Footer';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { SEO } from './SEO';
+import { StructuredData } from './StructuredData';
 
 export const LandingPage = () => {
   const { hash } = useLocation();
@@ -26,6 +28,8 @@ export const LandingPage = () => {
 
   return (
     <div className='min-h-screen bg-slate-950 text-white font-sans selection:bg-emerald-500/30 overflow-x-hidden'>
+      <SEO />
+      <StructuredData />
       <LandingNavbar />
 
       <main className='relative z-10 w-full'>
