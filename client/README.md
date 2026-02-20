@@ -77,18 +77,18 @@ client/src/
 
 1. **Install dependencies**
 
-    ```bash
-    cd client
-    npm install
-    ```
+   ```bash
+   cd client
+   npm install
+   ```
 
 2. **Start Development Server**
 
-    ```bash
-    npm run dev
-    ```
+   ```bash
+   npm run dev
+   ```
 
-    The app will be available at `http://localhost:5173`.
+   The app will be available at `http://localhost:5173`.
 
 ---
 
@@ -144,7 +144,7 @@ npm run preview
 
 To ensure performance and visual stability, we follow these guidelines for images:
 
-1.  **WebP Optimization**: All static assets should be converted to `.webp` for reduced file size.
-2.  **Explicit Sources**: Components like `ProductShowcase` use explicit paths for both `jpg` (fallback) and `webp` versions to avoid brittle string manipulation.
-3.  **Layout Stability**: Use `aspect-ratio` utilities (e.g., `aspect-[16/10]`) on containers to prevent layout shifts (CLS) while images load.
-4.  **Object Fit**: Use `object-cover` in combination with `w-full h-full` to ensure images fill their containers correctly without distortion.
+1. **WebP Optimization**: All static assets should be converted to `.webp` for reduced file size.
+2. **Explicit Sources**: Components like `ProductShowcase` use explicit paths for both `jpg` (fallback) and `webp` versions to avoid brittle string manipulation.
+3. **Layout Stability**: Use `aspect-ratio` utilities (e.g., `aspect-[16/10]`) on containers to prevent layout shifts (CLS) while images load.
+4. **Object Fit**: Use `object-cover` in combination with `w-full h-full` to ensure images fill their containers correctly without distortion.
