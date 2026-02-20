@@ -138,6 +138,8 @@ npm run preview
 - **Goal Tracking**: Progress bars for savings targets.
 - **Responsive Navigation**: Adaptive sidebar/mobile menu.
 
+---
+
 ## 🖼️ Image Handling Best Practices
 
 To ensure performance and visual stability, we follow these guidelines for images:
