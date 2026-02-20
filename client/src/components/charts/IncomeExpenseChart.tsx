@@ -10,20 +10,18 @@ import {
 import { ChartContainer } from './ChartContainer';
 import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 import { type FinancialRecord } from '../../contexts/financial-record-context';
+import { useChartColors } from '../../utils/chart-colors';
 
 interface IncomeExpenseChartProps {
   records: FinancialRecord[];
 }
 
-const COLORS = {
-  income: '#10b981', // emerald-500
-  expense: '#f43f5e', // rose-500
-};
-
 export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({
   records,
 }) => {
   const { format } = useCurrencyFormatter();
+  const colors = useChartColors();
+
   const totalIncome = records
     .filter((record) => record.type === 'income')
     .reduce((acc, record) => acc + Math.abs(record.amount), 0);
@@ -33,8 +31,8 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({
     .reduce((acc, record) => acc + record.amount, 0);
 
   const data = [
-    { name: 'Income', value: totalIncome, color: COLORS.income },
-    { name: 'Expenses', value: totalExpenses, color: COLORS.expense },
+    { name: 'Income', value: totalIncome, color: colors.income },
+    { name: 'Expenses', value: totalExpenses, color: colors.expense },
   ].filter((item) => item.value > 0);
 
   return (
@@ -57,11 +55,11 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({
             </Pie>
             <Tooltip
               contentStyle={{
-                backgroundColor: '#0f172a',
-                borderColor: '#1e293b',
-                color: '#f1f5f9',
+                backgroundColor: colors.tooltipBg,
+                borderColor: colors.tooltipBorder,
+                color: colors.tooltipText,
               }}
-              itemStyle={{ color: '#f1f5f9' }}
+              itemStyle={{ color: colors.tooltipText }}
               formatter={(value: number | undefined) =>
                 value != null ? format(value) : ''
               }
@@ -70,7 +68,7 @@ export const IncomeExpenseChart: React.FC<IncomeExpenseChartProps> = ({
           </PieChart>
         </ResponsiveContainer>
       ) : (
-        <div className='flex h-full flex-col items-center justify-center text-slate-500'>
+        <div className='flex h-full flex-col items-center justify-center text-text-secondary'>
           <p>No data available</p>
         </div>
       )}

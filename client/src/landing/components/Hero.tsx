@@ -5,14 +5,14 @@ export const Hero = () => {
   return (
     <section className='relative pt-24 pb-16 px-4 overflow-hidden'>
       {/* Background with noise texture (optional, skipped for simplicity) */}
-      <div className='absolute inset-0 bg-slate-950 -z-10' />
+      <div className='absolute inset-0 bg-background-primary -z-10 transition-colors duration-300' />
 
       <div className='max-w-7xl mx-auto flex flex-col items-center text-center z-10 relative'>
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
-          className='text-4xl md:text-6xl font-accent font-bold tracking-tight text-white max-w-4xl mb-6 leading-tight'
+          className='text-4xl md:text-6xl font-accent font-bold tracking-tight text-text-primary max-w-4xl mb-6 leading-tight'
         >
           Never miss a bill. <br className='hidden md:block' />
           <span className='bg-linear-to-r from-emerald-400 to-emerald-600 bg-clip-text text-transparent'>
@@ -24,7 +24,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: 'easeOut' }}
-          className='text-lg md:text-xl text-slate-400 max-w-2xl mb-12 leading-relaxed'
+          className='text-lg md:text-xl text-text-secondary max-w-2xl mb-12 leading-relaxed'
         >
           Track expenses, monitor bills, and understand your spending — all in
           one calm, secure place. No complexity. No bank access required.
@@ -44,7 +44,7 @@ export const Hero = () => {
           </Link>
           <Link
             to='/auth?mode=login'
-            className='inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-slate-300 border border-slate-700 rounded-xl hover:text-white hover:border-emerald-500/50 hover:bg-slate-900 transition-all'
+            className='inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-text-secondary border border-border rounded-xl hover:text-text-primary hover:border-emerald-500/50 hover:bg-background-secondary transition-all'
           >
             Sign in
           </Link>
@@ -54,7 +54,7 @@ export const Hero = () => {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.6, ease: 'easeOut' }}
-          className='mt-6 grid grid-cols-2 sm:flex sm:flex-row gap-4 text-sm text-slate-400'
+          className='mt-6 grid grid-cols-2 sm:flex sm:flex-row gap-4 text-sm text-text-secondary'
         >
           <div className='flex items-center gap-2'>
             <span className='text-emerald-400 font-semibold'>✓</span>
@@ -77,7 +77,7 @@ export const Hero = () => {
           transition={{ duration: 1, delay: 0.6, ease: 'easeOut' }}
           className='mt-16 relative w-full max-w-5xl perspective-1000'
         >
-          <div className='relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-2xl shadow-emerald-900/20 transform-gpu rotate-x-12 hover:rotate-x-0 transition-transform duration-700 ease-out'>
+          <div className='relative rounded-2xl overflow-hidden border border-border bg-background-secondary/50 shadow-2xl shadow-emerald-900/20 transform-gpu rotate-x-12 hover:rotate-x-0 transition-transform duration-700 ease-out'>
             {/* Glow effect behind */}
             <div className='absolute -inset-1 bg-linear-to-r from-emerald-500/20 to-purple-500/20 blur-2xl opacity-50 -z-10' />
 
@@ -97,7 +97,7 @@ export const Hero = () => {
             </picture>
 
             {/* Overlay gradient for depth */}
-            <div className='absolute inset-0 bg-linear-to-t from-slate-950/50 via-transparent to-transparent pointer-events-none' />
+            <div className='absolute inset-0 bg-linear-to-t from-background-primary/50 via-transparent to-transparent pointer-events-none' />
           </div>
         </motion.div>
       </div>

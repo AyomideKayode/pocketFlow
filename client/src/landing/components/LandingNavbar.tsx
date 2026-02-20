@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Wallet, Menu, X } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ThemeToggle } from '../../components/ThemeToggle';
 
 export const LandingNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -37,7 +38,7 @@ export const LandingNavbar = () => {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 border-b ${
           isScrolled
-            ? 'bg-slate-950/80 backdrop-blur-md border-slate-800 shadow-lg'
+            ? 'bg-background-primary/80 backdrop-blur-md border-border shadow-lg'
             : 'bg-transparent border-transparent'
         }`}
         style={{ height: '72px' }}
@@ -48,7 +49,7 @@ export const LandingNavbar = () => {
             <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10 group-hover:bg-emerald-500/20 transition-colors'>
               <Wallet className='h-5 w-5 text-emerald-500' />
             </div>
-            <span className='text-xl font-semibold tracking-tight text-white group-hover:text-emerald-50 transition-colors'>
+            <span className='text-xl font-semibold tracking-tight text-text-primary group-hover:text-emerald-500 transition-colors'>
               PocketFlow
             </span>
           </Link>
@@ -59,7 +60,7 @@ export const LandingNavbar = () => {
               <a
                 key={link.name}
                 href={link.href}
-                className='text-sm font-medium text-slate-400 hover:text-emerald-400 transition-colors'
+                className='text-sm font-medium text-text-secondary hover:text-emerald-500 transition-colors'
               >
                 {link.name}
               </a>
@@ -68,9 +69,10 @@ export const LandingNavbar = () => {
 
           {/* Desktop Actions */}
           <div className='hidden md:flex items-center gap-4 shrink-0'>
+            <ThemeToggle />
             <Link
               to='/auth?mode=login'
-              className='text-slate-400 hover:text-white font-medium px-4 py-2 transition-colors'
+              className='text-text-secondary hover:text-text-primary font-medium px-4 py-2 transition-colors'
             >
               Sign In
             </Link>
@@ -83,13 +85,16 @@ export const LandingNavbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            className='md:hidden text-slate-400 hover:text-white'
-            onClick={() => setIsMobileMenuOpen(true)}
-            aria-label='Open menu'
-          >
-            <Menu className='h-6 w-6' />
-          </button>
+          <div className="flex items-center gap-4 md:hidden">
+             <ThemeToggle />
+             <button
+                className='text-text-secondary hover:text-text-primary'
+                onClick={() => setIsMobileMenuOpen(true)}
+                aria-label='Open menu'
+              >
+                <Menu className='h-6 w-6' />
+              </button>
+          </div>
         </div>
       </nav>
 
@@ -100,7 +105,7 @@ export const LandingNavbar = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className='fixed inset-0 z-50 bg-slate-950 p-4 md:hidden flex flex-col'
+            className='fixed inset-0 z-50 bg-background-primary p-4 md:hidden flex flex-col'
           >
             <div className='flex items-center justify-between mb-8'>
               <Link
@@ -111,12 +116,12 @@ export const LandingNavbar = () => {
                 <div className='flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500/10'>
                   <Wallet className='h-5 w-5 text-emerald-500' />
                 </div>
-                <span className='text-xl font-semibold tracking-tight text-white'>
+                <span className='text-xl font-semibold tracking-tight text-text-primary'>
                   PocketFlow
                 </span>
               </Link>
               <button
-                className='text-slate-400 hover:text-white'
+                className='text-text-secondary hover:text-text-primary'
                 onClick={() => setIsMobileMenuOpen(false)}
                 aria-label='Close menu'
               >
@@ -131,7 +136,7 @@ export const LandingNavbar = () => {
                   <a
                     key={link.name}
                     href={link.href}
-                    className='text-lg font-medium text-slate-300 hover:text-emerald-400 transition-colors'
+                    className='text-lg font-medium text-text-secondary hover:text-emerald-500 transition-colors'
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.name}
@@ -139,13 +144,13 @@ export const LandingNavbar = () => {
                 ))}
               </div>
 
-              <div className='h-px bg-slate-800 my-2' />
+              <div className='h-px bg-border my-2' />
 
               {/* Mobile Actions */}
               <div className='flex flex-col gap-4'>
                 <Link
                   to='/auth?mode=login'
-                  className='w-full text-center border border-slate-700 rounded-xl py-3 text-lg font-medium text-slate-300 hover:text-white hover:border-emerald-500/50 hover:bg-slate-900 transition-all'
+                  className='w-full text-center border border-border rounded-xl py-3 text-lg font-medium text-text-secondary hover:text-text-primary hover:border-emerald-500/50 hover:bg-background-secondary transition-all'
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Sign In

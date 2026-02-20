@@ -36,7 +36,7 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className='flex min-h-screen w-full flex-col bg-slate-950 text-slate-50 font-sans antialiased'>
+      <div className='flex min-h-screen w-full flex-col bg-background-primary text-text-primary font-sans antialiased transition-colors duration-300'>
         <Routes>
           <Route
             path='/'

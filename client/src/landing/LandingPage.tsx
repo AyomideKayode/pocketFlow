@@ -27,7 +27,7 @@ export const LandingPage = () => {
   }, [hash]);
 
   return (
-    <div className='min-h-screen bg-slate-950 text-white font-sans selection:bg-emerald-500/30 overflow-x-hidden'>
+    <div className='min-h-screen bg-background-primary text-text-primary font-sans selection:bg-emerald-500/30 overflow-x-hidden transition-colors duration-300'>
       <SEO />
       <StructuredData />
       <LandingNavbar />

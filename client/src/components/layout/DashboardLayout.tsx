@@ -26,7 +26,7 @@ export const DashboardLayout = () => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className="min-h-screen bg-slate-950">
+    <div className="min-h-screen bg-background-primary transition-colors duration-300">
       <div className="fixed top-0 left-0 right-0 z-50">
         <Navbar onToggleSidebar={toggleSidebar} />
       </div>

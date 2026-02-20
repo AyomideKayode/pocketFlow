@@ -4,23 +4,67 @@
   --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
   --font-accent: "Space Mono", monospace;
+
+  /* Theme colors */
+  --color-background-primary: var(--color-bg-primary);
+  --color-background-secondary: var(--color-bg-secondary);
+  --color-background-tertiary: var(--color-bg-tertiary);
+
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-muted: var(--color-text-muted);
+
+  --color-border: var(--color-border);
+
+  --color-accent-primary: #10b981;
+  --color-accent-secondary: #059669;
 }
 
+/* Enable class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
+  :root {
+    /* Light mode colors (default) */
+    --color-bg-primary: #ffffff;
+    --color-bg-secondary: #f9fafb; /* gray-50 */
+    --color-bg-tertiary: #f3f4f6; /* gray-100 */
+
+    --color-text-primary: #111827; /* gray-900 */
+    --color-text-secondary: #4b5563; /* gray-600 */
+    --color-text-muted: #9ca3af; /* gray-400 */
+
+    --color-border: #e5e7eb; /* gray-200 */
+  }
+
+  .dark {
+    /* Dark mode colors */
+    --color-bg-primary: #0a0a0a; /* neutral-950 */
+    --color-bg-secondary: #1a1a1a; /* neutral-900 */
+    --color-bg-tertiary: #2d2d2d; /* neutral-800 */
+
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #a0a0a0; /* neutral-400 */
+    --color-text-muted: #6b7280; /* neutral-500 */
+
+    --color-border: #2d2d2d; /* neutral-800 */
+  }
+
   body {
-    @apply bg-slate-950 text-slate-50 min-h-screen font-sans antialiased;
+    @apply bg-background-primary text-text-primary min-h-screen font-sans antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   h1 {
-    @apply text-3xl font-bold tracking-tight text-white mb-4;
+    @apply text-3xl font-bold tracking-tight text-text-primary mb-4;
   }
 
   h2 {
-    @apply text-2xl font-semibold tracking-tight text-white mb-3;
+    @apply text-2xl font-semibold tracking-tight text-text-primary mb-3;
   }
 
   h3 {
-    @apply text-xl font-semibold tracking-tight text-white mb-2;
+    @apply text-xl font-semibold tracking-tight text-text-primary mb-2;
   }
 
   /* Fade in animation */
