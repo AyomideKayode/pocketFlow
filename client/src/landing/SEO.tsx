@@ -45,7 +45,8 @@ export const SEO = ({
 
       {/* Additional Meta Tags */}
       <meta name="robots" content="index, follow" />
-      <meta name="language" content="English" />
+       <meta name="robots" content="index, follow" />
+       <meta name="author" content={SEO_CONFIG.siteName} />
       <meta name="author" content={SEO_CONFIG.siteName} />
     </Helmet>
   );
