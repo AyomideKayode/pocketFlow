@@ -4,7 +4,7 @@ export const SEO_CONFIG = {
   defaultTitle: 'PocketFlow — Simple Personal Finance Tracker',
   defaultDescription: 'Track expenses, monitor bills, and understand your spending — all in one calm, secure place. No bank access required. Free forever.',
   defaultOgImage: '/og-image.jpg',
-  twitterHandle: '@pocketflow', // Placeholder
+  twitterHandle: null, // Placeholder removed as requested
   keywords: [
     'finance tracker',
     'budget app',

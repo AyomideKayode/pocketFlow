@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async';
 import { SEO_CONFIG } from '../config/seo';
 
 interface SEOProps {
@@ -19,10 +18,9 @@ export const SEO = ({
     : `${SEO_CONFIG.siteUrl}${ogImage}`;
 
   return (
-    <Helmet>
+    <>
       {/* Primary Meta Tags */}
       <title>{title}</title>
-      <meta name="title" content={title} />
       <meta name="description" content={description} />
       <link rel="canonical" href={canonical} />
 
@@ -37,17 +35,21 @@ export const SEO = ({
       <meta property="og:image" content={fullOgImage} />
 
       {/* Twitter */}
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content={canonical} />
-      <meta name="twitter:title" content={title} />
-      <meta name="twitter:description" content={description} />
-      <meta name="twitter:image" content={fullOgImage} />
+      <meta property="twitter:card" content="summary_large_image" />
+      <meta property="twitter:url" content={canonical} />
+      <meta property="twitter:title" content={title} />
+      <meta property="twitter:description" content={description} />
+      <meta property="twitter:image" content={fullOgImage} />
+
+      {/* Twitter Site Handle (Only if configured) */}
+      {SEO_CONFIG.twitterHandle && (
+        <meta name="twitter:site" content={SEO_CONFIG.twitterHandle} />
+      )}
 
       {/* Additional Meta Tags */}
       <meta name="robots" content="index, follow" />
-       <meta name="robots" content="index, follow" />
-       <meta name="author" content={SEO_CONFIG.siteName} />
+      <meta name="language" content="English" />
       <meta name="author" content={SEO_CONFIG.siteName} />
-    </Helmet>
+    </>
   );
 };

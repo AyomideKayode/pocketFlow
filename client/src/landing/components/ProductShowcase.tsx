@@ -274,7 +274,7 @@ export default function ProductShowcase() {
                   <img
                     src={card.image}
                     alt={card.headline}
-                    className="w-full h-auto object-cover relative z-0"
+                    className="w-full h-auto object-cover relative z-0 aspect-[16/10]"
                     loading="lazy"
                   />
                 </picture>

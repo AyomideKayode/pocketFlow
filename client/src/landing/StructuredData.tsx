@@ -1,4 +1,3 @@
-import { Helmet } from 'react-helmet-async';
 import { SEO_CONFIG } from '../config/seo';
 
 export const StructuredData = () => {
@@ -22,12 +21,7 @@ export const StructuredData = () => {
       "CSV Import/Export",
       "Email Notifications"
     ],
-    "screenshot": `${SEO_CONFIG.siteUrl}/og-image.jpg`,
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "5",
-      "ratingCount": "1"
-    }
+    "screenshot": `${SEO_CONFIG.siteUrl}/og-image.jpg`
   };
 
   const organizationSchema = {
@@ -72,7 +66,7 @@ export const StructuredData = () => {
   };
 
   return (
-    <Helmet>
+    <>
       <script type="application/ld+json">
         {JSON.stringify(softwareSchema)}
       </script>
@@ -82,6 +76,6 @@ export const StructuredData = () => {
       <script type="application/ld+json">
         {JSON.stringify(faqSchema)}
       </script>
-    </Helmet>
+    </>
   );
 };
