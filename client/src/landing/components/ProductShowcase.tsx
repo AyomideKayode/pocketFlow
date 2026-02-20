@@ -21,6 +21,7 @@ interface ShowcaseCard {
   headline: string;
   subheader: string;
   image: string;
+  imageWebP: string;
   position: 'left' | 'right';
   highlights?: ShowcaseHighlightConfig[];
 }
@@ -32,6 +33,7 @@ const showcaseCards: ShowcaseCard[] = [
     subheader:
       "Track bills with reminders. Set once, relax forever. Know exactly what's coming.",
     image: '/assets/landing/bill-addModal-page.JPG',
+    imageWebP: '/assets/landing/bill-addModal-page.webp',
     position: 'left',
     highlights: [
       {
@@ -50,6 +52,7 @@ const showcaseCards: ShowcaseCard[] = [
     subheader:
       'Visual insights reveal where your money actually goes. No spreadsheets, no guessing.',
     image: '/assets/landing/dashboard-charts.JPG',
+    imageWebP: '/assets/landing/dashboard-charts.webp',
     position: 'right',
     highlights: [
       {
@@ -68,6 +71,7 @@ const showcaseCards: ShowcaseCard[] = [
     subheader:
       'Start with your real financial history instantly. No blank screens, no rebuilding from memory.',
     image: '/assets/landing/csv-import-valid.jpg',
+    imageWebP: '/assets/landing/csv-import-valid.webp',
     position: 'left',
     highlights: [
       {
@@ -86,6 +90,7 @@ const showcaseCards: ShowcaseCard[] = [
     subheader:
       'See upcoming bills at a glance. Access educational insights and resources. Make better financial decisions.',
     image: '/assets/landing/learn-education-insights.JPG',
+    imageWebP: '/assets/landing/learn-education-insights.webp',
     position: 'right',
     highlights: [
       {
@@ -104,6 +109,7 @@ const showcaseCards: ShowcaseCard[] = [
     subheader:
       'Customize your profile, set your preferred currency, manage your account. Full control, zero friction.',
     image: '/assets/landing/preference-settings.JPG',
+    imageWebP: '/assets/landing/preference-settings.webp',
     position: 'left',
     highlights: [
       {
@@ -213,8 +219,6 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
   return null;
 };
 
-const getWebP = (path: string) => path.replace(/\.(JPG|jpg)$/, '.webp');
-
 export default function ProductShowcase() {
   return (
     <section
@@ -265,16 +269,16 @@ export default function ProductShowcase() {
             {/* Image */}
             <div className='flex-1'>
               <motion.div
-                className='relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-xl shadow-emerald-900/10'
+                className='relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-xl shadow-emerald-900/10 aspect-[16/10]'
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
                 <picture>
-                  <source srcSet={getWebP(card.image)} type='image/webp' />
+                  <source srcSet={card.imageWebP} type='image/webp' />
                   <img
                     src={card.image}
                     alt={card.headline}
-                    className='w-full h-auto object-cover relative z-0 aspect-16/10'
+                    className='w-full h-full object-cover relative z-0'
                     loading='lazy'
                   />
                 </picture>
