@@ -270,12 +270,12 @@ export default function ProductShowcase() {
                 transition={{ duration: 0.3 }}
               >
                 <picture>
-                  <source srcSet={getWebP(card.image)} type="image/webp" />
+                  <source srcSet={getWebP(card.image)} type='image/webp' />
                   <img
                     src={card.image}
                     alt={card.headline}
-                    className="w-full h-auto object-cover relative z-0 aspect-[16/10]"
-                    loading="lazy"
+                    className='w-full h-auto object-cover relative z-0 aspect-16/10'
+                    loading='lazy'
                   />
                 </picture>
 

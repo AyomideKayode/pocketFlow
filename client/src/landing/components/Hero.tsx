@@ -83,16 +83,16 @@ export const Hero = () => {
 
             <picture>
               <source
-                srcSet="/assets/landing/dashboard-hero.webp"
-                type="image/webp"
+                srcSet='/assets/landing/dashboard-hero.webp'
+                type='image/webp'
               />
               <img
-                src="/assets/landing/dashboard-hero.JPG"
-                alt="PocketFlow Dashboard showing upcoming bills and spending overview"
-                className="w-full h-auto object-cover rounded-2xl"
-                loading="eager"
-                width="1100"
-                height="700"
+                src='/assets/landing/dashboard-hero.JPG'
+                alt='PocketFlow Dashboard showing upcoming bills and spending overview'
+                className='w-full h-auto object-cover rounded-2xl'
+                loading='eager'
+                width='1100'
+                height='700'
               />
             </picture>
 
