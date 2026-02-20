@@ -156,7 +156,7 @@ export const Footer = () => {
             <p>© {currentYear} PocketFlow. Designed for clarity and privacy.</p>
             <span className='hidden md:block w-1 h-1 bg-slate-800 rounded-full' />
             <p>
-              Built by{' '}
+              Built with 💚 by{' '}
               <a
                 href='https://github.com/AyomideKayode'
                 target='_blank'

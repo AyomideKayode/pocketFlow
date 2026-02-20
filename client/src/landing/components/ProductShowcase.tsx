@@ -39,9 +39,9 @@ const showcaseCards: ShowcaseCard[] = [
       {
         type: 'ring',
         top: '18%',
-        right: '17%',
-        width: '8%',
-        height: '12%',
+        right: '7%',
+        width: '10%',
+        height: '10%',
         delay: 0.9,
       },
     ],
@@ -77,9 +77,9 @@ const showcaseCards: ShowcaseCard[] = [
       {
         type: 'ring',
         top: '28%', // Adjust based on "Valid Records" box
-        left: '34%',
-        width: '30%',
-        height: '20%',
+        left: '28%',
+        width: '40%',
+        height: '18%',
         delay: 0.9,
       },
     ],
@@ -97,7 +97,7 @@ const showcaseCards: ShowcaseCard[] = [
         type: 'ring',
         top: '46%',
         left: '46%',
-        width: '55%',
+        width: '75%',
         height: '54%',
         delay: 0.9,
       },
@@ -115,8 +115,8 @@ const showcaseCards: ShowcaseCard[] = [
       {
         type: 'arrow',
         label: 'Customize',
-        top: '65%',
-        left: '5%',
+        top: '75%',
+        left: '4%',
         width: '40%',
         height: '20%',
         delay: 0.6,
@@ -164,9 +164,8 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay }}
-        className={`absolute ${transformClass} border-2 border-emerald-400 rounded-lg pointer-events-none z-10 shadow-[0_0_15px_rgba(52,211,153,0.5)] ${
-          size || ''
-        }`}
+        className={`absolute ${transformClass} border-2 border-emerald-400 rounded-lg pointer-events-none z-10 shadow-[0_0_15px_rgba(52,211,153,0.5)] ${size || ''
+          }`}
         style={style}
       >
         <span className='absolute inset-0 rounded-lg animate-ping opacity-75 bg-emerald-400/30' />
@@ -252,9 +251,8 @@ export default function ProductShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: index * 0.1 }}
             viewport={{ once: true, margin: '-100px' }}
-            className={`flex flex-col ${
-              card.position === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'
-            } gap-8 lg:gap-16 items-center`}
+            className={`flex flex-col ${card.position === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'
+              } gap-8 lg:gap-16 items-center`}
           >
             {/* Text content */}
             <div className='flex-1 flex flex-col justify-center'>
@@ -269,7 +267,7 @@ export default function ProductShowcase() {
             {/* Image */}
             <div className='flex-1'>
               <motion.div
-                className='relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-xl shadow-emerald-900/10 aspect-[16/10]'
+                className='relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-xl shadow-emerald-900/10 aspect-16/10'
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
