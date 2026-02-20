@@ -20,7 +20,6 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import { ToastContainer } from './components/ToastContainer';
 import { Navbar } from './components/Navbar';
 import { DashboardLayout } from './components/layout/DashboardLayout';
-import { Loader2 } from 'lucide-react';
 import { LandingPage } from './landing/LandingPage';
 import { Privacy } from './pages/Privacy';
 import { Terms } from './pages/Terms';
@@ -30,16 +29,9 @@ import { ScrollToTop } from './components/ScrollToTop';
 function App() {
   const { user, loading } = useAuth();
 
-  if (loading) {
-    return (
-      <div className='flex min-h-screen w-full items-center justify-center bg-slate-950 text-slate-50'>
-        <div className='flex flex-col items-center gap-4'>
-          <Loader2 className='h-10 w-10 animate-spin text-emerald-500' />
-          <h1 className='text-xl font-medium'>Loading...</h1>
-        </div>
-      </div>
-    );
-  }
+  // We intentionally removed the top-level loading check to allow
+  // the Landing Page to render immediately for SEO purposes.
+  // Protected routes handle their own loading state.
 
   return (
     <Router>
@@ -49,7 +41,10 @@ function App() {
           <Route
             path='/'
             element={
-              user ? <Navigate to='/dashboard' replace /> : <LandingPage />
+              // If loading, show LandingPage (bots see this).
+              // If loaded and user exists, redirect.
+              // If loaded and no user, show LandingPage.
+              !loading && user ? <Navigate to='/dashboard' replace /> : <LandingPage />
             }
           />
           <Route path='/privacy' element={<Privacy />} />

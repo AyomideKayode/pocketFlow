@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /transactions
+Disallow: /budgets
+Disallow: /goals
+Disallow: /bills
+Disallow: /learn
+Disallow: /auth
+
+Sitemap: https://pocket-flow-kay.vercel.app/sitemap.xml

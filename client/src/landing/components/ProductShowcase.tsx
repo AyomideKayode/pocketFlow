@@ -1,9 +1,4 @@
 import { motion } from 'framer-motion';
-import csvImport from '../../assets/landing/csv-import-valid.jpg?url';
-import billAdd from '../../assets/landing/bill-addModal-page.JPG?url';
-import spending from '../../assets/landing/dashboard-charts.JPG?url';
-import learn from '../../assets/landing/learn-education-insights.JPG?url';
-import preferences from '../../assets/landing/preference-settings.JPG?url';
 import { Link } from 'react-router-dom';
 
 type HighlightType = 'glow' | 'ring' | 'arrow' | 'spotlight';
@@ -36,7 +31,7 @@ const showcaseCards: ShowcaseCard[] = [
     headline: 'Add Bills Manually',
     subheader:
       "Track bills with reminders. Set once, relax forever. Know exactly what's coming.",
-    image: billAdd,
+    image: '/assets/landing/bill-addModal-page.JPG',
     position: 'left',
     highlights: [
       {
@@ -54,7 +49,7 @@ const showcaseCards: ShowcaseCard[] = [
     headline: 'Understand Your Spending',
     subheader:
       'Visual insights reveal where your money actually goes. No spreadsheets, no guessing.',
-    image: spending,
+    image: '/assets/landing/dashboard-charts.JPG',
     position: 'right',
     highlights: [
       {
@@ -72,7 +67,7 @@ const showcaseCards: ShowcaseCard[] = [
     headline: 'Bring Your Data',
     subheader:
       'Start with your real financial history instantly. No blank screens, no rebuilding from memory.',
-    image: csvImport,
+    image: '/assets/landing/csv-import-valid.jpg',
     position: 'left',
     highlights: [
       {
@@ -90,7 +85,7 @@ const showcaseCards: ShowcaseCard[] = [
     headline: 'Stay Informed & Learn',
     subheader:
       'See upcoming bills at a glance. Access educational insights and resources. Make better financial decisions.',
-    image: learn,
+    image: '/assets/landing/learn-education-insights.JPG',
     position: 'right',
     highlights: [
       {
@@ -108,7 +103,7 @@ const showcaseCards: ShowcaseCard[] = [
     headline: 'Your Preferences, Your Way',
     subheader:
       'Customize your profile, set your preferred currency, manage your account. Full control, zero friction.',
-    image: preferences,
+    image: '/assets/landing/preference-settings.JPG',
     position: 'left',
     highlights: [
       {
@@ -218,6 +213,8 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
   return null;
 };
 
+const getWebP = (path: string) => path.replace(/\.(JPG|jpg)$/, '.webp');
+
 export default function ProductShowcase() {
   return (
     <section
@@ -272,11 +269,15 @@ export default function ProductShowcase() {
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                <img
-                  src={card.image}
-                  alt={card.headline}
-                  className='w-full h-auto object-cover relative z-0'
-                />
+                <picture>
+                  <source srcSet={getWebP(card.image)} type="image/webp" />
+                  <img
+                    src={card.image}
+                    alt={card.headline}
+                    className="w-full h-auto object-cover relative z-0"
+                    loading="lazy"
+                  />
+                </picture>
 
                 {/* Highlights */}
                 {card.highlights?.map((highlight, hIndex) => (
