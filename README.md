@@ -112,35 +112,35 @@ graph TD
 
 1. **Clone the repository**
 
-    ```bash
-    git clone https://github.com/AyomideKayode/pocketFlow.git
-    cd pocketflow
-    ```
+   ```bash
+   git clone https://github.com/AyomideKayode/pocketFlow.git
+   cd pocketflow
+   ```
 
 2. **Install dependencies**
 
-    ```bash
-    # Install dependencies for both client and server
-    npm install
-    cd client && npm install
-    cd ../server && npm install
-    ```
+   ```bash
+   # Install dependencies for both client and server
+   npm install
+   cd client && npm install
+   cd ../server && npm install
+   ```
 
 3. **Set up Environment Variables**
-    - Copy `.env.example` to `.env` in both `client/` and `server/` directories.
-    - Fill in your Firebase and MongoDB credentials.
+   - Copy `.env.example` to `.env` in both `client/` and `server/` directories.
+   - Fill in your Firebase and MongoDB credentials.
 
 4. **Run Development Servers**
 
-    ```bash
-    # Terminal 1: Server
-    cd server
-    npm run dev
+   ```bash
+   # Terminal 1: Server
+   cd server
+   npm run dev
 
-    # Terminal 2: Client
-    cd client
-    npm run dev
-    ```
+   # Terminal 2: Client
+   cd client
+   npm run dev
+   ```
 
 ---
 

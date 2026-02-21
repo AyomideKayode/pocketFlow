@@ -26,18 +26,23 @@ export const DashboardLayout = () => {
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
   return (
-    <div className="min-h-screen bg-background-primary transition-colors duration-300">
-      <div className="fixed top-0 left-0 right-0 z-50">
+    <div className='min-h-screen bg-background-primary transition-colors duration-300'>
+      <div className='fixed top-0 left-0 right-0 z-50'>
         <Navbar onToggleSidebar={toggleSidebar} />
       </div>
 
-      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} isMobile={isMobile} />
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onClose={() => setIsSidebarOpen(false)}
+        isMobile={isMobile}
+      />
 
       <main
-        className={`min-h-screen pt-16 transition-all duration-300 ${!isMobile && isSidebarOpen ? 'pl-64' : 'pl-0'
-          }`}
+        className={`min-h-screen pt-16 transition-all duration-300 ${
+          !isMobile && isSidebarOpen ? 'pl-64' : 'pl-0'
+        }`}
       >
-        <div className="mx-auto max-w-7xl p-4 sm:px-6 lg:px-8 py-8">
+        <div className='mx-auto max-w-7xl p-4 sm:px-6 lg:px-8 py-8'>
           <Outlet />
         </div>
       </main>

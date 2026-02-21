@@ -66,7 +66,10 @@ export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({
               stroke={colors.text}
               fontSize={12}
               tickFormatter={(val) =>
-                format(val, { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+                format(val, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
+                })
               }
             />
             <YAxis

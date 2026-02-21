@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -14,7 +20,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   // Initialize from localStorage or default to dark
   const [theme, setThemeState] = useState<Theme>(() => {
     const stored = localStorage.getItem('pocketflow-theme');
-    return (stored === 'light' || stored === 'dark') ? stored : 'dark';
+    return stored === 'light' || stored === 'dark' ? stored : 'dark';
   });
 
   // Update document class and localStorage when theme changes
@@ -32,7 +38,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }, [theme]);
 
   const toggleTheme = () => {
-    setThemeState(prev => prev === 'dark' ? 'light' : 'dark');
+    setThemeState((prev) => (prev === 'dark' ? 'light' : 'dark'));
   };
 
   const setTheme = (newTheme: Theme) => {

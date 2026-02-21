@@ -108,7 +108,10 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
             tickLine={false}
             axisLine={false}
             tickFormatter={(value) =>
-              format(value, { minimumFractionDigits: 0, maximumFractionDigits: 0 })
+              format(value, {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              })
             }
           />
           <Tooltip
