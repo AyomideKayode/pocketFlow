@@ -3,36 +3,10 @@ import { useGoals, type Goal } from '../../contexts/goal-context';
 import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 import { Plus, Trash2, Edit2, Target, X, Calendar } from 'lucide-react';
 
-// Reuse categories for linking
-const EXPENSE_CATEGORIES = [
-  'Rent / Mortgage',
-  'Utilities',
-  'Maintenance',
-  'Groceries',
-  'Dining Out',
-  'Coffee & Snacks',
-  'Fuel',
-  'Public Transport',
-  'Ride Hailing',
-  'Car Maintenance',
-  'Medical',
-  'Pharmacy',
-  'Fitness',
-  'Debt Repayment',
-  'Bank Fees',
-  'Insurance',
-  'Entertainment',
-  'Subscriptions',
-  'Shopping',
-  'Personal Care',
-  'Education',
-  'Books & Courses',
-  'Flights',
-  'Accommodation',
-  'Gifts & Donations',
-  'Miscellaneous',
+const SAVINGS_CATEGORIES = [
   'Savings',
-  'Investments', // Added for goals
+  'Investments',
+  'Emergency Fund',
 ];
 
 export const Goals = () => {
@@ -152,7 +126,7 @@ export const Goals = () => {
                       Saved
                     </p>
                     <p className='text-2xl font-bold text-emerald-600 dark:text-emerald-400'>
-                      {format(goal.currentAmount)}
+                      {format(Math.max(0, goal.currentAmount))}
                     </p>
                   </div>
                   <div className='text-right'>
@@ -284,14 +258,17 @@ export const Goals = () => {
                   onChange={(e) => setLinkedCategory(e.target.value)}
                 >
                   <option value=''>None (Manual Updates)</option>
-                  {EXPENSE_CATEGORIES.map((cat) => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
+                  <optgroup label='Income Categories'>
+                    {SAVINGS_CATEGORIES.map((cat) => (
+                      <option key={cat} value={cat}>
+                        {cat}
+                      </option>
+                    ))}
+                  </optgroup>
                 </select>
                 <p className='text-[10px] text-gray-500 dark:text-slate-500'>
-                  If selected, progress updates automatically from transactions.
+                  Link to a savings category to auto-track your balance.
+                  Progress updates when you add or withdraw from this category.
                 </p>
               </div>
 

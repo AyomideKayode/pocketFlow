@@ -14,17 +14,39 @@ const calculateGoalProgress = async (userId: string, goal: any) => {
         $match: {
           userId,
           category: goal.linkedCategory,
-          type: 'income',
         },
       },
       {
         $group: {
           _id: null,
-          totalSaved: { $sum: '$amount' },
+          totalIncome: {
+            $sum: {
+              $cond: [{ $eq: ['$type', 'income'] }, '$amount', 0],
+            },
+          },
+          totalExpense: {
+            $sum: {
+              $cond: [{ $eq: ['$type', 'expense'] }, '$amount', 0],
+            },
+          },
         },
       },
     ]);
-    currentAmount = result[0]?.totalSaved || 0;
+
+    const totalIncome = result[0]?.totalIncome || 0;
+    const totalExpense = result[0]?.totalExpense || 0;
+    currentAmount = totalIncome - totalExpense;
+
+    console.log(
+      JSON.stringify({
+        event: 'goal_progress_calculated',
+        goalId: goal._id,
+        category: goal.linkedCategory,
+        totalIncome,
+        totalExpense,
+        currentAmount,
+      }),
+    );
   }
 
   return currentAmount;
