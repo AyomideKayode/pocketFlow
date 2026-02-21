@@ -4,6 +4,7 @@ import {
   Route,
   Navigate,
 } from 'react-router-dom';
+import { useEffect } from 'react';
 import { Dashboard } from './pages/dashboard';
 import { Auth } from './pages/auth';
 import { Transactions } from './pages/transactions';
@@ -29,22 +30,33 @@ import { ScrollToTop } from './components/ScrollToTop';
 function App() {
   const { user, loading } = useAuth();
 
-  // We intentionally removed the top-level loading check to allow
-  // the Landing Page to render immediately for SEO purposes.
-  // Protected routes handle their own loading state.
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('wasAuthenticated', 'true');
+    }
+  }, [user]);
+
+  // If returning user is loading, show minimal loader to prevent Landing Page flash.
+  // Otherwise (new user or loaded), follow standard routing.
+  const showLoader = loading && localStorage.getItem('wasAuthenticated');
 
   return (
     <Router>
       <ScrollToTop />
-      <div className='flex min-h-screen w-full flex-col bg-slate-950 text-slate-50 font-sans antialiased'>
+      <div className='flex min-h-screen w-full flex-col bg-background-primary text-text-primary font-sans antialiased transition-colors duration-300'>
         <Routes>
           <Route
             path='/'
             element={
-              // If loading, show LandingPage (bots see this).
-              // If loaded and user exists, redirect.
-              // If loaded and no user, show LandingPage.
-              !loading && user ? <Navigate to='/dashboard' replace /> : <LandingPage />
+              showLoader ? (
+                <div className='flex min-h-screen items-center justify-center bg-background-primary'>
+                  <div className='h-8 w-8 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent' />
+                </div>
+              ) : !loading && user ? (
+                <Navigate to='/dashboard' replace />
+              ) : (
+                <LandingPage />
+              )
             }
           />
           <Route path='/privacy' element={<Privacy />} />

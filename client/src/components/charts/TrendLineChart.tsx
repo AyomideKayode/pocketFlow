@@ -18,6 +18,7 @@ import {
   groupRecordsByDay,
 } from '../../utils/chartDataTransforms';
 import { clsx } from 'clsx';
+import { useChartColors } from '../../utils/chart-colors';
 
 interface TrendLineChartProps {
   records: FinancialRecord[];
@@ -28,6 +29,7 @@ type Granularity = 'day' | 'week' | 'month';
 export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
   const { format } = useCurrencyFormatter();
   const [granularity, setGranularity] = useState<Granularity>('month');
+  const colors = useChartColors();
 
   const data = useMemo(() => {
     let grouped;
@@ -55,7 +57,7 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
     <ChartContainer
       title='Financial Trends'
       action={
-        <div className='flex bg-slate-800 rounded-lg p-1 text-xs font-medium border border-slate-700'>
+        <div className='flex bg-background-tertiary rounded-lg p-1 text-xs font-medium border border-border'>
           {(['day', 'week', 'month'] as const).map((g) => (
             <button
               key={g}
@@ -64,7 +66,7 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
                 'px-3 py-1 rounded-md transition-all capitalize',
                 granularity === g
                   ? 'bg-emerald-600 text-white shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-700/50',
+                  : 'text-text-secondary hover:text-text-primary hover:bg-background-secondary',
               )}
             >
               {g}
@@ -80,28 +82,28 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
         >
           <defs>
             <linearGradient id='colorIncome' x1='0' y1='0' x2='0' y2='1'>
-              <stop offset='5%' stopColor='#10b981' stopOpacity={0.3} />
-              <stop offset='95%' stopColor='#10b981' stopOpacity={0} />
+              <stop offset='5%' stopColor={colors.income} stopOpacity={0.3} />
+              <stop offset='95%' stopColor={colors.income} stopOpacity={0} />
             </linearGradient>
             <linearGradient id='colorExpense' x1='0' y1='0' x2='0' y2='1'>
-              <stop offset='5%' stopColor='#f43f5e' stopOpacity={0.3} />
-              <stop offset='95%' stopColor='#f43f5e' stopOpacity={0} />
+              <stop offset='5%' stopColor={colors.expense} stopOpacity={0.3} />
+              <stop offset='95%' stopColor={colors.expense} stopOpacity={0} />
             </linearGradient>
           </defs>
           <CartesianGrid
             strokeDasharray='3 3'
-            stroke='#1e293b'
+            stroke={colors.grid}
             vertical={false}
           />
           <XAxis
             dataKey='label'
-            stroke='#64748b'
+            stroke={colors.text}
             fontSize={12}
             tickLine={false}
             axisLine={false}
           />
           <YAxis
-            stroke='#64748b'
+            stroke={colors.text}
             fontSize={12}
             tickLine={false}
             axisLine={false}
@@ -111,13 +113,13 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
           />
           <Tooltip
             contentStyle={{
-              backgroundColor: '#0f172a',
-              borderColor: '#1e293b',
-              color: '#f1f5f9',
+              backgroundColor: colors.tooltipBg,
+              borderColor: colors.tooltipBorder,
+              color: colors.tooltipText,
               borderRadius: '8px',
             }}
-            itemStyle={{ color: '#f1f5f9' }}
-            labelStyle={{ color: '#94a3b8', marginBottom: '0.5rem' }}
+            itemStyle={{ color: colors.tooltipText }}
+            labelStyle={{ color: colors.text, marginBottom: '0.5rem' }}
             formatter={(value: number | undefined) => [
               value != null ? format(value) : '',
               undefined,
@@ -127,7 +129,7 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
           <Area
             type='monotone'
             dataKey='income'
-            stroke='#10b981'
+            stroke={colors.income}
             fillOpacity={1}
             fill='url(#colorIncome)'
             name='Income'
@@ -136,7 +138,7 @@ export const TrendLineChart: React.FC<TrendLineChartProps> = ({ records }) => {
           <Area
             type='monotone'
             dataKey='expense'
-            stroke='#f43f5e'
+            stroke={colors.expense}
             fillOpacity={1}
             fill='url(#colorExpense)'
             name='Expenses'

@@ -9,7 +9,6 @@ import {
   ChevronDown,
   Settings as SettingsIcon,
 } from 'lucide-react';
-import {} from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -99,7 +98,7 @@ export const UserButton: React.FC = () => {
     <div className='relative' ref={dropdownRef}>
       <button
         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-        className='flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800/50 py-1.5 pl-1.5 pr-3 text-sm font-medium text-slate-200 transition-colors hover:bg-slate-800 hover:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50'
+        className='flex items-center gap-2 rounded-full border border-border bg-background-secondary/50 py-1.5 pl-1.5 pr-3 text-sm font-medium text-text-primary transition-colors hover:bg-background-tertiary hover:text-text-primary focus:outline-none focus:ring-2 focus:ring-emerald-500/50 cursor-pointer'
       >
         <div className='relative h-7 w-7 rounded-full overflow-hidden shadow-sm'>
           {profile?.photoURL ? (
@@ -118,17 +117,17 @@ export const UserButton: React.FC = () => {
         <span className='max-w-25 truncate md:max-w-37.5'>{displayName}</span>
         <ChevronDown
           className={cn(
-            'h-4 w-4 text-slate-400 transition-transform duration-200',
+            'h-4 w-4 text-text-secondary transition-transform duration-200',
             isDropdownOpen && 'rotate-180',
           )}
         />
       </button>
 
       {isDropdownOpen && (
-        <div className='absolute bottom-full mb-2 w-56 origin-bottom-right rounded-lg border border-slate-700 bg-slate-900 p-1 shadow-xl ring-1 ring-black/5 z-50'>
-          <div className='px-3 py-2 border-b border-slate-800 mb-1'>
-            <p className='text-xs font-medium text-slate-400'>Signed in as</p>
-            <p className='truncate text-sm font-semibold text-slate-200'>
+        <div className='absolute bottom-full mb-2 w-56 origin-bottom-right rounded-lg border border-border bg-background-secondary p-1 shadow-xl ring-1 ring-black/5 z-50'>
+          <div className='px-3 py-2 border-b border-border mb-1'>
+            <p className='text-xs font-medium text-text-muted'>Signed in as</p>
+            <p className='truncate text-sm font-semibold text-text-primary'>
               {user.email}
             </p>
           </div>
@@ -137,7 +136,7 @@ export const UserButton: React.FC = () => {
             <button
               onClick={handleLinkGoogle}
               disabled={isLinking}
-              className='flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white disabled:opacity-50'
+              className='flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-text-secondary hover:bg-background-tertiary hover:text-text-primary disabled:opacity-50 cursor-pointer'
             >
               <LinkIcon className='h-4 w-4' />
               {isLinking ? 'Linking...' : 'Link Google Account'}
@@ -147,17 +146,17 @@ export const UserButton: React.FC = () => {
           <Link
             to='/settings'
             onClick={() => setIsDropdownOpen(false)}
-            className='flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-slate-300 hover:bg-slate-800 hover:text-white'
+            className='flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-text-secondary hover:bg-background-tertiary hover:text-text-primary'
           >
             <SettingsIcon className='h-4 w-4' />
             Settings
           </Link>
 
-          <div className='my-1 border-t border-slate-800' />
+          <div className='my-1 border-t border-border' />
 
           <button
             onClick={handleLogout}
-            className='flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-rose-400 hover:bg-rose-950/30 hover:text-rose-300'
+            className='flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-rose-500 hover:bg-rose-500/10 hover:text-rose-600 cursor-pointer'
           >
             <LogOut className='h-4 w-4' />
             Sign Out

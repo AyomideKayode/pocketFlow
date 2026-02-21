@@ -12,6 +12,7 @@ import {
 import { ChartContainer } from './ChartContainer';
 import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 import { type FinancialRecord } from '../../contexts/financial-record-context';
+import { useChartColors } from '../../utils/chart-colors';
 
 interface CategoryBreakdownChartProps {
   records: FinancialRecord[];
@@ -21,6 +22,7 @@ export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({
   records,
 }) => {
   const { format } = useCurrencyFormatter();
+  const colors = useChartColors();
   const categoryData = records.reduce(
     (acc: Record<string, { income: number; expense: number }>, record) => {
       if (!acc[record.category]) {
@@ -56,12 +58,12 @@ export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({
           >
             <CartesianGrid
               strokeDasharray='3 3'
-              stroke='#1e293b'
+              stroke={colors.grid}
               horizontal={false}
             />
             <XAxis
               type='number'
-              stroke='#64748b'
+              stroke={colors.text}
               fontSize={12}
               tickFormatter={(val) =>
                 format(val, { minimumFractionDigits: 0, maximumFractionDigits: 0 })
@@ -70,18 +72,19 @@ export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({
             <YAxis
               dataKey='category'
               type='category'
-              stroke='#64748b'
+              stroke={colors.text}
               fontSize={12}
               width={80}
               tickLine={false}
             />
             <Tooltip
-              cursor={{ fill: '#1e293b', opacity: 0.5 }}
+              cursor={{ fill: colors.grid, opacity: 0.1 }}
               contentStyle={{
-                backgroundColor: '#0f172a',
-                borderColor: '#1e293b',
-                color: '#f1f5f9',
+                backgroundColor: colors.tooltipBg,
+                borderColor: colors.tooltipBorder,
+                color: colors.tooltipText,
               }}
+              itemStyle={{ color: colors.tooltipText }}
               formatter={(value: number | undefined) => [
                 value != null ? format(value) : '',
                 undefined,
@@ -91,21 +94,21 @@ export const CategoryBreakdownChart: React.FC<CategoryBreakdownChartProps> = ({
             <Bar
               dataKey='income'
               name='Income'
-              fill='#10b981'
+              fill={colors.income}
               radius={[0, 4, 4, 0]}
               barSize={20}
             />
             <Bar
               dataKey='expense'
               name='Expense'
-              fill='#f43f5e'
+              fill={colors.expense}
               radius={[0, 4, 4, 0]}
               barSize={20}
             />
           </BarChart>
         </ResponsiveContainer>
       ) : (
-        <div className='flex h-full flex-col items-center justify-center text-slate-500'>
+        <div className='flex h-full flex-col items-center justify-center text-text-secondary'>
           <p>No data available</p>
         </div>
       )}

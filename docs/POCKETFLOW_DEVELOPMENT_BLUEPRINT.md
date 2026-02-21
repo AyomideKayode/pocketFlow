@@ -778,6 +778,10 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
     - Converted all Landing Page assets to **WebP** for reduced bandwidth and faster load times.
     - Implemented **Layout Stability** fixes in `ProductShowcase` using `aspect-ratio` to prevent Cumulative Layout Shift (CLS).
     - Refactored image loading to use explicit `<picture>` sources with fallback logic.
+  - **Theming System:**
+    - **Light/Dark Mode:** Implemented robust theme toggle with persistence.
+    - **Tailwind v4:** Leveraged semantic CSS variables (`--color-bg-primary`) and `@theme` directives.
+    - **FOUC Prevention:** Added blocking script in `index.html` to apply theme before hydration.
 
 - **Implementation Details:**
   - **Metadata:** Centralized configuration in `client/src/config/seo.ts`.
