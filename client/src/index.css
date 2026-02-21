@@ -40,9 +40,9 @@
 
   .dark {
     /* Dark mode colors */
-    --color-bg-primary: #0a0a0a; /* neutral-950 */
-    --color-bg-secondary: #1a1a1a; /* neutral-900 */
-    --color-bg-tertiary: #2d2d2d; /* neutral-800 */
+    --color-bg-primary: #060A1E; /* neutral-950 */
+    --color-bg-secondary: #030619; /* neutral-900 */
+    --color-bg-tertiary: #0B1122; /* neutral-800 */
 
     --color-txt-primary: #ffffff;
     --color-txt-secondary: #a0a0a0; /* neutral-400 */
