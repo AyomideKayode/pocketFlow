@@ -37,16 +37,6 @@ const calculateGoalProgress = async (userId: string, goal: any) => {
     const totalExpense = result[0]?.totalExpense || 0;
     currentAmount = totalIncome - totalExpense;
 
-    console.log(
-      JSON.stringify({
-        event: 'goal_progress_calculated',
-        goalId: goal._id,
-        category: goal.linkedCategory,
-        totalIncome,
-        totalExpense,
-        currentAmount,
-      }),
-    );
   }
 
   return currentAmount;
