@@ -25,6 +25,9 @@ export const INCOME_CATEGORIES = [
   // Irregular
   'Gifts',
   'Refunds',
+  'Savings',
+  'Investments',
+  'Emergency Fund',
   'Other',
 ];
 
@@ -61,6 +64,10 @@ export const EXPENSE_CATEGORIES = [
   // Travel
   'Flights',
   'Accommodation',
+  // Savings & Growth
+  'Savings',
+  'Investments',
+  'Emergency Fund',
   // Other
   'Gifts & Donations',
   'Miscellaneous',
