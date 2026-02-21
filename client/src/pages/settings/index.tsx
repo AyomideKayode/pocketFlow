@@ -174,7 +174,7 @@ export const Settings = () => {
                       className='h-full w-full object-cover'
                     />
                   ) : (
-                    <div className='flex h-full w-full items-center justify-center text-4xl font-bold text-gray-400 dark:text-slate-600'>
+                    <div className='flex h-full w-full items-center justify-center text-4xl font-bold text-gray-500 dark:text-slate-400'>
                       {displayName ? displayName[0].toUpperCase() : '?'}
                     </div>
                   )}

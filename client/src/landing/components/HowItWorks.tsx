@@ -68,10 +68,10 @@ export const HowItWorks = () => {
               {/* Arrow Connector */}
               {index < steps.length - 1 && (
                 <>
-                  <div className='hidden md:flex items-center justify-center pt-8 w-12 shrink-0 text-gray-300 dark:text-slate-700'>
+                  <div className='hidden md:flex items-center justify-center pt-8 w-12 shrink-0 text-gray-400 dark:text-slate-700'>
                     <ArrowRight className='h-8 w-8' />
                   </div>
-                  <div className='md:hidden flex items-center justify-center py-4 w-full text-gray-300 dark:text-slate-700'>
+                  <div className='md:hidden flex items-center justify-center py-4 w-full text-gray-400 dark:text-slate-700'>
                     <ArrowDown className='h-8 w-8' />
                   </div>
                 </>

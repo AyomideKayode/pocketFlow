@@ -399,7 +399,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
           <span className='w-full border-t border-gray-200 dark:border-slate-800' />
         </div>
         <div className='relative flex justify-center text-xs uppercase'>
-          <span className='bg-white dark:bg-slate-900 px-2 text-gray-500 dark:text-slate-500'>
+          <span className='bg-white dark:bg-slate-900/50 px-2 text-gray-500 dark:text-slate-500'>
             Or continue with
           </span>
         </div>

@@ -80,7 +80,7 @@ export const FAQ = () => {
                   {faq.question}
                 </span>
                 <ChevronDown
-                  className={`h-5 w-5 text-gray-400 dark:text-slate-500 transition-transform duration-300 ${openIndex === index ? 'rotate-180 text-emerald-600 dark:text-emerald-500' : ''}`}
+                  className={`h-5 w-5 transition-transform duration-300 ${openIndex === index ? 'rotate-180 text-emerald-600 dark:text-emerald-500' : 'text-gray-400 dark:text-slate-500'}`}
                 />
               </button>
               <AnimatePresence>

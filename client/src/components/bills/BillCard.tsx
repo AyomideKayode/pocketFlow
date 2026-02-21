@@ -49,7 +49,7 @@ export const BillCard: React.FC<BillCardProps> = ({
         isOverdue
           ? 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-500/50 hover:border-red-300 dark:hover:border-red-400/70'
           : isPaid
-            ? 'bg-gray-50 dark:bg-slate-900 border-gray-200 dark:border-slate-800 opacity-75 hover:opacity-100'
+            ? 'bg-gray-50 dark:bg-slate-900 border-gray-200 dark:border-slate-800'
             : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-800 hover:border-emerald-500/50'
       }
     `}

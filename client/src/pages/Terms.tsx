@@ -146,7 +146,7 @@ export const Terms = () => {
                   href='mailto:ayomidekay7@gmail.com'
                   className='text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300'
                 >
-                  ayomidekay7@gmail.com
+                  legal@pocketflow.app
                 </a>
                 .
               </p>

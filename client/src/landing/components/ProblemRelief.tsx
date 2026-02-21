@@ -51,7 +51,7 @@ export const ProblemRelief = () => {
                 'Spreadsheets you abandoned in February',
               ].map((item, i) => (
                 <li key={i} className='flex items-start gap-3 text-red-900 dark:text-slate-400'>
-                  <Dot className='h-6 w-6 text-red-400 dark:text-red-900/50 mt-0.5 shrink-0' />
+                  <Dot className='h-6 w-6 text-red-400 dark:text-red-700 mt-0.5 shrink-0' />
                   <span>{item}</span>
                 </li>
               ))}
