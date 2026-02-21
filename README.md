@@ -35,6 +35,7 @@ _[Live URL](https://pocket-flow-kay.vercel.app/) | [Documentation](./docs) | [Re
 - 📊 **Smart Budget Tracking**: Set monthly limits and get alerted _before_ you overspend.
 - 📈 **Spending Insights & Analytics**: Visual analytics for income, expenses, and category breakdowns.
 - 🎯 **Financial Goals**: Set savings targets and track your progress.
+- 🌗 **Light/Dark Mode**: User-selectable themes with persistent preference.
 - 📧 **Email Notifications**: Receive weekly summaries and budget alerts.
 - 📂 **CSV Import/Export**: Robust data handling with smart parsing and validation.
 - 🎨 **Production-Grade Landing Page**: High-conversion marketing site included.
@@ -84,11 +85,11 @@ The application follows a standard **Client-Server** architecture with a clear s
 
 ```mermaid
 graph TD
-    Client[Client (React + Vite)] <-->|REST API (JSON)| Server[Server (Express + Node.js)]
-    Server <-->|Mongoose| DB[(MongoDB)]
-    Client <-->|Auth SDK| Firebase[Firebase Auth]
+    Client["Client (React + Vite)"] <-->|REST API (JSON)| Server["Server (Express + Node.js)"]
+    Server <-->|Mongoose| DB[("MongoDB")]
+    Client <-->|Auth SDK| Firebase["Firebase Auth"]
     Server <-->|Admin SDK| Firebase
-    Server -->|SMTP/API| Email[Email Service (Resend)]
+    Server -->|SMTP/API| Email["Email Service (Resend)"]
 ```
 
 ### Key Design Decisions

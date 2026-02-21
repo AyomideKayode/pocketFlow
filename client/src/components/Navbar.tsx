@@ -13,7 +13,7 @@ export const Navbar = ({ onToggleSidebar }: NavbarProps) => {
   const isAuthPage = location.pathname === '/auth';
 
   return (
-    <nav className='w-full border-b border-border bg-background-primary/80 backdrop-blur supports-backdrop-filter:bg-background-primary/60 transition-colors duration-300'>
+    <nav className='w-full border-b border-border bg-background-primary/80 backdrop-blur supports-[backdrop-filter]:bg-background-primary/60 transition-colors duration-300'>
       <div className='container mx-auto flex h-16 items-center justify-between px-4'>
         <div className='flex items-center gap-4'>
           {user && onToggleSidebar && (

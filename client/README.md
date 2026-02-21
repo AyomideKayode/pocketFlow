@@ -59,7 +59,10 @@ client/src/
 
 ## 🎨 Styling Approach
 
-- **Theme**: Dark mode by default (`#0a0a0a` background).
+- **Theme**: Full Light/Dark mode support.
+  - Persisted user preference via `localStorage` ('pocketflow-theme').
+  - Uses semantic CSS variables (e.g., `--color-bg-primary`) mapped to Tailwind v4 theme.
+  - Includes script to prevent Flash of Incorrect Theme (FOUC).
 - **Accent**: Emerald Green (`#10b981`) for primary actions and positive values.
 - **Typography**: Clean, sans-serif fonts for readability.
 - **Responsive**: Mobile-first design using Tailwind's utility classes (e.g., `md:grid-cols-2`).
