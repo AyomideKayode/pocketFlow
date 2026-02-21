@@ -26,7 +26,7 @@ export const HowItWorks = () => {
   return (
     <section
       id='how-it-works'
-      className='py-24 bg-slate-950 relative overflow-hidden'
+      className='py-24 bg-white dark:bg-slate-950 relative overflow-hidden'
     >
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center'>
         <motion.div
@@ -36,7 +36,7 @@ export const HowItWorks = () => {
           transition={{ duration: 0.8 }}
           className='mb-20'
         >
-          <h2 className='text-3xl md:text-5xl font-accent font-bold tracking-tight text-white mb-6'>
+          <h2 className='text-3xl md:text-5xl font-accent font-bold tracking-tight text-gray-900 dark:text-white mb-6'>
             Three steps to financial clarity
           </h2>
         </motion.div>
@@ -52,15 +52,15 @@ export const HowItWorks = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.2 }}
               >
-                <div className='w-20 h-20 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/5'>
-                  <span className='text-2xl font-bold font-mono text-emerald-500'>
+                <div className='w-20 h-20 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 flex items-center justify-center mb-6 shadow-lg shadow-emerald-500/5'>
+                  <span className='text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-500'>
                     {step.number}
                   </span>
                 </div>
-                <h3 className='text-xl font-bold text-white mb-4'>
+                <h3 className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
                   {step.title}
                 </h3>
-                <p className='text-slate-400 leading-relaxed'>
+                <p className='text-gray-500 dark:text-slate-400 leading-relaxed'>
                   {step.description}
                 </p>
               </motion.div>
@@ -68,10 +68,10 @@ export const HowItWorks = () => {
               {/* Arrow Connector */}
               {index < steps.length - 1 && (
                 <>
-                  <div className='hidden md:flex items-center justify-center pt-8 w-12 shrink-0 text-slate-700'>
+                  <div className='hidden md:flex items-center justify-center pt-8 w-12 shrink-0 text-gray-300 dark:text-slate-700'>
                     <ArrowRight className='h-8 w-8' />
                   </div>
-                  <div className='md:hidden flex items-center justify-center py-4 w-full text-slate-700'>
+                  <div className='md:hidden flex items-center justify-center py-4 w-full text-gray-300 dark:text-slate-700'>
                     <ArrowDown className='h-8 w-8' />
                   </div>
                 </>

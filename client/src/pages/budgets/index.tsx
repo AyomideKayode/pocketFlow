@@ -69,12 +69,12 @@ export const Budgets = () => {
     <div className='space-y-6 animate-in fade-in duration-500'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight text-white'>Monthly Budgets</h1>
-          <p className='text-slate-400'>Set spending limits for categories.</p>
+          <h1 className='text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>Monthly Budgets</h1>
+          <p className='text-gray-500 dark:text-slate-400'>Set spending limits for categories.</p>
         </div>
         <button
           onClick={openAddModal}
-          className='flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 transition-colors shadow-lg shadow-emerald-900/20'
+          className='flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 transition-colors shadow-sm dark:shadow-lg dark:shadow-emerald-900/20'
         >
           <Plus className='h-4 w-4' />
           Set Budget
@@ -87,32 +87,32 @@ export const Budgets = () => {
           const isOver = percent > 100;
 
           return (
-            <div key={budget._id} className='rounded-xl border border-slate-800 bg-slate-900 p-4 shadow-sm'>
+            <div key={budget._id} className='rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-sm dark:shadow-none'>
               <div className='flex items-center justify-between mb-2'>
                 <div className='flex items-center gap-2'>
-                  <div className='p-2 rounded-lg bg-slate-800 text-emerald-500'>
+                  <div className='p-2 rounded-lg bg-gray-100 dark:bg-slate-800 text-emerald-600 dark:text-emerald-500'>
                     <PieChart className='h-4 w-4' />
                   </div>
-                  <h3 className='font-medium text-white'>{budget.category}</h3>
+                  <h3 className='font-medium text-gray-900 dark:text-white'>{budget.category}</h3>
                 </div>
                 <div className='flex gap-1'>
-                  <button onClick={() => openEditModal(budget)} className='p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-md transition-colors'>
+                  <button onClick={() => openEditModal(budget)} className='p-1.5 text-gray-400 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800 rounded-md transition-colors'>
                     <Edit2 className='h-4 w-4' />
                   </button>
-                  <button onClick={() => budget._id && deleteBudget(budget._id)} className='p-1.5 text-slate-400 hover:text-rose-500 hover:bg-rose-950/30 rounded-md transition-colors'>
+                  <button onClick={() => budget._id && deleteBudget(budget._id)} className='p-1.5 text-gray-400 dark:text-slate-400 hover:text-rose-600 dark:hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-md transition-colors'>
                     <Trash2 className='h-4 w-4' />
                   </button>
                 </div>
               </div>
 
               <div className='mb-2 flex items-baseline justify-between'>
-                <span className={cn('text-2xl font-bold', isOver ? 'text-rose-500' : 'text-white')}>
+                <span className={cn('text-2xl font-bold', isOver ? 'text-rose-600 dark:text-rose-500' : 'text-gray-900 dark:text-white')}>
                   {format(budget.spent || 0)}
                 </span>
-                <span className='text-sm text-slate-500'>of {format(budget.amount)}</span>
+                <span className='text-sm text-gray-500 dark:text-slate-500'>of {format(budget.amount)}</span>
               </div>
 
-              <div className='relative h-2 w-full overflow-hidden rounded-full bg-slate-800'>
+              <div className='relative h-2 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-slate-800'>
                 <div
                   className={cn('h-full transition-all duration-500', isOver ? 'bg-rose-500' : 'bg-emerald-500')}
                   style={{ width: `${Math.min(percent, 100)}%` }}
@@ -120,11 +120,11 @@ export const Budgets = () => {
               </div>
 
               <div className='mt-2 flex items-center justify-between text-xs'>
-                <span className={cn('font-medium', isOver ? 'text-rose-400' : 'text-emerald-400')}>
+                <span className={cn('font-medium', isOver ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400')}>
                   {percent.toFixed(1)}% Used
                 </span>
                 {isOver && (
-                  <span className='flex items-center gap-1 text-rose-500 font-medium'>
+                  <span className='flex items-center gap-1 text-rose-600 dark:text-rose-500 font-medium'>
                     <AlertTriangle className='h-3 w-3' /> Over Budget
                   </span>
                 )}
@@ -135,32 +135,32 @@ export const Budgets = () => {
       </div>
 
       {budgets.length === 0 && (
-        <div className='flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-800 bg-slate-900/50 py-12 text-center'>
-          <div className='p-3 rounded-full bg-slate-800/50 mb-3'>
-            <DollarSign className='h-6 w-6 text-slate-500' />
+        <div className='flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900/50 py-12 text-center'>
+          <div className='p-3 rounded-full bg-gray-200 dark:bg-slate-800/50 mb-3'>
+            <DollarSign className='h-6 w-6 text-gray-400 dark:text-slate-500' />
           </div>
-          <h3 className='text-lg font-medium text-slate-200'>No Budgets Set</h3>
-          <p className='text-slate-500 max-w-sm mt-1'>Create a budget for a category to start tracking your spending limits.</p>
+          <h3 className='text-lg font-medium text-gray-900 dark:text-slate-200'>No Budgets Set</h3>
+          <p className='text-gray-500 dark:text-slate-500 max-w-sm mt-1'>Create a budget for a category to start tracking your spending limits.</p>
         </div>
       )}
 
       {/* Modal */}
       {showModal && (
         <div className='fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200'>
-          <div className='w-full max-w-md rounded-xl border border-slate-800 bg-slate-900 p-6 shadow-2xl'>
+          <div className='w-full max-w-md rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-2xl'>
             <div className='flex items-center justify-between mb-4'>
-              <h2 className='text-xl font-bold text-white'>{editingBudget ? 'Edit Budget' : 'Set New Budget'}</h2>
-              <button onClick={() => setShowModal(false)} className='text-slate-400 hover:text-white'>
+              <h2 className='text-xl font-bold text-gray-900 dark:text-white'>{editingBudget ? 'Edit Budget' : 'Set New Budget'}</h2>
+              <button onClick={() => setShowModal(false)} className='text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white'>
                 <X className='h-5 w-5' />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className='space-y-4'>
               <div className='space-y-2'>
-                <label className='text-xs font-medium text-slate-400'>Category</label>
+                <label className='text-xs font-medium text-gray-500 dark:text-slate-400'>Category</label>
                 <select
                   required
-                  className='w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50'
+                  className='w-full rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 shadow-sm dark:shadow-none'
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   disabled={!!editingBudget} // Maybe prevent changing category on edit? Or allow it.
@@ -173,16 +173,16 @@ export const Budgets = () => {
               </div>
 
               <div className='space-y-2'>
-                <label className='text-xs font-medium text-slate-400'>Monthly Limit</label>
+                <label className='text-xs font-medium text-gray-500 dark:text-slate-400'>Monthly Limit</label>
                 <div className='relative'>
-                  <span className='absolute left-3 top-2 inline-flex min-w-[2.5ch] items-center justify-center text-sm font-bold text-slate-500'>
+                  <span className='absolute left-3 top-2 inline-flex min-w-[2.5ch] items-center justify-center text-sm font-bold text-gray-400 dark:text-slate-500'>
                     {currencySymbol}
                   </span>
                   <input
                     type='number'
                     required
                     min="1"
-                    className='w-full rounded-lg border border-slate-700 bg-slate-950 pl-12 pr-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50'
+                    className='w-full rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-950 pl-12 pr-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 shadow-sm dark:shadow-none'
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder='500.00'
@@ -192,7 +192,7 @@ export const Budgets = () => {
 
               <button
                 type='submit'
-                className='w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 transition-colors shadow-lg shadow-emerald-900/20'
+                className='w-full rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 transition-colors shadow-sm dark:shadow-lg dark:shadow-emerald-900/20'
               >
                 {editingBudget ? 'Update Budget' : 'Set Budget'}
               </button>

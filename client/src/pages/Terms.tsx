@@ -3,27 +3,27 @@ import { Footer } from '../landing/components/Footer';
 
 export const Terms = () => {
   return (
-    <div className='min-h-screen bg-slate-950 text-slate-50 font-sans selection:bg-emerald-500/30 flex flex-col'>
+    <div className='min-h-screen bg-white dark:bg-slate-950 text-gray-900 dark:text-slate-50 font-sans selection:bg-emerald-500/30 flex flex-col'>
       <LandingNavbar />
 
       <main className='flex-grow pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative z-10'>
         <div className='max-w-3xl mx-auto space-y-12'>
           {/* Header */}
           <div className='text-center space-y-4'>
-            <h1 className='text-4xl md:text-5xl font-bold tracking-tight text-white'>
+            <h1 className='text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white'>
               Terms of Service
             </h1>
-            <p className='text-slate-400'>Last updated: February 2026</p>
+            <p className='text-gray-500 dark:text-slate-400'>Last updated: February 2026</p>
           </div>
 
-          <div className='prose prose-invert prose-lg max-w-none text-slate-300 space-y-8'>
+          <div className='prose prose-gray dark:prose-invert prose-lg max-w-none text-gray-600 dark:text-slate-300 space-y-8'>
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>Acceptance</h2>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>Acceptance</h2>
               <p>By using PocketFlow, you agree to these terms.</p>
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
                 Service Description
               </h2>
               <p>
@@ -34,7 +34,7 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
                 No Financial Advice
               </h2>
               <p>
@@ -45,7 +45,7 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
                 User Responsibilities
               </h2>
               <p>
@@ -55,7 +55,7 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
                 Accounts & Eligibility
               </h2>
               <p>
@@ -66,7 +66,7 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
                 Acceptable Use
               </h2>
               <p>
@@ -77,7 +77,7 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
                 Intellectual Property
               </h2>
               <p>
@@ -88,7 +88,7 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
                 Availability
               </h2>
               <p>
@@ -98,7 +98,7 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
                 Limitation of Liability
               </h2>
               <p>
@@ -109,7 +109,7 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
                 Termination
               </h2>
               <p>
@@ -119,7 +119,7 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
                 Governing Law
               </h2>
               <p>
@@ -131,7 +131,7 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>Changes</h2>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>Changes</h2>
               <p>
                 These terms may evolve as the product grows. Continued use of
                 the service implies acceptance of the updated terms.
@@ -139,12 +139,12 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-white mb-4'>Contact</h2>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>Contact</h2>
               <p>
                 Questions about the terms? Reach out via email at:{' '}
                 <a
                   href='mailto:ayomidekay7@gmail.com'
-                  className='text-emerald-400 hover:text-emerald-300'
+                  className='text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300'
                 >
                   ayomidekay7@gmail.com
                 </a>

@@ -119,12 +119,12 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
   };
 
   const inputClasses =
-    'w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all';
+    'w-full rounded-lg border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all shadow-sm dark:shadow-none';
 
   return (
     <form onSubmit={handleSubmit} className='space-y-4'>
       {/* Type Toggle */}
-      <div className='flex rounded-lg bg-slate-800/50 p-1'>
+      <div className='flex rounded-lg bg-gray-100 dark:bg-slate-800/50 p-1'>
         <button
           type='button'
           onClick={() => setType('income')}
@@ -132,7 +132,7 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
             'flex-1 rounded-md py-2 text-sm font-medium transition-all',
             type === 'income'
               ? 'bg-emerald-600 text-white shadow-sm'
-              : 'text-slate-400 hover:text-white hover:bg-slate-700/50',
+              : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-slate-700/50',
           )}
         >
           Income
@@ -144,7 +144,7 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
             'flex-1 rounded-md py-2 text-sm font-medium transition-all',
             type === 'expense'
               ? 'bg-rose-600 text-white shadow-sm'
-              : 'text-slate-400 hover:text-white hover:bg-slate-700/50',
+              : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-slate-700/50',
           )}
         >
           Expense
@@ -154,9 +154,9 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
       <div className='grid gap-4 md:grid-cols-2'>
         {/* Amount */}
         <div className='space-y-2'>
-          <label className='text-xs font-medium text-slate-400'>Amount</label>
+          <label className='text-xs font-medium text-gray-500 dark:text-slate-400'>Amount</label>
           <div className='relative'>
-            <span className='absolute left-3 top-2 flex h-5 w-5 items-center justify-center text-sm font-bold text-slate-500'>
+            <span className='absolute left-3 top-2 flex h-5 w-5 items-center justify-center text-sm font-bold text-gray-400 dark:text-slate-500'>
               {currencySymbol}
             </span>
             <input
@@ -173,9 +173,9 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
 
         {/* Category */}
         <div className='space-y-2'>
-          <label className='text-xs font-medium text-slate-400'>Category</label>
+          <label className='text-xs font-medium text-gray-500 dark:text-slate-400'>Category</label>
           <div className='relative'>
-            <Tag className='absolute left-3 top-2.5 h-4 w-4 text-slate-500' />
+            <Tag className='absolute left-3 top-2.5 h-4 w-4 text-gray-400 dark:text-slate-500' />
             <select
               required
               className={cn(inputClasses, 'pl-9 appearance-none')}
@@ -198,11 +198,11 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
 
         {/* Payment Method */}
         <div className='space-y-2'>
-          <label className='text-xs font-medium text-slate-400'>
+          <label className='text-xs font-medium text-gray-500 dark:text-slate-400'>
             Payment Method
           </label>
           <div className='relative'>
-            <CreditCard className='absolute left-3 top-2.5 h-4 w-4 text-slate-500' />
+            <CreditCard className='absolute left-3 top-2.5 h-4 w-4 text-gray-400 dark:text-slate-500' />
             <select
               required
               className={cn(inputClasses, 'pl-9 appearance-none')}
@@ -221,11 +221,11 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
 
         {/* Description */}
         <div className='space-y-2'>
-          <label className='text-xs font-medium text-slate-400'>
+          <label className='text-xs font-medium text-gray-500 dark:text-slate-400'>
             Description
           </label>
           <div className='relative'>
-            <FileText className='absolute left-3 top-2.5 h-4 w-4 text-slate-500' />
+            <FileText className='absolute left-3 top-2.5 h-4 w-4 text-gray-400 dark:text-slate-500' />
             <input
               type='text'
               required
@@ -241,10 +241,10 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
       <button
         type='submit'
         className={cn(
-          'w-full rounded-lg px-4 py-2 text-sm font-medium text-white transition-all shadow-lg',
+          'w-full rounded-lg px-4 py-2 text-sm font-medium text-white transition-all shadow-sm dark:shadow-lg',
           type === 'income'
-            ? 'bg-emerald-600 hover:bg-emerald-500 shadow-emerald-900/20'
-            : 'bg-rose-600 hover:bg-rose-500 shadow-rose-900/20',
+            ? 'bg-emerald-600 hover:bg-emerald-500 dark:shadow-emerald-900/20'
+            : 'bg-rose-600 hover:bg-rose-500 dark:shadow-rose-900/20',
         )}
       >
         Add Record

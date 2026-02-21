@@ -44,13 +44,13 @@ export const BillCard: React.FC<BillCardProps> = ({
   return (
     <div
       className={`
-      flex items-center justify-between p-4 rounded-lg transition-all group border
+      flex items-center justify-between p-4 rounded-lg transition-all group border shadow-sm dark:shadow-none
       ${
         isOverdue
-          ? 'bg-red-950/20 border-red-500/50 hover:border-red-400/70'
+          ? 'bg-red-50 dark:bg-red-950/20 border-red-200 dark:border-red-500/50 hover:border-red-300 dark:hover:border-red-400/70'
           : isPaid
-            ? 'bg-slate-900 border-slate-800 opacity-75 hover:opacity-100'
-            : 'bg-slate-900 border-slate-800 hover:border-emerald-500/50'
+            ? 'bg-gray-50 dark:bg-slate-900 border-gray-200 dark:border-slate-800 opacity-75 hover:opacity-100'
+            : 'bg-white dark:bg-slate-900 border-gray-200 dark:border-slate-800 hover:border-emerald-500/50'
       }
     `}
     >
@@ -62,7 +62,7 @@ export const BillCard: React.FC<BillCardProps> = ({
             ${
               isPaid
                 ? 'bg-emerald-500 border-emerald-500 text-white'
-                : 'border-slate-600 hover:border-emerald-500 text-transparent hover:text-emerald-500/50'
+                : 'border-gray-300 dark:border-slate-600 hover:border-emerald-500 text-transparent hover:text-emerald-500/50'
             }
             ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
           title={isPaid ? 'Mark as unpaid' : 'Mark as paid'}
@@ -75,13 +75,13 @@ export const BillCard: React.FC<BillCardProps> = ({
         </button>
         <div>
           <h3
-            className={`font-medium ${isPaid ? 'text-slate-400 line-through' : 'text-slate-200'}`}
+            className={`font-medium ${isPaid ? 'text-gray-400 dark:text-slate-400 line-through' : 'text-gray-900 dark:text-slate-200'}`}
           >
             {bill.name}
           </h3>
           <div className='flex items-center gap-2 text-sm'>
             <span
-              className={`flex items-center gap-1 ${isOverdue ? 'text-red-400 font-medium' : 'text-slate-500'}`}
+              className={`flex items-center gap-1 ${isOverdue ? 'text-red-600 dark:text-red-400 font-medium' : 'text-gray-500 dark:text-slate-500'}`}
             >
               <Calendar className='h-3 w-3' />
               {isOverdue
@@ -89,12 +89,12 @@ export const BillCard: React.FC<BillCardProps> = ({
                 : dueDateDisplay}
             </span>
             {isOverdue && (
-              <span className='bg-red-500/20 text-red-400 text-xs px-2 py-0.5 rounded-full border border-red-500/20'>
+              <span className='bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400 text-xs px-2 py-0.5 rounded-full border border-red-200 dark:border-red-500/20'>
                 Overdue
               </span>
             )}
             {bill.isRecurring && !isOverdue && (
-              <span className='bg-slate-800 text-slate-400 text-xs px-2 py-0.5 rounded-full'>
+              <span className='bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400 text-xs px-2 py-0.5 rounded-full'>
                 Recurring
               </span>
             )}
@@ -104,7 +104,7 @@ export const BillCard: React.FC<BillCardProps> = ({
 
       <div className='flex items-center gap-4'>
         <span
-          className={`font-semibold ${isPaid ? 'text-slate-500' : isOverdue ? 'text-red-400' : 'text-emerald-400'}`}
+          className={`font-semibold ${isPaid ? 'text-gray-400 dark:text-slate-500' : isOverdue ? 'text-red-600 dark:text-red-400' : 'text-emerald-600 dark:text-emerald-400'}`}
         >
           {format(bill.amount)}
         </span>
@@ -112,7 +112,7 @@ export const BillCard: React.FC<BillCardProps> = ({
           <button
             onClick={onEdit}
             disabled={isLoading}
-            className='p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded disabled:opacity-50 disabled:cursor-not-allowed'
+            className='p-2 text-gray-400 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-800 rounded disabled:opacity-50 disabled:cursor-not-allowed'
             title='Edit'
           >
             <Pencil className='h-4 w-4' />
@@ -120,7 +120,7 @@ export const BillCard: React.FC<BillCardProps> = ({
           <button
             onClick={onDelete}
             disabled={isLoading}
-            className='p-2 text-slate-400 hover:text-red-400 hover:bg-red-900/20 rounded disabled:opacity-50 disabled:cursor-not-allowed'
+            className='p-2 text-gray-400 dark:text-slate-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded disabled:opacity-50 disabled:cursor-not-allowed'
             title='Delete'
           >
             <Trash2 className='h-4 w-4' />

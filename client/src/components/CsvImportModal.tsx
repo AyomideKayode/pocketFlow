@@ -333,16 +333,16 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
 
   return createPortal(
     <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4'>
-      <div className='w-full max-w-4xl bg-slate-900 border border-slate-800 rounded-xl shadow-2xl flex flex-col max-h-[90vh]'>
+      <div className='w-full max-w-4xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl shadow-2xl flex flex-col max-h-[90vh]'>
         {/* Header */}
-        <div className='flex items-center justify-between p-6 border-b border-slate-800'>
-          <h2 className='text-xl font-semibold text-white flex items-center gap-2'>
-            <FileText className='h-5 w-5 text-emerald-500' />
+        <div className='flex items-center justify-between p-6 border-b border-gray-200 dark:border-slate-800'>
+          <h2 className='text-xl font-semibold text-gray-900 dark:text-white flex items-center gap-2'>
+            <FileText className='h-5 w-5 text-emerald-600 dark:text-emerald-500' />
             Import Transactions from CSV
           </h2>
           <button
             onClick={handleClose}
-            className='text-slate-400 hover:text-white transition-colors'
+            className='text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white transition-colors'
           >
             <X className='h-6 w-6' />
           </button>
@@ -352,7 +352,7 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
         <div className='flex-1 overflow-auto p-6'>
           {step === 'upload' && (
             <div
-              className='flex flex-col items-center justify-center h-64 border-2 border-dashed border-slate-700 rounded-xl bg-slate-900/50 hover:bg-slate-800/50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/50'
+              className='flex flex-col items-center justify-center h-64 border-2 border-dashed border-gray-300 dark:border-slate-700 rounded-xl bg-gray-50 dark:bg-slate-900/50 hover:bg-gray-100 dark:hover:bg-slate-800/50 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/50'
               role='button'
               tabIndex={0}
               aria-label='Upload CSV file'
@@ -371,11 +371,11 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
                 className='hidden'
                 onChange={handleFileUpload}
               />
-              <Upload className='h-12 w-12 text-slate-500 mb-4' />
-              <p className='text-lg font-medium text-slate-300'>
+              <Upload className='h-12 w-12 text-gray-400 dark:text-slate-500 mb-4' />
+              <p className='text-lg font-medium text-gray-700 dark:text-slate-300'>
                 Click to upload CSV
               </p>
-              <p className='text-sm text-slate-500 mt-2'>
+              <p className='text-sm text-gray-500 dark:text-slate-500 mt-2'>
                 Required columns: date, amount, category
               </p>
             </div>
@@ -384,29 +384,29 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
           {(step === 'preview' || step === 'importing') && (
             <div className='space-y-6'>
               <div className='flex gap-4'>
-                <div className='flex-1 bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-4'>
-                  <div className='flex items-center gap-2 text-emerald-500 font-medium mb-1'>
+                <div className='flex-1 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 rounded-lg p-4'>
+                  <div className='flex items-center gap-2 text-emerald-700 dark:text-emerald-500 font-medium mb-1'>
                     <Check className='h-4 w-4' />
                     Valid Records
                   </div>
-                  <div className='text-2xl font-bold text-emerald-400'>
+                  <div className='text-2xl font-bold text-emerald-800 dark:text-emerald-400'>
                     {stats.valid}
                   </div>
                 </div>
-                <div className='flex-1 bg-rose-500/10 border border-rose-500/20 rounded-lg p-4'>
-                  <div className='flex items-center gap-2 text-rose-500 font-medium mb-1'>
+                <div className='flex-1 bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 rounded-lg p-4'>
+                  <div className='flex items-center gap-2 text-rose-700 dark:text-rose-500 font-medium mb-1'>
                     <AlertCircle className='h-4 w-4' />
                     Invalid Rows (Skipped)
                   </div>
-                  <div className='text-2xl font-bold text-rose-400'>
+                  <div className='text-2xl font-bold text-rose-800 dark:text-rose-400'>
                     {stats.invalid}
                   </div>
                 </div>
               </div>
 
-              <div className='border border-slate-800 rounded-lg overflow-hidden'>
+              <div className='border border-gray-200 dark:border-slate-800 rounded-lg overflow-hidden'>
                 <table className='w-full text-sm text-left'>
-                  <thead className='bg-slate-800/50 text-slate-400'>
+                  <thead className='bg-gray-50 dark:bg-slate-800/50 text-gray-500 dark:text-slate-400'>
                     <tr>
                       <th className='px-4 py-3 font-medium'>Status</th>
                       <th className='px-4 py-3 font-medium'>Date</th>
@@ -418,41 +418,41 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
                       <th className='px-4 py-3 font-medium'>Payment Method</th>
                     </tr>
                   </thead>
-                  <tbody className='divide-y divide-slate-800'>
+                  <tbody className='divide-y divide-gray-200 dark:divide-slate-800'>
                     {rows.slice(0, 100).map((row, index) => (
                       <tr
                         key={index}
                         className={
                           row.isValid
-                            ? 'hover:bg-slate-800/30'
-                            : 'bg-rose-500/5 hover:bg-rose-500/10'
+                            ? 'hover:bg-gray-50 dark:hover:bg-slate-800/30'
+                            : 'bg-rose-50 dark:bg-rose-500/5 hover:bg-rose-100 dark:hover:bg-rose-500/10'
                         }
                       >
                         <td className='px-4 py-3'>
                           {row.isValid ? (
-                            <Check className='h-4 w-4 text-emerald-500' />
+                            <Check className='h-4 w-4 text-emerald-600 dark:text-emerald-500' />
                           ) : (
                             <div className='group relative'>
-                              <AlertCircle className='h-4 w-4 text-rose-500 cursor-help' />
-                              <div className='absolute left-6 top-0 z-10 hidden w-48 rounded bg-slate-950 p-2 text-xs text-white shadow-xl ring-1 ring-slate-800 group-hover:block'>
+                              <AlertCircle className='h-4 w-4 text-rose-600 dark:text-rose-500 cursor-help' />
+                              <div className='absolute left-6 top-0 z-10 hidden w-48 rounded bg-white dark:bg-slate-950 p-2 text-xs text-gray-900 dark:text-white shadow-xl ring-1 ring-gray-200 dark:ring-slate-800 group-hover:block'>
                                 {row.errors.join(', ')}
                               </div>
                             </div>
                           )}
                         </td>
-                        <td className='px-4 py-3 text-slate-300'>
+                        <td className='px-4 py-3 text-gray-700 dark:text-slate-300'>
                           {row.original.date}
                         </td>
-                        <td className='px-4 py-3 text-slate-300 max-w-[200px] truncate'>
+                        <td className='px-4 py-3 text-gray-700 dark:text-slate-300 max-w-[200px] truncate'>
                           {row.original.description}
                         </td>
-                        <td className='px-4 py-3 text-right text-slate-300'>
+                        <td className='px-4 py-3 text-right text-gray-700 dark:text-slate-300'>
                           {row.original.amount}
                         </td>
-                        <td className='px-4 py-3 text-slate-300'>
+                        <td className='px-4 py-3 text-gray-700 dark:text-slate-300'>
                           {row.original.category}
                         </td>
-                        <td className='px-4 py-3 text-slate-300'>
+                        <td className='px-4 py-3 text-gray-700 dark:text-slate-300'>
                           {/* Show the normalized value if valid, otherwise raw */}
                           {row.isValid
                             ? row.payload?.paymentMethod
@@ -463,7 +463,7 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
                   </tbody>
                 </table>
                 {rows.length > 100 && (
-                  <div className='bg-slate-800/50 p-3 text-center text-xs text-slate-500'>
+                  <div className='bg-gray-50 dark:bg-slate-800/50 p-3 text-center text-xs text-gray-500 dark:text-slate-500'>
                     Showing first 100 of {rows.length} rows
                   </div>
                 )}
@@ -473,10 +473,10 @@ export const CsvImportModal: React.FC<CsvImportModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className='p-6 border-t border-slate-800 flex justify-end gap-3'>
+        <div className='p-6 border-t border-gray-200 dark:border-slate-800 flex justify-end gap-3'>
           <button
             onClick={handleClose}
-            className='px-4 py-2 text-sm font-medium text-slate-300 hover:text-white transition-colors'
+            className='px-4 py-2 text-sm font-medium text-gray-500 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white transition-colors'
           >
             Cancel
           </button>

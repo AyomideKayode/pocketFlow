@@ -143,11 +143,11 @@ export const Bills: React.FC = () => {
     <div className='space-y-6 max-w-4xl mx-auto pb-10'>
       <div className='flex items-center justify-between'>
         <div>
-          <h1 className='text-2xl font-bold text-white flex items-center gap-2'>
-            <Calendar className='h-6 w-6 text-emerald-500' />
+          <h1 className='text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2'>
+            <Calendar className='h-6 w-6 text-emerald-600 dark:text-emerald-500' />
             Bills
           </h1>
-          <p className='text-slate-400 text-sm mt-1'>
+          <p className='text-gray-500 dark:text-slate-400 text-sm mt-1'>
             Manage your recurring and one-time financial obligations.
           </p>
         </div>
@@ -156,7 +156,7 @@ export const Bills: React.FC = () => {
             setIsAdding(true);
             setEditingBill(null);
           }}
-          className='flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-500 transition-colors text-sm font-medium'
+          className='flex items-center gap-2 px-4 py-2 bg-emerald-600 text-white rounded hover:bg-emerald-500 transition-colors text-sm font-medium shadow-sm dark:shadow-none'
         >
           <Plus className='h-4 w-4' />
           Add Bill
@@ -177,8 +177,8 @@ export const Bills: React.FC = () => {
       )}
 
       {allEmpty && !isAdding && !editingBill ? (
-        <div className='text-center py-16 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed'>
-          <p className='text-slate-500'>
+        <div className='text-center py-16 bg-gray-50 dark:bg-slate-900/50 rounded-lg border border-gray-200 dark:border-slate-800 border-dashed'>
+          <p className='text-gray-500 dark:text-slate-500'>
             No bills found. Add one to get started!
           </p>
         </div>
@@ -187,10 +187,10 @@ export const Bills: React.FC = () => {
           {/* Overdue Section - Render FIRST */}
           {overdue.length > 0 && (
             <section className='animate-in fade-in slide-in-from-top-4 duration-500'>
-              <h2 className='text-lg font-semibold text-red-400 mb-4 flex items-center gap-2'>
+              <h2 className='text-lg font-semibold text-red-600 dark:text-red-400 mb-4 flex items-center gap-2'>
                 <AlertTriangle className='h-5 w-5' />
                 Overdue
-                <span className='bg-red-500/20 text-red-400 text-xs px-2 py-0.5 rounded-full border border-red-500/20'>
+                <span className='bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400 text-xs px-2 py-0.5 rounded-full border border-red-200 dark:border-red-500/20'>
                   {overdue.length}
                 </span>
               </h2>
@@ -217,10 +217,10 @@ export const Bills: React.FC = () => {
           {/* Upcoming Section */}
           <section>
             <div className='flex items-center justify-between mb-4'>
-              <h2 className='text-lg font-semibold text-slate-200 flex items-center gap-2'>
+              <h2 className='text-lg font-semibold text-gray-900 dark:text-slate-200 flex items-center gap-2'>
                 <AlertCircle className='h-5 w-5 text-amber-500' />
                 Upcoming
-                <span className='text-sm font-normal text-slate-500 ml-2'>
+                <span className='text-sm font-normal text-gray-500 dark:text-slate-500 ml-2'>
                   ({upcoming.length})
                 </span>
               </h2>
@@ -228,7 +228,7 @@ export const Bills: React.FC = () => {
               {/* Positive reinforcement if no overdue bills */}
               {overdue.length === 0 &&
                 (upcoming.length > 0 || paid.length > 0) && (
-                  <div className='flex items-center gap-2 text-emerald-500/80 text-xs sm:text-sm bg-emerald-500/5 px-3 py-1.5 rounded-full border border-emerald-500/10'>
+                  <div className='flex items-center gap-2 text-emerald-700 dark:text-emerald-500/80 text-xs sm:text-sm bg-emerald-50 dark:bg-emerald-500/5 px-3 py-1.5 rounded-full border border-emerald-200 dark:border-emerald-500/10'>
                     <CheckCircle2 className='h-3 w-3 sm:h-4 sm:w-4' />
                     <span>Nothing overdue 🎉</span>
                   </div>
@@ -236,8 +236,8 @@ export const Bills: React.FC = () => {
             </div>
 
             {upcoming.length === 0 ? (
-              <div className='text-center py-8 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed'>
-                <p className='text-slate-500'>
+              <div className='text-center py-8 bg-gray-50 dark:bg-slate-900/50 rounded-lg border border-gray-200 dark:border-slate-800 border-dashed'>
+                <p className='text-gray-500 dark:text-slate-500'>
                   No upcoming bills for this month.
                 </p>
               </div>
@@ -264,16 +264,16 @@ export const Bills: React.FC = () => {
 
           {/* Paid Bills */}
           <section>
-            <h2 className='text-lg font-semibold text-slate-200 mb-4 flex items-center gap-2'>
-              <CheckCircle2 className='h-5 w-5 text-emerald-500' />
+            <h2 className='text-lg font-semibold text-gray-900 dark:text-slate-200 mb-4 flex items-center gap-2'>
+              <CheckCircle2 className='h-5 w-5 text-emerald-600 dark:text-emerald-500' />
               Paid
-              <span className='text-sm font-normal text-slate-500 ml-2'>
+              <span className='text-sm font-normal text-gray-500 dark:text-slate-500 ml-2'>
                 ({paid.length})
               </span>
             </h2>
             {paid.length === 0 ? (
-              <div className='text-center py-8 bg-slate-900/50 rounded-lg border border-slate-800 border-dashed'>
-                <p className='text-slate-500'>No bills paid yet this month.</p>
+              <div className='text-center py-8 bg-gray-50 dark:bg-slate-900/50 rounded-lg border border-gray-200 dark:border-slate-800 border-dashed'>
+                <p className='text-gray-500 dark:text-slate-500'>No bills paid yet this month.</p>
               </div>
             ) : (
               <div className='grid gap-3 opacity-75 hover:opacity-100 transition-opacity'>

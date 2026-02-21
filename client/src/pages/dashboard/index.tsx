@@ -158,10 +158,10 @@ export const Dashboard = () => {
   }
 
   const ChartLoading = () => (
-    <div className='flex h-full min-h-[300px] w-full items-center justify-center rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur-sm'>
+    <div className='flex h-full min-h-[300px] w-full items-center justify-center rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 backdrop-blur-sm shadow-sm dark:shadow-none'>
       <div className='flex flex-col items-center gap-2'>
-        <Loader2 className='h-8 w-8 animate-spin text-slate-500' />
-        <span className='text-sm text-slate-500'>Loading chart...</span>
+        <Loader2 className='h-8 w-8 animate-spin text-gray-400 dark:text-slate-500' />
+        <span className='text-sm text-gray-500 dark:text-slate-500'>Loading chart...</span>
       </div>
     </div>
   );
@@ -171,11 +171,11 @@ export const Dashboard = () => {
       {/* Header Section */}
       <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight text-white'>
+          <h1 className='text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
             Dashboard
           </h1>
-          <p className='text-slate-400'>Welcome back!</p>
-          <p className='text-slate-400'>
+          <p className='text-gray-500 dark:text-slate-400'>Welcome back!</p>
+          <p className='text-gray-500 dark:text-slate-400'>
             Here's an overview of your financial health.
           </p>
         </div>
@@ -187,7 +187,7 @@ export const Dashboard = () => {
           />
           <button
             onClick={() => setShowImportModal(true)}
-            className='flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white'
+            className='flex items-center justify-center gap-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 px-4 py-2 text-sm font-medium text-gray-700 dark:text-slate-300 transition-colors hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white shadow-sm dark:shadow-none'
           >
             <Upload className='h-4 w-4' />
             Import
@@ -195,7 +195,7 @@ export const Dashboard = () => {
           <button
             onClick={handleExport}
             disabled={isExporting}
-            className='flex items-center justify-center gap-2 rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed'
+            className='flex items-center justify-center gap-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 px-4 py-2 text-sm font-medium text-gray-700 dark:text-slate-300 transition-colors hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-sm dark:shadow-none'
           >
             {isExporting ? (
               <Loader2 className='h-4 w-4 animate-spin' />
@@ -218,49 +218,49 @@ export const Dashboard = () => {
 
       {/* Stats Grid */}
       <div className='grid gap-4 md:grid-cols-3'>
-        <div className='rounded-xl border border-slate-800 bg-slate-900/50 p-6 shadow-sm backdrop-blur-sm'>
+        <div className='rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 shadow-sm dark:shadow-none backdrop-blur-sm'>
           <div className='flex items-center gap-4'>
-            <div className='flex h-12 w-12 items-center justify-center rounded-full bg-emerald-500/10'>
-              <TrendingUp className='h-6 w-6 text-emerald-500' />
+            <div className='flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-500/10'>
+              <TrendingUp className='h-6 w-6 text-emerald-600 dark:text-emerald-500' />
             </div>
             <div>
-              <p className='text-sm font-medium text-slate-400'>Total Income</p>
-              <p className='text-2xl font-bold text-emerald-500'>
+              <p className='text-sm font-medium text-gray-500 dark:text-slate-400'>Total Income</p>
+              <p className='text-2xl font-bold text-emerald-600 dark:text-emerald-500'>
                 {format(totalIncome)}
               </p>
             </div>
           </div>
         </div>
 
-        <div className='rounded-xl border border-slate-800 bg-slate-900/50 p-6 shadow-sm backdrop-blur-sm'>
+        <div className='rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 shadow-sm dark:shadow-none backdrop-blur-sm'>
           <div className='flex items-center gap-4'>
-            <div className='flex h-12 w-12 items-center justify-center rounded-full bg-rose-500/10'>
-              <TrendingDown className='h-6 w-6 text-rose-500' />
+            <div className='flex h-12 w-12 items-center justify-center rounded-full bg-rose-100 dark:bg-rose-500/10'>
+              <TrendingDown className='h-6 w-6 text-rose-600 dark:text-rose-500' />
             </div>
             <div>
-              <p className='text-sm font-medium text-slate-400'>
+              <p className='text-sm font-medium text-gray-500 dark:text-slate-400'>
                 Total Expenses
               </p>
-              <p className='text-2xl font-bold text-rose-500'>
+              <p className='text-2xl font-bold text-rose-600 dark:text-rose-500'>
                 {format(totalExpenses)}
               </p>
             </div>
           </div>
         </div>
 
-        <div className='rounded-xl border border-slate-800 bg-slate-900/50 p-6 shadow-sm backdrop-blur-sm'>
+        <div className='rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 shadow-sm dark:shadow-none backdrop-blur-sm'>
           <div className='flex items-center gap-4'>
             <div
-              className={`flex h-12 w-12 items-center justify-center rounded-full ${totalMonthlyBalance >= 0 ? 'bg-indigo-500/10' : 'bg-orange-500/10'}`}
+              className={`flex h-12 w-12 items-center justify-center rounded-full ${totalMonthlyBalance >= 0 ? 'bg-indigo-100 dark:bg-indigo-500/10' : 'bg-orange-100 dark:bg-orange-500/10'}`}
             >
               <CreditCard
-                className={`h-6 w-6 ${totalMonthlyBalance >= 0 ? 'text-indigo-500' : 'text-orange-500'}`}
+                className={`h-6 w-6 ${totalMonthlyBalance >= 0 ? 'text-indigo-600 dark:text-indigo-500' : 'text-orange-600 dark:text-orange-500'}`}
               />
             </div>
             <div>
-              <p className='text-sm font-medium text-slate-400'>Net Balance</p>
+              <p className='text-sm font-medium text-gray-500 dark:text-slate-400'>Net Balance</p>
               <p
-                className={`text-2xl font-bold ${totalMonthlyBalance >= 0 ? 'text-indigo-500' : 'text-orange-500'}`}
+                className={`text-2xl font-bold ${totalMonthlyBalance >= 0 ? 'text-indigo-600 dark:text-indigo-500' : 'text-orange-600 dark:text-orange-500'}`}
               >
                 {format(totalMonthlyBalance)}
               </p>
@@ -292,12 +292,12 @@ export const Dashboard = () => {
       {/* Transactions Section */}
       <div className='space-y-4 pt-4'>
         <div className='flex items-center justify-between'>
-          <h2 className='text-xl font-semibold text-white'>
+          <h2 className='text-xl font-semibold text-gray-900 dark:text-white'>
             Recent Transactions
           </h2>
           <button
             onClick={() => navigate('/transactions')}
-            className='flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 transition-colors shadow-lg shadow-emerald-900/20'
+            className='flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-500 transition-colors shadow-sm dark:shadow-lg dark:shadow-emerald-900/20'
           >
             <Plus className='h-4 w-4' />
             Add Transaction

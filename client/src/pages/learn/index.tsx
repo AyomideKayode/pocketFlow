@@ -251,37 +251,37 @@ export const Learn: React.FC = () => {
     <div className='space-y-8 animate-in fade-in duration-500 pb-10'>
       {/* Header */}
       <div>
-        <h1 className='text-2xl font-bold text-white flex items-center gap-2'>
-          <BookOpen className='h-6 w-6 text-emerald-500' />
+        <h1 className='text-2xl font-bold text-gray-900 dark:text-white flex items-center gap-2'>
+          <BookOpen className='h-6 w-6 text-emerald-600 dark:text-emerald-500' />
           Financial Education
         </h1>
-        <p className='text-slate-400 mt-1'>
+        <p className='text-gray-500 dark:text-slate-400 mt-1'>
           Learn essential money management skills and get personalized insights.
         </p>
       </div>
 
       {/* Insights Section */}
       <section className='space-y-4'>
-        <h2 className='text-lg font-semibold text-white flex items-center gap-2'>
-          <Lightbulb className='h-5 w-5 text-yellow-400' />
+        <h2 className='text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2'>
+          <Lightbulb className='h-5 w-5 text-yellow-500 dark:text-yellow-400' />
           Insights from your activity
         </h2>
 
         {loading ? (
-          <div className='flex h-32 w-full items-center justify-center rounded-xl border border-slate-800 bg-slate-900/50'>
-            <Loader2 className='h-8 w-8 animate-spin text-emerald-500' />
+          <div className='flex h-32 w-full items-center justify-center rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 shadow-sm dark:shadow-none'>
+            <Loader2 className='h-8 w-8 animate-spin text-emerald-600 dark:text-emerald-500' />
           </div>
         ) : error ? (
-          <div className='rounded-xl border border-red-900/50 bg-red-900/10 p-6'>
-            <p className='text-red-400'>{error}</p>
+          <div className='rounded-xl border border-red-200 dark:border-red-900/50 bg-red-50 dark:bg-red-900/10 p-6'>
+            <p className='text-red-600 dark:text-red-400'>{error}</p>
           </div>
         ) : insights.length === 0 ? (
-          <div className='flex items-center gap-4 rounded-xl border border-slate-800 bg-slate-900/50 p-6 text-slate-400'>
-            <div className='rounded-full bg-emerald-500/10 p-3'>
-              <CheckCircle2 className='h-6 w-6 text-emerald-500' />
+          <div className='flex items-center gap-4 rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 text-gray-500 dark:text-slate-400 shadow-sm dark:shadow-none'>
+            <div className='rounded-full bg-emerald-100 dark:bg-emerald-500/10 p-3'>
+              <CheckCircle2 className='h-6 w-6 text-emerald-600 dark:text-emerald-500' />
             </div>
             <div>
-              <p className='font-medium text-white'>All clear!</p>
+              <p className='font-medium text-gray-900 dark:text-white'>All clear!</p>
               <p className='text-sm'>
                 No specific insights right now. Keep tracking your finances to
                 stay on top of things.
@@ -294,26 +294,26 @@ export const Learn: React.FC = () => {
               <div
                 key={insight.id}
                 className={`rounded-xl border p-6 shadow-sm transition-all hover:shadow-md ${insight.level === 'attention'
-                  ? 'border-amber-500/50 bg-amber-500/10'
-                  : 'border-blue-500/30 bg-blue-500/10'
+                  ? 'border-amber-200 dark:border-amber-500/50 bg-amber-50 dark:bg-amber-500/10'
+                  : 'border-blue-200 dark:border-blue-500/30 bg-blue-50 dark:bg-blue-500/10'
                   }`}
               >
                 <div className='flex items-start gap-4'>
                   {insight.level === 'attention' ? (
-                    <AlertCircle className='h-6 w-6 shrink-0 text-amber-500' />
+                    <AlertCircle className='h-6 w-6 shrink-0 text-amber-600 dark:text-amber-500' />
                   ) : (
-                    <Info className='h-6 w-6 shrink-0 text-blue-400' />
+                    <Info className='h-6 w-6 shrink-0 text-blue-600 dark:text-blue-400' />
                   )}
                   <div>
                     <h3
                       className={`font-semibold ${insight.level === 'attention'
-                        ? 'text-amber-500'
-                        : 'text-blue-400'
+                        ? 'text-amber-800 dark:text-amber-500'
+                        : 'text-blue-800 dark:text-blue-400'
                         }`}
                     >
                       {insight.title}
                     </h3>
-                    <p className='mt-1 text-sm text-slate-300'>
+                    <p className='mt-1 text-sm text-gray-700 dark:text-slate-300'>
                       {insight.message}
                     </p>
                   </div>
@@ -326,11 +326,11 @@ export const Learn: React.FC = () => {
 
       {/* Education Content */}
       <section className='space-y-6'>
-        <div className='rounded-2xl bg-gradient-to-r from-emerald-900/20 to-slate-900 border border-emerald-500/20 p-8 text-center'>
-          <h2 className='text-2xl font-bold text-white mb-2'>
+        <div className='rounded-2xl bg-gradient-to-r from-emerald-50 to-white dark:from-emerald-900/20 dark:to-slate-900 border border-emerald-200 dark:border-emerald-500/20 p-8 text-center'>
+          <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
             Build Your Financial Knowledge
           </h2>
-          <p className='text-slate-400 max-w-2xl mx-auto'>
+          <p className='text-gray-600 dark:text-slate-400 max-w-2xl mx-auto'>
             Mastering the fundamentals is the first step toward financial
             freedom. Explore these essential topics to strengthen your money
             management skills.
@@ -341,20 +341,20 @@ export const Learn: React.FC = () => {
           {educationTopics.map((topic) => (
             <div
               key={topic.id}
-              className='group relative overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50 p-6 hover:border-slate-700 transition-colors'
+              className='group relative overflow-hidden rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 hover:border-gray-300 dark:hover:border-slate-700 transition-colors shadow-sm dark:shadow-none'
             >
-              <div className='mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-slate-800 text-emerald-500 group-hover:bg-emerald-500/10 transition-colors'>
+              <div className='mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 dark:bg-slate-800 text-emerald-600 dark:text-emerald-500 group-hover:bg-emerald-50 dark:group-hover:bg-emerald-500/10 transition-colors'>
                 <topic.icon className='h-6 w-6' />
               </div>
-              <h3 className='mb-2 text-lg font-semibold text-white'>
+              <h3 className='mb-2 text-lg font-semibold text-gray-900 dark:text-white'>
                 {topic.title}
               </h3>
-              <p className='mb-4 text-sm text-slate-400'>{topic.description}</p>
+              <p className='mb-4 text-sm text-gray-500 dark:text-slate-400'>{topic.description}</p>
               <ul className='space-y-2'>
                 {topic.tips.map((tip, index) => (
                   <li
                     key={index}
-                    className='flex items-start gap-2 text-sm text-slate-300'
+                    className='flex items-start gap-2 text-sm text-gray-700 dark:text-slate-300'
                   >
                     <span className='mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500' />
                     {tip}
@@ -368,11 +368,11 @@ export const Learn: React.FC = () => {
 
       {/* Additional Resources */}
       <section className='space-y-6'>
-        <div className='rounded-2xl border border-slate-700/50 bg-slate-800/30 p-8 text-center'>
-          <h2 className='text-2xl font-bold text-white mb-2'>
+        <div className='rounded-2xl border border-gray-200 dark:border-slate-700/50 bg-gray-50 dark:bg-slate-800/30 p-8 text-center'>
+          <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-2'>
             Additional Resources
           </h2>
-          <p className='text-slate-400 max-w-2xl mx-auto'>
+          <p className='text-gray-600 dark:text-slate-400 max-w-2xl mx-auto'>
             Continue your learning journey with recommended books, courses, and pro tips from experts.
           </p>
         </div>
@@ -380,8 +380,8 @@ export const Learn: React.FC = () => {
         {/* Recommended Reading */}
         <div className='space-y-4'>
           <div className='flex items-center gap-3'>
-            <BookOpen className='h-5 w-5 text-blue-400' />
-            <h3 className='text-lg font-semibold text-white'>Recommended Reading</h3>
+            <BookOpen className='h-5 w-5 text-blue-600 dark:text-blue-400' />
+            <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>Recommended Reading</h3>
           </div>
           <div className='grid gap-3 md:grid-cols-3'>
             {additionalResources
@@ -389,11 +389,11 @@ export const Learn: React.FC = () => {
               .map((resource) => (
                 <div
                   key={resource.id}
-                  className='rounded-lg border border-blue-500/30 bg-blue-500/5 p-4 hover:border-blue-500/50 transition-colors'
+                  className='rounded-lg border border-blue-200 dark:border-blue-500/30 bg-blue-50 dark:bg-blue-500/5 p-4 hover:border-blue-300 dark:hover:border-blue-500/50 transition-colors'
                 >
-                  <h4 className='font-semibold text-white text-sm'>{resource.title}</h4>
+                  <h4 className='font-semibold text-gray-900 dark:text-white text-sm'>{resource.title}</h4>
                   {resource.description && (
-                    <p className='text-xs text-slate-400 mt-1'>{resource.description}</p>
+                    <p className='text-xs text-gray-500 dark:text-slate-400 mt-1'>{resource.description}</p>
                   )}
                 </div>
               ))}
@@ -403,8 +403,8 @@ export const Learn: React.FC = () => {
         {/* Online Courses */}
         <div className='space-y-4'>
           <div className='flex items-center gap-3'>
-            <GraduationCap className='h-5 w-5 text-emerald-400' />
-            <h3 className='text-lg font-semibold text-white'>Online Courses</h3>
+            <GraduationCap className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
+            <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>Online Courses</h3>
           </div>
           <div className='grid gap-3 md:grid-cols-3'>
             {additionalResources
@@ -412,9 +412,9 @@ export const Learn: React.FC = () => {
               .map((resource) => (
                 <div
                   key={resource.id}
-                  className='rounded-lg border border-emerald-500/30 bg-emerald-500/5 p-4 hover:border-emerald-500/50 transition-colors'
+                  className='rounded-lg border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/5 p-4 hover:border-emerald-300 dark:hover:border-emerald-500/50 transition-colors'
                 >
-                  <h4 className='font-semibold text-white text-sm'>{resource.title}</h4>
+                  <h4 className='font-semibold text-gray-900 dark:text-white text-sm'>{resource.title}</h4>
                 </div>
               ))}
           </div>
@@ -423,8 +423,8 @@ export const Learn: React.FC = () => {
         {/* Pro Tips */}
         <div className='space-y-4'>
           <div className='flex items-center gap-3'>
-            <Lightbulb className='h-5 w-5 text-amber-400' />
-            <h3 className='text-lg font-semibold text-white'>Pro Tips</h3>
+            <Lightbulb className='h-5 w-5 text-amber-500 dark:text-amber-400' />
+            <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>Pro Tips</h3>
           </div>
           <div className='grid gap-3 md:grid-cols-3'>
             {additionalResources
@@ -432,9 +432,9 @@ export const Learn: React.FC = () => {
               .map((resource) => (
                 <div
                   key={resource.id}
-                  className='rounded-lg border border-amber-500/30 bg-amber-500/5 p-4 hover:border-amber-500/50 transition-colors'
+                  className='rounded-lg border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/5 p-4 hover:border-amber-300 dark:hover:border-amber-500/50 transition-colors'
                 >
-                  <h4 className='font-semibold text-white text-sm'>{resource.title}</h4>
+                  <h4 className='font-semibold text-gray-900 dark:text-white text-sm'>{resource.title}</h4>
                 </div>
               ))}
           </div>
