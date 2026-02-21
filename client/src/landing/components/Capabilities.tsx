@@ -34,8 +34,8 @@ const features = [
 
 export const Capabilities = () => {
   return (
-    <section className='py-24 bg-slate-900 relative'>
-      <div className='absolute inset-0 bg-slate-950/50' />
+    <section className='py-24 bg-white dark:bg-slate-900 relative'>
+      <div className='absolute inset-0 bg-gray-50/50 dark:bg-slate-950/50' />
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -44,10 +44,10 @@ export const Capabilities = () => {
           transition={{ duration: 0.8 }}
           className='text-center mb-16'
         >
-          <h2 className='text-3xl md:text-5xl font-bold tracking-tight text-white mb-4'>
+          <h2 className='text-3xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-4'>
             Everything you need. Nothing you don't.
           </h2>
-          <p className='text-lg text-slate-400 max-w-2xl mx-auto'>
+          <p className='text-lg text-gray-500 dark:text-slate-400 max-w-2xl mx-auto'>
             Focus on what matters without the clutter. PocketFlow gives you the
             essential tools to master your money.
           </p>
@@ -61,17 +61,17 @@ export const Capabilities = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className='bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 p-8 rounded-2xl hover:bg-slate-800 transition-colors group'
+              className='bg-gray-50 dark:bg-slate-800/50 backdrop-blur-sm border border-gray-200 dark:border-slate-700/50 p-8 rounded-2xl hover:bg-white dark:hover:bg-slate-800 transition-colors group shadow-sm dark:shadow-none'
             >
               <div
                 className={`h-14 w-14 rounded-xl bg-linear-to-br ${feature.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
               >
                 <feature.icon className='h-7 w-7 text-white' />
               </div>
-              <h3 className='text-xl font-semibold text-white mb-3'>
+              <h3 className='text-xl font-semibold text-gray-900 dark:text-white mb-3'>
                 {feature.title}
               </h3>
-              <p className='text-slate-400 leading-relaxed'>
+              <p className='text-gray-500 dark:text-slate-400 leading-relaxed'>
                 {feature.description}
               </p>
             </motion.div>

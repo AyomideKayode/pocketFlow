@@ -322,20 +322,20 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
   };
 
   const inputClasses =
-    'flex h-10 w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 pl-9 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 disabled:cursor-not-allowed disabled:opacity-50 text-white transition-all';
+    'flex h-10 w-full rounded-md border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 pl-9 text-sm placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900 dark:text-white transition-all shadow-sm dark:shadow-none';
   const errorInputClasses = 'border-rose-500 focus:ring-rose-500';
 
   if (isForgotPassword) {
     return (
       <div className='space-y-6'>
         <div className='text-center'>
-          <h3 className='text-lg font-medium text-white'>Reset Password</h3>
-          <p className='mt-1 text-sm text-slate-400'>
+          <h3 className='text-lg font-medium text-gray-900 dark:text-white'>Reset Password</h3>
+          <p className='mt-1 text-sm text-gray-500 dark:text-slate-400'>
             Enter your email to receive reset instructions
           </p>
         </div>
         {error && (
-          <div className='rounded-md bg-rose-500/10 p-4 text-sm text-rose-500 border border-rose-500/20 flex items-center gap-2'>
+          <div className='rounded-md bg-rose-50 dark:bg-rose-500/10 p-4 text-sm text-rose-600 dark:text-rose-500 border border-rose-200 dark:border-rose-500/20 flex items-center gap-2'>
             <AlertCircle className='h-4 w-4' />
             {error}
           </div>
@@ -348,9 +348,9 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
           className='space-y-4'
         >
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-300'>Email</label>
+            <label className='text-sm font-medium text-gray-700 dark:text-slate-300'>Email</label>
             <div className='relative'>
-              <Mail className='absolute left-3 top-3 h-4 w-4 text-slate-500' />
+              <Mail className='absolute left-3 top-3 h-4 w-4 text-gray-400 dark:text-slate-500' />
               <input
                 type='email'
                 className={inputClasses}
@@ -374,7 +374,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
         </form>
         <button
           onClick={handleBackToSignIn}
-          className='flex w-full items-center justify-center gap-2 text-sm text-slate-400 hover:text-white transition-colors'
+          className='flex w-full items-center justify-center gap-2 text-sm text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white transition-colors'
         >
           <ArrowLeft className='h-4 w-4' />
           Back to Sign In
@@ -388,7 +388,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
       <button
         onClick={handleGoogleSignIn}
         disabled={loading}
-        className='flex w-full items-center justify-center rounded-md border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-400/50 disabled:opacity-50'
+        className='flex w-full items-center justify-center rounded-md border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-800/50 px-4 py-2 text-sm font-medium text-gray-700 dark:text-white transition-colors hover:bg-gray-50 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-400/50 disabled:opacity-50 shadow-sm dark:shadow-none'
       >
         <GoogleIcon />
         Sign in with Google
@@ -396,17 +396,17 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
 
       <div className='relative'>
         <div className='absolute inset-0 flex items-center'>
-          <span className='w-full border-t border-slate-800' />
+          <span className='w-full border-t border-gray-200 dark:border-slate-800' />
         </div>
         <div className='relative flex justify-center text-xs uppercase'>
-          <span className='bg-slate-900 px-2 text-slate-500'>
+          <span className='bg-white dark:bg-slate-900/50 px-2 text-gray-500 dark:text-slate-500'>
             Or continue with
           </span>
         </div>
       </div>
 
       {error && (
-        <div className='rounded-md bg-rose-500/10 p-4 text-sm text-rose-500 border border-rose-500/20 flex items-center gap-2 animate-in slide-in-from-top-2'>
+        <div className='rounded-md bg-rose-50 dark:bg-rose-500/10 p-4 text-sm text-rose-600 dark:text-rose-500 border border-rose-200 dark:border-rose-500/20 flex items-center gap-2 animate-in slide-in-from-top-2'>
           <AlertCircle className='h-4 w-4 shrink-0' />
           {error}
         </div>
@@ -416,13 +416,13 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
         {isSignUp && (
           <div className='grid grid-cols-2 gap-4'>
             <div className='space-y-2'>
-              <label className='text-sm font-medium text-slate-300'>
+              <label className='text-sm font-medium text-gray-700 dark:text-slate-300'>
                 First Name
               </label>
               <input
                 type='text'
                 className={cn(
-                  'flex h-10 w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 disabled:cursor-not-allowed disabled:opacity-50 text-white transition-all',
+                  'flex h-10 w-full rounded-md border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900 dark:text-white transition-all shadow-sm dark:shadow-none',
                   fieldErrors.firstName && errorInputClasses,
                 )}
                 placeholder='John'
@@ -435,13 +435,13 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
               />
             </div>
             <div className='space-y-2'>
-              <label className='text-sm font-medium text-slate-300'>
+              <label className='text-sm font-medium text-gray-700 dark:text-slate-300'>
                 Last Name
               </label>
               <input
                 type='text'
                 className={cn(
-                  'flex h-10 w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 disabled:cursor-not-allowed disabled:opacity-50 text-white transition-all',
+                  'flex h-10 w-full rounded-md border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-3 py-2 text-sm placeholder:text-gray-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 disabled:cursor-not-allowed disabled:opacity-50 text-gray-900 dark:text-white transition-all shadow-sm dark:shadow-none',
                   fieldErrors.lastName && errorInputClasses,
                 )}
                 placeholder='Doe'
@@ -457,9 +457,9 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
         )}
 
         <div className='space-y-2'>
-          <label className='text-sm font-medium text-slate-300'>Email</label>
+          <label className='text-sm font-medium text-gray-700 dark:text-slate-300'>Email</label>
           <div className='relative'>
-            <Mail className='absolute left-3 top-3 h-4 w-4 text-slate-500' />
+            <Mail className='absolute left-3 top-3 h-4 w-4 text-gray-400 dark:text-slate-500' />
             <input
               type='email'
               className={cn(
@@ -481,9 +481,9 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
         </div>
 
         <div className='space-y-2'>
-          <label className='text-sm font-medium text-slate-300'>Password</label>
+          <label className='text-sm font-medium text-gray-700 dark:text-slate-300'>Password</label>
           <div className='relative'>
-            <Lock className='absolute left-3 top-3 h-4 w-4 text-slate-500' />
+            <Lock className='absolute left-3 top-3 h-4 w-4 text-gray-400 dark:text-slate-500' />
             <input
               type={showPassword ? 'text' : 'password'}
               className={cn(
@@ -503,7 +503,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
             <button
               type='button'
               onClick={() => setShowPassword(!showPassword)}
-              className='absolute right-3 top-2.5 text-slate-500 hover:text-slate-300 focus:outline-none'
+              className='absolute right-3 top-2.5 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 focus:outline-none'
               aria-label={showPassword ? 'Hide password' : 'Show password'}
             >
               {showPassword ? (
@@ -515,7 +515,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
           </div>
           {isSignUp && password && (
             <div className='space-y-1'>
-              <div className='h-1 w-full overflow-hidden rounded-full bg-slate-800'>
+              <div className='h-1 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-slate-800'>
                 <div
                   className={cn(
                     'h-full transition-all duration-300',
@@ -538,11 +538,11 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
 
         {isSignUp && (
           <div className='space-y-2'>
-            <label className='text-sm font-medium text-slate-300'>
+            <label className='text-sm font-medium text-gray-700 dark:text-slate-300'>
               Confirm Password
             </label>
             <div className='relative'>
-              <Lock className='absolute left-3 top-3 h-4 w-4 text-slate-500' />
+              <Lock className='absolute left-3 top-3 h-4 w-4 text-gray-400 dark:text-slate-500' />
               <input
                 type={showConfirmPassword ? 'text' : 'password'}
                 className={cn(
@@ -561,7 +561,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
               <button
                 type='button'
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className='absolute right-3 top-2.5 text-slate-500 hover:text-slate-300 focus:outline-none'
+                className='absolute right-3 top-2.5 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 focus:outline-none'
                 aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
               >
                 {showConfirmPassword ? (
@@ -598,11 +598,11 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
       </form>
 
       <div className='text-center text-sm'>
-        <p className='text-slate-400'>
+        <p className='text-gray-500 dark:text-slate-400'>
           {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
           <button
             onClick={onToggleMode}
-            className='font-medium text-emerald-500 hover:text-emerald-400 hover:underline transition-colors'
+            className='font-medium text-emerald-600 dark:text-emerald-500 hover:text-emerald-500 dark:hover:text-emerald-400 hover:underline transition-colors'
           >
             {isSignUp ? 'Sign In' : 'Sign Up'}
           </button>
@@ -610,7 +610,7 @@ export const AuthForms: React.FC<AuthFormsProps> = ({
         {!isSignUp && (
           <button
             onClick={() => setIsForgotPassword(true)}
-            className='mt-2 text-xs text-slate-500 hover:text-slate-400 transition-colors'
+            className='mt-2 text-xs text-gray-500 dark:text-slate-500 hover:text-gray-700 dark:hover:text-slate-400 transition-colors'
           >
             Forgot your password?
           </button>

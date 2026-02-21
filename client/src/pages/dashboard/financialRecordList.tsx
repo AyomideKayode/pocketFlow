@@ -69,7 +69,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
   if (!editable) {
     return (
-      <span className='text-slate-300'>
+      <span className='text-gray-700 dark:text-slate-300'>
         {value instanceof Date ? value.toLocaleDateString() : String(value)}
       </span>
     );
@@ -79,8 +79,8 @@ const EditableCell: React.FC<EditableCellProps> = ({
     <div
       onClick={() => setIsEditing(true)}
       className={clsx(
-        'cursor-pointer rounded px-2 py-1 transition-colors hover:bg-slate-800',
-        isEditing && 'bg-slate-800 ring-1 ring-emerald-500',
+        'cursor-pointer rounded px-2 py-1 transition-colors hover:bg-gray-100 dark:hover:bg-slate-800',
+        isEditing && 'bg-white dark:bg-slate-800 ring-1 ring-emerald-500',
       )}
     >
       {isEditing ? (
@@ -95,12 +95,12 @@ const EditableCell: React.FC<EditableCellProps> = ({
           onBlur={onBlur}
           onKeyDown={onKeyDown}
           type={type}
-          className='w-full bg-transparent p-0 text-sm text-white focus:outline-none'
+          className='w-full bg-transparent p-0 text-sm text-gray-900 dark:text-white focus:outline-none'
         />
       ) : renderItem ? (
         renderItem(value)
       ) : (
-        <span className='text-slate-300'>{String(value)}</span>
+        <span className='text-gray-700 dark:text-slate-300'>{String(value)}</span>
       )}
     </div>
   );
@@ -194,7 +194,7 @@ export const FinancialRecordList = ({
                 <div
                   className={clsx(
                     'font-medium',
-                    type === 'income' ? 'text-emerald-500' : 'text-rose-500',
+                    type === 'income' ? 'text-emerald-600 dark:text-emerald-500' : 'text-rose-600 dark:text-rose-500',
                   )}
                 >
                   {type === 'income' ? '+' : '-'}
@@ -213,7 +213,7 @@ export const FinancialRecordList = ({
             updateRecord={updateCellRecord}
             editable={true}
             renderItem={(val) => (
-              <span className='inline-flex items-center rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-medium text-slate-300'>
+              <span className='inline-flex items-center rounded-full bg-gray-100 dark:bg-slate-800 px-2.5 py-0.5 text-xs font-medium text-gray-700 dark:text-slate-300'>
                 {String(val)}
               </span>
             )}
@@ -228,7 +228,7 @@ export const FinancialRecordList = ({
             updateRecord={updateCellRecord}
             editable={true}
             renderItem={(val) => (
-              <span className='text-xs text-slate-500'>{String(val)}</span>
+              <span className='text-xs text-gray-500 dark:text-slate-500'>{String(val)}</span>
             )}
           />
         ),
@@ -240,7 +240,7 @@ export const FinancialRecordList = ({
           const date =
             val instanceof Date ? val : new Date(val as string | number);
           return (
-            <span className='text-xs text-slate-400'>
+            <span className='text-xs text-gray-500 dark:text-slate-400'>
               {date.toLocaleDateString()}
             </span>
           );
@@ -252,7 +252,7 @@ export const FinancialRecordList = ({
         cell: ({ row }) => (
           <button
             onClick={() => handleDeleteRecord(row.original)}
-            className='rounded-md p-2 text-slate-500 hover:bg-rose-500/10 hover:text-rose-500 transition-colors'
+            className='rounded-md p-2 text-gray-400 dark:text-slate-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 hover:text-rose-600 dark:hover:text-rose-500 transition-colors'
             title='Delete'
           >
             <Trash2 className='h-4 w-4' />
@@ -274,10 +274,10 @@ export const FinancialRecordList = ({
   }
 
   return (
-    <div className='overflow-hidden rounded-xl border border-slate-800 bg-slate-900/50 shadow-sm backdrop-blur-sm'>
+    <div className='overflow-hidden rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 shadow-sm dark:shadow-none backdrop-blur-sm'>
       <div className='overflow-x-auto'>
         <table className='w-full text-left text-sm'>
-          <thead className='bg-slate-900/80 text-xs uppercase text-slate-400'>
+          <thead className='bg-gray-50 dark:bg-slate-900/80 text-xs uppercase text-gray-600 dark:text-slate-400'>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
@@ -296,11 +296,11 @@ export const FinancialRecordList = ({
               </tr>
             ))}
           </thead>
-          <tbody className='divide-y divide-slate-800'>
+          <tbody className='divide-y divide-gray-200 dark:divide-slate-800'>
             {table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
-                className='hover:bg-slate-800/30 transition-colors group'
+                className='hover:bg-gray-50 dark:hover:bg-slate-800/30 transition-colors group'
               >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className='px-6 py-4 whitespace-nowrap'>

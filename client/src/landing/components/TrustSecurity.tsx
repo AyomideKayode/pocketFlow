@@ -24,7 +24,7 @@ const badges = [
 
 export const TrustSecurity = () => {
   return (
-    <section id='security' className='py-24 bg-slate-900 relative'>
+    <section id='security' className='py-24 bg-gray-50 dark:bg-slate-900 relative'>
       <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -33,10 +33,10 @@ export const TrustSecurity = () => {
           transition={{ duration: 0.8 }}
           className='mb-16'
         >
-          <h2 className='text-3xl md:text-5xl font-bold tracking-tight text-white mb-6'>
+          <h2 className='text-3xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6'>
             Your data. Your control. Your privacy.
           </h2>
-          <p className='text-lg text-slate-400 max-w-2xl mx-auto'>
+          <p className='text-lg text-gray-500 dark:text-slate-400 max-w-2xl mx-auto'>
             PocketFlow takes security seriously. We use industry-standard
             encryption and never ask for your bank login. Your financial data
             stays yours.
@@ -53,13 +53,13 @@ export const TrustSecurity = () => {
               transition={{ duration: 0.5, delay: index * 0.2 }}
               className='flex flex-col items-center text-center max-w-sm mx-auto'
             >
-              <div className='h-16 w-16 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-6'>
-                <badge.icon className='h-8 w-8 text-emerald-500' />
+              <div className='h-16 w-16 rounded-2xl bg-emerald-100 dark:bg-emerald-500/10 flex items-center justify-center mb-6'>
+                <badge.icon className='h-8 w-8 text-emerald-600 dark:text-emerald-500' />
               </div>
-              <h3 className='text-xl font-bold text-white mb-3'>
+              <h3 className='text-xl font-bold text-gray-900 dark:text-white mb-3'>
                 {badge.title}
               </h3>
-              <p className='text-slate-400 leading-relaxed'>
+              <p className='text-gray-500 dark:text-slate-400 leading-relaxed'>
                 {badge.description}
               </p>
             </motion.div>

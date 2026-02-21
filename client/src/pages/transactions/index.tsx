@@ -108,23 +108,23 @@ export const Transactions = () => {
   }, [filters.type]);
 
   const selectClass =
-    'h-9 w-full rounded-md border border-slate-700 bg-slate-900 px-3 py-1 text-sm text-slate-300 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500';
+    'h-9 w-full rounded-md border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-1 text-sm text-gray-900 dark:text-slate-300 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 shadow-sm dark:shadow-none';
 
   return (
     <div className='space-y-6 animate-in fade-in duration-500 pb-20'>
       <div className='flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between'>
         <div>
-          <h1 className='text-2xl font-bold tracking-tight text-white'>
+          <h1 className='text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
             Transactions
           </h1>
-          <p className='text-slate-400'>
+          <p className='text-gray-500 dark:text-slate-400'>
             Manage and search your financial history.
           </p>
         </div>
         <div className='flex items-center gap-2'>
           <button
             onClick={() => setShowImportModal(true)}
-            className='flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white'
+            className='flex items-center gap-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 px-4 py-2 text-sm font-medium text-gray-700 dark:text-slate-300 transition-colors hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white shadow-sm dark:shadow-none'
           >
             <Upload className='h-4 w-4' />
             Import CSV
@@ -140,8 +140,8 @@ export const Transactions = () => {
       </div>
 
       {/* Filters Section */}
-      <div className='rounded-xl border border-slate-800 bg-slate-900/50 p-4'>
-        <div className='flex items-center gap-2 mb-4 text-sm font-medium text-slate-400'>
+      <div className='rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-4 shadow-sm dark:shadow-none'>
+        <div className='flex items-center gap-2 mb-4 text-sm font-medium text-gray-500 dark:text-slate-400'>
           <Filter className='h-4 w-4' />
           Filters & Sort
           {(filters.type ||
@@ -151,7 +151,7 @@ export const Transactions = () => {
             filters.endDate) && (
             <button
               onClick={clearFilters}
-              className='ml-auto text-xs text-emerald-500 hover:text-emerald-400 flex items-center gap-1'
+              className='ml-auto text-xs text-emerald-600 dark:text-emerald-500 hover:text-emerald-500 dark:hover:text-emerald-400 flex items-center gap-1'
             >
               <X className='h-3 w-3' />
               Clear All
@@ -162,7 +162,7 @@ export const Transactions = () => {
         <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-5'>
           {/* Type */}
           <div className='space-y-1'>
-            <label className='text-xs text-slate-500'>Type</label>
+            <label className='text-xs text-gray-500 dark:text-slate-500'>Type</label>
             <select
               className={selectClass}
               value={filters.type}
@@ -176,7 +176,7 @@ export const Transactions = () => {
 
           {/* Category */}
           <div className='space-y-1'>
-            <label className='text-xs text-slate-500'>Category</label>
+            <label className='text-xs text-gray-500 dark:text-slate-500'>Category</label>
             <select
               className={selectClass}
               value={filters.category}
@@ -194,7 +194,7 @@ export const Transactions = () => {
 
           {/* Payment Method */}
           <div className='space-y-1'>
-            <label className='text-xs text-slate-500'>Payment Method</label>
+            <label className='text-xs text-gray-500 dark:text-slate-500'>Payment Method</label>
             <select
               className={selectClass}
               value={filters.paymentMethod}
@@ -212,7 +212,7 @@ export const Transactions = () => {
 
           {/* Date Range (Simplified as inputs for now, reusing DateRangeFilter logic might require context refactor) */}
           <div className='space-y-1'>
-            <label className='text-xs text-slate-500'>Start Date</label>
+            <label className='text-xs text-gray-500 dark:text-slate-500'>Start Date</label>
             <input
               type='date'
               className={selectClass}
@@ -221,7 +221,7 @@ export const Transactions = () => {
             />
           </div>
           <div className='space-y-1'>
-            <label className='text-xs text-slate-500'>End Date</label>
+            <label className='text-xs text-gray-500 dark:text-slate-500'>End Date</label>
             <input
               type='date'
               className={selectClass}
@@ -231,9 +231,9 @@ export const Transactions = () => {
           </div>
         </div>
 
-        <div className='mt-4 pt-4 border-t border-slate-800 flex items-center justify-end gap-4'>
+        <div className='mt-4 pt-4 border-t border-gray-200 dark:border-slate-800 flex items-center justify-end gap-4'>
           <div className='flex items-center gap-2'>
-            <label className='text-xs text-slate-500'>Sort By:</label>
+            <label className='text-xs text-gray-500 dark:text-slate-500'>Sort By:</label>
             <select
               className={cn(selectClass, 'w-32')}
               value={filters.sortBy}
@@ -249,7 +249,7 @@ export const Transactions = () => {
                   filters.sortOrder === 'asc' ? 'desc' : 'asc',
                 )
               }
-              className='p-2 rounded-md border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300'
+              className='p-2 rounded-md border border-gray-300 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-slate-300 shadow-sm dark:shadow-none'
               title={filters.sortOrder === 'asc' ? 'Ascending' : 'Descending'}
             >
               <ArrowUpDown className='h-4 w-4' />
@@ -261,13 +261,13 @@ export const Transactions = () => {
       {/* List */}
       <div className='relative min-h-[200px]'>
         {loading && (
-          <div className='absolute inset-0 z-10 flex items-center justify-center bg-slate-950/50 backdrop-blur-sm rounded-xl'>
-            <div className='animate-pulse text-emerald-500'>Loading...</div>
+          <div className='absolute inset-0 z-10 flex items-center justify-center bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm rounded-xl'>
+            <div className='animate-pulse text-emerald-600 dark:text-emerald-500'>Loading...</div>
           </div>
         )}
         <FinancialRecordList data={records} /> {/* Explicitly pass records */}
         {!loading && records.length === 0 && (
-          <div className='text-center py-12 text-slate-500'>
+          <div className='text-center py-12 text-gray-500 dark:text-slate-500'>
             No transactions found matching your filters.
           </div>
         )}
@@ -275,36 +275,36 @@ export const Transactions = () => {
 
       {/* Pagination */}
       {pagination.total > 0 && (
-        <div className='flex items-center justify-between border-t border-slate-800 pt-4'>
-          <div className='text-sm text-slate-400'>
+        <div className='flex items-center justify-between border-t border-gray-200 dark:border-slate-800 pt-4'>
+          <div className='text-sm text-gray-500 dark:text-slate-400'>
             Showing{' '}
-            <span className='font-medium text-white'>
+            <span className='font-medium text-gray-900 dark:text-white'>
               {(pagination.page - 1) * pagination.limit + 1}
             </span>{' '}
             to{' '}
-            <span className='font-medium text-white'>
+            <span className='font-medium text-gray-900 dark:text-white'>
               {Math.min(pagination.page * pagination.limit, pagination.total)}
             </span>{' '}
             of{' '}
-            <span className='font-medium text-white'>{pagination.total}</span>{' '}
+            <span className='font-medium text-gray-900 dark:text-white'>{pagination.total}</span>{' '}
             results
           </div>
           <div className='flex items-center gap-2'>
             <button
               onClick={() => handlePageChange(pagination.page - 1)}
               disabled={pagination.page === 1}
-              className='flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-800/50 px-3 py-1.5 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed'
+              className='flex items-center gap-1 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-slate-300 transition-colors hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-sm dark:shadow-none'
             >
               <ChevronLeft className='h-4 w-4' />
               Previous
             </button>
-            <div className='text-sm text-slate-400'>
+            <div className='text-sm text-gray-500 dark:text-slate-400'>
               Page {pagination.page} of {pagination.pages}
             </div>
             <button
               onClick={() => handlePageChange(pagination.page + 1)}
               disabled={pagination.page === pagination.pages}
-              className='flex items-center gap-1 rounded-lg border border-slate-700 bg-slate-800/50 px-3 py-1.5 text-sm font-medium text-slate-300 transition-colors hover:bg-slate-800 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed'
+              className='flex items-center gap-1 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 px-3 py-1.5 text-sm font-medium text-gray-700 dark:text-slate-300 transition-colors hover:bg-gray-50 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed shadow-sm dark:shadow-none'
             >
               Next
               <ChevronRight className='h-4 w-4' />
@@ -323,12 +323,12 @@ export const Transactions = () => {
 
       {showAddForm && (
         <div className='fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4'>
-          <div className='w-full max-w-lg rounded-xl border border-slate-800 bg-slate-900 p-6 shadow-2xl animate-in zoom-in-95 duration-200'>
+          <div className='w-full max-w-lg rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-2xl animate-in zoom-in-95 duration-200'>
             <div className='mb-4 flex items-center justify-between'>
-              <h2 className='text-xl font-bold text-white'>Add New Record</h2>
+              <h2 className='text-xl font-bold text-gray-900 dark:text-white'>Add New Record</h2>
               <button
                 onClick={() => setShowAddForm(false)}
-                className='text-slate-400 hover:text-white transition-colors'
+                className='text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white transition-colors'
               >
                 ✕
               </button>

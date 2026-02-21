@@ -53,7 +53,7 @@ export const FAQ = () => {
   };
 
   return (
-    <section id='faq' className='py-24 bg-slate-900 relative'>
+    <section id='faq' className='py-24 bg-gray-50 dark:bg-slate-900 relative'>
       <div className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10'>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -62,25 +62,25 @@ export const FAQ = () => {
           transition={{ duration: 0.8 }}
           className='text-center mb-16'
         >
-          <h2 className='text-3xl md:text-5xl font-bold tracking-tight text-white mb-6'>
+          <h2 className='text-3xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6'>
             Common questions
           </h2>
         </motion.div>
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4'>
           {faqs.map((faq, index) => (
-            <div key={index} className='border-b border-slate-800'>
+            <div key={index} className='border-b border-gray-200 dark:border-slate-800'>
               <button
                 onClick={() => toggleFAQ(index)}
                 className='w-full flex items-center justify-between py-6 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 group'
               >
                 <span
-                  className={`text-lg font-medium transition-colors group-hover:text-emerald-400 ${openIndex === index ? 'text-emerald-500' : 'text-white'}`}
+                  className={`text-lg font-medium transition-colors group-hover:text-emerald-500 dark:group-hover:text-emerald-400 ${openIndex === index ? 'text-emerald-600 dark:text-emerald-500' : 'text-gray-900 dark:text-white'}`}
                 >
                   {faq.question}
                 </span>
                 <ChevronDown
-                  className={`h-5 w-5 text-slate-500 transition-transform duration-300 ${openIndex === index ? 'rotate-180 text-emerald-500' : ''}`}
+                  className={`h-5 w-5 transition-transform duration-300 ${openIndex === index ? 'rotate-180 text-emerald-600 dark:text-emerald-500' : 'text-gray-400 dark:text-slate-500'}`}
                 />
               </button>
               <AnimatePresence>
@@ -92,7 +92,7 @@ export const FAQ = () => {
                     transition={{ duration: 0.3, ease: 'easeInOut' }}
                     className='overflow-hidden'
                   >
-                    <p className='pb-6 text-slate-400 leading-relaxed'>
+                    <p className='pb-6 text-gray-600 dark:text-slate-400 leading-relaxed'>
                       {faq.answer}
                     </p>
                   </motion.div>

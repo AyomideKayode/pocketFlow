@@ -197,7 +197,7 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
         className='absolute pointer-events-none z-10 flex items-center gap-2'
         style={style}
       >
-        <div className='text-emerald-400 text-sm font-mono bg-slate-900/80 px-2 py-1 rounded border border-emerald-500/30 backdrop-blur-sm'>
+        <div className='text-emerald-700 dark:text-emerald-400 text-sm font-mono bg-white/80 dark:bg-slate-900/80 px-2 py-1 rounded border border-emerald-200 dark:border-emerald-500/30 backdrop-blur-sm'>
           {label}
         </div>
         <svg
@@ -206,7 +206,7 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
           viewBox='0 0 24 24'
           fill='none'
           stroke='currentColor'
-          className='text-emerald-400'
+          className='text-emerald-600 dark:text-emerald-400'
           strokeWidth='2'
         >
           <path d='M5 12h14M12 5l7 7-7 7' />
@@ -222,7 +222,7 @@ export default function ProductShowcase() {
   return (
     <section
       id='features'
-      className='relative w-full py-24 px-4 sm:px-6 lg:px-8 bg-slate-950'
+      className='relative w-full py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950'
     >
       {/* Section header */}
       <motion.div
@@ -232,12 +232,12 @@ export default function ProductShowcase() {
         viewport={{ once: true, margin: '-100px' }}
         className='max-w-5xl mx-auto text-center mb-20'
       >
-        <h2 className='text-4xl sm:text-5xl font-bold text-white mb-6'>
+        <h2 className='text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6'>
           Control Your Money.
           <br />
-          <span className='text-emerald-400'>Simply.</span>
+          <span className='text-emerald-600 dark:text-emerald-400'>Simply.</span>
         </h2>
-        <p className='text-lg text-slate-300 max-w-2xl mx-auto'>
+        <p className='text-lg text-gray-600 dark:text-slate-300 max-w-2xl mx-auto'>
           Five features designed to make financial management effortless.
         </p>
       </motion.div>
@@ -256,10 +256,10 @@ export default function ProductShowcase() {
           >
             {/* Text content */}
             <div className='flex-1 flex flex-col justify-center'>
-              <h3 className='text-3xl sm:text-4xl font-bold text-white mb-4'>
+              <h3 className='text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4'>
                 {card.headline}
               </h3>
-              <p className='text-lg text-slate-300 leading-relaxed'>
+              <p className='text-lg text-gray-600 dark:text-slate-300 leading-relaxed'>
                 {card.subheader}
               </p>
             </div>
@@ -267,7 +267,7 @@ export default function ProductShowcase() {
             {/* Image */}
             <div className='flex-1'>
               <motion.div
-                className='relative rounded-2xl overflow-hidden border border-slate-800 bg-slate-900/50 shadow-xl shadow-emerald-900/10 aspect-16/10'
+                className='relative rounded-2xl overflow-hidden border border-gray-200 dark:border-slate-800 bg-gray-50 dark:bg-slate-900/50 shadow-xl shadow-emerald-500/10 dark:shadow-emerald-900/10 aspect-16/10'
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
@@ -302,7 +302,7 @@ export default function ProductShowcase() {
         viewport={{ once: true, margin: '-100px' }}
         className='max-w-3xl mx-auto mt-24 text-center'
       >
-        <h3 className='text-2xl sm:text-3xl font-bold text-white mb-8'>
+        <h3 className='text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-8'>
           Ready to take control?
         </h3>
 
@@ -315,24 +315,24 @@ export default function ProductShowcase() {
           </Link>
           <Link
             to='/auth?mode=login'
-            className='inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-slate-300 border border-slate-700 rounded-xl hover:text-white hover:border-emerald-500/50 hover:bg-slate-900 transition-all'
+            className='inline-flex items-center justify-center px-8 py-4 text-lg font-medium text-gray-600 dark:text-slate-300 border border-gray-300 dark:border-slate-700 rounded-xl hover:text-gray-900 dark:hover:text-white hover:border-emerald-500/50 hover:bg-gray-50 dark:hover:bg-slate-900 transition-all'
           >
             Sign in
           </Link>
         </div>
 
         {/* Trust signals */}
-        <div className='grid grid-cols-2 sm:flex sm:flex-row gap-4 text-sm text-slate-400 justify-center'>
+        <div className='grid grid-cols-2 sm:flex sm:flex-row gap-4 text-sm text-gray-500 dark:text-slate-400 justify-center'>
           <div className='flex items-center gap-2'>
-            <span className='text-emerald-400 font-semibold'>✓</span>
+            <span className='text-emerald-600 dark:text-emerald-400 font-semibold'>✓</span>
             <span>Free forever</span>
           </div>
           <div className='flex items-center gap-2'>
-            <span className='text-emerald-400 font-semibold'>✓</span>
+            <span className='text-emerald-600 dark:text-emerald-400 font-semibold'>✓</span>
             <span>No credit card required</span>
           </div>
           <div className='flex items-center gap-2'>
-            <span className='text-emerald-400 font-semibold'>✓</span>
+            <span className='text-emerald-600 dark:text-emerald-400 font-semibold'>✓</span>
             <span>Your data stays private</span>
           </div>
         </div>

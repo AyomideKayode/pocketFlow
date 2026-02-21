@@ -4,9 +4,9 @@ import { Check } from 'lucide-react';
 
 export const FinalCTA = () => {
   return (
-    <section className='py-24 relative overflow-hidden bg-slate-950'>
+    <section className='py-24 relative overflow-hidden bg-white dark:bg-slate-950'>
       {/* Background Radial Glow */}
-      <div className='absolute inset-0 bg-radial from-emerald-900/20 to-transparent opacity-50' />
+      <div className='absolute inset-0 bg-radial from-emerald-100/50 dark:from-emerald-900/20 to-transparent opacity-50' />
 
       <div className='max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center'>
         <motion.div
@@ -15,10 +15,10 @@ export const FinalCTA = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className='text-4xl md:text-6xl font-bold tracking-tight text-white mb-6'>
+          <h2 className='text-4xl md:text-6xl font-bold tracking-tight text-gray-900 dark:text-white mb-6'>
             Ready to take control?
           </h2>
-          <p className='text-xl text-slate-300 mb-10 max-w-2xl mx-auto'>
+          <p className='text-xl text-gray-600 dark:text-slate-300 mb-10 max-w-2xl mx-auto'>
             Join users who've stopped stressing about money. It's free to start,
             no credit card required.
           </p>
@@ -32,17 +32,17 @@ export const FinalCTA = () => {
             </Link>
           </motion.div>
 
-          <div className='mt-8 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-slate-400'>
+          <div className='mt-8 flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-gray-500 dark:text-slate-400'>
             <div className='flex items-center gap-2'>
-              <Check className='h-4 w-4 text-emerald-500' />
+              <Check className='h-4 w-4 text-emerald-600 dark:text-emerald-500' />
               <span>No credit card required</span>
             </div>
             <div className='flex items-center gap-2'>
-              <Check className='h-4 w-4 text-emerald-500' />
+              <Check className='h-4 w-4 text-emerald-600 dark:text-emerald-500' />
               <span>Free forever</span>
             </div>
             <div className='flex items-center gap-2'>
-              <Check className='h-4 w-4 text-emerald-500' />
+              <Check className='h-4 w-4 text-emerald-600 dark:text-emerald-500' />
               <span>Takes 30 seconds</span>
             </div>
           </div>

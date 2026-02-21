@@ -90,15 +90,15 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
 
   return (
     <div className='flex flex-wrap items-center gap-2'>
-      <div className='flex items-center gap-2 rounded-lg border border-slate-700 bg-slate-800/50 p-1'>
+      <div className='flex items-center gap-2 rounded-lg border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-800/50 p-1 shadow-sm dark:shadow-none'>
         {presetRanges.map((preset) => (
           <button
             key={preset.label}
             onClick={() => handlePresetClick(preset)}
             className={`rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
               selectedRange.label === preset.label
-                ? 'bg-slate-700 text-white shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-white shadow-sm'
+                : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
             }`}
           >
             {preset.label}
@@ -108,8 +108,8 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
           onClick={() => setShowCustom(!showCustom)}
           className={`relative flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium transition-all ${
             showCustom || selectedRange.label === 'Custom Range'
-              ? 'bg-slate-700 text-white shadow-sm'
-              : 'text-slate-400 hover:text-slate-200'
+              ? 'bg-gray-100 dark:bg-slate-700 text-gray-900 dark:text-white shadow-sm'
+              : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-slate-200'
           }`}
         >
           <Calendar className='h-4 w-4' />
@@ -126,15 +126,15 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
             type='date'
             value={customStart}
             onChange={(e) => setCustomStart(e.target.value)}
-            className='rounded-md border border-slate-700 bg-slate-900 px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50'
+            className='rounded-md border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-1.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 shadow-sm dark:shadow-none'
             required
           />
-          <span className='text-slate-500'>-</span>
+          <span className='text-gray-400 dark:text-slate-500'>-</span>
           <input
             type='date'
             value={customEnd}
             onChange={(e) => setCustomEnd(e.target.value)}
-            className='rounded-md border border-slate-700 bg-slate-900 px-3 py-1.5 text-sm text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50'
+            className='rounded-md border border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900 px-3 py-1.5 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50 shadow-sm dark:shadow-none'
             required
           />
           <button
