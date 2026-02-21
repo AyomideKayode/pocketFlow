@@ -45,7 +45,8 @@ const educationTopics: EducationTopic[] = [
   {
     id: 'budgeting',
     title: 'Budgeting Basics',
-    description: 'Master the fundamentals of creating and maintaining a budget to reach your goals.',
+    description:
+      'Master the fundamentals of creating and maintaining a budget to reach your goals.',
     icon: Wallet,
     tips: [
       'Start with the 50/30/20 rule: 50% needs, 30% wants, 20% savings',
@@ -58,7 +59,8 @@ const educationTopics: EducationTopic[] = [
   {
     id: 'emergency-fund',
     title: 'Emergency Fund',
-    description: 'Build a safety net for unexpected life events. Why you need savings and how to get started.',
+    description:
+      'Build a safety net for unexpected life events. Why you need savings and how to get started.',
     icon: PiggyBankIcon,
     tips: [
       'Start small: Aim for 3-6 months of living expenses in your emergency fund',
@@ -281,7 +283,9 @@ export const Learn: React.FC = () => {
               <CheckCircle2 className='h-6 w-6 text-emerald-600 dark:text-emerald-500' />
             </div>
             <div>
-              <p className='font-medium text-gray-900 dark:text-white'>All clear!</p>
+              <p className='font-medium text-gray-900 dark:text-white'>
+                All clear!
+              </p>
               <p className='text-sm'>
                 No specific insights right now. Keep tracking your finances to
                 stay on top of things.
@@ -293,10 +297,11 @@ export const Learn: React.FC = () => {
             {insights.map((insight) => (
               <div
                 key={insight.id}
-                className={`rounded-xl border p-6 shadow-sm transition-all hover:shadow-md ${insight.level === 'attention'
-                  ? 'border-amber-200 dark:border-amber-500/50 bg-amber-50 dark:bg-amber-500/10'
-                  : 'border-blue-200 dark:border-blue-500/30 bg-blue-50 dark:bg-blue-500/10'
-                  }`}
+                className={`rounded-xl border p-6 shadow-sm transition-all hover:shadow-md ${
+                  insight.level === 'attention'
+                    ? 'border-amber-200 dark:border-amber-500/50 bg-amber-50 dark:bg-amber-500/10'
+                    : 'border-blue-200 dark:border-blue-500/30 bg-blue-50 dark:bg-blue-500/10'
+                }`}
               >
                 <div className='flex items-start gap-4'>
                   {insight.level === 'attention' ? (
@@ -306,10 +311,11 @@ export const Learn: React.FC = () => {
                   )}
                   <div>
                     <h3
-                      className={`font-semibold ${insight.level === 'attention'
-                        ? 'text-amber-800 dark:text-amber-500'
-                        : 'text-blue-800 dark:text-blue-400'
-                        }`}
+                      className={`font-semibold ${
+                        insight.level === 'attention'
+                          ? 'text-amber-800 dark:text-amber-500'
+                          : 'text-blue-800 dark:text-blue-400'
+                      }`}
                     >
                       {insight.title}
                     </h3>
@@ -349,7 +355,9 @@ export const Learn: React.FC = () => {
               <h3 className='mb-2 text-lg font-semibold text-gray-900 dark:text-white'>
                 {topic.title}
               </h3>
-              <p className='mb-4 text-sm text-gray-500 dark:text-slate-400'>{topic.description}</p>
+              <p className='mb-4 text-sm text-gray-500 dark:text-slate-400'>
+                {topic.description}
+              </p>
               <ul className='space-y-2'>
                 {topic.tips.map((tip, index) => (
                   <li
@@ -373,7 +381,8 @@ export const Learn: React.FC = () => {
             Additional Resources
           </h2>
           <p className='text-gray-600 dark:text-slate-400 max-w-2xl mx-auto'>
-            Continue your learning journey with recommended books, courses, and pro tips from experts.
+            Continue your learning journey with recommended books, courses, and
+            pro tips from experts.
           </p>
         </div>
 
@@ -381,7 +390,9 @@ export const Learn: React.FC = () => {
         <div className='space-y-4'>
           <div className='flex items-center gap-3'>
             <BookOpen className='h-5 w-5 text-blue-600 dark:text-blue-400' />
-            <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>Recommended Reading</h3>
+            <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>
+              Recommended Reading
+            </h3>
           </div>
           <div className='grid gap-3 md:grid-cols-3'>
             {additionalResources
@@ -391,9 +402,13 @@ export const Learn: React.FC = () => {
                   key={resource.id}
                   className='rounded-lg border border-blue-200 dark:border-blue-500/30 bg-blue-50 dark:bg-blue-500/5 p-4 hover:border-blue-300 dark:hover:border-blue-500/50 transition-colors'
                 >
-                  <h4 className='font-semibold text-gray-900 dark:text-white text-sm'>{resource.title}</h4>
+                  <h4 className='font-semibold text-gray-900 dark:text-white text-sm'>
+                    {resource.title}
+                  </h4>
                   {resource.description && (
-                    <p className='text-xs text-gray-500 dark:text-slate-400 mt-1'>{resource.description}</p>
+                    <p className='text-xs text-gray-500 dark:text-slate-400 mt-1'>
+                      {resource.description}
+                    </p>
                   )}
                 </div>
               ))}
@@ -404,7 +419,9 @@ export const Learn: React.FC = () => {
         <div className='space-y-4'>
           <div className='flex items-center gap-3'>
             <GraduationCap className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
-            <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>Online Courses</h3>
+            <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>
+              Online Courses
+            </h3>
           </div>
           <div className='grid gap-3 md:grid-cols-3'>
             {additionalResources
@@ -414,7 +431,9 @@ export const Learn: React.FC = () => {
                   key={resource.id}
                   className='rounded-lg border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50 dark:bg-emerald-500/5 p-4 hover:border-emerald-300 dark:hover:border-emerald-500/50 transition-colors'
                 >
-                  <h4 className='font-semibold text-gray-900 dark:text-white text-sm'>{resource.title}</h4>
+                  <h4 className='font-semibold text-gray-900 dark:text-white text-sm'>
+                    {resource.title}
+                  </h4>
                 </div>
               ))}
           </div>
@@ -424,7 +443,9 @@ export const Learn: React.FC = () => {
         <div className='space-y-4'>
           <div className='flex items-center gap-3'>
             <Lightbulb className='h-5 w-5 text-amber-500 dark:text-amber-400' />
-            <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>Pro Tips</h3>
+            <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>
+              Pro Tips
+            </h3>
           </div>
           <div className='grid gap-3 md:grid-cols-3'>
             {additionalResources
@@ -434,7 +455,9 @@ export const Learn: React.FC = () => {
                   key={resource.id}
                   className='rounded-lg border border-amber-200 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/5 p-4 hover:border-amber-300 dark:hover:border-amber-500/50 transition-colors'
                 >
-                  <h4 className='font-semibold text-gray-900 dark:text-white text-sm'>{resource.title}</h4>
+                  <h4 className='font-semibold text-gray-900 dark:text-white text-sm'>
+                    {resource.title}
+                  </h4>
                 </div>
               ))}
           </div>

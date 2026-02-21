@@ -6,19 +6,23 @@ export const Terms = () => {
     <div className='min-h-screen bg-white dark:bg-slate-950 text-gray-900 dark:text-slate-50 font-sans selection:bg-emerald-500/30 flex flex-col'>
       <LandingNavbar />
 
-      <main className='flex-grow pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative z-10'>
+      <main className='grow pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative z-10'>
         <div className='max-w-3xl mx-auto space-y-12'>
           {/* Header */}
           <div className='text-center space-y-4'>
             <h1 className='text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white'>
               Terms of Service
             </h1>
-            <p className='text-gray-500 dark:text-slate-400'>Last updated: February 2026</p>
+            <p className='text-gray-500 dark:text-slate-400'>
+              Last updated: February 2026
+            </p>
           </div>
 
           <div className='prose prose-gray dark:prose-invert prose-lg max-w-none text-gray-600 dark:text-slate-300 space-y-8'>
             <section>
-              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>Acceptance</h2>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
+                Acceptance
+              </h2>
               <p>By using PocketFlow, you agree to these terms.</p>
             </section>
 
@@ -131,7 +135,9 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>Changes</h2>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
+                Changes
+              </h2>
               <p>
                 These terms may evolve as the product grows. Continued use of
                 the service implies acceptance of the updated terms.
@@ -139,7 +145,9 @@ export const Terms = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>Contact</h2>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
+                Contact
+              </h2>
               <p>
                 Questions about the terms? Reach out via email at:{' '}
                 <a

@@ -69,7 +69,10 @@ export const FAQ = () => {
 
         <div className='grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-4'>
           {faqs.map((faq, index) => (
-            <div key={index} className='border-b border-gray-200 dark:border-slate-800'>
+            <div
+              key={index}
+              className='border-b border-gray-200 dark:border-slate-800'
+            >
               <button
                 onClick={() => toggleFAQ(index)}
                 className='w-full flex items-center justify-between py-6 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 group'

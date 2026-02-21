@@ -96,7 +96,9 @@ export const Goals = () => {
           <h1 className='text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
             Financial Goals
           </h1>
-          <p className='text-gray-500 dark:text-slate-400'>Track savings and financial targets.</p>
+          <p className='text-gray-500 dark:text-slate-400'>
+            Track savings and financial targets.
+          </p>
         </div>
         <button
           onClick={openAddModal}
@@ -146,13 +148,17 @@ export const Goals = () => {
               <div className='space-y-4'>
                 <div className='flex items-end justify-between'>
                   <div>
-                    <p className='text-xs text-gray-500 dark:text-slate-400 mb-1'>Saved</p>
+                    <p className='text-xs text-gray-500 dark:text-slate-400 mb-1'>
+                      Saved
+                    </p>
                     <p className='text-2xl font-bold text-emerald-600 dark:text-emerald-400'>
                       {format(goal.currentAmount)}
                     </p>
                   </div>
                   <div className='text-right'>
-                    <p className='text-xs text-gray-500 dark:text-slate-400 mb-1'>Target</p>
+                    <p className='text-xs text-gray-500 dark:text-slate-400 mb-1'>
+                      Target
+                    </p>
                     <p className='text-lg font-medium text-gray-900 dark:text-white'>
                       {format(goal.targetAmount)}
                     </p>
@@ -193,7 +199,9 @@ export const Goals = () => {
           <div className='p-3 rounded-full bg-gray-200 dark:bg-slate-800/50 mb-3'>
             <Target className='h-6 w-6 text-gray-400 dark:text-slate-500' />
           </div>
-          <h3 className='text-lg font-medium text-gray-900 dark:text-slate-200'>No Goals Yet</h3>
+          <h3 className='text-lg font-medium text-gray-900 dark:text-slate-200'>
+            No Goals Yet
+          </h3>
           <p className='text-gray-500 dark:text-slate-500 max-w-sm mt-1'>
             Create a savings target to track your progress.
           </p>

@@ -162,7 +162,9 @@ export const Transactions = () => {
         <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-5'>
           {/* Type */}
           <div className='space-y-1'>
-            <label className='text-xs text-gray-500 dark:text-slate-500'>Type</label>
+            <label className='text-xs text-gray-500 dark:text-slate-500'>
+              Type
+            </label>
             <select
               className={selectClass}
               value={filters.type}
@@ -176,7 +178,9 @@ export const Transactions = () => {
 
           {/* Category */}
           <div className='space-y-1'>
-            <label className='text-xs text-gray-500 dark:text-slate-500'>Category</label>
+            <label className='text-xs text-gray-500 dark:text-slate-500'>
+              Category
+            </label>
             <select
               className={selectClass}
               value={filters.category}
@@ -194,7 +198,9 @@ export const Transactions = () => {
 
           {/* Payment Method */}
           <div className='space-y-1'>
-            <label className='text-xs text-gray-500 dark:text-slate-500'>Payment Method</label>
+            <label className='text-xs text-gray-500 dark:text-slate-500'>
+              Payment Method
+            </label>
             <select
               className={selectClass}
               value={filters.paymentMethod}
@@ -212,7 +218,9 @@ export const Transactions = () => {
 
           {/* Date Range (Simplified as inputs for now, reusing DateRangeFilter logic might require context refactor) */}
           <div className='space-y-1'>
-            <label className='text-xs text-gray-500 dark:text-slate-500'>Start Date</label>
+            <label className='text-xs text-gray-500 dark:text-slate-500'>
+              Start Date
+            </label>
             <input
               type='date'
               className={selectClass}
@@ -221,7 +229,9 @@ export const Transactions = () => {
             />
           </div>
           <div className='space-y-1'>
-            <label className='text-xs text-gray-500 dark:text-slate-500'>End Date</label>
+            <label className='text-xs text-gray-500 dark:text-slate-500'>
+              End Date
+            </label>
             <input
               type='date'
               className={selectClass}
@@ -233,7 +243,9 @@ export const Transactions = () => {
 
         <div className='mt-4 pt-4 border-t border-gray-200 dark:border-slate-800 flex items-center justify-end gap-4'>
           <div className='flex items-center gap-2'>
-            <label className='text-xs text-gray-500 dark:text-slate-500'>Sort By:</label>
+            <label className='text-xs text-gray-500 dark:text-slate-500'>
+              Sort By:
+            </label>
             <select
               className={cn(selectClass, 'w-32')}
               value={filters.sortBy}
@@ -262,7 +274,9 @@ export const Transactions = () => {
       <div className='relative min-h-[200px]'>
         {loading && (
           <div className='absolute inset-0 z-10 flex items-center justify-center bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm rounded-xl'>
-            <div className='animate-pulse text-emerald-600 dark:text-emerald-500'>Loading...</div>
+            <div className='animate-pulse text-emerald-600 dark:text-emerald-500'>
+              Loading...
+            </div>
           </div>
         )}
         <FinancialRecordList data={records} /> {/* Explicitly pass records */}
@@ -286,7 +300,9 @@ export const Transactions = () => {
               {Math.min(pagination.page * pagination.limit, pagination.total)}
             </span>{' '}
             of{' '}
-            <span className='font-medium text-gray-900 dark:text-white'>{pagination.total}</span>{' '}
+            <span className='font-medium text-gray-900 dark:text-white'>
+              {pagination.total}
+            </span>{' '}
             results
           </div>
           <div className='flex items-center gap-2'>
@@ -325,7 +341,9 @@ export const Transactions = () => {
         <div className='fixed inset-0 z-[60] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4'>
           <div className='w-full max-w-lg rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-2xl animate-in zoom-in-95 duration-200'>
             <div className='mb-4 flex items-center justify-between'>
-              <h2 className='text-xl font-bold text-gray-900 dark:text-white'>Add New Record</h2>
+              <h2 className='text-xl font-bold text-gray-900 dark:text-white'>
+                Add New Record
+              </h2>
               <button
                 onClick={() => setShowAddForm(false)}
                 className='text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white transition-colors'

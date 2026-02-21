@@ -149,8 +149,12 @@ export const Settings = () => {
   return (
     <div className='mx-auto max-w-4xl space-y-8 p-6'>
       <div>
-        <h1 className='text-3xl font-bold text-gray-900 dark:text-slate-50'>Settings</h1>
-        <p className='text-gray-500 dark:text-slate-400'>Manage your profile and preferences.</p>
+        <h1 className='text-3xl font-bold text-gray-900 dark:text-slate-50'>
+          Settings
+        </h1>
+        <p className='text-gray-500 dark:text-slate-400'>
+          Manage your profile and preferences.
+        </p>
       </div>
 
       <div className='grid gap-8 md:grid-cols-3'>
@@ -160,7 +164,9 @@ export const Settings = () => {
           <div className='rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 p-6 backdrop-blur-sm shadow-sm dark:shadow-none'>
             <div className='flex items-center gap-2 mb-6'>
               <User className='h-5 w-5 text-emerald-600 dark:text-emerald-500' />
-              <h2 className='text-xl font-semibold text-gray-900 dark:text-slate-100'>Profile</h2>
+              <h2 className='text-xl font-semibold text-gray-900 dark:text-slate-100'>
+                Profile
+              </h2>
             </div>
 
             <div className='flex flex-col md:flex-row gap-8 items-start'>
@@ -232,7 +238,8 @@ export const Settings = () => {
                     />
                   </div>
                   <p className='text-xs text-gray-500 dark:text-slate-500'>
-                    Provide a direct link to an image or upload one above. (&lt; 5mb)
+                    Provide a direct link to an image or upload one above. (&lt;
+                    5mb)
                   </p>
                 </div>
               </form>

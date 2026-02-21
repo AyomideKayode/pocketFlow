@@ -100,7 +100,9 @@ const EditableCell: React.FC<EditableCellProps> = ({
       ) : renderItem ? (
         renderItem(value)
       ) : (
-        <span className='text-gray-700 dark:text-slate-300'>{String(value)}</span>
+        <span className='text-gray-700 dark:text-slate-300'>
+          {String(value)}
+        </span>
       )}
     </div>
   );
@@ -194,7 +196,9 @@ export const FinancialRecordList = ({
                 <div
                   className={clsx(
                     'font-medium',
-                    type === 'income' ? 'text-emerald-600 dark:text-emerald-500' : 'text-rose-600 dark:text-rose-500',
+                    type === 'income'
+                      ? 'text-emerald-600 dark:text-emerald-500'
+                      : 'text-rose-600 dark:text-rose-500',
                   )}
                 >
                   {type === 'income' ? '+' : '-'}
@@ -228,7 +232,9 @@ export const FinancialRecordList = ({
             updateRecord={updateCellRecord}
             editable={true}
             renderItem={(val) => (
-              <span className='text-xs text-gray-500 dark:text-slate-500'>{String(val)}</span>
+              <span className='text-xs text-gray-500 dark:text-slate-500'>
+                {String(val)}
+              </span>
             )}
           />
         ),
@@ -288,9 +294,9 @@ export const FinancialRecordList = ({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
                   </th>
                 ))}
               </tr>

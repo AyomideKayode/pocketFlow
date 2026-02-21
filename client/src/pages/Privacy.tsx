@@ -6,19 +6,23 @@ export const Privacy = () => {
     <div className='min-h-screen bg-white dark:bg-slate-950 text-gray-900 dark:text-slate-50 font-sans selection:bg-emerald-500/30 flex flex-col'>
       <LandingNavbar />
 
-      <main className='flex-grow pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative z-10'>
+      <main className='grow pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative z-10'>
         <div className='max-w-3xl mx-auto space-y-12'>
           {/* Header */}
           <div className='text-center space-y-4'>
             <h1 className='text-4xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white'>
               Privacy Policy
             </h1>
-            <p className='text-gray-500 dark:text-slate-400'>Last updated: February 2026</p>
+            <p className='text-gray-500 dark:text-slate-400'>
+              Last updated: February 2026
+            </p>
           </div>
 
           <div className='prose prose-gray dark:prose-invert prose-lg max-w-none text-gray-600 dark:text-slate-300 space-y-8'>
             <section>
-              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>Overview</h2>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
+                Overview
+              </h2>
               <p>
                 PocketFlow is built to help individuals understand their
                 finances while keeping their information private and under their
@@ -75,7 +79,9 @@ export const Privacy = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>Security</h2>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
+                Security
+              </h2>
               <p>
                 We apply industry-standard security practices to protect stored
                 information. No system is perfect, but safeguarding your data is
@@ -129,14 +135,18 @@ export const Privacy = () => {
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>Changes</h2>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
+                Changes
+              </h2>
               <p>
                 If this policy changes, updates will be reflected on this page.
               </p>
             </section>
 
             <section>
-              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>Contact</h2>
+              <h2 className='text-2xl font-bold text-gray-900 dark:text-white mb-4'>
+                Contact
+              </h2>
               <p>
                 Questions? Reach out at:{' '}
                 <a

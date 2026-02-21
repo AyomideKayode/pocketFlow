@@ -164,8 +164,9 @@ const ShowcaseHighlight = ({ config }: { config: ShowcaseHighlightConfig }) => {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once: true }}
         transition={{ duration: 0.5, delay }}
-        className={`absolute ${transformClass} border-2 border-emerald-400 rounded-lg pointer-events-none z-10 shadow-[0_0_15px_rgba(52,211,153,0.5)] ${size || ''
-          }`}
+        className={`absolute ${transformClass} border-2 border-emerald-400 rounded-lg pointer-events-none z-10 shadow-[0_0_15px_rgba(52,211,153,0.5)] ${
+          size || ''
+        }`}
         style={style}
       >
         <span className='absolute inset-0 rounded-lg animate-ping opacity-75 bg-emerald-400/30' />
@@ -235,7 +236,9 @@ export default function ProductShowcase() {
         <h2 className='text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6'>
           Control Your Money.
           <br />
-          <span className='text-emerald-600 dark:text-emerald-400'>Simply.</span>
+          <span className='text-emerald-600 dark:text-emerald-400'>
+            Simply.
+          </span>
         </h2>
         <p className='text-lg text-gray-600 dark:text-slate-300 max-w-2xl mx-auto'>
           Five features designed to make financial management effortless.
@@ -251,8 +254,9 @@ export default function ProductShowcase() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: index * 0.1 }}
             viewport={{ once: true, margin: '-100px' }}
-            className={`flex flex-col ${card.position === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'
-              } gap-8 lg:gap-16 items-center`}
+            className={`flex flex-col ${
+              card.position === 'right' ? 'lg:flex-row-reverse' : 'lg:flex-row'
+            } gap-8 lg:gap-16 items-center`}
           >
             {/* Text content */}
             <div className='flex-1 flex flex-col justify-center'>
@@ -324,15 +328,21 @@ export default function ProductShowcase() {
         {/* Trust signals */}
         <div className='grid grid-cols-2 sm:flex sm:flex-row gap-4 text-sm text-gray-500 dark:text-slate-400 justify-center'>
           <div className='flex items-center gap-2'>
-            <span className='text-emerald-600 dark:text-emerald-400 font-semibold'>✓</span>
+            <span className='text-emerald-600 dark:text-emerald-400 font-semibold'>
+              ✓
+            </span>
             <span>Free forever</span>
           </div>
           <div className='flex items-center gap-2'>
-            <span className='text-emerald-600 dark:text-emerald-400 font-semibold'>✓</span>
+            <span className='text-emerald-600 dark:text-emerald-400 font-semibold'>
+              ✓
+            </span>
             <span>No credit card required</span>
           </div>
           <div className='flex items-center gap-2'>
-            <span className='text-emerald-600 dark:text-emerald-400 font-semibold'>✓</span>
+            <span className='text-emerald-600 dark:text-emerald-400 font-semibold'>
+              ✓
+            </span>
             <span>Your data stays private</span>
           </div>
         </div>

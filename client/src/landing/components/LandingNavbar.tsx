@@ -85,15 +85,15 @@ export const LandingNavbar = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="flex items-center gap-4 md:hidden">
-             <ThemeToggle />
-             <button
-                className='text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white'
-                onClick={() => setIsMobileMenuOpen(true)}
-                aria-label='Open menu'
-              >
-                <Menu className='h-6 w-6' />
-              </button>
+          <div className='flex items-center gap-4 md:hidden'>
+            <ThemeToggle />
+            <button
+              className='text-gray-600 dark:text-slate-300 hover:text-gray-900 dark:hover:text-white'
+              onClick={() => setIsMobileMenuOpen(true)}
+              aria-label='Open menu'
+            >
+              <Menu className='h-6 w-6' />
+            </button>
           </div>
         </div>
       </nav>

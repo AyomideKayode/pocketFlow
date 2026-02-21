@@ -161,7 +161,9 @@ export const Dashboard = () => {
     <div className='flex h-full min-h-[300px] w-full items-center justify-center rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900/50 backdrop-blur-sm shadow-sm dark:shadow-none'>
       <div className='flex flex-col items-center gap-2'>
         <Loader2 className='h-8 w-8 animate-spin text-gray-400 dark:text-slate-500' />
-        <span className='text-sm text-gray-500 dark:text-slate-500'>Loading chart...</span>
+        <span className='text-sm text-gray-500 dark:text-slate-500'>
+          Loading chart...
+        </span>
       </div>
     </div>
   );
@@ -224,7 +226,9 @@ export const Dashboard = () => {
               <TrendingUp className='h-6 w-6 text-emerald-600 dark:text-emerald-500' />
             </div>
             <div>
-              <p className='text-sm font-medium text-gray-500 dark:text-slate-400'>Total Income</p>
+              <p className='text-sm font-medium text-gray-500 dark:text-slate-400'>
+                Total Income
+              </p>
               <p className='text-2xl font-bold text-emerald-600 dark:text-emerald-500'>
                 {format(totalIncome)}
               </p>
@@ -258,7 +262,9 @@ export const Dashboard = () => {
               />
             </div>
             <div>
-              <p className='text-sm font-medium text-gray-500 dark:text-slate-400'>Net Balance</p>
+              <p className='text-sm font-medium text-gray-500 dark:text-slate-400'>
+                Net Balance
+              </p>
               <p
                 className={`text-2xl font-bold ${totalMonthlyBalance >= 0 ? 'text-indigo-600 dark:text-indigo-500' : 'text-orange-600 dark:text-orange-500'}`}
               >

@@ -154,7 +154,9 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
       <div className='grid gap-4 md:grid-cols-2'>
         {/* Amount */}
         <div className='space-y-2'>
-          <label className='text-xs font-medium text-gray-500 dark:text-slate-400'>Amount</label>
+          <label className='text-xs font-medium text-gray-500 dark:text-slate-400'>
+            Amount
+          </label>
           <div className='relative'>
             <span className='absolute left-3 top-2 flex h-5 w-5 items-center justify-center text-sm font-bold text-gray-400 dark:text-slate-500'>
               {currencySymbol}
@@ -173,7 +175,9 @@ export const FinancialRecordForm: React.FC<FinancialRecordFormProps> = ({
 
         {/* Category */}
         <div className='space-y-2'>
-          <label className='text-xs font-medium text-gray-500 dark:text-slate-400'>Category</label>
+          <label className='text-xs font-medium text-gray-500 dark:text-slate-400'>
+            Category
+          </label>
           <div className='relative'>
             <Tag className='absolute left-3 top-2.5 h-4 w-4 text-gray-400 dark:text-slate-500' />
             <select

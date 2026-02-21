@@ -8,7 +8,7 @@ export const About = () => {
     <div className='min-h-screen bg-white dark:bg-slate-950 text-gray-900 dark:text-slate-50 font-sans selection:bg-emerald-500/30 flex flex-col'>
       <LandingNavbar />
 
-      <main className='flex-grow pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative z-10'>
+      <main className='grow pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative z-10'>
         <div className='max-w-3xl mx-auto space-y-16'>
           {/* Header */}
           <motion.div
@@ -28,7 +28,9 @@ export const About = () => {
 
           {/* The Story */}
           <section className='space-y-6'>
-            <h2 className='text-2xl font-bold text-emerald-600 dark:text-emerald-400'>The Story</h2>
+            <h2 className='text-2xl font-bold text-emerald-600 dark:text-emerald-400'>
+              The Story
+            </h2>
             <div className='prose prose-gray dark:prose-invert prose-lg text-gray-600 dark:text-slate-300 leading-relaxed'>
               <p>
                 Development began in late 2025, sparked by a simple,
@@ -59,7 +61,9 @@ export const About = () => {
 
           {/* The Mission */}
           <section className='space-y-6'>
-            <h2 className='text-2xl font-bold text-emerald-600 dark:text-emerald-400'>The Mission</h2>
+            <h2 className='text-2xl font-bold text-emerald-600 dark:text-emerald-400'>
+              The Mission
+            </h2>
             <div className='prose prose-gray dark:prose-invert prose-lg text-gray-600 dark:text-slate-300 leading-relaxed'>
               <p>
                 PocketFlow is designed to give you visibility without intrusion.
@@ -94,7 +98,9 @@ export const About = () => {
                   </strong>
                 </li>
                 <li>
-                  <strong className='text-gray-900 dark:text-white'>Privacy by default</strong>
+                  <strong className='text-gray-900 dark:text-white'>
+                    Privacy by default
+                  </strong>
                 </li>
                 <li>
                   <strong className='text-gray-900 dark:text-white'>
@@ -102,7 +108,9 @@ export const About = () => {
                   </strong>
                 </li>
                 <li>
-                  <strong className='text-gray-900 dark:text-white'>Simple before powerful</strong>
+                  <strong className='text-gray-900 dark:text-white'>
+                    Simple before powerful
+                  </strong>
                 </li>
               </ul>
             </div>
