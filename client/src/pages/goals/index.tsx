@@ -258,7 +258,7 @@ export const Goals = () => {
                   onChange={(e) => setLinkedCategory(e.target.value)}
                 >
                   <option value=''>None (Manual Updates)</option>
-                  <optgroup label='Income Categories'>
+                  <optgroup label='Savings Categories'>
                     {SAVINGS_CATEGORIES.map((cat) => (
                       <option key={cat} value={cat}>
                         {cat}
