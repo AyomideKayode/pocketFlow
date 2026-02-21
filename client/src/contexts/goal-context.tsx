@@ -57,7 +57,6 @@ export const GoalsProvider = ({ children }: { children: React.ReactNode }) => {
         if (response.ok) {
           const data: Goal[] = await response.json();
           setGoals(data);
-          console.log('Goals fetched:', data);
 
           // Check for progress updates and completions
           data.forEach((goal) => {
