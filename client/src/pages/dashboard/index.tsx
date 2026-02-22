@@ -172,12 +172,14 @@ export const Dashboard = () => {
     // Build data array
     const data = [];
 
-    // Add income
-    data.push({
-      name: 'Income',
-      value: totalIncome,
-      color: '#10b981', // Emerald
-    });
+    // Add income (only if non-zero)
+    if (totalIncome > 0) {
+      data.push({
+        name: 'Income',
+        value: totalIncome,
+        color: '#10b981', // Emerald
+      });
+    }
 
     // Add top 5 expense categories with graduated colors
     const expenseColors = [
