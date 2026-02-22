@@ -3,11 +3,7 @@ import { useGoals, type Goal } from '../../contexts/goal-context';
 import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 import { Plus, Trash2, Edit2, Target, X, Calendar } from 'lucide-react';
 
-const SAVINGS_CATEGORIES = [
-  'Savings',
-  'Investments',
-  'Emergency Fund',
-];
+const SAVINGS_CATEGORIES = ['Savings', 'Investments', 'Emergency Fund'];
 
 export const Goals = () => {
   const { goals, addGoal, updateGoal, deleteGoal } = useGoals();

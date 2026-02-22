@@ -36,7 +36,6 @@ const calculateGoalProgress = async (userId: string, goal: any) => {
     const totalIncome = result[0]?.totalIncome || 0;
     const totalExpense = result[0]?.totalExpense || 0;
     currentAmount = totalIncome - totalExpense;
-
   }
 
   return currentAmount;
@@ -160,11 +159,16 @@ export const createGoal = async (data: any) => {
 };
 
 export const updateGoal = async (id: string, data: any) => {
-  const updatedGoal = await GoalModel.findByIdAndUpdate(id, data, { new: true });
+  const updatedGoal = await GoalModel.findByIdAndUpdate(id, data, {
+    new: true,
+  });
 
   if (updatedGoal) {
-    checkAndNotifyGoalAchieved(updatedGoal.userId, updatedGoal._id.toString()).catch(
-      (err) => console.error('[GOAL] Error checking goal on update:', err),
+    checkAndNotifyGoalAchieved(
+      updatedGoal.userId,
+      updatedGoal._id.toString(),
+    ).catch((err) =>
+      console.error('[GOAL] Error checking goal on update:', err),
     );
   }
 

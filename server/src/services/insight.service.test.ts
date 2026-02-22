@@ -105,10 +105,12 @@ describe('Insight Service', () => {
 
   describe('Subscription Check Insight', () => {
     it('should generate info insight if 5+ recurring bills exist', async () => {
-      const bills = Array(5).fill(null).map((_, i) => ({
-        _id: `b${i}`,
-        isRecurring: true,
-      }));
+      const bills = Array(5)
+        .fill(null)
+        .map((_, i) => ({
+          _id: `b${i}`,
+          isRecurring: true,
+        }));
 
       mockBillFind.mockResolvedValue(bills);
 
@@ -120,10 +122,12 @@ describe('Insight Service', () => {
     });
 
     it('should NOT generate insight if fewer than 5 recurring bills', async () => {
-      const bills = Array(4).fill(null).map((_, i) => ({
-        _id: `b${i}`,
-        isRecurring: true,
-      }));
+      const bills = Array(4)
+        .fill(null)
+        .map((_, i) => ({
+          _id: `b${i}`,
+          isRecurring: true,
+        }));
       // Add a non-recurring bill
       bills.push({ _id: 'b5', isRecurring: false });
 
