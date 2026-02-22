@@ -6,14 +6,18 @@ import { BrowserRouter } from 'react-router-dom';
 // Mocks
 vi.mock('../../contexts/auth-context', () => ({
   useAuth: () => ({
-    user: { uid: 'user-123', displayName: 'Test User' },
+    user: {
+      uid: 'user-123',
+      displayName: 'Test User',
+      getIdToken: vi.fn().mockResolvedValue('mock-token')
+    },
   }),
 }));
 
 const mockRecords = [
-  { _id: '1', amount: 100, type: 'income', date: new Date().toISOString() },
-  { _id: '2', amount: 50, type: 'expense', date: new Date().toISOString() },
-  { _id: '3', amount: 20, type: 'expense', date: new Date().toISOString() },
+  { _id: '1', amount: 100, type: 'income', date: new Date().toISOString(), category: 'Salary' },
+  { _id: '2', amount: 50, type: 'expense', date: new Date().toISOString(), category: 'Food' },
+  { _id: '3', amount: 20, type: 'expense', date: new Date().toISOString(), category: 'Transport' },
 ];
 
 vi.mock('../../contexts/financial-record-context', () => ({
@@ -54,8 +58,8 @@ vi.mock('../../hooks/useBills', () => ({
 vi.mock('../../components/charts/TrendLineChart', () => ({
   TrendLineChart: () => <div>TrendLineChart</div>,
 }));
-vi.mock('../../components/charts/IncomeExpenseChart', () => ({
-  IncomeExpenseChart: () => <div>IncomeExpenseChart</div>,
+vi.mock('../../components/charts/EnhancedIncomeExpenseChart', () => ({
+  EnhancedIncomeExpenseChart: () => <div>EnhancedIncomeExpenseChart</div>,
 }));
 vi.mock('../../components/charts/CategoryBreakdownChart', () => ({
   CategoryBreakdownChart: () => <div>CategoryBreakdownChart</div>,
@@ -63,10 +67,29 @@ vi.mock('../../components/charts/CategoryBreakdownChart', () => ({
 vi.mock('./financialRecordList', () => ({
   FinancialRecordList: () => <div>FinancialRecordList</div>,
 }));
+vi.mock('../../components/DailyTip', () => ({
+  DailyTip: () => <div>DailyTip</div>,
+}));
+
+// Mock fetch
+global.fetch = vi.fn(() =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve([]),
+  })
+) as unknown as typeof fetch;
 
 describe('Dashboard', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    (global.fetch as unknown as ReturnType<typeof vi.fn>).mockClear();
+    // Default mock implementation
+    (global.fetch as unknown as ReturnType<typeof vi.fn>).mockImplementation(() =>
+        Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve([]),
+        })
+      );
   });
 
   it('should calculate total income correctly', async () => {
@@ -76,9 +99,6 @@ describe('Dashboard', () => {
       </BrowserRouter>
     );
 
-    // Income is 100
-    // "Total Income" text is in label, amount is in value.
-    // The value should be $100
     expect(screen.getByText('Total Income')).toBeInTheDocument();
     expect(screen.getByText('$100')).toBeInTheDocument();
   });
@@ -90,7 +110,6 @@ describe('Dashboard', () => {
       </BrowserRouter>
     );
 
-    // Expenses = 50 + 20 = 70
     expect(screen.getByText('Total Expenses')).toBeInTheDocument();
     expect(screen.getByText('$70')).toBeInTheDocument();
   });
@@ -102,7 +121,6 @@ describe('Dashboard', () => {
       </BrowserRouter>
     );
 
-    // Balance = 100 - 70 = 30
     expect(screen.getByText('Net Balance')).toBeInTheDocument();
     expect(screen.getByText('$30')).toBeInTheDocument();
   });
