@@ -66,6 +66,13 @@ export const Dashboard = () => {
 
   const { overdue, loading: billsLoading } = useBills();
 
+  const firstName = useMemo(() => {
+    if (!user?.displayName) return '';
+    const trimmed = user.displayName.trim();
+    if (!trimmed) return '';
+    return trimmed.split(' ')[0];
+  }, [user?.displayName]);
+
   // Ensure we have all records for charts
   useEffect(() => {
     fetchRecords();
@@ -178,7 +185,7 @@ export const Dashboard = () => {
       <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
         <div>
           <h1 className='text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
-            Welcome back{user?.displayName ? `, ${user.displayName.split(' ')[0]}` : ''}!
+            Welcome back{firstName ? `, ${firstName}` : ''}!
           </h1>
           <p className='text-gray-500 dark:text-slate-400'>
             Here's an overview of your financial health.
@@ -223,9 +230,9 @@ export const Dashboard = () => {
 
       {/* Quick Actions */}
       <div className='space-y-2'>
-        <h3 className='text-sm font-medium text-gray-500 dark:text-slate-400'>
+        <h2 className='text-sm font-medium text-gray-500 dark:text-slate-400'>
           Quick Actions
-        </h3>
+        </h2>
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3'>
           {/* Budget Action */}
           <button
@@ -238,9 +245,9 @@ export const Dashboard = () => {
                 <Target className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
               </div>
               <div className='flex-1 min-w-0'>
-                <h4 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
+                <h3 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
                   Set Budget
-                </h4>
+                </h3>
                 <p className='text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
                   Control spending by category
                 </p>
@@ -259,9 +266,9 @@ export const Dashboard = () => {
                 <Calendar className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
               </div>
               <div className='flex-1 min-w-0'>
-                <h4 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
+                <h3 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
                   Add Bill
-                </h4>
+                </h3>
                 <p className='text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
                   Track recurring payments
                 </p>
@@ -280,9 +287,9 @@ export const Dashboard = () => {
                 <Trophy className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
               </div>
               <div className='flex-1 min-w-0'>
-                <h4 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
+                <h3 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
                   Set Goal
-                </h4>
+                </h3>
                 <p className='text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
                   Save for something special
                 </p>
@@ -301,9 +308,9 @@ export const Dashboard = () => {
                 <BookOpen className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
               </div>
               <div className='flex-1 min-w-0'>
-                <h4 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
+                <h3 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
                   Learn
-                </h4>
+                </h3>
                 <p className='text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
                   Financial tips & insights
                 </p>

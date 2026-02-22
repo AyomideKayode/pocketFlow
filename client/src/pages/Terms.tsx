@@ -1,5 +1,6 @@
 import { LandingNavbar } from '../landing/components/LandingNavbar';
 import { Footer } from '../landing/components/Footer';
+import { APP_CONSTANTS } from '../config/constants';
 
 export const Terms = () => {
   return (
@@ -14,7 +15,7 @@ export const Terms = () => {
               Terms of Service
             </h1>
             <p className='text-gray-500 dark:text-slate-400'>
-              Last updated: February 2026
+              Last updated: {APP_CONSTANTS.LAST_UPDATED}
             </p>
           </div>
 
