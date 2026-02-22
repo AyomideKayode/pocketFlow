@@ -25,6 +25,10 @@ import {
   Plus,
   Loader2,
   Upload,
+  Target,
+  Calendar,
+  Trophy,
+  BookOpen,
 } from 'lucide-react';
 import { useToast } from '../../contexts/toast-context';
 import { CsvImportModal } from '../../components/CsvImportModal';
@@ -174,9 +178,8 @@ export const Dashboard = () => {
       <div className='flex flex-col gap-4 md:flex-row md:items-center md:justify-between'>
         <div>
           <h1 className='text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
-            Dashboard
+            Welcome back{user?.displayName ? `, ${user.displayName.split(' ')[0]}` : ''}!
           </h1>
-          <p className='text-gray-500 dark:text-slate-400'>Welcome back!</p>
           <p className='text-gray-500 dark:text-slate-400'>
             Here's an overview of your financial health.
           </p>
@@ -217,6 +220,98 @@ export const Dashboard = () => {
       {!billsLoading && overdue.length > 0 && (
         <OverdueWarning count={overdue.length} />
       )}
+
+      {/* Quick Actions */}
+      <div className='space-y-2'>
+        <h3 className='text-sm font-medium text-gray-500 dark:text-slate-400'>
+          Quick Actions
+        </h3>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3'>
+          {/* Budget Action */}
+          <button
+            onClick={() => navigate('/budgets')}
+            aria-label='Set a new budget'
+            className='group relative overflow-hidden rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 text-left transition-all hover:border-emerald-500/50 hover:shadow-lg dark:hover:shadow-emerald-900/20 hover:-translate-y-0.5'
+          >
+            <div className='flex items-start gap-3'>
+              <div className='rounded-lg bg-emerald-500/10 p-2.5 group-hover:bg-emerald-500/20 transition-colors'>
+                <Target className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
+              </div>
+              <div className='flex-1 min-w-0'>
+                <h4 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
+                  Set Budget
+                </h4>
+                <p className='text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
+                  Control spending by category
+                </p>
+              </div>
+            </div>
+          </button>
+
+          {/* Bill Action */}
+          <button
+            onClick={() => navigate('/bills')}
+            aria-label='Add a new bill'
+            className='group relative overflow-hidden rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 text-left transition-all hover:border-emerald-500/50 hover:shadow-lg dark:hover:shadow-emerald-900/20 hover:-translate-y-0.5'
+          >
+            <div className='flex items-start gap-3'>
+              <div className='rounded-lg bg-emerald-500/10 p-2.5 group-hover:bg-emerald-500/20 transition-colors'>
+                <Calendar className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
+              </div>
+              <div className='flex-1 min-w-0'>
+                <h4 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
+                  Add Bill
+                </h4>
+                <p className='text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
+                  Track recurring payments
+                </p>
+              </div>
+            </div>
+          </button>
+
+          {/* Goal Action */}
+          <button
+            onClick={() => navigate('/goals')}
+            aria-label='Set a new goal'
+            className='group relative overflow-hidden rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 text-left transition-all hover:border-emerald-500/50 hover:shadow-lg dark:hover:shadow-emerald-900/20 hover:-translate-y-0.5'
+          >
+            <div className='flex items-start gap-3'>
+              <div className='rounded-lg bg-emerald-500/10 p-2.5 group-hover:bg-emerald-500/20 transition-colors'>
+                <Trophy className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
+              </div>
+              <div className='flex-1 min-w-0'>
+                <h4 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
+                  Set Goal
+                </h4>
+                <p className='text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
+                  Save for something special
+                </p>
+              </div>
+            </div>
+          </button>
+
+          {/* Learn Action */}
+          <button
+            onClick={() => navigate('/learn')}
+            aria-label='Go to learn page'
+            className='group relative overflow-hidden rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 text-left transition-all hover:border-emerald-500/50 hover:shadow-lg dark:hover:shadow-emerald-900/20 hover:-translate-y-0.5'
+          >
+            <div className='flex items-start gap-3'>
+              <div className='rounded-lg bg-emerald-500/10 p-2.5 group-hover:bg-emerald-500/20 transition-colors'>
+                <BookOpen className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
+              </div>
+              <div className='flex-1 min-w-0'>
+                <h4 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
+                  Learn
+                </h4>
+                <p className='text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
+                  Financial tips & insights
+                </p>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
 
       {/* Stats Grid */}
       <div className='grid gap-4 md:grid-cols-3'>
