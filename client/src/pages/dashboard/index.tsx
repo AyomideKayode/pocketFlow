@@ -36,7 +36,6 @@ import { CsvImportModal } from '../../components/CsvImportModal';
 import { useBills } from '../../hooks/useBills';
 import { OverdueWarning } from '../../components/bills/OverdueWarning';
 import { DailyTip } from '../../components/DailyTip';
-import { EnhancedIncomeExpenseChart } from '../../components/charts/EnhancedIncomeExpenseChart';
 
 // Lazy load chart components for performance
 const TrendLineChart = lazy(() =>
@@ -47,6 +46,11 @@ const TrendLineChart = lazy(() =>
 const CategoryBreakdownChart = lazy(() =>
   import('../../components/charts/CategoryBreakdownChart').then((module) => ({
     default: module.CategoryBreakdownChart,
+  })),
+);
+const EnhancedIncomeExpenseChart = lazy(() =>
+  import('../../components/charts/EnhancedIncomeExpenseChart').then((module) => ({
+    default: module.EnhancedIncomeExpenseChart,
   })),
 );
 
@@ -81,8 +85,12 @@ export const Dashboard = () => {
 
   // Fetch insights
   useEffect(() => {
+    if (!user) return;
+
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const fetchInsights = async () => {
-      if (!user) return;
       try {
         const token = await user.getIdToken();
         const response = await fetch(`${API_BASE_URL}/insights`, {
@@ -90,7 +98,9 @@ export const Dashboard = () => {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
+          signal,
         });
+
         if (response.ok) {
           const data = await response.json();
           // Transform server data to client expected format
@@ -107,15 +117,23 @@ export const Dashboard = () => {
               action,
             };
           });
-          setInsights(transformedInsights);
+
+          if (!signal.aborted) {
+            setInsights(transformedInsights);
+          }
         }
-      } catch (error) {
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name === 'AbortError') return;
         console.error('Error fetching insights:', error);
       }
     };
 
     fetchInsights();
-  }, [user]);
+
+    return () => {
+      controller.abort();
+    };
+  }, [user?.uid]);
 
   const filteredRecords = useMemo(() => {
     return filterRecordsByDateRange(records, dateRange);
@@ -521,7 +539,9 @@ export const Dashboard = () => {
             Financial Overview
           </h2>
           <div className="h-[300px]">
-            <EnhancedIncomeExpenseChart data={topSpendingData} />
+            <Suspense fallback={<ChartLoading />}>
+              <EnhancedIncomeExpenseChart data={topSpendingData} />
+            </Suspense>
           </div>
         </div>
       </div>

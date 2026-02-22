@@ -8,8 +8,6 @@ interface EnhancedIncomeExpenseChartProps {
 export const EnhancedIncomeExpenseChart = ({ data }: EnhancedIncomeExpenseChartProps) => {
   const { format } = useCurrencyFormatter();
 
-  const total = data.reduce((sum, item) => sum + item.value, 0);
-
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <PieChart>
@@ -22,7 +20,7 @@ export const EnhancedIncomeExpenseChart = ({ data }: EnhancedIncomeExpenseChartP
           paddingAngle={2}
           dataKey='value'
           label={({ name, percent }) =>
-            `${name}: ${(percent * 100).toFixed(1)}%`
+            `${name}: ${((percent || 0) * 100).toFixed(1)}%`
           }
           labelLine={{ stroke: '#6b7280', strokeWidth: 1 }}
         >
@@ -31,7 +29,7 @@ export const EnhancedIncomeExpenseChart = ({ data }: EnhancedIncomeExpenseChartP
           ))}
         </Pie>
         <Tooltip
-          formatter={(value: number) => format(value)}
+          formatter={(value: number | undefined) => format(value || 0)}
           contentStyle={{
             backgroundColor: 'rgba(26, 26, 26, 0.95)',
             border: '1px solid #2d2d2d',

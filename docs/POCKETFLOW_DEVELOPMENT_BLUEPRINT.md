@@ -826,6 +826,27 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ---
 
+### **Phase 14: Dashboard Enhancements** ✅ COMPLETED
+
+- **Features:**
+  - **Insights Panel:** Surfaced actionable insights (e.g., "Upcoming Bills") directly on the dashboard, fetched securely via the `InsightService`.
+  - **Enhanced Charts:** Replaced basic pie chart with a detailed multi-segment donut chart visualizing top 5 spending categories vs total income.
+  - **Daily Tips:** Added a rotating "Daily Financial Tip" card with dismissal logic persisted to `localStorage`.
+  - **Mobile Optimization:** Forced a 2-column grid for "Quick Actions" on mobile to improve screen real estate usage compared to single-column stacking.
+
+- **Implementation Details:**
+  - **Performance:** Implemented `React.lazy` code splitting for the new `EnhancedIncomeExpenseChart` to optimize initial bundle load.
+  - **Reliability:** Data fetching hooks use `AbortController` to prevent race conditions and memory leaks during rapid navigation.
+  - **Types:** Strict TypeScript validation for Recharts data and Tooltip formatters to prevent build failures.
+  - **Build Integrity:** Resolved specific TS build errors (unused variables, undefined checks) in chart components.
+
+- **Key Learnings:**
+  - **Lazy Loading:** Heavy visualization libraries (like Recharts) should almost always be lazy-loaded to keep the main bundle lean.
+  - **AbortController:** Essential for all `useEffect` fetch calls in React 18+ to handle component unmounting gracefully.
+  - **Mobile Grid:** Sometimes "stacking" isn't the answer; a tight 2-column grid can be more usable on small screens for button-like elements.
+
+---
+
 ## Planned Phases & Next Steps
 
 ### **Phase Zeta: Bank Import (Exploratory)**
@@ -838,7 +859,7 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 The following capabilities are planned for implementation after Phase 10B validation, organized by priority and architectural dependencies:
 
-### **Phase 14: Foundation Infrastructure**
+### **Phase 15: Foundation Infrastructure**
 
 - **Queues & Delivery Decoupling**
   - Separate notification generation from delivery cycles.
@@ -849,7 +870,7 @@ The following capabilities are planned for implementation after Phase 10B valida
   - Prevent provider throttling.
   - Protect sender reputation through controlled sending.
 
-### **Phase 15: Enhanced User Experience**
+### **Phase 16: Enhanced User Experience**
 
 - **User Preference Management**
   - Frontend controls for notification preferences.
@@ -860,7 +881,7 @@ The following capabilities are planned for implementation after Phase 10B valida
   - Enhanced delivery tracking (attempts, failures, suppressions).
   - Foundation for future engagement metrics (opens/clicks).
 
-### **Phase 16: Advanced Notification Systems**
+### **Phase 17: Advanced Notification Systems**
 
 - **Batching & Digest Systems**
   - Combine related events into single messages.
@@ -1049,5 +1070,6 @@ interface FinancialRecord {
 - _Last updated: February 12, 2026 | Current Phase: Phase 11C Learn & Insights | Next Phase: 13 Foundation Infrastructure_
 - _Last updated: February 20, 2026 | Current Phase: Phase 12 SEO & Performance | Next Phase: 13 Foundation Infrastructure_
 - _Last updated: February 22, 2026 | Current Phase: Phase 13 Goals Calculation Refactor & Dashboard Quick Actions | Next Phase: 14 Foundation Infrastructure_
+- _Last updated: February 22, 2026 | Current Phase: Phase 14 Dashboard Enhancements | Next Phase: 15 Foundation Infrastructure_
 
 ---
