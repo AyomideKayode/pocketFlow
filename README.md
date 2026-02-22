@@ -194,9 +194,9 @@ PocketFlow is being built in distinct phases to ensure stability and code qualit
 - **Phase 11B: Bills**: Recurring bill tracking and due date awareness. ✅
 - **Phase 11C: Learn & Insights**: Added "Learn" page for financial education and "Insights" engine for deterministic, rule-based suggestions (Upcoming Bills, Subscription Check). ✅
 - **Phase 12: SEO & Performance**: Implemented SEO metadata, sitemap generation, and optimized image delivery (WebP) with layout stability fixes. ✅
-- **Landing Page Conversion Optimization**: Implemented high-converting production landing page design with Product Showcase section featuring 5 guided screenshots, trust reinforcement signals, and mobile-responsive layout. ✅
+- **Phase 13: Goals Calculation Refactor & Dashboard Quick Actions**: Improved goal tracking logic (Net Balance) and added personalized Dashboard Quick Actions for better feature discovery. ✅
 
-For a detailed history of the development process, challenges, and architectural decisions, see the [Development Blueprint](./POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
+For a detailed history of the development process, challenges, and architectural decisions, see the [Development Blueprint](./docs/POCKETFLOW_DEVELOPMENT_BLUEPRINT.md).
 
 ---
 

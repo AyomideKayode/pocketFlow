@@ -728,7 +728,7 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
     3. **Understand Your Spending** — Visual insights without spreadsheets
     4. **Stay Informed & Learn** — Upcoming bills + educational resources
     5. **Your Preferences, Your Way** — Profile customization and currency settings
-  - **CTA Consistency:** Bottom CTA in ProductShowcase mirrors Hero (same buttons, same trust signals).
+    - **CTA Consistency:** Bottom CTA in ProductShowcase mirrors Hero (same buttons, same trust signals).
   - **Scroll-Based Demo:** Replaced video demo with effortless screenshot scrolling—proven SaaS pattern for higher conversion.
 
 - **Implementation Details:**
@@ -749,7 +749,7 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
   - **No Overpromising:** Copy aligned strictly to actual capabilities (no bank import, only CSV; no AI, only rules-based insights).
   - **Honest CTAs:** "Sign in" replaces "View Demo" to eliminate micro-disappointment at login wall.
   - **Trust First:** CSV import card positioned first to address objection ("What about my existing data?") before user feels locked in.
-  - **Mobile-First:** Trust signals adapt to mobile viewport with grid layout (2 per row) instead of full-width stacking.
+  - **Mobile-First:** Trust indicators adapt to mobile viewport with grid layout (2 per row) instead of full-width stacking.
 
 - **Key Learnings:**
   - **Conversion > Impression:** High-converting SaaS landing pages prioritize screenshots over video. Users skim, not watch.
@@ -794,6 +794,38 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 ---
 
+### **Phase 13: Goals Calculation Refactor & Dashboard Quick Actions** ✅ COMPLETED
+
+- **Features:**
+  - **Goal Logic Refactor:**
+    - Refined goal progress calculation to track Net Balance (Income - Expenses) of the linked category.
+    - Allows for both contributions (Income) and withdrawals (Expenses) to affect goal progress.
+    - Implemented clamping logic (`Math.max(0, current)`) to prevent negative goal progress display in UI.
+  - **Dashboard Quick Actions:**
+    - Added "Quick Actions" section to the Dashboard (`Set Budget`, `Add Bill`, `Set Goal`, `Learn`).
+    - Improves feature discovery for users who inadvertently close the sidebar.
+    - Implemented personalized welcome message (`Welcome back, [Name]!`) using robust name parsing logic.
+  - **Documentation Maintenance:**
+    - Centralized "Last Updated" date for Terms of Service in a config file (`client/src/config/constants.ts`) to prevent stale information.
+    - Updated heading hierarchy on Dashboard for better accessibility (`h1` -> `h2` -> `h3`).
+
+- **Implementation Details:**
+  - **Dashboard:**
+    - `client/src/pages/dashboard/index.tsx` updated with `Quick Actions` grid.
+    - Lucide icons (`Target`, `Calendar`, `Trophy`, `BookOpen`) used for visual consistency.
+    - Name parsing logic: Trims and checks for non-empty string before splitting to ensure safe greeting.
+  - **Goal Service:**
+    - Logic updated to reflect net balance approach.
+  - **Terms Page:**
+    - Replaced hardcoded date string with `APP_CONSTANTS.LAST_UPDATED`.
+
+- **Key Learnings:**
+  - **Feature Discovery:** Users often miss navigation items; placing core actions directly on the dashboard reduces friction.
+  - **Accessibility:** Proper heading hierarchy (`h1-h6`) is crucial for screen readers and should be verified during UI updates.
+  - **Maintainability:** Hardcoded dates in legal pages are a liability; centralizing them in a config file ensures consistency.
+
+---
+
 ## Planned Phases & Next Steps
 
 ### **Phase Zeta: Bank Import (Exploratory)**
@@ -806,7 +838,7 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 The following capabilities are planned for implementation after Phase 10B validation, organized by priority and architectural dependencies:
 
-### **Phase 13: Foundation Infrastructure**
+### **Phase 14: Foundation Infrastructure**
 
 - **Queues & Delivery Decoupling**
   - Separate notification generation from delivery cycles.
@@ -817,7 +849,7 @@ The following capabilities are planned for implementation after Phase 10B valida
   - Prevent provider throttling.
   - Protect sender reputation through controlled sending.
 
-### **Phase 14: Enhanced User Experience**
+### **Phase 15: Enhanced User Experience**
 
 - **User Preference Management**
   - Frontend controls for notification preferences.
@@ -828,7 +860,7 @@ The following capabilities are planned for implementation after Phase 10B valida
   - Enhanced delivery tracking (attempts, failures, suppressions).
   - Foundation for future engagement metrics (opens/clicks).
 
-### **Phase 15: Advanced Notification Systems**
+### **Phase 16: Advanced Notification Systems**
 
 - **Batching & Digest Systems**
   - Combine related events into single messages.
@@ -1016,5 +1048,6 @@ interface FinancialRecord {
 - _Last updated: February 9, 2026 | Current Phase: Phase 11B Bills Foundation | Next Phase: 11C Learn & Insights_
 - _Last updated: February 12, 2026 | Current Phase: Phase 11C Learn & Insights | Next Phase: 13 Foundation Infrastructure_
 - _Last updated: February 20, 2026 | Current Phase: Phase 12 SEO & Performance | Next Phase: 13 Foundation Infrastructure_
+- _Last updated: February 22, 2026 | Current Phase: Phase 13 Goals Calculation Refactor & Dashboard Quick Actions | Next Phase: 14 Foundation Infrastructure_
 
 ---
