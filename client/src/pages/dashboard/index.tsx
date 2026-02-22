@@ -449,9 +449,11 @@ export const Dashboard = () => {
               </div>
               <div className='flex-1 min-w-0'>
                 <h4 className='text-sm font-semibold text-amber-600 dark:text-amber-400 mb-1'>
-                  {insight.type === 'upcoming-bills' && 'Upcoming Bills'}
-                  {insight.type === 'subscription-check' && 'Subscription Check'}
-                  {!insight.type && 'Insight'}
+                  {insight.type === 'upcoming-bills'
+                    ? 'Upcoming Bills'
+                    : insight.type === 'subscription-check'
+                      ? 'Subscription Check'
+                      : 'Insight'}
                 </h4>
                 <p className='text-sm text-gray-700 dark:text-slate-300'>
                   {insight.message}
