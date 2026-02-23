@@ -442,7 +442,7 @@ export const Dashboard = () => {
         <div className='space-y-3'>
           {insights.map((insight, index) => (
             <div
-              key={index}
+              key={insight.id}
               className='flex items-start gap-4 rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 animate-in fade-in duration-300'
               style={{ animationDelay: `${index * 100}ms` }}
             >
