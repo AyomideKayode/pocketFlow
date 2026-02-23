@@ -29,11 +29,13 @@ import {
   Calendar,
   Trophy,
   BookOpen,
+  Lightbulb,
 } from 'lucide-react';
 import { useToast } from '../../contexts/toast-context';
 import { CsvImportModal } from '../../components/CsvImportModal';
 import { useBills } from '../../hooks/useBills';
 import { OverdueWarning } from '../../components/bills/OverdueWarning';
+import { DailyTip } from '../../components/DailyTip';
 
 // Lazy load chart components for performance
 const TrendLineChart = lazy(() =>
@@ -41,14 +43,14 @@ const TrendLineChart = lazy(() =>
     default: module.TrendLineChart,
   })),
 );
-const IncomeExpenseChart = lazy(() =>
-  import('../../components/charts/IncomeExpenseChart').then((module) => ({
-    default: module.IncomeExpenseChart,
-  })),
-);
 const CategoryBreakdownChart = lazy(() =>
   import('../../components/charts/CategoryBreakdownChart').then((module) => ({
     default: module.CategoryBreakdownChart,
+  })),
+);
+const EnhancedIncomeExpenseChart = lazy(() =>
+  import('../../components/charts/EnhancedIncomeExpenseChart').then((module) => ({
+    default: module.EnhancedIncomeExpenseChart,
   })),
 );
 
@@ -61,8 +63,11 @@ export const Dashboard = () => {
   const [dateRange, setDateRange] = useState(getDefaultDateRange());
   const [isExporting, setIsExporting] = useState(false);
   const [showImportModal, setShowImportModal] = useState(false);
+  const [insights, setInsights] = useState<any[]>([]);
   const { addToast } = useToast();
   const navigate = useNavigate();
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
   const { overdue, loading: billsLoading } = useBills();
 
@@ -78,6 +83,58 @@ export const Dashboard = () => {
     fetchRecords();
   }, [fetchRecords]);
 
+  // Fetch insights
+  useEffect(() => {
+    if (!user) return;
+
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const fetchInsights = async () => {
+      try {
+        const token = await user.getIdToken();
+        const response = await fetch(`${API_BASE_URL}/insights`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          signal,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          // Transform server data to client expected format
+          const transformedInsights = data.map((item: any) => {
+            let action = null;
+            if (item.id === 'upcoming-bills') {
+              action = { route: '/bills', label: 'View Bills' };
+            } else if (item.id === 'subscription-check') {
+              action = { route: '/bills', label: 'Review Subscriptions' };
+            }
+            return {
+              ...item,
+              type: item.id,
+              action,
+            };
+          });
+
+          if (!signal.aborted) {
+            setInsights(transformedInsights);
+          }
+        }
+      } catch (error: unknown) {
+        if (error instanceof Error && error.name === 'AbortError') return;
+        console.error('Error fetching insights:', error);
+      }
+    };
+
+    fetchInsights();
+
+    return () => {
+      controller.abort();
+    };
+  }, [user?.uid]);
+
   const filteredRecords = useMemo(() => {
     return filterRecordsByDateRange(records, dateRange);
   }, [records, dateRange]);
@@ -91,6 +148,67 @@ export const Dashboard = () => {
     .reduce((acc, record) => acc + record.amount, 0);
 
   const totalMonthlyBalance = totalIncome - totalExpenses;
+
+  // Calculate top spending categories for enhanced donut
+  const topSpendingData = useMemo(() => {
+    const expenses = filteredRecords.filter(r => r.type === 'expense');
+
+    // Group expenses by category
+    const categoryTotals = expenses.reduce((acc, record) => {
+      const cat = record.category || 'Uncategorized';
+      acc[cat] = (acc[cat] || 0) + record.amount;
+      return acc;
+    }, {} as Record<string, number>);
+
+    // Sort and get top 5
+    const sorted = Object.entries(categoryTotals)
+      .sort(([, a], [, b]) => b - a)
+      .slice(0, 5);
+
+    // Calculate other expenses
+    const topTotal = sorted.reduce((sum, [, amount]) => sum + amount, 0);
+    const otherTotal = totalExpenses - topTotal;
+
+    // Build data array
+    const data = [];
+
+    // Add income (only if non-zero)
+    if (totalIncome > 0) {
+      data.push({
+        name: 'Income',
+        value: totalIncome,
+        color: '#10b981', // Emerald
+      });
+    }
+
+    // Add top 5 expense categories with graduated colors
+    const expenseColors = [
+      '#ef4444', // Red
+      '#f97316', // Orange
+      '#f59e0b', // Amber
+      '#fb923c', // Light orange
+      '#fca5a5', // Light red
+    ];
+
+    sorted.forEach(([category, amount], index) => {
+      data.push({
+        name: category,
+        value: amount,
+        color: expenseColors[index],
+      });
+    });
+
+    // Add "Other Expenses" if significant
+    if (otherTotal > 0) {
+      data.push({
+        name: 'Other Expenses',
+        value: otherTotal,
+        color: '#6b7280', // Gray
+      });
+    }
+
+    return data;
+  }, [filteredRecords, totalIncome, totalExpenses]);
 
   const handleExport = async () => {
     try {
@@ -139,7 +257,6 @@ export const Dashboard = () => {
   }
 
   // Initial Empty State for new users
-  // Use recentRecords or records length? If records is empty, empty state.
   if (!loading && records.length === 0) {
     return (
       <div className='flex min-h-[calc(100vh-4rem)] items-center justify-center'>
@@ -233,7 +350,7 @@ export const Dashboard = () => {
         <h2 className='text-sm font-medium text-gray-500 dark:text-slate-400'>
           Quick Actions
         </h2>
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3'>
+        <div className='grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3'>
           {/* Budget Action */}
           <button
             onClick={() => navigate('/budgets')}
@@ -245,10 +362,10 @@ export const Dashboard = () => {
                 <Target className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
               </div>
               <div className='flex-1 min-w-0'>
-                <h3 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
+                <h3 className='text-xs sm:text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
                   Set Budget
                 </h3>
-                <p className='text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
+                <p className='text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
                   Control spending by category
                 </p>
               </div>
@@ -266,10 +383,10 @@ export const Dashboard = () => {
                 <Calendar className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
               </div>
               <div className='flex-1 min-w-0'>
-                <h3 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
+                <h3 className='text-xs sm:text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
                   Add Bill
                 </h3>
-                <p className='text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
+                <p className='text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
                   Track recurring payments
                 </p>
               </div>
@@ -287,10 +404,10 @@ export const Dashboard = () => {
                 <Trophy className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
               </div>
               <div className='flex-1 min-w-0'>
-                <h3 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
+                <h3 className='text-xs sm:text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
                   Set Goal
                 </h3>
-                <p className='text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
+                <p className='text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
                   Save for something special
                 </p>
               </div>
@@ -308,10 +425,10 @@ export const Dashboard = () => {
                 <BookOpen className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
               </div>
               <div className='flex-1 min-w-0'>
-                <h3 className='text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
+                <h3 className='text-xs sm:text-sm font-semibold text-gray-900 dark:text-white mb-0.5'>
                   Learn
                 </h3>
-                <p className='text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
+                <p className='text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 line-clamp-1'>
                   Financial tips & insights
                 </p>
               </div>
@@ -319,6 +436,43 @@ export const Dashboard = () => {
           </button>
         </div>
       </div>
+
+      {/* Insights from Activity */}
+      {insights.length > 0 && (
+        <div className='space-y-3'>
+          {insights.map((insight, index) => (
+            <div
+              key={insight.id}
+              className='flex items-start gap-4 rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 animate-in fade-in duration-300'
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className='flex-shrink-0 rounded-lg bg-amber-500/10 p-2'>
+                <Lightbulb className='h-5 w-5 text-amber-500' />
+              </div>
+              <div className='flex-1 min-w-0'>
+                <h4 className='text-sm font-semibold text-amber-600 dark:text-amber-400 mb-1'>
+                  {insight.type === 'upcoming-bills'
+                    ? 'Upcoming Bills'
+                    : insight.type === 'subscription-check'
+                      ? 'Subscription Check'
+                      : 'Insight'}
+                </h4>
+                <p className='text-sm text-gray-700 dark:text-slate-300'>
+                  {insight.message}
+                </p>
+              </div>
+              {insight.action && (
+                <button
+                  onClick={() => navigate(insight.action.route)}
+                  className='flex-shrink-0 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors'
+                >
+                  {insight.action.label} →
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Stats Grid */}
       <div className='grid gap-4 md:grid-cols-3'>
@@ -384,10 +538,15 @@ export const Dashboard = () => {
             <TrendLineChart records={filteredRecords} />
           </Suspense>
         </div>
-        <div className='lg:col-span-3 h-full'>
-          <Suspense fallback={<ChartLoading />}>
-            <IncomeExpenseChart records={filteredRecords} />
-          </Suspense>
+        <div className='lg:col-span-3 h-full rounded-xl border border-gray-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-sm dark:shadow-none'>
+          <h2 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
+            Financial Overview
+          </h2>
+          <div className="h-[300px]">
+            <Suspense fallback={<ChartLoading />}>
+              <EnhancedIncomeExpenseChart data={topSpendingData} />
+            </Suspense>
+          </div>
         </div>
       </div>
 
@@ -415,6 +574,9 @@ export const Dashboard = () => {
         {/* Use recentRecords (top 5) for dashboard list */}
         <FinancialRecordList limit={5} data={recentRecords} />
       </div>
+
+      {/* Daily Financial Tip */}
+      <DailyTip />
     </div>
   );
 };
