@@ -836,7 +836,7 @@ After pulling the changes made in Phase 4 Budget & Goals features implementation
 
 - **Implementation Details:**
   - **Performance:** Implemented `React.lazy` code splitting for the new `EnhancedIncomeExpenseChart` to optimize initial bundle load.
-  - **Reliability:** Data fetching hooks use `AbortController` to prevent race conditions and memory leaks during rapid navigation.
+  - **Reliability:** Data-fetching hooks use `AbortController` to prevent race conditions and memory leaks during rapid navigation.
   - **Types:** Strict TypeScript validation for Recharts data and Tooltip formatters to prevent build failures.
   - **Build Integrity:** Resolved specific TS build errors (unused variables, undefined checks) in chart components.
 
