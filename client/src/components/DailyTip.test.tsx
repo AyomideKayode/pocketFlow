@@ -26,7 +26,7 @@ describe('DailyTip', () => {
     render(
       <BrowserRouter>
         <DailyTip />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
     expect(screen.getByText('Test Tip Title')).toBeInTheDocument();
     expect(screen.getByText('Test Tip Content')).toBeInTheDocument();
@@ -36,7 +36,7 @@ describe('DailyTip', () => {
     render(
       <BrowserRouter>
         <DailyTip />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     const closeButton = screen.getByLabelText('Dismiss tip');
@@ -46,7 +46,9 @@ describe('DailyTip', () => {
     expect(screen.queryByText('Test Tip Title')).not.toBeInTheDocument();
 
     // Should be saved in localStorage
-    expect(localStorage.getItem('daily-tip-dismissed')).toBe(new Date().toDateString());
+    expect(localStorage.getItem('daily-tip-dismissed')).toBe(
+      new Date().toDateString(),
+    );
   });
 
   it('does not render if already dismissed today', () => {
@@ -55,7 +57,7 @@ describe('DailyTip', () => {
     render(
       <BrowserRouter>
         <DailyTip />
-      </BrowserRouter>
+      </BrowserRouter>,
     );
 
     expect(screen.queryByText('Test Tip Title')).not.toBeInTheDocument();

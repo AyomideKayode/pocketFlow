@@ -1,11 +1,20 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
+import {
+  PieChart,
+  Pie,
+  Cell,
+  ResponsiveContainer,
+  Legend,
+  Tooltip,
+} from 'recharts';
 import { useCurrencyFormatter } from '../../hooks/useCurrencyFormatter';
 
 interface EnhancedIncomeExpenseChartProps {
   data: Array<{ name: string; value: number; color: string }>;
 }
 
-export const EnhancedIncomeExpenseChart = ({ data }: EnhancedIncomeExpenseChartProps) => {
+export const EnhancedIncomeExpenseChart = ({
+  data,
+}: EnhancedIncomeExpenseChartProps) => {
   const { format } = useCurrencyFormatter();
 
   return (

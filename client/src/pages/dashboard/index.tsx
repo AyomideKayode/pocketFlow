@@ -49,9 +49,11 @@ const CategoryBreakdownChart = lazy(() =>
   })),
 );
 const EnhancedIncomeExpenseChart = lazy(() =>
-  import('../../components/charts/EnhancedIncomeExpenseChart').then((module) => ({
-    default: module.EnhancedIncomeExpenseChart,
-  })),
+  import('../../components/charts/EnhancedIncomeExpenseChart').then(
+    (module) => ({
+      default: module.EnhancedIncomeExpenseChart,
+    }),
+  ),
 );
 
 export const Dashboard = () => {
@@ -67,7 +69,8 @@ export const Dashboard = () => {
   const { addToast } = useToast();
   const navigate = useNavigate();
 
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+  const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
 
   const { overdue, loading: billsLoading } = useBills();
 
@@ -95,7 +98,7 @@ export const Dashboard = () => {
         const token = await user.getIdToken();
         const response = await fetch(`${API_BASE_URL}/insights`, {
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json',
           },
           signal,
@@ -151,14 +154,17 @@ export const Dashboard = () => {
 
   // Calculate top spending categories for enhanced donut
   const topSpendingData = useMemo(() => {
-    const expenses = filteredRecords.filter(r => r.type === 'expense');
+    const expenses = filteredRecords.filter((r) => r.type === 'expense');
 
     // Group expenses by category
-    const categoryTotals = expenses.reduce((acc, record) => {
-      const cat = record.category || 'Uncategorized';
-      acc[cat] = (acc[cat] || 0) + record.amount;
-      return acc;
-    }, {} as Record<string, number>);
+    const categoryTotals = expenses.reduce(
+      (acc, record) => {
+        const cat = record.category || 'Uncategorized';
+        acc[cat] = (acc[cat] || 0) + record.amount;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
 
     // Sort and get top 5
     const sorted = Object.entries(categoryTotals)
@@ -437,6 +443,9 @@ export const Dashboard = () => {
         </div>
       </div>
 
+      {/* Daily Financial Tip */}
+      <DailyTip />
+
       {/* Insights from Activity */}
       {insights.length > 0 && (
         <div className='space-y-3'>
@@ -446,7 +455,7 @@ export const Dashboard = () => {
               className='flex items-start gap-4 rounded-xl border border-amber-500/30 bg-amber-500/5 p-4 animate-in fade-in duration-300'
               style={{ animationDelay: `${index * 100}ms` }}
             >
-              <div className='flex-shrink-0 rounded-lg bg-amber-500/10 p-2'>
+              <div className='shrink-0 rounded-lg bg-amber-500/10 p-2'>
                 <Lightbulb className='h-5 w-5 text-amber-500' />
               </div>
               <div className='flex-1 min-w-0'>
@@ -464,7 +473,7 @@ export const Dashboard = () => {
               {insight.action && (
                 <button
                   onClick={() => navigate(insight.action.route)}
-                  className='flex-shrink-0 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors'
+                  className='shrink-0 text-sm font-medium text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300 transition-colors'
                 >
                   {insight.action.label} →
                 </button>
@@ -542,7 +551,7 @@ export const Dashboard = () => {
           <h2 className='text-lg font-semibold text-gray-900 dark:text-white mb-4'>
             Financial Overview
           </h2>
-          <div className="h-[300px]">
+          <div className='h-[300px]'>
             <Suspense fallback={<ChartLoading />}>
               <EnhancedIncomeExpenseChart data={topSpendingData} />
             </Suspense>
@@ -574,9 +583,6 @@ export const Dashboard = () => {
         {/* Use recentRecords (top 5) for dashboard list */}
         <FinancialRecordList limit={5} data={recentRecords} />
       </div>
-
-      {/* Daily Financial Tip */}
-      <DailyTip />
     </div>
   );
 };

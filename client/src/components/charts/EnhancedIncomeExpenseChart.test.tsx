@@ -7,22 +7,28 @@ vi.mock('recharts', () => {
   const OriginalModule = vi.importActual('recharts');
   return {
     ...OriginalModule,
-    ResponsiveContainer: ({ children }: any) => <div className="recharts-responsive-container">{children}</div>,
-    PieChart: ({ children }: any) => <div className="recharts-wrapper">{children}</div>,
+    ResponsiveContainer: ({ children }: any) => (
+      <div className='recharts-responsive-container'>{children}</div>
+    ),
+    PieChart: ({ children }: any) => (
+      <div className='recharts-wrapper'>{children}</div>
+    ),
     Pie: ({ data, label }: any) => (
-      <div className="recharts-pie">
+      <div className='recharts-pie'>
         {data.map((entry: any, index: number) => (
-          <div key={index} data-testid="pie-slice">
+          <div key={index} data-testid='pie-slice'>
             {entry.name}: {entry.value}
             {/* Render label if function */}
-            {typeof label === 'function' ? label({ name: entry.name, percent: 0.5 }) : null}
+            {typeof label === 'function'
+              ? label({ name: entry.name, percent: 0.5 })
+              : null}
           </div>
         ))}
       </div>
     ),
-    Cell: () => <div className="recharts-cell" />,
-    Tooltip: () => <div className="recharts-tooltip" />,
-    Legend: () => <div className="recharts-legend" />,
+    Cell: () => <div className='recharts-cell' />,
+    Tooltip: () => <div className='recharts-tooltip' />,
+    Legend: () => <div className='recharts-legend' />,
   };
 });
 

@@ -25,7 +25,7 @@ export const DailyTip = () => {
   return (
     <div className='rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4 animate-in fade-in duration-500'>
       <div className='flex items-start gap-3'>
-        <div className='flex-shrink-0 rounded-lg bg-emerald-500/10 p-2'>
+        <div className='shrink-0 rounded-lg bg-emerald-500/10 p-2'>
           <Lightbulb className='h-5 w-5 text-emerald-600 dark:text-emerald-400' />
         </div>
 
@@ -53,7 +53,7 @@ export const DailyTip = () => {
 
         <button
           onClick={handleDismiss}
-          className='flex-shrink-0 p-1 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 transition-colors'
+          className='shrink-0 p-1 text-gray-400 dark:text-slate-500 hover:text-gray-600 dark:hover:text-slate-300 transition-colors'
           aria-label='Dismiss tip'
         >
           <X className='h-4 w-4' />
