@@ -46,7 +46,8 @@ export const EnhancedIncomeExpenseChart = ({
               theme === 'dark'
                 ? 'rgba(26, 26, 26, 0.95)'
                 : 'rgba(255, 255, 255, 0.95)',
-            border: theme === 'dark' ? '1px solid #2d2d2d' : '1px solid #e5e7eb',
+            border:
+              theme === 'dark' ? '1px solid #2d2d2d' : '1px solid #e5e7eb',
             borderRadius: '8px',
             color: theme === 'dark' ? '#fff' : '#111827',
           }}
@@ -66,7 +67,7 @@ export const EnhancedIncomeExpenseChart = ({
                       className='flex items-center gap-1.5 whitespace-nowrap'
                     >
                       <div
-                        className='w-3 h-3 rounded-sm flex-shrink-0'
+                        className='w-3 h-3 rounded-sm shrink-0'
                         style={{ backgroundColor: entry.color }}
                       />
                       <span className='text-[10px] sm:text-xs text-gray-700 dark:text-slate-300'>
