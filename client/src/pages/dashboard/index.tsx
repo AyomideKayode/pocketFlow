@@ -1,4 +1,4 @@
-import { useState, useMemo, lazy, Suspense, useEffect } from 'react';
+import { useState, useMemo, lazy, Suspense, useEffect, useRef } from 'react';
 import { useAuth } from '../../contexts/auth-context';
 import { useNavigate } from 'react-router-dom';
 import { FinancialRecordList } from './financialRecordList';
@@ -68,6 +68,7 @@ export const Dashboard = () => {
   const [insights, setInsights] = useState<any[]>([]);
   const { addToast } = useToast();
   const navigate = useNavigate();
+  const categoryBreakdownRef = useRef<HTMLDivElement>(null);
 
   const API_BASE_URL =
     import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
@@ -215,6 +216,10 @@ export const Dashboard = () => {
 
     return data;
   }, [filteredRecords, totalIncome, totalExpenses]);
+
+  const handleSegmentClick = () => {
+    categoryBreakdownRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   const handleExport = async () => {
     try {
@@ -553,13 +558,16 @@ export const Dashboard = () => {
           </h2>
           <div className='h-[300px]'>
             <Suspense fallback={<ChartLoading />}>
-              <EnhancedIncomeExpenseChart data={topSpendingData} />
+              <EnhancedIncomeExpenseChart
+                data={topSpendingData}
+                onSegmentClick={handleSegmentClick}
+              />
             </Suspense>
           </div>
         </div>
       </div>
 
-      <div className='grid gap-4 md:grid-cols-1'>
+      <div ref={categoryBreakdownRef} className='grid gap-4 md:grid-cols-1'>
         <Suspense fallback={<ChartLoading />}>
           <CategoryBreakdownChart records={filteredRecords} />
         </Suspense>
