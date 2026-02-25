@@ -33,7 +33,7 @@ export const EnhancedIncomeExpenseChart = ({
           paddingAngle={2}
           dataKey='value'
           onClick={(data) => onSegmentClick?.(data)}
-          cursor='pointer'
+          cursor={onSegmentClick ? 'pointer' : 'default'}
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.color} stroke='none' />
