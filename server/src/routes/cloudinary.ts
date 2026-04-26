@@ -1,3 +1,4 @@
+// server/src/routes/cloudinary.ts
 import express from 'express';
 import { v2 as cloudinary } from 'cloudinary';
 import { verifyAuth } from '../middleware/auth.js';
@@ -15,15 +16,15 @@ if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_API_KEY || !CLOUDINARY_API_SECRET) {
   throw new Error('Missing Cloudinary environment variables');
 }
 
-// Configure Cloudinary
-cloudinary.config({
-  cloud_name: CLOUDINARY_CLOUD_NAME,
-  api_key: CLOUDINARY_API_KEY,
-  api_secret: CLOUDINARY_API_SECRET,
-});
-
 router.post('/sign-profile-upload', verifyAuth, (req, res) => {
   try {
+    // Configure Cloudinary inside route to guarantee fresh env vars are loaded
+    cloudinary.config({
+      cloud_name: CLOUDINARY_CLOUD_NAME,
+      api_key: CLOUDINARY_API_KEY,
+      api_secret: CLOUDINARY_API_SECRET,
+    });
+
     const userId = (req as any).user.uid;
     const timestamp = Math.round(new Date().getTime() / 1000);
     const folder = 'PocketFlow/profile_photos';

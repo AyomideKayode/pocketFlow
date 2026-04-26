@@ -158,7 +158,7 @@ export const Footer = () => {
             <p>
               Built with 💚 by{' '}
               <a
-                href='https://github.com/AyomideKayode'
+                href='https://ayomide-kay.vercel.app/'
                 target='_blank'
                 rel='noopener noreferrer'
                 className='text-text-secondary hover:text-emerald-500 transition-colors underline decoration-border hover:decoration-emerald-500/50'

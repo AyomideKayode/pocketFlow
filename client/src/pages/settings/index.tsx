@@ -1,3 +1,4 @@
+// client/src/pages/settings/index.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import { useUserProfile } from '../../contexts/user-profile-context';
 import { getIdToken } from '../../lib/firebase';
@@ -118,7 +119,7 @@ export const Settings = () => {
         currency,
         photoURL,
       });
-    } catch (error) {
+    } catch {
       // Error handled in context
     } finally {
       setSaving(false);

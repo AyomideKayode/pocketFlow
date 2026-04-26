@@ -1,3 +1,4 @@
+// server/src/app.ts
 import 'dotenv/config';
 import express, { type Express } from 'express';
 import financialRecordRouter from './routes/financial-records.js';
